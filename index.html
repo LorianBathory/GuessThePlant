@@ -25,69 +25,69 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-     const PlantQuizGame = () => {
-    // Сначала определяем данные растений
-    const plants = [
-        { id: 1, name: "1" },
-        { id: 2, name: "2" },
-        { id: 3, name: "3" },
-        { id: 4, name: "4" },
-        { id: 5, name: "5" },
-        { id: 6, name: "6" }
-    ];
+        const PlantQuizGame = () => {
+            // Данные растений
+            const plantsData = [
+                { id: 1, name: "1", displayName: "Суккулент с желтыми цветами", image: "images/BeachDaisy.JPG" },
+                { id: 2, name: "2", displayName: "Зонтичное растение", image: "images/MoonCarrot.JPG" },
+                { id: 3, name: "3", displayName: "Агапантус", image: "images/Agapanthus.JPG" },
+                { id: 4, name: "4", displayName: "Бугенвиллия", image: "images/bougainvillea.JPG" },
+                { id: 5, name: "5", displayName: "Камелия", image: "🌹" },
+                { id: 6, name: "6", displayName: "Гербера", image: "🌻" }
+            ];
 
-    // Потом состояния
-    const [shuffledPlants, setShuffledPlants] = useState([]);
-    
-    // Функция перемешивания
-    const shuffleArray = (array) => {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    };
-    
-    // Инициализация перемешанного списка
-    useEffect(() => {
-        if (shuffledPlants.length === 0) {
-            setShuffledPlants(shuffleArray(plants));
-        }
-    }, []);
+            // Состояния
+            const [plants, setPlants] = useState([]);
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [score, setScore] = useState(0);
-            const [gameState, setGameState] = useState('playing'); // 'playing', 'correct', 'incorrect', 'finished'
+            const [gameState, setGameState] = useState('playing');
             const [options, setOptions] = useState([]);
             const [correctAnswer, setCorrectAnswer] = useState('');
 
-            // Функция генерации случайных вариантов ответов
-            const generateOptions = (correctId) => {
-                const correctName = correctId.toString();
+            // Функция перемешивания массива
+            const shuffleArray = (array) => {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            };
+
+            // Функция генерации вариантов ответов
+            const generateOptions = (correctPlant) => {
+                const correctName = correctPlant.name;
                 const incorrectOptions = [];
                 
                 // Генерируем 3 случайных числа от 1 до 15, исключая правильный ответ
                 while (incorrectOptions.length < 3) {
                     const randomNum = Math.floor(Math.random() * 15) + 1;
-                    if (randomNum !== correctId && !incorrectOptions.includes(randomNum.toString())) {
-                        incorrectOptions.push(randomNum.toString());
+                    const randomNumStr = randomNum.toString();
+                    if (randomNumStr !== correctName && !incorrectOptions.includes(randomNumStr)) {
+                        incorrectOptions.push(randomNumStr);
                     }
                 }
                 
-                // Смешиваем варианты ответов в случайном порядке
+                // Смешиваем варианты ответов
                 const allOptions = [correctName, ...incorrectOptions];
-                return allOptions.sort(() => Math.random() - 0.5);
+                return shuffleArray(allOptions);
             };
 
-            // Инициализация текущего вопроса
+            // Инициализация игры
             useEffect(() => {
-                if (currentQuestion < shuffledPlants.length) {
-                    const currentPlant = shuffledPlants[currentQuestion];
-                    const newOptions = generateOptions(currentPlant.id);
+                const shuffled = shuffleArray(plantsData);
+                setPlants(shuffled);
+            }, []);
+
+            // Обновление вопроса
+            useEffect(() => {
+                if (plants.length > 0 && currentQuestion < plants.length) {
+                    const currentPlant = plants[currentQuestion];
+                    const newOptions = generateOptions(currentPlant);
                     setOptions(newOptions);
                     setCorrectAnswer(currentPlant.name);
                 }
-            }, [currentQuestion]);
+            }, [currentQuestion, plants]);
 
             // Обработка ответа
             const handleAnswer = (selectedAnswer) => {
@@ -98,7 +98,6 @@
                     setGameState('incorrect');
                 }
 
-                // Переход к следующему вопросу через 1.5 секунды
                 setTimeout(() => {
                     if (currentQuestion + 1 < plants.length) {
                         setCurrentQuestion(currentQuestion + 1);
@@ -111,42 +110,40 @@
 
             // Перезапуск игры
             const restartGame = () => {
+                const shuffled = shuffleArray(plantsData);
+                setPlants(shuffled);
                 setCurrentQuestion(0);
                 setScore(0);
                 setGameState('playing');
             };
 
-            // Функция для получения изображения растения
-            const getPlantImage = (plantId) => {
-                // Здесь будут ваши настоящие фотографии после обработки скриптом
-                // Пока что используем заглушки с эмодзи растений
-                const plantEmojis = {
-                    1: 'images/BeachDaisy.JPG', // Желтый цветок
-                    2: 'images/MoonCarrot.JPG', // Розовый цветок  
-                    3: 'images/Agapanthus.JPG', // Фиолетовый цветок
-                    4: 'images/bougainvillea.JPG', // Тропический цветок
-                    5: '🌹', // Роза
-                    6: '🌻'  // Подсолнух
-                };
-                
-                const plantNames = {
-                    1: 'Суккулент с желтыми цветами',
-                    2: 'Зонтичное растение',
-                    3: 'Агапантус',
-                    4: 'Бугенвиллия',
-                    5: 'Камелия',
-                    6: 'Гербера'
-                };
-                
+            // Получение изображения растения
+            const getPlantImage = (plant) => {
+                if (plant.image.startsWith('images/')) {
                     return React.createElement('img', {
-                    key: 'plant-image',
-                    src: plantEmojis[plantId],
-                    alt: `Растение ${plantId}`,
-                    className: 'w-full h-64 object-cover',
-                    style: { border: '4px solid #C29C27' }
-            });
+                        key: 'plant-image',
+                        src: plant.image,
+                        alt: `Растение ${plant.id}`,
+                        className: 'w-full h-full object-contain',
+                        style: { 
+                            border: '6px solid #C29C27',
+                            backgroundColor: 'white'
+                        }
+                    });
+                } else {
+                    // Для эмодзи
+                    return React.createElement('div', {
+                        key: 'plant-emoji',
+                        className: 'w-full h-full flex items-center justify-center text-9xl',
+                        style: { 
+                            border: '6px solid #C29C27',
+                            backgroundColor: 'white'
+                        }
+                    }, plant.image);
+                }
             };
 
+            // Экран завершения игры
             if (gameState === 'finished') {
                 return React.createElement('div', {
                     className: 'min-h-screen flex items-center justify-center relative',
@@ -172,14 +169,15 @@
                             key: 'restart',
                             onClick: restartGame,
                             className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
-                            style: { backgroundColor: '#163B3A', border: '4px solid #C29C27' }
+                            style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
                         }, 'Играть снова')
                     ])
                 ]);
             }
 
+            // Основной экран игры
             return React.createElement('div', {
-                className: 'min-h-screen p-4 relative',
+                className: 'min-h-screen p-4 relative flex items-center justify-center',
                 style: { backgroundColor: '#163B3A' }
             }, [
                 // Декоративные золотые полоски
@@ -192,9 +190,9 @@
                 
                 React.createElement('div', {
                     key: 'container',
-                    className: 'max-w-3xl mx-auto relative z-10'
+                    className: 'w-full max-w-5xl mx-auto relative z-10'
                 }, [
-                    // Заголовок с счетчиками
+                    // Заголовок со счетчиками
                     React.createElement('div', {
                         key: 'header',
                         className: 'flex justify-between items-center mb-6'
@@ -203,7 +201,7 @@
                             key: 'progress',
                             className: 'text-2xl font-bold',
                             style: { color: '#C29C27' }
-                        }, `${currentQuestion + 1}/6`),
+                        }, `${currentQuestion + 1}/${plants.length}`),
                         React.createElement('div', {
                             key: 'score',
                             className: 'text-2xl font-bold',
@@ -214,41 +212,45 @@
                     // Основная область игры
                     React.createElement('div', {
                         key: 'game-area',
-                        className: 'p-6 shadow-lg',
+                        className: 'p-8 shadow-lg',
                         style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
                     }, [
                         // Вопрос
                         React.createElement('h2', {
                             key: 'question',
-                            className: 'text-2xl font-bold text-center mb-6',
+                            className: 'text-3xl font-bold text-center mb-8',
                             style: { color: '#C29C27' }
                         }, 'Что это за растение?'),
 
-                        // Область изображения или сообщения
+                        // Область изображения (увеличенная)
                         React.createElement('div', {
                             key: 'image-area',
-                            className: 'mb-8'
+                            className: 'mb-8 flex justify-center',
+                            style: { height: '500px' }
                         }, [
-                            gameState === 'playing' && currentQuestion < shuffledPlants.length && getPlantImage(shuffledPlants[currentQuestion].id),
+                            gameState === 'playing' && plants.length > 0 && currentQuestion < plants.length && 
+                                React.createElement('div', {
+                                    className: 'w-full max-w-3xl h-full'
+                                }, getPlantImage(plants[currentQuestion])),
                             
                             gameState === 'correct' && React.createElement('div', {
-                                className: 'w-full h-96 flex items-center justify-center text-6xl font-bold',
-                                style: { color: '#C29C27', backgroundColor: '#163B3A', border: '4px solid #C29C27' }
-                            }, 'Верно!'),
+                                className: 'w-full max-w-3xl h-full flex items-center justify-center text-6xl font-bold',
+                                style: { color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+                            }, 'Верно! ✅'),
                             
                             gameState === 'incorrect' && React.createElement('div', {
-                                className: 'w-full h-64 flex items-center justify-center text-6xl font-bold',
-                                style: { color: '#C29C27', backgroundColor: '#163B3A', border: '4px solid #C29C27' }
-                            }, 'Неверно!')
+                                className: 'w-full max-w-3xl h-full flex items-center justify-center text-6xl font-bold',
+                                style: { color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+                            }, 'Неверно! ❌')
                         ]),
 
                         // Варианты ответов
                         gameState === 'playing' && React.createElement('div', {
                             key: 'options',
-                            className: 'grid grid-cols-2 gap-4'
+                            className: 'grid grid-cols-2 gap-4 max-w-3xl mx-auto'
                         }, options.map((option, index) => 
                             React.createElement('button', {
-                                key: index,
+                                key: `option-${index}`,
                                 onClick: () => handleAnswer(option),
                                 className: 'py-4 px-6 font-semibold text-xl transition-all duration-200 hover:opacity-80 hover:scale-105',
                                 style: { 
@@ -276,10 +278,4 @@
         root.render(React.createElement(PlantQuizGame));
     </script>
 </body>
-
 </html>
-
-
-
-
-
