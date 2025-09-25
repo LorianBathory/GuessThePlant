@@ -139,7 +139,7 @@
 
             // Состояния
             const [language, setLanguage] = useState('ru');
-            const [plants, setPlants] = useState([]);
+            const [plantsOrder, setPlantsOrder] = useState([]);
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [score, setScore] = useState(0);
             const [gameState, setGameState] = useState('playing');
@@ -201,25 +201,26 @@
                 return shuffleArray(allOptions);
             };
 
-            // Инициализация игры
+            // Инициализация игры - только при первой загрузке
             useEffect(() => {
-                const plantsForLang = getPlantsForLanguage(language);
-                const shuffled = shuffleArray(plantsForLang);
-                setPlants(shuffled);
-                setCurrentQuestion(0);
-                setScore(0);
-                setGameState('playing');
-            }, [language]);
+                const shuffled = shuffleArray(plantsDatabase);
+                setPlantsOrder(shuffled);
+            }, []);
 
-            // Обновление вопроса
+            // Обновление вопроса при изменении языка или текущего вопроса
             useEffect(() => {
-                if (plants.length > 0 && currentQuestion < plants.length) {
-                    const currentPlant = plants[currentQuestion];
-                    const newOptions = generateOptions(currentPlant, plants, language);
-                    setOptions(newOptions);
-                    setCorrectAnswer(currentPlant.name);
+                if (plantsOrder.length > 0 && currentQuestion < plantsOrder.length && gameState === 'playing') {
+                    const currentPlant = plantsOrder[currentQuestion];
+                    const plantsForLang = getPlantsForLanguage(language);
+                    const currentPlantLocalized = plantsForLang.find(p => p.id === currentPlant.id);
+                    
+                    if (currentPlantLocalized) {
+                        const newOptions = generateOptions(currentPlantLocalized, plantsForLang, language);
+                        setOptions(newOptions);
+                        setCorrectAnswer(currentPlantLocalized.name);
+                    }
                 }
-            }, [currentQuestion, plants, language]);
+            }, [currentQuestion, plantsOrder, language, gameState]);
 
             // Обработка ответа
             const handleAnswer = (selectedAnswer) => {
@@ -231,7 +232,7 @@
                 }
 
                 setTimeout(() => {
-                    if (currentQuestion + 1 < plants.length) {
+                    if (currentQuestion + 1 < plantsOrder.length) {
                         setCurrentQuestion(currentQuestion + 1);
                         setGameState('playing');
                     } else {
@@ -242,26 +243,25 @@
 
             // Перезапуск игры
             const restartGame = () => {
-                const plantsForLang = getPlantsForLanguage(language);
-                const shuffled = shuffleArray(plantsForLang);
-                setPlants(shuffled);
+                const shuffled = shuffleArray(plantsDatabase);
+                setPlantsOrder(shuffled);
                 setCurrentQuestion(0);
                 setScore(0);
                 setGameState('playing');
             };
 
-            // Изменение языка
+            // Изменение языка - больше не сбрасывает игру
             const changeLanguage = (newLang) => {
                 setLanguage(newLang);
             };
 
             // Получение изображения растения
-            const getPlantImage = (plant) => {
-                if (plant.image.startsWith('images/')) {
+            const getPlantImage = (plantData) => {
+                if (plantData.image.startsWith('images/')) {
                     return React.createElement('img', {
                         key: 'plant-image',
-                        src: plant.image,
-                        alt: `Растение ${plant.id}`,
+                        src: plantData.image,
+                        alt: `Растение ${plantData.id}`,
                         className: 'w-full h-full object-cover',
                         style: { 
                             border: '6px solid #C29C27'
@@ -276,7 +276,7 @@
                             border: '6px solid #C29C27',
                             backgroundColor: 'white'
                         }
-                    }, plant.image);
+                    }, plantData.image);
                 }
             };
 
@@ -340,7 +340,7 @@
                             key: 'progress',
                             className: 'text-2xl font-bold',
                             style: { color: '#C29C27' }
-                        }, `${currentQuestion + 1}/${plants.length}`),
+                        }, `${currentQuestion + 1}/${plantsOrder.length || 6}`),
                         React.createElement('div', {
                             key: 'right-section',
                             className: 'flex items-center gap-4'
@@ -388,11 +388,11 @@
                             className: 'mb-8 flex justify-center',
                             style: { height: '450px' }
                         }, [
-                            gameState === 'playing' && plants.length > 0 && currentQuestion < plants.length && 
+                            gameState === 'playing' && plantsOrder.length > 0 && currentQuestion < plantsOrder.length && 
                                 React.createElement('div', {
                                     className: 'h-full',
                                     style: { width: '675px' }
-                                }, getPlantImage(plants[currentQuestion])),
+                                }, getPlantImage(plantsOrder[currentQuestion])),
                             
                             gameState === 'correct' && React.createElement('div', {
                                 className: 'h-full flex items-center justify-center text-6xl font-bold',
