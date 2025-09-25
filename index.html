@@ -32,8 +32,8 @@
                 { id: 2, name: "2", displayName: "Зонтичное растение", image: "images/MoonCarrot.JPG" },
                 { id: 3, name: "3", displayName: "Агапантус", image: "images/Agapanthus.JPG" },
                 { id: 4, name: "4", displayName: "Бугенвиллия", image: "images/bougainvillea.JPG" },
-                { id: 5, name: "5", displayName: "Камелия", "images/camelia.JPG" },
-                { id: 6, name: "6", displayName: "Гербера", "images/Gerbera.JPG" }
+                { id: 5, name: "5", displayName: "Камелия", image: "images/camelia.JPG" },
+                { id: 6, name: "6", displayName: "Гербера", image: "images/Gerbera.JPG" }
             ];
 
             // Состояния
@@ -124,10 +124,9 @@
                         key: 'plant-image',
                         src: plant.image,
                         alt: `Растение ${plant.id}`,
-                        className: 'w-full h-full object-contain',
+                        className: 'w-full h-full object-cover',
                         style: { 
-                            border: '6px solid #C29C27',
-                            backgroundColor: 'white'
+                            border: '6px solid #C29C27'
                         }
                     });
                 } else {
@@ -226,22 +225,23 @@
                         React.createElement('div', {
                             key: 'image-area',
                             className: 'mb-8 flex justify-center',
-                            style: { height: '500px' }
+                            style: { height: '450px' }
                         }, [
                             gameState === 'playing' && plants.length > 0 && currentQuestion < plants.length && 
                                 React.createElement('div', {
-                                    className: 'w-full max-w-3xl h-full'
+                                    className: 'h-full',
+                                    style: { width: '675px' }
                                 }, getPlantImage(plants[currentQuestion])),
                             
                             gameState === 'correct' && React.createElement('div', {
-                                className: 'w-full max-w-3xl h-full flex items-center justify-center text-6xl font-bold',
-                                style: { color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
-                            }, 'Верно! ✅'),
+                                className: 'h-full flex items-center justify-center text-6xl font-bold',
+                                style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+                            }, 'Верно!'),
                             
                             gameState === 'incorrect' && React.createElement('div', {
-                                className: 'w-full max-w-3xl h-full flex items-center justify-center text-6xl font-bold',
-                                style: { color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
-                            }, 'Неверно! ❌')
+                                className: 'h-full flex items-center justify-center text-6xl font-bold',
+                                style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+                            }, 'Неверно!')
                         ]),
 
                         // Варианты ответов
@@ -279,4 +279,3 @@
     </script>
 </body>
 </html>
-
