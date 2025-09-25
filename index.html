@@ -25,28 +25,27 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        const PlantQuizGame = () => {
-            // Данные растений с локализацией и специфическими неправильными ответами
+        // Данные растений с локализацией и специфическими неправильными ответами
             const plantsDatabase = [
                 { 
                     id: 1, 
                     image: "images/BeachDaisy.JPG",
                     names: {
-                        ru: "Пляжная маргаритка",
+                        ru: "Астерискус приморский",
                         en: "Beach Daisy",
-                        sci: "Arctotheca calendula"
+                        sci: "Asteriscus maritimus"
                     },
-                    wrongAnswers: [2, 7, 8] // ID других растений или доп. ответов
+                    wrongAnswers: [7, 8, 9] // ID других растений или доп. ответов
                 },
                 { 
                     id: 2, 
                     image: "images/MoonCarrot.JPG",
                     names: {
-                        ru: "Лунная морковь",
-                        en: "Moon Carrot",
-                        sci: "Seseli tortuosum"
+                        ru: "Дикая морковь",
+                        en: "Sea Carrot",
+                        sci: "Daucus carota"
                     },
-                    wrongAnswers: [10, 11] // Можно указать меньше 3-х
+                    wrongAnswers: [10, 11, 12] // Можно указать меньше 3-х
                 },
                 { 
                     id: 3, 
@@ -56,17 +55,17 @@
                         en: "Agapanthus",
                         sci: "Agapanthus africanus"
                     },
-                    wrongAnswers: [9, 13, 6, 14] // Можно указать больше 3-х
+                    wrongAnswers: [13, 14, 15, 16] // Можно указать больше 3-х
                 },
                 { 
                     id: 4, 
                     image: "images/bougainvillea.JPG",
                     names: {
-                        ru: "Бугенвиллия",
+                        ru: "Бугенвиллея",
                         en: "Bougainvillea",
                         sci: "Bougainvillea spectabilis"
                     },
-                    wrongAnswers: [5, 12, 20]
+                    wrongAnswers: [17, 18, 19, 20]
                 },
                 { 
                     id: 5, 
@@ -76,7 +75,7 @@
                         en: "Camellia",
                         sci: "Camellia japonica"
                     },
-                    wrongAnswers: [7, 21, 22] // Роза, Азалия, Рододендрон
+                    wrongAnswers: [20, 21, 22, 23, 24] // Роза, Азалия, Рододендрон
                 },
                 { 
                     id: 6, 
@@ -86,35 +85,42 @@
                         en: "Gerbera",
                         sci: "Gerbera jamesonii"
                     },
-                    wrongAnswers: [16, 3, 1]
+                    wrongAnswers: [25, 26, 27, 28, 29]
                 }
             ];
 
             // Словарь всех возможных названий растений (включая неправильные варианты)
             const namesDatabase = {
-                1: { ru: "Пляжная маргаритка", en: "Beach Daisy", sci: "Arctotheca calendula" },
-                2: { ru: "Лунная морковь", en: "Moon Carrot", sci: "Seseli tortuosum" },
+                1: { ru: "Астерискус приморский", en: "Beach Daisy", sci: "Asteriscus maritimus" },
+                2: { ru: "Дикая морковь", en: "Sea Carrot", sci: "Daucus carota" },
                 3: { ru: "Агапантус", en: "Agapanthus", sci: "Agapanthus africanus" },
                 4: { ru: "Бугенвиллия", en: "Bougainvillea", sci: "Bougainvillea spectabilis" },
                 5: { ru: "Камелия", en: "Camellia", sci: "Camellia japonica" },
                 6: { ru: "Гербера", en: "Gerbera", sci: "Gerbera jamesonii" },
                 // Дополнительные неправильные варианты
-                7: { ru: "Роза", en: "Rose", sci: "Rosa spp." },
-                8: { ru: "Тюльпан", en: "Tulip", sci: "Tulipa spp." },
-                9: { ru: "Орхидея", en: "Orchid", sci: "Orchidaceae" },
-                10: { ru: "Лилия", en: "Lily", sci: "Lilium spp." },
-                11: { ru: "Пион", en: "Peony", sci: "Paeonia spp." },
-                12: { ru: "Гортензия", en: "Hydrangea", sci: "Hydrangea macrophylla" },
-                13: { ru: "Фиалка", en: "Violet", sci: "Viola spp." },
-                14: { ru: "Хризантема", en: "Chrysanthemum", sci: "Chrysanthemum morifolium" },
-                15: { ru: "Ирис", en: "Iris", sci: "Iris germanica" },
-                16: { ru: "Нарцисс", en: "Daffodil", sci: "Narcissus spp." },
-                17: { ru: "Лаванда", en: "Lavender", sci: "Lavandula angustifolia" },
-                18: { ru: "Жасмин", en: "Jasmine", sci: "Jasminum officinale" },
-                19: { ru: "Гибискус", en: "Hibiscus", sci: "Hibiscus rosa-sinensis" },
-                20: { ru: "Магнолия", en: "Magnolia", sci: "Magnolia grandiflora" },
-                21: { ru: "Азалия", en: "Azalea", sci: "Rhododendron simsii" },
-                22: { ru: "Рододендрон", en: "Rhododendron", sci: "Rhododendron ponticum" }
+                7: { ru: "Арктотека ноготковая", en: "Cape Weed", sci: "Arctotheca calendula" },
+                8: { ru: "Гацания", en: "Gazania", sci: "Gazania" },
+                9: { ru: "Лампрантус золотой", en: "Golden Ice Plant", sci: "Lampranthus aureus" },
+                10: { ru: "Борщевик", en: "Hogweed", sci: "Heracleum" },
+                11: { ru: "Дудник лесной", en: "Wild Parsley", sci: "Angelica sylvestris" },
+                12: { ru: "Пастернак", en: "Parsnip", sci: "Pastinaca sativa" },
+                13: { ru: "Лук гигантский", en: "Giant Allium", sci: "Allium giganteum" },
+                14: { ru: "Камассия", en: "Camas", sci: "Camassia" },
+                15: { ru: "Глобулярия", en: "Globe Daisy", sci: "Globularia" },
+                16: { ru: "Рябчик", en: "Fritillary", sci: "Fritillaria" },
+                17: { ru: "Клематис", en: "Clematis", sci: "Clematis" },
+                18: { ru: "Глициния", en: "Wisteria", sci: "Wisteria" },
+                19: { ru: "Олеандр", en: "Oleander", sci: "Nerium oleander" },
+                20: { ru: "Азалия", en: "Azalea", sci: "Rhododendron" },
+                21: { ru: "Рододендрон", en: "Rhododendron", sci: "Rhododendron" },
+                22: { ru: "Роза", en: "Rose", sci: "Rosa" },
+                23: { ru: "Гардения", en: "Gardenia", sci: "Gardenia" },
+                24: { ru: "Магнолия", en: "Magnolia", sci: "Magnolia" },
+                25: { ru: "Нивяник", en: "Shasta Daisy", sci: "Leucanthemum x superbum" },
+                26: { ru: "Георгин", en: "Dahlia", sci: "Dahlia" },
+                27: { ru: "Эхинацея", en: "Coneflower", sci: "Echinacea" },
+                28: { ru: "Арктотис", en: "African Daisy", sci: "Arctotis" },
+                29: { ru: "Хризантема крупноцветковая", en: "Max Chrysanthemum", sci: "Chrysanthemum maximum" }
             };
 
             // Тексты интерфейса с локализацией
@@ -440,3 +446,4 @@
     </script>
 </body>
 </html>
+
