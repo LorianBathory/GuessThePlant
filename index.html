@@ -26,24 +26,119 @@
         const { useState, useEffect } = React;
 
         const PlantQuizGame = () => {
-            // Данные растений с правильными ответами
-            const plantsData = [
-                { id: 1, name: "Пляжная маргаритка", image: "images/BeachDaisy.JPG" },
-                { id: 2, name: "Лунная морковь", image: "images/MoonCarrot.JPG" },
-                { id: 3, name: "Агапантус", image: "images/Agapanthus.JPG" },
-                { id: 4, name: "Бугенвиллия", image: "images/bougainvillea.JPG" },
-                { id: 5, name: "Камелия", image: "images/camelia.JPG" },
-                { id: 6, name: "Гербера", image: "images/Gerbera.JPG" }
+            // Данные растений с локализацией
+            const plantsDatabase = [
+                { 
+                    id: 1, 
+                    image: "images/BeachDaisy.JPG",
+                    names: {
+                        ru: "Пляжная маргаритка",
+                        en: "Beach Daisy",
+                        sci: "Arctotheca calendula"
+                    }
+                },
+                { 
+                    id: 2, 
+                    image: "images/MoonCarrot.JPG",
+                    names: {
+                        ru: "Лунная морковь",
+                        en: "Moon Carrot",
+                        sci: "Seseli tortuosum"
+                    }
+                },
+                { 
+                    id: 3, 
+                    image: "images/Agapanthus.JPG",
+                    names: {
+                        ru: "Агапантус",
+                        en: "Agapanthus",
+                        sci: "Agapanthus africanus"
+                    }
+                },
+                { 
+                    id: 4, 
+                    image: "images/bougainvillea.JPG",
+                    names: {
+                        ru: "Бугенвиллия",
+                        en: "Bougainvillea",
+                        sci: "Bougainvillea spectabilis"
+                    }
+                },
+                { 
+                    id: 5, 
+                    image: "images/camelia.JPG",
+                    names: {
+                        ru: "Камелия",
+                        en: "Camellia",
+                        sci: "Camellia japonica"
+                    }
+                },
+                { 
+                    id: 6, 
+                    image: "images/Gerbera.JPG",
+                    names: {
+                        ru: "Гербера",
+                        en: "Gerbera",
+                        sci: "Gerbera jamesonii"
+                    }
+                }
             ];
 
-            // Дополнительные неправильные варианты для разнообразия
-            const wrongAnswers = [
-                "Роза", "Тюльпан", "Орхидея", "Лилия", "Пион", 
-                "Гортензия", "Фиалка", "Хризантема", "Ирис", "Нарцисс",
-                "Лаванда", "Жасмин", "Гибискус", "Магнолия", "Азалия"
+            // Дополнительные неправильные варианты с локализацией
+            const wrongAnswersDatabase = [
+                { ru: "Роза", en: "Rose", sci: "Rosa spp." },
+                { ru: "Тюльпан", en: "Tulip", sci: "Tulipa spp." },
+                { ru: "Орхидея", en: "Orchid", sci: "Orchidaceae" },
+                { ru: "Лилия", en: "Lily", sci: "Lilium spp." },
+                { ru: "Пион", en: "Peony", sci: "Paeonia spp." },
+                { ru: "Гортензия", en: "Hydrangea", sci: "Hydrangea macrophylla" },
+                { ru: "Фиалка", en: "Violet", sci: "Viola spp." },
+                { ru: "Хризантема", en: "Chrysanthemum", sci: "Chrysanthemum morifolium" },
+                { ru: "Ирис", en: "Iris", sci: "Iris germanica" },
+                { ru: "Нарцисс", en: "Daffodil", sci: "Narcissus spp." },
+                { ru: "Лаванда", en: "Lavender", sci: "Lavandula angustifolia" },
+                { ru: "Жасмин", en: "Jasmine", sci: "Jasminum officinale" },
+                { ru: "Гибискус", en: "Hibiscus", sci: "Hibiscus rosa-sinensis" },
+                { ru: "Магнолия", en: "Magnolia", sci: "Magnolia grandiflora" },
+                { ru: "Азалия", en: "Azalea", sci: "Rhododendron spp." }
             ];
+
+            // Тексты интерфейса с локализацией
+            const uiTexts = {
+                ru: {
+                    question: "Что это за растение?",
+                    score: "Баллы",
+                    correct: "Верно!",
+                    incorrect: "Неверно!",
+                    result: "Вы получили",
+                    resultPoints: "баллов",
+                    playAgain: "Играть снова",
+                    instruction: "Выберите правильное название растения"
+                },
+                en: {
+                    question: "What plant is this?",
+                    score: "Score",
+                    correct: "Correct!",
+                    incorrect: "Incorrect!",
+                    result: "You scored",
+                    resultPoints: "points",
+                    playAgain: "Play Again",
+                    instruction: "Choose the correct plant name"
+                },
+                sci: {
+                    question: "Quae planta est?",
+                    score: "Score",
+                    correct: "Recte!",
+                    incorrect: "Perperam!",
+                    result: "Score",
+                    resultPoints: "points",
+                    playAgain: "Ludere iterum",
+                    instruction: "Choose the correct scientific name"
+                }
+            };
 
             // Состояния
+            const [language, setLanguage] = useState('ru');
             const [plants, setPlants] = useState([]);
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [score, setScore] = useState(0);
@@ -61,8 +156,22 @@
                 return shuffled;
             };
 
+            // Преобразование данных растений для текущего языка
+            const getPlantsForLanguage = (lang) => {
+                return plantsDatabase.map(plant => ({
+                    id: plant.id,
+                    image: plant.image,
+                    name: plant.names[lang]
+                }));
+            };
+
+            // Получение неправильных ответов для текущего языка
+            const getWrongAnswersForLanguage = (lang) => {
+                return wrongAnswersDatabase.map(answer => answer[lang]);
+            };
+
             // Функция генерации вариантов ответов
-            const generateOptions = (correctPlant, allPlants) => {
+            const generateOptions = (correctPlant, allPlants, lang) => {
                 const correctName = correctPlant.name;
                 const incorrectOptions = [];
                 
@@ -72,6 +181,7 @@
                     .map(p => p.name);
                 
                 // Добавляем названия из дополнительного списка
+                const wrongAnswers = getWrongAnswersForLanguage(lang);
                 const allWrongOptions = [...otherPlantNames, ...wrongAnswers]
                     .filter(name => name !== correctName);
                 
@@ -93,19 +203,23 @@
 
             // Инициализация игры
             useEffect(() => {
-                const shuffled = shuffleArray(plantsData);
+                const plantsForLang = getPlantsForLanguage(language);
+                const shuffled = shuffleArray(plantsForLang);
                 setPlants(shuffled);
-            }, []);
+                setCurrentQuestion(0);
+                setScore(0);
+                setGameState('playing');
+            }, [language]);
 
             // Обновление вопроса
             useEffect(() => {
                 if (plants.length > 0 && currentQuestion < plants.length) {
                     const currentPlant = plants[currentQuestion];
-                    const newOptions = generateOptions(currentPlant, plants);
+                    const newOptions = generateOptions(currentPlant, plants, language);
                     setOptions(newOptions);
                     setCorrectAnswer(currentPlant.name);
                 }
-            }, [currentQuestion, plants]);
+            }, [currentQuestion, plants, language]);
 
             // Обработка ответа
             const handleAnswer = (selectedAnswer) => {
@@ -128,11 +242,17 @@
 
             // Перезапуск игры
             const restartGame = () => {
-                const shuffled = shuffleArray(plantsData);
+                const plantsForLang = getPlantsForLanguage(language);
+                const shuffled = shuffleArray(plantsForLang);
                 setPlants(shuffled);
                 setCurrentQuestion(0);
                 setScore(0);
                 setGameState('playing');
+            };
+
+            // Изменение языка
+            const changeLanguage = (newLang) => {
+                setLanguage(newLang);
             };
 
             // Получение изображения растения
@@ -160,6 +280,8 @@
                 }
             };
 
+            const texts = uiTexts[language];
+
             // Экран завершения игры
             if (gameState === 'finished') {
                 return React.createElement('div', {
@@ -181,13 +303,13 @@
                             key: 'title',
                             className: 'text-4xl font-bold mb-6',
                             style: { color: '#C29C27' }
-                        }, `Вы получили ${score} баллов!`),
+                        }, `${texts.result} ${score} ${texts.resultPoints}!`),
                         React.createElement('button', {
                             key: 'restart',
                             onClick: restartGame,
                             className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
                             style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
-                        }, 'Играть снова')
+                        }, texts.playAgain)
                     ])
                 ]);
             }
@@ -209,7 +331,7 @@
                     key: 'container',
                     className: 'w-full max-w-5xl mx-auto relative z-10'
                 }, [
-                    // Заголовок со счетчиками
+                    // Заголовок со счетчиками и языковыми кнопками
                     React.createElement('div', {
                         key: 'header',
                         className: 'flex justify-between items-center mb-6'
@@ -220,10 +342,31 @@
                             style: { color: '#C29C27' }
                         }, `${currentQuestion + 1}/${plants.length}`),
                         React.createElement('div', {
-                            key: 'score',
-                            className: 'text-2xl font-bold',
-                            style: { color: '#C29C27' }
-                        }, `Баллы: ${score}`)
+                            key: 'right-section',
+                            className: 'flex items-center gap-4'
+                        }, [
+                            React.createElement('div', {
+                                key: 'score',
+                                className: 'text-2xl font-bold',
+                                style: { color: '#C29C27' }
+                            }, `${texts.score}: ${score}`),
+                            // Языковые кнопки
+                            React.createElement('div', {
+                                key: 'lang-buttons',
+                                className: 'flex gap-2'
+                            }, ['ru', 'en', 'sci'].map(lang => 
+                                React.createElement('button', {
+                                    key: lang,
+                                    onClick: () => changeLanguage(lang),
+                                    className: 'px-3 py-1 text-sm font-bold uppercase transition-all',
+                                    style: {
+                                        backgroundColor: language === lang ? '#C29C27' : 'transparent',
+                                        color: language === lang ? '#163B3A' : '#C29C27',
+                                        border: '2px solid #C29C27'
+                                    }
+                                }, lang === 'sci' ? 'Sci' : lang.toUpperCase())
+                            ))
+                        ])
                     ]),
 
                     // Основная область игры
@@ -237,7 +380,7 @@
                             key: 'question',
                             className: 'text-3xl font-bold text-center mb-8',
                             style: { color: '#C29C27' }
-                        }, 'Что это за растение?'),
+                        }, texts.question),
 
                         // Область изображения (увеличенная)
                         React.createElement('div', {
@@ -254,12 +397,12 @@
                             gameState === 'correct' && React.createElement('div', {
                                 className: 'h-full flex items-center justify-center text-6xl font-bold',
                                 style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
-                            }, 'Верно!'),
+                            }, texts.correct),
                             
                             gameState === 'incorrect' && React.createElement('div', {
                                 className: 'h-full flex items-center justify-center text-6xl font-bold',
                                 style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
-                            }, 'Неверно!')
+                            }, texts.incorrect)
                         ]),
 
                         // Варианты ответов
@@ -286,7 +429,7 @@
                         key: 'instruction',
                         className: 'text-center mt-6 opacity-75',
                         style: { color: '#C29C27' }
-                    }, 'Выберите правильный номер растения')
+                    }, texts.instruction)
                 ])
             ]);
         };
