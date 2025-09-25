@@ -25,17 +25,36 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        const PlantQuizGame = () => {
-            // Данные растений с кодовыми названиями
-            const plants = [
-                { id: 1, name: "1" },
-                { id: 2, name: "2" },
-                { id: 3, name: "3" },
-                { id: 4, name: "4" },
-                { id: 5, name: "5" },
-                { id: 6, name: "6" }
-            ];
+     const PlantQuizGame = () => {
+    // Сначала определяем данные растений
+    const plants = [
+        { id: 1, name: "1" },
+        { id: 2, name: "2" },
+        { id: 3, name: "3" },
+        { id: 4, name: "4" },
+        { id: 5, name: "5" },
+        { id: 6, name: "6" }
+    ];
 
+    // Потом состояния
+    const [shuffledPlants, setShuffledPlants] = useState([]);
+    
+    // Функция перемешивания
+    const shuffleArray = (array) => {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    };
+    
+    // Инициализация перемешанного списка
+    useEffect(() => {
+        if (shuffledPlants.length === 0) {
+            setShuffledPlants(shuffleArray(plants));
+        }
+    }, []);
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [score, setScore] = useState(0);
             const [gameState, setGameState] = useState('playing'); // 'playing', 'correct', 'incorrect', 'finished'
@@ -62,8 +81,8 @@
 
             // Инициализация текущего вопроса
             useEffect(() => {
-                if (currentQuestion < plants.length) {
-                    const currentPlant = plants[currentQuestion];
+                if (currentQuestion < shuffledPlants.length) {
+                    const currentPlant = shuffledPlants[currentQuestion];
                     const newOptions = generateOptions(currentPlant.id);
                     setOptions(newOptions);
                     setCorrectAnswer(currentPlant.name);
@@ -210,7 +229,7 @@
                             key: 'image-area',
                             className: 'mb-8'
                         }, [
-                            gameState === 'playing' && currentQuestion < plants.length && getPlantImage(plants[currentQuestion].id),
+                            gameState === 'playing' && currentQuestion < shuffledPlants.length && getPlantImage(shuffledPlants[currentQuestion].id),
                             
                             gameState === 'correct' && React.createElement('div', {
                                 className: 'w-full h-96 flex items-center justify-center text-6xl font-bold',
@@ -259,6 +278,7 @@
 </body>
 
 </html>
+
 
 
 
