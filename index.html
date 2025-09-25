@@ -26,7 +26,7 @@
         const { useState, useEffect } = React;
 
         const PlantQuizGame = () => {
-            // Данные растений с локализацией
+            // Данные растений с локализацией и специфическими неправильными ответами
             const plantsDatabase = [
                 { 
                     id: 1, 
@@ -35,7 +35,8 @@
                         ru: "Пляжная маргаритка",
                         en: "Beach Daisy",
                         sci: "Arctotheca calendula"
-                    }
+                    },
+                    wrongAnswers: [2, 7, 8] // ID других растений или доп. ответов
                 },
                 { 
                     id: 2, 
@@ -44,7 +45,8 @@
                         ru: "Лунная морковь",
                         en: "Moon Carrot",
                         sci: "Seseli tortuosum"
-                    }
+                    },
+                    wrongAnswers: [10, 11] // Можно указать меньше 3-х
                 },
                 { 
                     id: 3, 
@@ -53,7 +55,8 @@
                         ru: "Агапантус",
                         en: "Agapanthus",
                         sci: "Agapanthus africanus"
-                    }
+                    },
+                    wrongAnswers: [9, 13, 6, 14] // Можно указать больше 3-х
                 },
                 { 
                     id: 4, 
@@ -62,7 +65,8 @@
                         ru: "Бугенвиллия",
                         en: "Bougainvillea",
                         sci: "Bougainvillea spectabilis"
-                    }
+                    },
+                    wrongAnswers: [5, 12, 20]
                 },
                 { 
                     id: 5, 
@@ -71,7 +75,8 @@
                         ru: "Камелия",
                         en: "Camellia",
                         sci: "Camellia japonica"
-                    }
+                    },
+                    wrongAnswers: [7, 21, 22] // Роза, Азалия, Рододендрон
                 },
                 { 
                     id: 6, 
@@ -80,28 +85,37 @@
                         ru: "Гербера",
                         en: "Gerbera",
                         sci: "Gerbera jamesonii"
-                    }
+                    },
+                    wrongAnswers: [16, 3, 1]
                 }
             ];
 
-            // Дополнительные неправильные варианты с локализацией
-            const wrongAnswersDatabase = [
-                { ru: "Роза", en: "Rose", sci: "Rosa spp." },
-                { ru: "Тюльпан", en: "Tulip", sci: "Tulipa spp." },
-                { ru: "Орхидея", en: "Orchid", sci: "Orchidaceae" },
-                { ru: "Лилия", en: "Lily", sci: "Lilium spp." },
-                { ru: "Пион", en: "Peony", sci: "Paeonia spp." },
-                { ru: "Гортензия", en: "Hydrangea", sci: "Hydrangea macrophylla" },
-                { ru: "Фиалка", en: "Violet", sci: "Viola spp." },
-                { ru: "Хризантема", en: "Chrysanthemum", sci: "Chrysanthemum morifolium" },
-                { ru: "Ирис", en: "Iris", sci: "Iris germanica" },
-                { ru: "Нарцисс", en: "Daffodil", sci: "Narcissus spp." },
-                { ru: "Лаванда", en: "Lavender", sci: "Lavandula angustifolia" },
-                { ru: "Жасмин", en: "Jasmine", sci: "Jasminum officinale" },
-                { ru: "Гибискус", en: "Hibiscus", sci: "Hibiscus rosa-sinensis" },
-                { ru: "Магнолия", en: "Magnolia", sci: "Magnolia grandiflora" },
-                { ru: "Азалия", en: "Azalea", sci: "Rhododendron spp." }
-            ];
+            // Словарь всех возможных названий растений (включая неправильные варианты)
+            const namesDatabase = {
+                1: { ru: "Пляжная маргаритка", en: "Beach Daisy", sci: "Arctotheca calendula" },
+                2: { ru: "Лунная морковь", en: "Moon Carrot", sci: "Seseli tortuosum" },
+                3: { ru: "Агапантус", en: "Agapanthus", sci: "Agapanthus africanus" },
+                4: { ru: "Бугенвиллия", en: "Bougainvillea", sci: "Bougainvillea spectabilis" },
+                5: { ru: "Камелия", en: "Camellia", sci: "Camellia japonica" },
+                6: { ru: "Гербера", en: "Gerbera", sci: "Gerbera jamesonii" },
+                // Дополнительные неправильные варианты
+                7: { ru: "Роза", en: "Rose", sci: "Rosa spp." },
+                8: { ru: "Тюльпан", en: "Tulip", sci: "Tulipa spp." },
+                9: { ru: "Орхидея", en: "Orchid", sci: "Orchidaceae" },
+                10: { ru: "Лилия", en: "Lily", sci: "Lilium spp." },
+                11: { ru: "Пион", en: "Peony", sci: "Paeonia spp." },
+                12: { ru: "Гортензия", en: "Hydrangea", sci: "Hydrangea macrophylla" },
+                13: { ru: "Фиалка", en: "Violet", sci: "Viola spp." },
+                14: { ru: "Хризантема", en: "Chrysanthemum", sci: "Chrysanthemum morifolium" },
+                15: { ru: "Ирис", en: "Iris", sci: "Iris germanica" },
+                16: { ru: "Нарцисс", en: "Daffodil", sci: "Narcissus spp." },
+                17: { ru: "Лаванда", en: "Lavender", sci: "Lavandula angustifolia" },
+                18: { ru: "Жасмин", en: "Jasmine", sci: "Jasminum officinale" },
+                19: { ru: "Гибискус", en: "Hibiscus", sci: "Hibiscus rosa-sinensis" },
+                20: { ru: "Магнолия", en: "Magnolia", sci: "Magnolia grandiflora" },
+                21: { ru: "Азалия", en: "Azalea", sci: "Rhododendron simsii" },
+                22: { ru: "Рододендрон", en: "Rhododendron", sci: "Rhododendron ponticum" }
+            };
 
             // Тексты интерфейса с локализацией
             const uiTexts = {
@@ -143,8 +157,8 @@
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [score, setScore] = useState(0);
             const [gameState, setGameState] = useState('playing');
-            const [options, setOptions] = useState([]);
-            const [correctAnswer, setCorrectAnswer] = useState('');
+            const [optionIds, setOptionIds] = useState([]); // Храним ID вариантов ответов
+            const [correctAnswerId, setCorrectAnswerId] = useState(null);
 
             // Функция перемешивания массива
             const shuffleArray = (array) => {
@@ -156,49 +170,43 @@
                 return shuffled;
             };
 
-            // Преобразование данных растений для текущего языка
-            const getPlantsForLanguage = (lang) => {
-                return plantsDatabase.map(plant => ({
-                    id: plant.id,
-                    image: plant.image,
-                    name: plant.names[lang]
-                }));
-            };
+            // Функция генерации ID вариантов ответов для растения
+            const generateOptionIds = (plant) => {
+                const correctId = plant.id;
+                let wrongIds = [];
 
-            // Получение неправильных ответов для текущего языка
-            const getWrongAnswersForLanguage = (lang) => {
-                return wrongAnswersDatabase.map(answer => answer[lang]);
-            };
-
-            // Функция генерации вариантов ответов
-            const generateOptions = (correctPlant, allPlants, lang) => {
-                const correctName = correctPlant.name;
-                const incorrectOptions = [];
-                
-                // Собираем названия других растений из викторины
-                const otherPlantNames = allPlants
-                    .filter(p => p.name !== correctName)
-                    .map(p => p.name);
-                
-                // Добавляем названия из дополнительного списка
-                const wrongAnswers = getWrongAnswersForLanguage(lang);
-                const allWrongOptions = [...otherPlantNames, ...wrongAnswers]
-                    .filter(name => name !== correctName);
-                
-                // Перемешиваем неправильные варианты
-                const shuffledWrong = shuffleArray(allWrongOptions);
-                
-                // Берем 3 неправильных варианта
-                while (incorrectOptions.length < 3 && shuffledWrong.length > 0) {
-                    const option = shuffledWrong.shift();
-                    if (!incorrectOptions.includes(option)) {
-                        incorrectOptions.push(option);
+                // Если у растения есть специфические неправильные ответы
+                if (plant.wrongAnswers && plant.wrongAnswers.length > 0) {
+                    // Если указано больше 3-х, берём случайные 3
+                    if (plant.wrongAnswers.length > 3) {
+                        const shuffled = shuffleArray(plant.wrongAnswers);
+                        wrongIds = shuffled.slice(0, 3);
+                    } else {
+                        wrongIds = [...plant.wrongAnswers];
                     }
+
+                    // Если указано меньше 3-х, добавляем из общего пула
+                    if (wrongIds.length < 3) {
+                        const allIds = Object.keys(namesDatabase).map(id => parseInt(id));
+                        const availableIds = allIds.filter(id => 
+                            id !== correctId && !wrongIds.includes(id)
+                        );
+                        const shuffled = shuffleArray(availableIds);
+                        
+                        while (wrongIds.length < 3 && shuffled.length > 0) {
+                            wrongIds.push(shuffled.shift());
+                        }
+                    }
+                } else {
+                    // Если специфические ответы не указаны, берём случайные
+                    const allIds = Object.keys(namesDatabase).map(id => parseInt(id));
+                    const availableIds = allIds.filter(id => id !== correctId);
+                    const shuffled = shuffleArray(availableIds);
+                    wrongIds = shuffled.slice(0, 3);
                 }
-                
-                // Смешиваем с правильным ответом
-                const allOptions = [correctName, ...incorrectOptions];
-                return shuffleArray(allOptions);
+
+                // Возвращаем перемешанный массив с правильным ответом
+                return shuffleArray([correctId, ...wrongIds]);
             };
 
             // Инициализация игры - только при первой загрузке
@@ -207,24 +215,23 @@
                 setPlantsOrder(shuffled);
             }, []);
 
-            // Обновление вопроса при изменении языка или текущего вопроса
+            // Генерация вариантов ответов при смене вопроса
             useEffect(() => {
-                if (plantsOrder.length > 0 && currentQuestion < plantsOrder.length && gameState === 'playing') {
+                if (plantsOrder.length > 0 && currentQuestion < plantsOrder.length) {
                     const currentPlant = plantsOrder[currentQuestion];
-                    const plantsForLang = getPlantsForLanguage(language);
-                    const currentPlantLocalized = plantsForLang.find(p => p.id === currentPlant.id);
                     
-                    if (currentPlantLocalized) {
-                        const newOptions = generateOptions(currentPlantLocalized, plantsForLang, language);
-                        setOptions(newOptions);
-                        setCorrectAnswer(currentPlantLocalized.name);
+                    // Генерируем ID вариантов только при смене вопроса
+                    if (gameState === 'playing' || currentQuestion === 0) {
+                        const newOptionIds = generateOptionIds(currentPlant);
+                        setOptionIds(newOptionIds);
+                        setCorrectAnswerId(currentPlant.id);
                     }
                 }
-            }, [currentQuestion, plantsOrder, language, gameState]);
+            }, [currentQuestion, plantsOrder]);
 
             // Обработка ответа
-            const handleAnswer = (selectedAnswer) => {
-                if (selectedAnswer === correctAnswer) {
+            const handleAnswer = (selectedId) => {
+                if (selectedId === correctAnswerId) {
                     setScore(score + 1);
                     setGameState('correct');
                 } else {
@@ -248,9 +255,10 @@
                 setCurrentQuestion(0);
                 setScore(0);
                 setGameState('playing');
+                setOptionIds([]);
             };
 
-            // Изменение языка - больше не сбрасывает игру
+            // Изменение языка - не меняет варианты ответов
             const changeLanguage = (newLang) => {
                 setLanguage(newLang);
             };
@@ -267,17 +275,8 @@
                             border: '6px solid #C29C27'
                         }
                     });
-                } else {
-                    // Для эмодзи
-                    return React.createElement('div', {
-                        key: 'plant-emoji',
-                        className: 'w-full h-full flex items-center justify-center text-9xl',
-                        style: { 
-                            border: '6px solid #C29C27',
-                            backgroundColor: 'white'
-                        }
-                    }, plantData.image);
                 }
+                return null;
             };
 
             const texts = uiTexts[language];
@@ -382,7 +381,7 @@
                             style: { color: '#C29C27' }
                         }, texts.question),
 
-                        // Область изображения (увеличенная)
+                        // Область изображения
                         React.createElement('div', {
                             key: 'image-area',
                             className: 'mb-8 flex justify-center',
@@ -406,13 +405,14 @@
                         ]),
 
                         // Варианты ответов
-                        gameState === 'playing' && React.createElement('div', {
+                        gameState === 'playing' && optionIds.length > 0 && React.createElement('div', {
                             key: 'options',
                             className: 'grid grid-cols-2 gap-4 max-w-3xl mx-auto'
-                        }, options.map((option, index) => 
-                            React.createElement('button', {
+                        }, optionIds.map((optionId, index) => {
+                            const optionName = namesDatabase[optionId] ? namesDatabase[optionId][language] : '';
+                            return React.createElement('button', {
                                 key: `option-${index}`,
-                                onClick: () => handleAnswer(option),
+                                onClick: () => handleAnswer(optionId),
                                 className: 'py-4 px-6 font-semibold text-xl transition-all duration-200 hover:opacity-80 hover:scale-105',
                                 style: { 
                                     backgroundColor: '#163B3A', 
@@ -420,8 +420,8 @@
                                     color: '#C29C27',
                                     boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
                                 }
-                            }, option)
-                        ))
+                            }, optionName);
+                        }))
                     ]),
 
                     // Инструкция внизу
