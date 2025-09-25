@@ -173,7 +173,7 @@
                 
                 React.createElement('div', {
                     key: 'container',
-                    className: 'max-w-2xl mx-auto relative z-10'
+                    className: 'max-w-3xl mx-auto relative z-10'
                 }, [
                     // Заголовок с счетчиками
                     React.createElement('div', {
@@ -213,7 +213,7 @@
                             gameState === 'playing' && currentQuestion < plants.length && getPlantImage(plants[currentQuestion].id),
                             
                             gameState === 'correct' && React.createElement('div', {
-                                className: 'w-full h-64 flex items-center justify-center text-6xl font-bold',
+                                className: 'w-full h-96 flex items-center justify-center text-6xl font-bold',
                                 style: { color: '#C29C27', backgroundColor: '#163B3A', border: '4px solid #C29C27' }
                             }, 'Верно!'),
                             
@@ -259,6 +259,7 @@
 </body>
 
 </html>
+
 
 
 
