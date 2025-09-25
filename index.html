@@ -26,14 +26,21 @@
         const { useState, useEffect } = React;
 
         const PlantQuizGame = () => {
-            // Данные растений
+            // Данные растений с правильными ответами
             const plantsData = [
-                { id: 1, name: "1", displayName: "Суккулент с желтыми цветами", image: "images/BeachDaisy.JPG" },
-                { id: 2, name: "2", displayName: "Зонтичное растение", image: "images/MoonCarrot.JPG" },
-                { id: 3, name: "3", displayName: "Агапантус", image: "images/Agapanthus.JPG" },
-                { id: 4, name: "4", displayName: "Бугенвиллия", image: "images/bougainvillea.JPG" },
-                { id: 5, name: "5", displayName: "Камелия", image: "images/camelia.JPG" },
-                { id: 6, name: "6", displayName: "Гербера", image: "images/Gerbera.JPG" }
+                { id: 1, name: "Пляжная маргаритка", image: "images/BeachDaisy.JPG" },
+                { id: 2, name: "Лунная морковь", image: "images/MoonCarrot.JPG" },
+                { id: 3, name: "Агапантус", image: "images/Agapanthus.JPG" },
+                { id: 4, name: "Бугенвиллия", image: "images/bougainvillea.JPG" },
+                { id: 5, name: "Камелия", image: "images/camelia.JPG" },
+                { id: 6, name: "Гербера", image: "images/Gerbera.JPG" }
+            ];
+
+            // Дополнительные неправильные варианты для разнообразия
+            const wrongAnswers = [
+                "Роза", "Тюльпан", "Орхидея", "Лилия", "Пион", 
+                "Гортензия", "Фиалка", "Хризантема", "Ирис", "Нарцисс",
+                "Лаванда", "Жасмин", "Гибискус", "Магнолия", "Азалия"
             ];
 
             // Состояния
@@ -55,20 +62,31 @@
             };
 
             // Функция генерации вариантов ответов
-            const generateOptions = (correctPlant) => {
+            const generateOptions = (correctPlant, allPlants) => {
                 const correctName = correctPlant.name;
                 const incorrectOptions = [];
                 
-                // Генерируем 3 случайных числа от 1 до 15, исключая правильный ответ
-                while (incorrectOptions.length < 3) {
-                    const randomNum = Math.floor(Math.random() * 15) + 1;
-                    const randomNumStr = randomNum.toString();
-                    if (randomNumStr !== correctName && !incorrectOptions.includes(randomNumStr)) {
-                        incorrectOptions.push(randomNumStr);
+                // Собираем названия других растений из викторины
+                const otherPlantNames = allPlants
+                    .filter(p => p.name !== correctName)
+                    .map(p => p.name);
+                
+                // Добавляем названия из дополнительного списка
+                const allWrongOptions = [...otherPlantNames, ...wrongAnswers]
+                    .filter(name => name !== correctName);
+                
+                // Перемешиваем неправильные варианты
+                const shuffledWrong = shuffleArray(allWrongOptions);
+                
+                // Берем 3 неправильных варианта
+                while (incorrectOptions.length < 3 && shuffledWrong.length > 0) {
+                    const option = shuffledWrong.shift();
+                    if (!incorrectOptions.includes(option)) {
+                        incorrectOptions.push(option);
                     }
                 }
                 
-                // Смешиваем варианты ответов
+                // Смешиваем с правильным ответом
                 const allOptions = [correctName, ...incorrectOptions];
                 return shuffleArray(allOptions);
             };
@@ -83,7 +101,7 @@
             useEffect(() => {
                 if (plants.length > 0 && currentQuestion < plants.length) {
                     const currentPlant = plants[currentQuestion];
-                    const newOptions = generateOptions(currentPlant);
+                    const newOptions = generateOptions(currentPlant, plants);
                     setOptions(newOptions);
                     setCorrectAnswer(currentPlant.name);
                 }
@@ -259,7 +277,7 @@
                                     color: '#C29C27',
                                     boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
                                 }
-                            }, `Растение ${option}`)
+                            }, option)
                         ))
                     ]),
 
