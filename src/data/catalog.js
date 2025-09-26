@@ -34,12 +34,29 @@ export const speciesById = {
   29: { names:{ru:"Хризантема крупноцветковая", en:"Max Chrysanthemum", sci:"Chrysanthemum maximum"} },
 
   // Новые с изображениями (игровые вопросы уже сейчас)
-  30: { names:{ru:"Остеоспермум",          en:"African Daisy", sci:"Osteospermum"},       image:"images/Osteospermum.JPG" },
-  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               image:"images/Rose.JPG" },
-  32: { names:{ru:"Гузмания",              en:"Scarlet Star",  sci:"Guzmania lingulata"}, image:"images/Guzmania.JPG" },
-  33: { names:{ru:"Мак",                   en:"Poppy",         sci:"Papaver"},            image:"images/Poppy.JPG" },
-  34: { names:{ru:"Похутукава",            en:"Pohutukawa",    sci:"Metrosideros excelsa"}, image:"images/Pohutukawa.JPG" },
-  35: { names:{ru:"Лилия",                 en:"Lily",          sci:"Lilium"},             image:"images/Lily.JPG" }
+  30: { names:{ru:"Остеоспермум",          en:"African Daisy", sci:"Osteospermum"},       image:"images/Osteospermum.JPG", wrongAnswers:[38, 39, 40, 6, 25, 16] },
+  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               image:"images/Rose.JPG", wrongAnswers:[7, 41, 42] },
+  32: { names:{ru:"Гузмания",              en:"Scarlet Star",  sci:"Guzmania lingulata"}, image:"images/Guzmania.JPG", wrongAnswers:[43, 44, 45] },
+  33: { names:{ru:"Мак",                   en:"Poppy",         sci:"Papaver"},            image:"images/Poppy.JPG", wrongAnswers:[31, 47, 46]},
+  34: { names:{ru:"Похутукава",            en:"Pohutukawa",    sci:"Metrosideros excelsa"}, image:"images/Pohutukawa.JPG", wrongAnswers:[43, 48, 49]} },
+  35: { names:{ru:"Лилия",                 en:"Lily",          sci:"Lilium"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] }
+
+  //Новые запасные
+  36: { names:{ru:"Лилейник", en:"Daylilies", sci:"Hemerocallis"} },
+  37: { names:{ru:"Амариллис", en:"Amaryllis", sci:"Amaryllis"} },
+  38: { names:{ru:"Ромашка", en:"Mayweed", sci:"Tripleurospermum"} },
+  39: { names:{ru:"Гелиопсис", en:"False Sunflower", sci:"Heliopsis helianthoides"} },
+  40: { names:{ru:"Кореопсис", en:"Tickseed", sci:"Coreopsis"} },
+  41: { names:{ru:"Гвоздика травянка", en:"Maiden pink", sci:"Dianthus deltoides"} },
+  42: { names:{ru:"Флокс шиловидный", en:"Moss phlox", sci:"Phlox subulata"} },
+  43: { names:{ru:"Сансевиерия", en:"Sansevieria", sci:"Sansevieria"} },
+  44: { names:{ru:"Ананас", en:"Pineapple", sci:"Ananas comosus"} },
+  45: { names:{ru:"Юкка", en:"Yucca ", sci:"Yucca "} },
+  46: { names:{ru:"Пион", en:"Peony", sci:"Paeonia"} },
+  47: { names:{ru:"Анемона корончатая", en:"Рoppy anemone", sci:"Anemone coronaria"} },
+  48: { names:{ru:"Каллистемон", en:"Bottlebrushes", sci:"Callistemon"} },
+  49: { names:{ru:"Мирт", en:"Myrtle", sci:"Myrtus "} }
+
 };
 
 // ПРОИЗВОДНЫЕ ПРЕДСТАВЛЕНИЯ (для совместимости с текущей логикой):
