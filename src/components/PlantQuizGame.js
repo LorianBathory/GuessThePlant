@@ -14,6 +14,12 @@ export default function PlantQuizGame() {
   const [gameState, setGameState] = useState('playing');
   const [optionIds, setOptionIds] = useState([]);
   const [correctAnswerId, setCorrectAnswerId] = useState(null);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 600;
+    }
+    return false;
+  });
   const remainingDeckRef = useRef([]);
 
   const texts = uiTexts[language] || uiTexts[defaultLang];
@@ -85,6 +91,20 @@ export default function PlantQuizGame() {
     startNewSession(true);
   }, [startNewSession]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    function updateIsMobile() {
+      setIsMobile(window.innerWidth < 600);
+    }
+
+    updateIsMobile();
+    window.addEventListener('resize', updateIsMobile);
+    return () => window.removeEventListener('resize', updateIsMobile);
+  }, []);
+
   // Генерация вариантов при смене вопроса
   useEffect(() => {
     if (sessionPlants.length > 0 && currentQuestion < sessionPlants.length) {
@@ -129,7 +149,7 @@ export default function PlantQuizGame() {
         src: plantData.image,
         alt: `Растение ${plantData.id}`,
         className: 'w-full h-full object-cover',
-        style: { border: '6px solid #C29C27' }
+        style: { border: isMobile ? 'none' : '6px solid #C29C27' }
       });
     }
     return null;
@@ -139,12 +159,12 @@ export default function PlantQuizGame() {
   if (gameState === 'finished') {
     return React.createElement('div', {
       className: 'min-h-screen flex items-center justify-center relative',
-      style: { backgroundColor: '#163B3A' }
+      style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
     }, [
-      React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-      React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
-      React.createElement('div', { key: 'decor3', className: 'absolute bottom-4 right-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-      React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor3', className: 'absolute bottom-4 right-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
       React.createElement('div', {
         key: 'result',
         className: 'p-8 shadow-lg text-center max-w-md mx-4',
@@ -167,15 +187,15 @@ export default function PlantQuizGame() {
 
   // Основной экран
   return React.createElement('div', {
-    className: 'min-h-screen p-4 relative flex items-center justify-center',
-    style: { backgroundColor: '#163B3A' }
+    className: 'min-h-screen relative flex items-center justify-center',
+    style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
   }, [
-    React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-24 h-1', style: { backgroundColor: '#C29C27' } }),
-    React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-40 h-1', style: { backgroundColor: '#C29C27' } }),
-    React.createElement('div', { key: 'decor3', className: 'absolute top-12 left-12 w-16 h-1', style: { backgroundColor: '#C29C27' } }),
-    React.createElement('div', { key: 'decor4', className: 'absolute bottom-4 right-4 w-24 h-1', style: { backgroundColor: '#C29C27' } }),
-    React.createElement('div', { key: 'decor5', className: 'absolute bottom-8 right-8 w-40 h-1', style: { backgroundColor: '#C29C27' } }),
-    React.createElement('div', { key: 'decor6', className: 'absolute bottom-12 right-12 w-16 h-1', style: { backgroundColor: '#C29C27' } }),
+    !isMobile && React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-24 h-1', style: { backgroundColor: '#C29C27' } }),
+    !isMobile && React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-40 h-1', style: { backgroundColor: '#C29C27' } }),
+    !isMobile && React.createElement('div', { key: 'decor3', className: 'absolute top-12 left-12 w-16 h-1', style: { backgroundColor: '#C29C27' } }),
+    !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-4 right-4 w-24 h-1', style: { backgroundColor: '#C29C27' } }),
+    !isMobile && React.createElement('div', { key: 'decor5', className: 'absolute bottom-8 right-8 w-40 h-1', style: { backgroundColor: '#C29C27' } }),
+    !isMobile && React.createElement('div', { key: 'decor6', className: 'absolute bottom-12 right-12 w-16 h-1', style: { backgroundColor: '#C29C27' } }),
 
     React.createElement('div', { key: 'container', className: 'w-full max-w-5xl mx-auto relative z-10' }, [
       React.createElement('div', { key: 'header', className: 'flex justify-between items-center mb-6' }, [
@@ -213,51 +233,87 @@ export default function PlantQuizGame() {
 
       React.createElement('div', {
         key: 'game-area',
-        className: 'p-8 shadow-lg',
-        style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+        className: 'shadow-lg',
+        style: {
+          backgroundColor: '#163B3A',
+          border: isMobile ? 'none' : '6px solid #C29C27',
+          padding: isMobile ? '3px' : '32px'
+        }
       }, [
         React.createElement('h2', {
           key: 'question',
-          className: 'text-3xl font-bold text-center mb-8',
-          style: { color: '#C29C27' }
+          className: 'text-3xl font-bold text-center',
+          style: {
+            color: '#C29C27',
+            marginBottom: isMobile ? '12px' : '32px'
+          }
         }, texts.question),
 
         React.createElement('div', {
           key: 'image-area',
-          className: 'mb-8 flex justify-center',
-          style: { height: '450px' }
+          className: 'flex justify-center',
+          style: {
+            height: isMobile ? 'auto' : '450px',
+            marginBottom: isMobile ? '12px' : '32px',
+            width: '100%'
+          }
         }, [
           gameState === 'playing' && sessionPlants.length > 0 && currentQuestion < sessionPlants.length &&
-            React.createElement('div', { className: 'h-full', style: { width: '675px' } },
+            React.createElement('div', {
+              className: 'h-full',
+              style: {
+                width: isMobile ? '100%' : '675px',
+                height: '100%'
+              }
+            },
               getPlantImage(sessionPlants[currentQuestion])
             ),
 
           gameState === 'correct' && React.createElement('div', {
             className: 'h-full flex items-center justify-center text-6xl font-bold',
-            style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+            style: {
+              width: isMobile ? '100%' : '675px',
+              color: '#C29C27',
+              backgroundColor: '#163B3A',
+              border: isMobile ? 'none' : '6px solid #C29C27',
+              padding: isMobile ? '24px 12px' : '0'
+            }
           }, texts.correct),
 
           gameState === 'incorrect' && React.createElement('div', {
             className: 'h-full flex items-center justify-center text-6xl font-bold',
-            style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+            style: {
+              width: isMobile ? '100%' : '675px',
+              color: '#C29C27',
+              backgroundColor: '#163B3A',
+              border: isMobile ? 'none' : '6px solid #C29C27',
+              padding: isMobile ? '24px 12px' : '0'
+            }
           }, texts.incorrect)
         ]),
 
         gameState === 'playing' && optionIds.length > 0 && React.createElement('div', {
           key: 'options',
-          className: 'grid grid-cols-2 gap-4 max-w-3xl mx-auto'
+          className: isMobile ? 'grid grid-cols-1 w-full' : 'grid grid-cols-2 gap-4 max-w-3xl mx-auto',
+          style: {
+            gap: isMobile ? '6px' : undefined,
+            width: '100%'
+          }
         }, optionIds.map((optionId, index) => {
           const cell = choicesById[optionId];
           const optionName = cell ? (cell[language] || cell[defaultLang]) : '';
           return React.createElement('button', {
             key: `option-${index}`,
             onClick: () => handleAnswer(optionId),
-            className: 'py-4 px-6 font-semibold text-xl transition-all duration-200 hover:opacity-80 hover:scale-105',
-            style: { 
-              backgroundColor: '#163B3A', 
+            className: 'font-semibold transition-all duration-200 hover:opacity-80 hover:scale-105',
+            style: {
+              backgroundColor: '#163B3A',
               border: '4px solid #C29C27',
               color: '#C29C27',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+              boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+              fontSize: isMobile ? '16px' : '20px',
+              padding: isMobile ? '12px 14px' : '16px 24px',
+              width: '100%'
             }
           }, optionName);
         }))
