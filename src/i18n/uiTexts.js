@@ -7,7 +7,8 @@ export const uiTexts = {
     result: "Вы получили",
     resultPoints: "баллов",
     playAgain: "Играть снова",
-    instruction: "Выберите правильное название растения"
+    instruction: "Выберите правильное название растения",
+    interfaceLanguageLabel: "Язык интерфейса"
   },
   en: {
     question: "What plant is this?",
@@ -17,7 +18,8 @@ export const uiTexts = {
     result: "You scored",
     resultPoints: "points",
     playAgain: "Play Again",
-    instruction: "Choose the correct plant name"
+    instruction: "Choose the correct plant name",
+    interfaceLanguageLabel: "Interface language"
   },
   sci: {
     question: "Quae planta est?",
@@ -27,7 +29,8 @@ export const uiTexts = {
     result: "Score",
     resultPoints: "points",
     playAgain: "Ludere iterum",
-    instruction: "Choose the correct scientific name"
+    instruction: "Elige nomen scientificum rectum",
+    interfaceLanguageLabel: "Lingua interfaciei"
   }
 };
 

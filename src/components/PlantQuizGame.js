@@ -2,12 +2,48 @@ const { useState, useEffect, useRef, useCallback } = React;
 
 const QUESTIONS_PER_SESSION = 6;
 
+const AVAILABLE_LANGUAGES = ['ru', 'en', 'sci'];
+const INTERFACE_LANGUAGES = ['ru', 'en'];
+const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
+const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
+
+function getStoredInterfaceLanguage() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const stored = window.localStorage.getItem(DEFAULT_LANGUAGE_STORAGE_KEY);
+  return stored && INTERFACE_LANGUAGES.includes(stored) ? stored : null;
+}
+
+function getStoredPlantLanguage() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const stored = window.localStorage.getItem(PLANT_LANGUAGE_STORAGE_KEY);
+  return stored && AVAILABLE_LANGUAGES.includes(stored) ? stored : null;
+}
+
 import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
 import { shuffleArray } from '../utils/random.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 
 export default function PlantQuizGame() {
-  const [language, setLanguage] = useState(defaultLang);
+  const [interfaceLanguage, setInterfaceLanguage] = useState(() => getStoredInterfaceLanguage() || defaultLang);
+  const [plantLanguage, setPlantLanguage] = useState(() => {
+    const storedPlantLanguage = getStoredPlantLanguage();
+    if (storedPlantLanguage) {
+      return storedPlantLanguage;
+    }
+
+    const storedInterface = getStoredInterfaceLanguage();
+    if (storedInterface) {
+      return storedInterface === defaultLang ? defaultLang : storedInterface;
+    }
+
+    return defaultLang;
+  });
   const [sessionPlants, setSessionPlants] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -22,7 +58,7 @@ export default function PlantQuizGame() {
   });
   const remainingDeckRef = useRef([]);
 
-  const texts = uiTexts[language] || uiTexts[defaultLang];
+  const texts = uiTexts[interfaceLanguage] || uiTexts[defaultLang];
 
   // Запуск новой игровой сессии
   const startNewSession = useCallback((resetDeck = false) => {
@@ -117,6 +153,24 @@ export default function PlantQuizGame() {
     }
   }, [currentQuestion, sessionPlants]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(DEFAULT_LANGUAGE_STORAGE_KEY, interfaceLanguage);
+    }
+  }, [interfaceLanguage]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(PLANT_LANGUAGE_STORAGE_KEY, plantLanguage);
+    }
+  }, [plantLanguage]);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = interfaceLanguage;
+    }
+  }, [interfaceLanguage]);
+
   // Обработка ответа
   function handleAnswer(selectedId) {
     if (selectedId === correctAnswerId) {
@@ -136,9 +190,16 @@ export default function PlantQuizGame() {
     }, 1500);
   }
 
-  // Изменение языка
-  function changeLanguage(newLang) {
-    setLanguage(newLang);
+  // Изменение языка названий растений
+  function changePlantLanguage(newLang) {
+    setPlantLanguage(newLang);
+  }
+
+  function changeInterfaceLanguage(newLang) {
+    if (!INTERFACE_LANGUAGES.includes(newLang)) {
+      return;
+    }
+    setInterfaceLanguage(newLang);
   }
 
   // Получение изображения растения
@@ -215,14 +276,14 @@ export default function PlantQuizGame() {
           }, `${texts.score}: ${score}`),
 
           React.createElement('div', { key: 'lang-buttons', className: 'flex gap-2' },
-            ['ru', 'en', 'sci'].map(lang =>
+            AVAILABLE_LANGUAGES.map(lang =>
               React.createElement('button', {
                 key: lang,
-                onClick: () => changeLanguage(lang),
+                onClick: () => changePlantLanguage(lang),
                 className: 'px-3 py-1 text-sm font-bold uppercase transition-all',
                 style: {
-                  backgroundColor: language === lang ? '#C29C27' : 'transparent',
-                  color: language === lang ? '#163B3A' : '#C29C27',
+                  backgroundColor: plantLanguage === lang ? '#C29C27' : 'transparent',
+                  color: plantLanguage === lang ? '#163B3A' : '#C29C27',
                   border: '2px solid #C29C27'
                 }
               }, lang === 'sci' ? 'Sci' : lang.toUpperCase())
@@ -301,7 +362,7 @@ export default function PlantQuizGame() {
           }
         }, optionIds.map((optionId, index) => {
           const cell = choicesById[optionId];
-          const optionName = cell ? (cell[language] || cell[defaultLang]) : '';
+          const optionName = cell ? (cell[plantLanguage] || cell[defaultLang]) : '';
           return React.createElement('button', {
             key: `option-${index}`,
             onClick: () => handleAnswer(optionId),
@@ -323,7 +384,31 @@ export default function PlantQuizGame() {
         key: 'instruction',
         className: 'text-center mt-6 opacity-75',
         style: { color: '#C29C27' }
-      }, texts.instruction)
+      }, texts.instruction),
+
+      React.createElement('div', {
+        key: 'default-lang-selector',
+        className: 'text-center mt-6 flex flex-col items-center gap-3'
+      }, [
+        React.createElement('span', {
+          key: 'label',
+          className: 'text-lg font-semibold',
+          style: { color: '#C29C27' }
+        }, texts.interfaceLanguageLabel),
+        React.createElement('div', {
+          key: 'buttons',
+          className: 'flex gap-2'
+        }, INTERFACE_LANGUAGES.map(lang => React.createElement('button', {
+          key: `interface-${lang}`,
+          onClick: () => changeInterfaceLanguage(lang),
+          className: 'px-3 py-1 text-sm font-bold uppercase transition-all',
+          style: {
+            backgroundColor: interfaceLanguage === lang ? '#C29C27' : 'transparent',
+            color: interfaceLanguage === lang ? '#163B3A' : '#C29C27',
+            border: '2px solid #C29C27'
+          }
+        }, lang.toUpperCase())))
+      ])
     ])
   ]);
 }
