@@ -95,8 +95,7 @@
                         ru: "Остеоспермум", 
                         en: "African Daisy", 
                         sci: "Osteospermum" 
-                    },
-                    wrongAnswers: [31, 32, 33]
+                    }
                 },
                 {
                     id: 31, 
@@ -105,8 +104,7 @@
                         ru: "Роза", 
                         en: "Rose", 
                         sci: "Rosa" 
-                    },
-                    wrongAnswers: [32, 33, 34, 35]
+                    }
                 },
                 {
                     id: 32, 
@@ -115,8 +113,7 @@
                         ru: "Гузмания", 
                         en: "Scarlet Star", 
                         sci: "Guzmania lingulata" 
-                    },
-                    wrongAnswers: [30, 31, 33, 34]
+                    }
                 },
                 {
                     id: 33, 
@@ -125,8 +122,7 @@
                         ru: "Мак", 
                         en: "Poppy", 
                         sci: "Papaver" 
-                    },
-                    wrongAnswers: [31, 32, 34, 35]
+                    }
                 },
                 {                    
                     id: 34, 
@@ -135,8 +131,7 @@
                         ru: "Похутукава", 
                         en: "Pohutukawa", 
                         sci: "Metrosideros excelsa" 
-                    },
-                    wrongAnswers: [30, 31, 32, 35]
+                    }
                 },
                 {                     
                     id: 35, 
@@ -145,8 +140,7 @@
                         ru: "Лилия", 
                         en: "Lily", 
                         sci: "Lilium" 
-                    },
-                    wrongAnswers: [30, 31, 33, 34]
+                    }
                 }
             ];
 
@@ -201,15 +195,7 @@
                     result: "Вы получили",
                     resultPoints: "баллов",
                     playAgain: "Играть снова",
-                    instruction: "Выберите правильное название растения",
-                    continue: "Продолжить",
-                    sessionComplete: "Сессия завершена!",
-                    sessionScore: "Баллы за сессию",
-                    totalScore: "Всего баллов",
-                    firstGame: "Первая игра",
-                    secondGame: "Вторая игра",
-                    resetProgress: "Сбросить прогресс",
-                    session: "Сессия"
+                    instruction: "Выберите правильное название растения"
                 },
                 en: {
                     question: "What plant is this?",
@@ -219,15 +205,7 @@
                     result: "You scored",
                     resultPoints: "points",
                     playAgain: "Play Again",
-                    instruction: "Choose the correct plant name",
-                    continue: "Continue",
-                    sessionComplete: "Session Complete!",
-                    sessionScore: "Session Score",
-                    totalScore: "Total Score",
-                    firstGame: "First Game",
-                    secondGame: "Second Game",
-                    resetProgress: "Reset Progress",
-                    session: "Session"
+                    instruction: "Choose the correct plant name"
                 },
                 sci: {
                     question: "Quae planta est?",
@@ -237,65 +215,18 @@
                     result: "Score",
                     resultPoints: "points",
                     playAgain: "Ludere iterum",
-                    instruction: "Choose the correct scientific name",
-                    continue: "Continuare",
-                    sessionComplete: "Sessio completa!",
-                    sessionScore: "Sessio Score",
-                    totalScore: "Summa Score",
-                    firstGame: "Prima ludus",
-                    secondGame: "Secunda ludus",
-                    resetProgress: "Reset progressus",
-                    session: "Sessio"
-                }
-            };
-
-            // Функция для работы с localStorage
-            const loadFromStorage = (key, defaultValue) => {
-                try {
-                    const item = localStorage.getItem(key);
-                    return item ? JSON.parse(item) : defaultValue;
-                } catch (e) {
-                    console.error('Error loading from localStorage:', e);
-                    return defaultValue;
-                }
-            };
-
-            const saveToStorage = (key, value) => {
-                try {
-                    localStorage.setItem(key, JSON.stringify(value));
-                } catch (e) {
-                    console.error('Error saving to localStorage:', e);
+                    instruction: "Choose the correct scientific name"
                 }
             };
 
             // Состояния
-            const [language, setLanguage] = useState(() => loadFromStorage('plantQuizLanguage', 'ru'));
-            const [currentSession, setCurrentSession] = useState(() => loadFromStorage('plantQuizCurrentSession', 1));
-            const [usedPlantIds, setUsedPlantIds] = useState(() => loadFromStorage('plantQuizUsedPlants', []));
-            const [sessionScores, setSessionScores] = useState(() => loadFromStorage('plantQuizSessionScores', { 1: 0, 2: 0 }));
+            const [language, setLanguage] = useState('ru');
             const [plantsOrder, setPlantsOrder] = useState([]);
             const [currentQuestion, setCurrentQuestion] = useState(0);
-            const [currentSessionScore, setCurrentSessionScore] = useState(0);
-            const [gameState, setGameState] = useState('playing'); // playing, correct, incorrect, sessionEnd, allComplete
-            const [optionIds, setOptionIds] = useState([]);
+            const [score, setScore] = useState(0);
+            const [gameState, setGameState] = useState('playing');
+            const [optionIds, setOptionIds] = useState([]); // Храним ID вариантов ответов
             const [correctAnswerId, setCorrectAnswerId] = useState(null);
-
-            // Сохранение состояний в localStorage при изменении
-            useEffect(() => {
-                saveToStorage('plantQuizLanguage', language);
-            }, [language]);
-
-            useEffect(() => {
-                saveToStorage('plantQuizCurrentSession', currentSession);
-            }, [currentSession]);
-
-            useEffect(() => {
-                saveToStorage('plantQuizUsedPlants', usedPlantIds);
-            }, [usedPlantIds]);
-
-            useEffect(() => {
-                saveToStorage('plantQuizSessionScores', sessionScores);
-            }, [sessionScores]);
 
             // Функция перемешивания массива
             const shuffleArray = (array) => {
@@ -312,7 +243,9 @@
                 const correctId = plant.id;
                 let wrongIds = [];
 
+                // Если у растения есть специфические неправильные ответы
                 if (plant.wrongAnswers && plant.wrongAnswers.length > 0) {
+                    // Если указано больше 3-х, берём случайные 3
                     if (plant.wrongAnswers.length > 3) {
                         const shuffled = shuffleArray(plant.wrongAnswers);
                         wrongIds = shuffled.slice(0, 3);
@@ -320,6 +253,7 @@
                         wrongIds = [...plant.wrongAnswers];
                     }
 
+                    // Если указано меньше 3-х, добавляем из общего пула
                     if (wrongIds.length < 3) {
                         const allIds = Object.keys(namesDatabase).map(id => parseInt(id));
                         const availableIds = allIds.filter(id => 
@@ -332,51 +266,21 @@
                         }
                     }
                 } else {
+                    // Если специфические ответы не указаны, берём случайные
                     const allIds = Object.keys(namesDatabase).map(id => parseInt(id));
                     const availableIds = allIds.filter(id => id !== correctId);
                     const shuffled = shuffleArray(availableIds);
                     wrongIds = shuffled.slice(0, 3);
                 }
 
+                // Возвращаем перемешанный массив с правильным ответом
                 return shuffleArray([correctId, ...wrongIds]);
             };
 
-            // Инициализация новой сессии
-            const initializeSession = () => {
-                // Получаем растения, которые еще не были показаны
-                const availablePlants = plantsDatabase.filter(plant => !usedPlantIds.includes(plant.id));
-                
-                // Если доступных растений меньше 6, значит все растения уже были показаны
-                if (availablePlants.length < 6) {
-                    // Сбрасываем использованные растения и начинаем заново
-                    setUsedPlantIds([]);
-                    const shuffled = shuffleArray(plantsDatabase).slice(0, 6);
-                    setPlantsOrder(shuffled);
-                    // Добавляем ID новых растений к использованным
-                    const newUsedIds = shuffled.map(p => p.id);
-                    setUsedPlantIds(newUsedIds);
-                } else {
-                    // Выбираем 6 случайных растений из доступных
-                    const shuffled = shuffleArray(availablePlants).slice(0, 6);
-                    setPlantsOrder(shuffled);
-                    // Добавляем ID новых растений к использованным
-                    setUsedPlantIds([...usedPlantIds, ...shuffled.map(p => p.id)]);
-                }
-                
-                setCurrentQuestion(0);
-                setCurrentSessionScore(0);
-                setGameState('playing');
-            };
-
-            // Инициализация при первой загрузке
+            // Инициализация игры - только при первой загрузке
             useEffect(() => {
-                // Проверяем, есть ли сохраненное состояние
-                if (currentSession > 2) {
-                    // Если обе сессии уже завершены, показываем финальный экран
-                    setGameState('allComplete');
-                } else {
-                    initializeSession();
-                }
+                const shuffled = shuffleArray(plantsDatabase);
+                setPlantsOrder(shuffled);
             }, []);
 
             // Генерация вариантов ответов при смене вопроса
@@ -384,6 +288,7 @@
                 if (plantsOrder.length > 0 && currentQuestion < plantsOrder.length) {
                     const currentPlant = plantsOrder[currentQuestion];
                     
+                    // Генерируем ID вариантов только при смене вопроса
                     if (gameState === 'playing' || currentQuestion === 0) {
                         const newOptionIds = generateOptionIds(currentPlant);
                         setOptionIds(newOptionIds);
@@ -395,7 +300,7 @@
             // Обработка ответа
             const handleAnswer = (selectedId) => {
                 if (selectedId === correctAnswerId) {
-                    setCurrentSessionScore(currentSessionScore + 1);
+                    setScore(score + 1);
                     setGameState('correct');
                 } else {
                     setGameState('incorrect');
@@ -406,53 +311,22 @@
                         setCurrentQuestion(currentQuestion + 1);
                         setGameState('playing');
                     } else {
-                        // Сохраняем результат текущей сессии
-                        const newSessionScores = { ...sessionScores };
-                        newSessionScores[currentSession] = currentSessionScore + (selectedId === correctAnswerId ? 1 : 0);
-                        setSessionScores(newSessionScores);
-                        
-                        if (currentSession === 1) {
-                            // Завершена первая сессия
-                            setGameState('sessionEnd');
-                        } else {
-                            // Завершены обе сессии
-                            setGameState('allComplete');
-                        }
+                        setGameState('finished');
                     }
                 }, 1500);
             };
 
-            // Продолжить к следующей сессии
-            const continueToNextSession = () => {
-                setCurrentSession(2);
-                initializeSession();
-            };
-
-            // Полный сброс игры
-            const fullReset = () => {
-                setCurrentSession(1);
-                setUsedPlantIds([]);
-                setSessionScores({ 1: 0, 2: 0 });
-                setCurrentSessionScore(0);
+            // Перезапуск игры
+            const restartGame = () => {
+                const shuffled = shuffleArray(plantsDatabase);
+                setPlantsOrder(shuffled);
                 setCurrentQuestion(0);
-                initializeSession();
+                setScore(0);
+                setGameState('playing');
+                setOptionIds([]);
             };
 
-            // Сброс прогресса
-            const resetProgress = () => {
-                if (confirm(language === 'ru' ? 'Вы уверены, что хотите сбросить весь прогресс?' : 
-                           language === 'en' ? 'Are you sure you want to reset all progress?' : 
-                           'Certus es te velle reset progressum?')) {
-                    // Очищаем localStorage
-                    localStorage.removeItem('plantQuizUsedPlants');
-                    localStorage.removeItem('plantQuizSessionScores');
-                    localStorage.removeItem('plantQuizCurrentSession');
-                    
-                    fullReset();
-                }
-            };
-
-            // Изменение языка
+            // Изменение языка - не меняет варианты ответов
             const changeLanguage = (newLang) => {
                 setLanguage(newLang);
             };
@@ -474,10 +348,9 @@
             };
 
             const texts = uiTexts[language];
-            const totalScore = sessionScores[1] + sessionScores[2];
 
-            // Экран завершения сессии
-            if (gameState === 'sessionEnd') {
+            // Экран завершения игры
+            if (gameState === 'finished') {
                 return React.createElement('div', {
                     className: 'min-h-screen flex items-center justify-center relative',
                     style: { backgroundColor: '#163B3A' }
@@ -495,89 +368,12 @@
                     }, [
                         React.createElement('h1', {
                             key: 'title',
-                            className: 'text-3xl font-bold mb-4',
+                            className: 'text-4xl font-bold mb-6',
                             style: { color: '#C29C27' }
-                        }, texts.sessionComplete),
-                        React.createElement('p', {
-                            key: 'session-score',
-                            className: 'text-2xl mb-6',
-                            style: { color: '#C29C27' }
-                        }, `${texts.sessionScore}: ${sessionScores[1]}/6`),
-                        React.createElement('button', {
-                            key: 'continue',
-                            onClick: continueToNextSession,
-                            className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
-                            style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
-                        }, texts.continue)
-                    ])
-                ]);
-            }
-
-            // Экран завершения всех сессий
-            if (gameState === 'allComplete') {
-                return React.createElement('div', {
-                    className: 'min-h-screen flex items-center justify-center relative',
-                    style: { backgroundColor: '#163B3A' }
-                }, [
-                    // Декоративные золотые полоски
-                    React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-                    React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
-                    React.createElement('div', { key: 'decor3', className: 'absolute bottom-4 right-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-                    React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
-                    
-                    React.createElement('div', {
-                        key: 'result',
-                        className: 'p-8 shadow-lg text-center max-w-2xl mx-4',
-                        style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
-                    }, [
-                        React.createElement('h1', {
-                            key: 'total-title',
-                            className: 'text-4xl font-bold mb-8',
-                            style: { color: '#C29C27' }
-                        }, `${texts.totalScore}: ${totalScore}/12`),
-                        
-                        React.createElement('div', {
-                            key: 'scores-container',
-                            className: 'grid grid-cols-2 gap-8 mb-8'
-                        }, [
-                            React.createElement('div', {
-                                key: 'first-game',
-                                className: 'p-4',
-                                style: { backgroundColor: '#163B3A', border: '3px solid #C29C27' }
-                            }, [
-                                React.createElement('h3', {
-                                    key: 'first-title',
-                                    className: 'text-xl font-bold mb-2',
-                                    style: { color: '#C29C27' }
-                                }, texts.firstGame),
-                                React.createElement('p', {
-                                    key: 'first-score',
-                                    className: 'text-2xl',
-                                    style: { color: '#C29C27' }
-                                }, `${sessionScores[1]}/6`)
-                            ]),
-                            
-                            React.createElement('div', {
-                                key: 'second-game',
-                                className: 'p-4',
-                                style: { backgroundColor: '#163B3A', border: '3px solid #C29C27' }
-                            }, [
-                                React.createElement('h3', {
-                                    key: 'second-title',
-                                    className: 'text-xl font-bold mb-2',
-                                    style: { color: '#C29C27' }
-                                }, texts.secondGame),
-                                React.createElement('p', {
-                                    key: 'second-score',
-                                    className: 'text-2xl',
-                                    style: { color: '#C29C27' }
-                                }, `${sessionScores[2]}/6`)
-                            ])
-                        ]),
-                        
+                        }, `${texts.result} ${score} ${texts.resultPoints}!`),
                         React.createElement('button', {
                             key: 'restart',
-                            onClick: fullReset,
+                            onClick: restartGame,
                             className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
                             style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
                         }, texts.playAgain)
@@ -587,7 +383,7 @@
 
             // Основной экран игры
             return React.createElement('div', {
-                className: 'min-h-screen p-4 relative flex flex-col',
+                className: 'min-h-screen p-4 relative flex items-center justify-center',
                 style: { backgroundColor: '#163B3A' }
             }, [
                 // Декоративные золотые полоски
@@ -600,7 +396,7 @@
                 
                 React.createElement('div', {
                     key: 'container',
-                    className: 'w-full max-w-5xl mx-auto relative z-10 flex-1 flex flex-col justify-center'
+                    className: 'w-full max-w-5xl mx-auto relative z-10'
                 }, [
                     // Заголовок со счетчиками и языковыми кнопками
                     React.createElement('div', {
@@ -609,15 +405,106 @@
                     }, [
                         React.createElement('div', {
                             key: 'progress',
-                            className: 'flex flex-col',
+                            className: 'text-2xl font-bold',
                             style: { color: '#C29C27' }
+                        }, `${currentQuestion + 1}/${plantsOrder.length || 6}`),
+                        React.createElement('div', {
+                            key: 'right-section',
+                            className: 'flex items-center gap-4'
                         }, [
-                            React.createElement('span', {
-                                key: 'session-label',
-                                className: 'text-sm font-bold'
-                            }, `${texts.session} ${currentSession}`),
-                            React.createElement('span', {
-                                key: 'question-progress',
-                                className: 'text-2xl font-bold'
-                            }, `${currentQuestion + 1}/6`)
+                            React.createElement('div', {
+                                key: 'score',
+                                className: 'text-2xl font-bold',
+                                style: { color: '#C29C27' }
+                            }, `${texts.score}: ${score}`),
+                            // Языковые кнопки
+                            React.createElement('div', {
+                                key: 'lang-buttons',
+                                className: 'flex gap-2'
+                            }, ['ru', 'en', 'sci'].map(lang => 
+                                React.createElement('button', {
+                                    key: lang,
+                                    onClick: () => changeLanguage(lang),
+                                    className: 'px-3 py-1 text-sm font-bold uppercase transition-all',
+                                    style: {
+                                        backgroundColor: language === lang ? '#C29C27' : 'transparent',
+                                        color: language === lang ? '#163B3A' : '#C29C27',
+                                        border: '2px solid #C29C27'
+                                    }
+                                }, lang === 'sci' ? 'Sci' : lang.toUpperCase())
+                            ))
                         ])
+                    ]),
+
+                    // Основная область игры
+                    React.createElement('div', {
+                        key: 'game-area',
+                        className: 'p-8 shadow-lg',
+                        style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+                    }, [
+                        // Вопрос
+                        React.createElement('h2', {
+                            key: 'question',
+                            className: 'text-3xl font-bold text-center mb-8',
+                            style: { color: '#C29C27' }
+                        }, texts.question),
+
+                        // Область изображения
+                        React.createElement('div', {
+                            key: 'image-area',
+                            className: 'mb-8 flex justify-center',
+                            style: { height: '450px' }
+                        }, [
+                            gameState === 'playing' && plantsOrder.length > 0 && currentQuestion < plantsOrder.length && 
+                                React.createElement('div', {
+                                    className: 'h-full',
+                                    style: { width: '675px' }
+                                }, getPlantImage(plantsOrder[currentQuestion])),
+                            
+                            gameState === 'correct' && React.createElement('div', {
+                                className: 'h-full flex items-center justify-center text-6xl font-bold',
+                                style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+                            }, texts.correct),
+                            
+                            gameState === 'incorrect' && React.createElement('div', {
+                                className: 'h-full flex items-center justify-center text-6xl font-bold',
+                                style: { width: '675px', color: '#C29C27', backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+                            }, texts.incorrect)
+                        ]),
+
+                        // Варианты ответов
+                        gameState === 'playing' && optionIds.length > 0 && React.createElement('div', {
+                            key: 'options',
+                            className: 'grid grid-cols-2 gap-4 max-w-3xl mx-auto'
+                        }, optionIds.map((optionId, index) => {
+                            const optionName = namesDatabase[optionId] ? namesDatabase[optionId][language] : '';
+                            return React.createElement('button', {
+                                key: `option-${index}`,
+                                onClick: () => handleAnswer(optionId),
+                                className: 'py-4 px-6 font-semibold text-xl transition-all duration-200 hover:opacity-80 hover:scale-105',
+                                style: { 
+                                    backgroundColor: '#163B3A', 
+                                    border: '4px solid #C29C27',
+                                    color: '#C29C27',
+                                    boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+                                }
+                            }, optionName);
+                        }))
+                    ]),
+
+                    // Инструкция внизу
+                    React.createElement('div', {
+                        key: 'instruction',
+                        className: 'text-center mt-6 opacity-75',
+                        style: { color: '#C29C27' }
+                    }, texts.instruction)
+                ])
+            ]);
+        };
+
+        // Рендер приложения
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(PlantQuizGame));
+    </script>
+</body>
+</html>
