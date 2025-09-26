@@ -1,7 +1,6 @@
 const { useState, useEffect } = React;
 
-import { plants } from '../data/plants.js';
-import { choicesById, ALL_CHOICE_IDS } from '../data/choices.js';
+import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
 import { shuffleArray } from '../utils/random.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 
