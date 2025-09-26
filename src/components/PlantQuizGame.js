@@ -1,4 +1,6 @@
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef, useCallback } = React;
+
+const QUESTIONS_PER_SESSION = 6;
 
 import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
 import { shuffleArray } from '../utils/random.js';
@@ -6,14 +8,54 @@ import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 
 export default function PlantQuizGame() {
   const [language, setLanguage] = useState(defaultLang);
-  const [plantsOrder, setPlantsOrder] = useState([]);
+  const [sessionPlants, setSessionPlants] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState('playing');
   const [optionIds, setOptionIds] = useState([]);
   const [correctAnswerId, setCorrectAnswerId] = useState(null);
+  const remainingDeckRef = useRef([]);
 
   const texts = uiTexts[language] || uiTexts[defaultLang];
+
+  // Запуск новой игровой сессии
+  const startNewSession = useCallback((resetDeck = false) => {
+    const currentDeck = Array.isArray(remainingDeckRef.current)
+      ? remainingDeckRef.current
+      : [];
+    let workingDeck = currentDeck.slice();
+
+    if (resetDeck || workingDeck.length < QUESTIONS_PER_SESSION) {
+      const existingIds = new Set(workingDeck.map(plant => plant.id));
+      const replenished = shuffleArray(plants).filter(plant => !existingIds.has(plant.id));
+      workingDeck = [...workingDeck, ...replenished];
+
+      if (workingDeck.length < QUESTIONS_PER_SESSION) {
+        workingDeck = [...workingDeck, ...shuffleArray(plants)];
+      }
+    }
+
+    if (workingDeck.length === 0) {
+      setSessionPlants([]);
+      setCurrentQuestion(0);
+      setScore(0);
+      setGameState('playing');
+      setOptionIds([]);
+      setCorrectAnswerId(null);
+      return;
+    }
+
+    const shuffledDeck = shuffleArray(workingDeck);
+    const sessionSelection = shuffledDeck.slice(0, QUESTIONS_PER_SESSION);
+    remainingDeckRef.current = shuffledDeck.slice(QUESTIONS_PER_SESSION);
+
+    setSessionPlants(sessionSelection);
+    setCurrentQuestion(0);
+    setScore(0);
+    setGameState('playing');
+    setOptionIds([]);
+    setCorrectAnswerId(null);
+  }, [plants, shuffleArray]);
 
   // Генерация ID вариантов ответов для растения
   function generateOptionIds(plant) {
@@ -38,22 +80,22 @@ export default function PlantQuizGame() {
     return shuffleArray([correctId, ...wrongIds]);
   }
 
-  // Инициализация порядка растений
+  // Инициализация первой игровой сессии
   useEffect(() => {
-    setPlantsOrder(shuffleArray(plants));
-  }, []);
+    startNewSession(true);
+  }, [startNewSession]);
 
   // Генерация вариантов при смене вопроса
   useEffect(() => {
-    if (plantsOrder.length > 0 && currentQuestion < plantsOrder.length) {
-      const currentPlant = plantsOrder[currentQuestion];
+    if (sessionPlants.length > 0 && currentQuestion < sessionPlants.length) {
+      const currentPlant = sessionPlants[currentQuestion];
       if (gameState === 'playing' || currentQuestion === 0) {
         const newOptionIds = generateOptionIds(currentPlant);
         setOptionIds(newOptionIds);
         setCorrectAnswerId(currentPlant.id);
       }
     }
-  }, [currentQuestion, plantsOrder]);
+  }, [currentQuestion, sessionPlants]);
 
   // Обработка ответа
   function handleAnswer(selectedId) {
@@ -65,22 +107,13 @@ export default function PlantQuizGame() {
     }
 
     setTimeout(() => {
-      if (currentQuestion + 1 < plantsOrder.length) {
+      if (currentQuestion + 1 < sessionPlants.length) {
         setCurrentQuestion(prev => prev + 1);
         setGameState('playing');
       } else {
         setGameState('finished');
       }
     }, 1500);
-  }
-
-  // Перезапуск игры
-  function restartGame() {
-    setPlantsOrder(shuffleArray(plants));
-    setCurrentQuestion(0);
-    setScore(0);
-    setGameState('playing');
-    setOptionIds([]);
   }
 
   // Изменение языка
@@ -124,7 +157,7 @@ export default function PlantQuizGame() {
         }, `${texts.result} ${score} ${texts.resultPoints}!`),
         React.createElement('button', {
           key: 'restart',
-          onClick: restartGame,
+          onClick: () => startNewSession(),
           className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
           style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
         }, texts.playAgain)
@@ -150,7 +183,9 @@ export default function PlantQuizGame() {
           key: 'progress',
           className: 'text-2xl font-bold',
           style: { color: '#C29C27' }
-        }, `${currentQuestion + 1}/${plantsOrder.length || 6}`),
+        }, sessionPlants.length > 0
+          ? `${currentQuestion + 1}/${sessionPlants.length}`
+          : `0/${QUESTIONS_PER_SESSION}`),
 
         React.createElement('div', { key: 'right-section', className: 'flex items-center gap-4' }, [
           React.createElement('div', {
@@ -192,9 +227,9 @@ export default function PlantQuizGame() {
           className: 'mb-8 flex justify-center',
           style: { height: '450px' }
         }, [
-          gameState === 'playing' && plantsOrder.length > 0 && currentQuestion < plantsOrder.length &&
+          gameState === 'playing' && sessionPlants.length > 0 && currentQuestion < sessionPlants.length &&
             React.createElement('div', { className: 'h-full', style: { width: '675px' } },
-              getPlantImage(plantsOrder[currentQuestion])
+              getPlantImage(sessionPlants[currentQuestion])
             ),
 
           gameState === 'correct' && React.createElement('div', {
