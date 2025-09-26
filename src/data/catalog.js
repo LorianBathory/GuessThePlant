@@ -39,7 +39,7 @@ export const speciesById = {
   32: { names:{ru:"Гузмания",              en:"Scarlet Star",  sci:"Guzmania lingulata"}, image:"images/Guzmania.JPG", wrongAnswers:[43, 44, 45] },
   33: { names:{ru:"Мак",                   en:"Poppy",         sci:"Papaver"},            image:"images/Poppy.JPG", wrongAnswers:[31, 47, 46]},
   34: { names:{ru:"Похутукава",            en:"Pohutukawa",    sci:"Metrosideros excelsa"}, image:"images/Pohutukawa.JPG", wrongAnswers:[43, 48, 49]} },
-  35: { names:{ru:"Лилия",                 en:"Lily",          sci:"Lilium"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] }
+  35: { names:{ru:"Лилия",                 en:"Lily",          sci:"Lilium"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] },
 
   //Новые запасные
   36: { names:{ru:"Лилейник", en:"Daylilies", sci:"Hemerocallis"} },
