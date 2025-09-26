@@ -1,0 +1,23 @@
+{
+  "name": "guesstheplant",
+  "version": "1.0.0",
+  "description": "Guess The Plant quiz application",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "quiz",
+    "react",
+    "eslint"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "eslint": "^9.13.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.9.0"
+  }
+}
