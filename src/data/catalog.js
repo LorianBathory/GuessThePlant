@@ -81,7 +81,7 @@ export const speciesById = {
   66: { names:{ru:"Мята", en:"Mint", sci:"Mentha"} },
   67: { names:{ru:"Лаватера", en:"Mallow", sci:"Lavatera"} },
   68: { names:{ru:"Лаванда", en:"Lavender", sci:"Lavandula"} },
-  69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"}, image:"images/Eustoma.JPG", wrongAnswers:[31] }, //
+  69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"}, image:"images/Eustoma.JPG", wrongAnswers:[31, 22] }, //
   70: { names:{ru:"Физалис", en:"Groundcherry", sci:"Physalis"} },
   71: { names:{ru:"Каштан", en:"Chestnut", sci:"Castanea"} },
   72: { names:{ru:"Лопух", en:"Burdock", sci:"Arctium"} },
