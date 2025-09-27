@@ -89,7 +89,7 @@ export const speciesById = {
   74: { names:{ru:"Флокс", en:"Phlox", sci:"Phlox"} },
   75: { names:{ru:"Сирень", en:"Lilac", sci:"Syringa"} },
   76: { names:{ru:"Петуния", en:"Petunia", sci:"Petunia"} },
-  77: { names:{ru:"Родомирт", en:"Rose Myrtle", sci:"Rhodomyrtus"}, image:"images/Rhodomyrtus.JPG", wrongAnswers:[58, 48, 57] }, },
+  77: { names:{ru:"Родомирт", en:"Rose Myrtle", sci:"Rhodomyrtus"}, image:"images/Rhodomyrtus.JPG", wrongAnswers:[58, 48, 57] } },
   78: { names:{ru:"Картофельное дерево", en:"Potato Tree", sci:"Solanum"} },
   79: { names:{ru:"Свинчатка", en:"Leadwort", sci:"Plumbago"} }
 
