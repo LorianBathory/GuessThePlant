@@ -7,7 +7,7 @@ export const speciesById = {
   2:  { names:{ru:"Дикая морковь",         en:"Sea Carrot",  sci:"Daucus carota"},       image:"images/MoonCarrot.JPG",   wrongAnswers:[10,11,12] },
   3:  { names:{ru:"Агапантус",             en:"Agapanthus",  sci:"Agapanthus africanus"}, image:"images/Agapanthus.JPG",   wrongAnswers:[13,14,15,16] },
   4:  { names:{ru:"Бугенвиллия",           en:"Bougainvillea", sci:"Bougainvillea spectabilis"}, image:"images/bougainvillea.JPG", wrongAnswers:[17,18,19,20] },
-  5:  { names:{ru:"Камелия",               en:"Camellia",    sci:"Camellia japonica"},   image:"images/camelia.JPG",      wrongAnswers:[20,21,22,23,24] },
+  5:  { names:{ru:"Камелия",               en:"Camellia",    sci:"Camellia japonica"},   image:"images/camelia.JPG",      wrongAnswers:[20,21,31,23,24] },
   6:  { names:{ru:"Гербера",               en:"Gerbera",     sci:"Gerbera jamesonii"},   image:"images/Gerbera.JPG",      wrongAnswers:[25,26,27,28,29] },
 
   // (пока только варианты; позже можно добавить image — и они станут вопросами автоматически)
@@ -26,7 +26,7 @@ export const speciesById = {
   19: { names:{ru:"Олеандр",               en:"Oleander",    sci:"Nerium oleander"} },
   20: { names:{ru:"Азалия",                en:"Azalea",      sci:"Rhododendron"} },
   21: { names:{ru:"Рододендрон",           en:"Rhododendron", sci:"Rhododendron"} },
-  22: { names:{ru:"Роза",                  en:"Rose",        sci:"Rosa"} },
+  22: { names:{ru:"Тюльпан",                  en:"Tulip",        sci:"Tulipa"} },
   23: { names:{ru:"Гардения",              en:"Gardenia",    sci:"Gardenia"} },
   24: { names:{ru:"Магнолия",              en:"Magnolia",    sci:"Magnolia"} },
   25: { names:{ru:"Нивяник",               en:"Shasta Daisy", sci:"Leucanthemum x superbum"} },
@@ -81,7 +81,7 @@ export const speciesById = {
   66: { names:{ru:"Мята", en:"Mint", sci:"Mentha"} },
   67: { names:{ru:"Лаватера", en:"Mallow", sci:"Lavatera"} },
   68: { names:{ru:"Лаванда", en:"Lavender", sci:"Lavandula"} },
-  69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"} },
+  69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"}, image:"images/Eustoma.JPG", wrongAnswers:[31] }, //
   70: { names:{ru:"Физалис", en:"Groundcherry", sci:"Physalis"} },
   71: { names:{ru:"Каштан", en:"Chestnut", sci:"Castanea"} },
   72: { names:{ru:"Лопух", en:"Burdock", sci:"Arctium"} },
