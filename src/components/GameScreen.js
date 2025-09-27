@@ -68,6 +68,7 @@ export default function GameScreen({
   const desktopBackgroundPattern = renderDesktopBackground(ReactGlobal, isMobile);
   const totalQuestions = totalQuestionsInRound > 0 ? totalQuestionsInRound : questionsPerRound;
   const questionNumber = Math.min(currentQuestionIndex + 1, totalQuestions);
+  const displayQuestionNumber = questionNumber > 0 ? questionNumber : currentQuestionIndex + 1;
 
   const content = createElement('div', {
     key: 'main',
@@ -93,7 +94,7 @@ export default function GameScreen({
             color: '#C29C27',
             marginBottom: isMobile ? '12px' : '32px'
           }
-        }, texts.question),
+        }, `${displayQuestionNumber}. ${texts.question}`),
         createElement('div', {
           key: 'image-area',
           className: 'flex justify-center',
