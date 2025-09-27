@@ -1,3 +1,5 @@
+import { getDifficultyByQuestionId } from './difficulties.js';
+
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
 // У некоторых есть image => они могут быть вопросами; у остальных пока только варианты.
 export const speciesById = {
@@ -89,5 +91,6 @@ export const plants = Object.entries(speciesById)
     id: Number(id),
     image: v.image,
     names: v.names,
-    wrongAnswers: v.wrongAnswers
+    wrongAnswers: v.wrongAnswers,
+    difficulty: getDifficultyByQuestionId(Number(id))
   }));
