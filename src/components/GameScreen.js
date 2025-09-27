@@ -6,24 +6,30 @@ function renderDesktopBackground(ReactGlobal, isMobile) {
     return null;
   }
 
- const { createElement } = ReactGlobal;
+  const { createElement } = ReactGlobal;
+
+  const columns = ['left', 'right'].map(side => {
+    const dots = Array.from({ length: 8 }, (_, index) => createElement('div', {
+      key: `${side}-circle-${index}`,
+      className: 'rounded-full',
+      style: {
+        width: '24px',
+        height: '24px',
+        backgroundColor: '#C29C27'
+      }
+    }));
+
+    return createElement('div', {
+      key: side,
+      className: 'flex flex-col justify-between h-full py-10'
+    }, dots);
+  });
 
   return createElement('div', {
     key: 'background-pattern',
     className: 'absolute inset-0 pointer-events-none flex justify-between px-10',
     style: { zIndex: 0 }
-  }, ['left', 'right'].map(side => createElement('div', {
-    key: side,
-    className: 'flex flex-col justify-between h-full py-10'
-  }, Array.from({ length: 8 }).map((_, index) => createElement('div', {
-    key: `${side}-circle-${index}`,
-    className: 'rounded-full',
-    style: {
-      width: '24px',
-      height: '24px',
-      backgroundColor: '#C29C27'
-    }
-  })))));
+  }, columns);
 }
 
 function renderPlantImage(ReactGlobal, plant, isMobile) {
@@ -31,7 +37,7 @@ function renderPlantImage(ReactGlobal, plant, isMobile) {
     return null;
   }
 
-return ReactGlobal.createElement('img', {
+  return ReactGlobal.createElement('img', {
     key: 'plant-image',
     src: plant.image,
     alt: `Растение ${plant.id}`,
@@ -65,9 +71,36 @@ export default function GameScreen({
 
   const { createElement } = ReactGlobal;
 
+  const safeTexts = texts && typeof texts === 'object' ? texts : {};
   const desktopBackgroundPattern = renderDesktopBackground(ReactGlobal, isMobile);
-  const totalQuestions = totalQuestionsInRound > 0 ? totalQuestionsInRound : questionsPerRound;
-  const questionNumber = Math.min(currentQuestionIndex + 1, totalQuestions);
+  const normalizedQuestionIndex = Number.isFinite(currentQuestionIndex) && currentQuestionIndex >= 0
+    ? currentQuestionIndex
+    : 0;
+  const availableQuestions = Number.isFinite(totalQuestionsInRound) && totalQuestionsInRound > 0
+    ? totalQuestionsInRound
+    : (Number.isFinite(questionsPerRound) && questionsPerRound > 0 ? questionsPerRound : 0);
+  const totalQuestions = availableQuestions;
+  const tentativeQuestionNumber = normalizedQuestionIndex + 1;
+  const questionNumber = availableQuestions > 0
+    ? Math.min(tentativeQuestionNumber, availableQuestions)
+    : tentativeQuestionNumber;
+  const displayQuestionNumber = questionNumber > 0 ? questionNumber : tentativeQuestionNumber;
+  const questionHeading = typeof safeTexts.question === 'string' ? safeTexts.question : '';
+  const safeOptions = Array.isArray(options) ? options : [];
+  const hasOptions = safeOptions.length > 0;
+  const correctText = typeof safeTexts.correct === 'string' ? safeTexts.correct : '';
+  const incorrectText = typeof safeTexts.incorrect === 'string' ? safeTexts.incorrect : '';
+  const instructionText = typeof safeTexts.instruction === 'string' ? safeTexts.instruction : '';
+  const interfaceLanguageLabel = typeof safeTexts.interfaceLanguageLabel === 'string'
+    ? safeTexts.interfaceLanguageLabel
+    : '';
+  const languageOptions = Array.isArray(INTERFACE_LANGUAGES) ? INTERFACE_LANGUAGES : [];
+  const handleAnswerClick = typeof onAnswer === 'function'
+    ? onAnswer
+    : () => {};
+  const handleInterfaceLanguageChange = typeof onInterfaceLanguageChange === 'function'
+    ? onInterfaceLanguageChange
+    : () => {};
 
   const content = createElement('div', {
     key: 'main',
@@ -93,7 +126,7 @@ export default function GameScreen({
             color: '#C29C27',
             marginBottom: isMobile ? '12px' : '32px'
           }
-        }, texts.question),
+        }, questionHeading ? `${displayQuestionNumber}. ${questionHeading}` : `${displayQuestionNumber}.`),
         createElement('div', {
           key: 'image-area',
           className: 'flex justify-center',
@@ -119,7 +152,7 @@ export default function GameScreen({
               border: isMobile ? 'none' : '6px solid #C29C27',
               padding: isMobile ? '24px 12px' : '0'
             }
-          }, texts.correct),
+          }, correctText),
           gameState === 'incorrect' && createElement('div', {
             className: 'h-full flex items-center justify-center text-6xl font-bold',
             style: {
@@ -129,18 +162,18 @@ export default function GameScreen({
               border: isMobile ? 'none' : '6px solid #C29C27',
               padding: isMobile ? '24px 12px' : '0'
             }
-          }, texts.incorrect)
+          }, incorrectText)
         ]),
-        gameState === 'playing' && options.length > 0 && createElement('div', {
+        gameState === 'playing' && hasOptions && createElement('div', {
           key: 'options',
           className: isMobile ? 'grid grid-cols-1 w-full' : 'grid grid-cols-2 gap-4 max-w-3xl mx-auto',
           style: {
             gap: isMobile ? '6px' : undefined,
             width: '100%'
           }
-        }, options.map(option => createElement('button', {
+        }, safeOptions.map(option => createElement('button', {
           key: option.id,
-          onClick: () => onAnswer(option.id),
+          onClick: () => handleAnswerClick(option.id),
           className: 'font-semibold transition-all duration-200 hover:opacity-80 hover:scale-105',
           style: {
             backgroundColor: '#163B3A',
@@ -157,7 +190,7 @@ export default function GameScreen({
         key: 'instruction',
         className: 'text-center mt-6 opacity-75',
         style: { color: '#C29C27' }
-      }, texts.instruction),
+      }, instructionText),
       createElement('div', {
         key: 'default-lang-selector',
         className: 'text-center mt-6 flex flex-col items-center gap-3'
@@ -166,13 +199,13 @@ export default function GameScreen({
           key: 'label',
           className: 'text-lg font-semibold',
           style: { color: '#C29C27' }
-        }, texts.interfaceLanguageLabel),
+        }, interfaceLanguageLabel),
         createElement('div', {
           key: 'buttons',
           className: 'flex gap-2'
-        }, INTERFACE_LANGUAGES.map(lang => createElement('button', {
+        }, languageOptions.map(lang => createElement('button', {
           key: `interface-${lang}`,
-          onClick: () => onInterfaceLanguageChange(lang),
+          onClick: () => handleInterfaceLanguageChange(lang),
           className: 'px-3 py-1 text-sm font-bold uppercase transition-all',
           style: {
             backgroundColor: interfaceLanguage === lang ? '#C29C27' : 'transparent',

@@ -3,13 +3,9 @@ import { PLANT_LANGUAGES } from '../gameConfig.js';
 export default function GameHeader({
   texts,
   currentRoundIndex,
-  totalRounds,
   score,
-  questionNumber,
-  totalQuestions,
   plantLanguage,
   onPlantLanguageChange,
-  showQuestionProgress = true,
   showLanguageSelector = true
 }) {
   const ReactGlobal = globalThis.React;
@@ -21,23 +17,19 @@ export default function GameHeader({
 
   const roundLabel = texts && texts.roundLabel ? texts.roundLabel : 'Round';
   const scoreLabel = texts && texts.score ? texts.score : 'Score';
-  const hasQuestionProgress = showQuestionProgress
-    && Number.isFinite(questionNumber)
-    && Number.isFinite(totalQuestions);
+  const safeRoundIndex = Number.isFinite(currentRoundIndex) && currentRoundIndex >= 0
+    ? currentRoundIndex
+    : 0;
+  const displayRoundNumber = safeRoundIndex + 1;
+  const safeScore = Number.isFinite(score) ? score : 0;
 
-  const progressChildren = [
-    createElement('span', {
-      key: 'round-info',
-      className: 'text-base font-semibold whitespace-nowrap'
-    }, `${roundLabel} ${currentRoundIndex + 1}/${totalRounds}`)
-  ];
-
-  if (hasQuestionProgress) {
-    progressChildren.push(createElement('span', {
-      key: 'progress',
-      className: 'text-xl font-bold tracking-wider'
-    }, `${questionNumber}/${totalQuestions}`));
-  }
+  const progressSection = createElement('div', {
+    key: 'progress-info',
+    className: 'flex items-end gap-3 flex-wrap',
+    style: { color: '#C29C27' }
+  }, createElement('span', {
+    className: 'text-lg font-semibold whitespace-nowrap'
+  }, `${roundLabel} ${displayRoundNumber}`));
 
   let languageButtons = null;
   if (showLanguageSelector && typeof onPlantLanguageChange === 'function') {
@@ -57,29 +49,35 @@ export default function GameHeader({
     }, lang === 'sci' ? 'Sci' : lang.toUpperCase())));
   }
 
-  const rightSectionChildren = [];
+  const scoreCircle = createElement('div', {
+    key: 'score-circle',
+    className: 'font-bold flex items-center justify-center',
+    style: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '50px',
+      height: '50px',
+      borderRadius: '50%',
+      backgroundColor: '#C29C27',
+      color: '#163B3A',
+      fontSize: '20px',
+      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)'
+    },
+    'aria-label': `${scoreLabel}: ${safeScore}`
+  }, String(safeScore));
 
-  if (languageButtons) {
-    rightSectionChildren.push(languageButtons);
-  }
-
-  rightSectionChildren.push(createElement('div', {
-    key: 'score',
-    className: 'text-xl font-bold',
-    style: { color: '#C29C27' }
-  }, `${scoreLabel}: ${score}`));
+  const rightSection = languageButtons ? createElement('div', {
+    key: 'right-section',
+    className: 'flex flex-col items-end gap-2'
+  }, [languageButtons]) : null;
 
   return createElement('div', {
-    className: 'relative z-10 w-full max-w-5xl mx-auto mb-6 flex items-start justify-between gap-3'
+    className: 'relative z-10 w-full max-w-5xl mx-auto mb-6 flex items-center justify-between gap-3'
   }, [
-    createElement('div', {
-      key: 'progress-info',
-      className: 'flex items-end gap-3 flex-wrap',
-      style: { color: '#C29C27' }
-    }, progressChildren),
-    createElement('div', {
-      key: 'right-section',
-      className: 'flex flex-col items-end gap-2'
-    }, rightSectionChildren)
-  ]);
+    progressSection,
+    scoreCircle,
+    rightSection
+  ].filter(Boolean));
 }
