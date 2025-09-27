@@ -5,7 +5,7 @@ function renderDesktopBackground(ReactGlobal, isMobile) {
     return null;
   }
 
-  const { createElement } = ReactGlobal;
+ const { createElement } = ReactGlobal;
 
   return createElement('div', {
     key: 'background-pattern',
@@ -30,7 +30,7 @@ function renderPlantImage(ReactGlobal, plant, isMobile) {
     return null;
   }
 
-  return ReactGlobal.createElement('img', {
+return ReactGlobal.createElement('img', {
     key: 'plant-image',
     src: plant.image,
     alt: `Растение ${plant.id}`,
