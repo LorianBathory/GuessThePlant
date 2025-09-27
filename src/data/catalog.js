@@ -58,18 +58,18 @@ export const speciesById = {
   49: { names:{ru:"Мирт", en:"Myrtle", sci:"Myrtus "} },
 
   // Новые с изображениями  
-  50:  { names:{ru:"Жакаранда", en:"Blue jacaranda", sci:"Jacaranda mimosifolia"},             image:"images/Jacaranda.JPG", wrongAnswers:[16, 36, 37] }, 
-  //Глициния, Акация, Павловния
-  51:  { names:{ru:"Гранат", en:"Pomegranate", sci:"Punica granatum"},             image:"images/Pomegranate.JPG", wrongAnswers:[16, 36, 37] }, 
+  50:  { names:{ru:"Жакаранда", en:"Blue jacaranda", sci:"Jacaranda mimosifolia"},             image:"images/Jacaranda.JPG", wrongAnswers:[18] }, 
+  //Акация, Павловния
+  51:  { names:{ru:"Гранат", en:"Pomegranate", sci:"Punica granatum"},             image:"images/Pomegranate.JPG", wrongAnswers:[1, 2, 3] }, 
   // Шиповник, Боярышник, Драгонфрут
-  52:  { names:{ru:"Смолосемянник", en:"Japanese pittosporum", sci:"Pittosporum tobira"},             image:"images/Pittosporum.JPG", wrongAnswers:[16, 36, 37] }, 
+  52:  { names:{ru:"Смолосемянник", en:"Japanese pittosporum", sci:"Pittosporum tobira"},             image:"images/Pittosporum.JPG", wrongAnswers:[1, 2, 3] }, 
   // Шеффлера, Яблоня
-  53:  { names:{ru:"Скабиоза", en:"Sweet scabious", sci:"Sixalix atropurpurea"},             image:"images/Scabious.JPG", wrongAnswers:[16, 36, 37] }, 
+  53:  { names:{ru:"Скабиоза", en:"Sweet scabious", sci:"Sixalix atropurpurea"},             image:"images/Scabious.JPG", wrongAnswers:[1, 2, 3] }, 
   // Дикий лук 
-  54:  { names:{ru:"Лантана", en:"Common lantana", sci:"Lantana Camara"},             image:"images/Lantana.JPG", wrongAnswers:[16, 36, 37] }, 
+  54:  { names:{ru:"Лантана", en:"Common lantana", sci:"Lantana Camara"},             image:"images/Lantana.JPG", wrongAnswers:[1, 2, 3] }, 
   // Вербена, Незабудка, Мята
-  55:  { names:{ru:"Гибискус", en:"Hibiscus", sci:"Hibiscus"},             image:"images/Hibiscus.JPG", wrongAnswers:[16, 36, 37] } 
-  // Лаватера, Камелия, Олеандр
+  55:  { names:{ru:"Гибискус", en:"Hibiscus", sci:"Hibiscus"},             image:"images/Hibiscus.JPG", wrongAnswers:[19, 5] } 
+  // Лаватера
 
 };
 
