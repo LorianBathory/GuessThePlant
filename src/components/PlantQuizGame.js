@@ -2,7 +2,8 @@ import useGameLogic from '../hooks/useGameLogic.js';
 import GameScreen from './GameScreen.js';
 import ResultScreen from './ResultScreen.js';
 
-export default function PlantQuizGame() {
+export default function PlantQuizGame() 
+  {
   const game = useGameLogic();
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
