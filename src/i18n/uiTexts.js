@@ -8,7 +8,12 @@ export const uiTexts = {
     resultPoints: "баллов",
     playAgain: "Играть снова",
     instruction: "Выберите правильное название растения",
-    interfaceLanguageLabel: "Язык интерфейса"
+    interfaceLanguageLabel: "Язык интерфейса",
+    roundLabel: "Раунд",
+    roundCompleted: "Раунд {{round}} завершён!",
+    startRoundButton: "Начать Раунд {{round}}",
+    gameCompletedTitle: "Вы прошли игру! Ваши баллы: {{score}}",
+    restart: "Начать заново"
   },
   en: {
     question: "What plant is this?",
@@ -19,7 +24,12 @@ export const uiTexts = {
     resultPoints: "points",
     playAgain: "Play Again",
     instruction: "Choose the correct plant name",
-    interfaceLanguageLabel: "Interface language"
+    interfaceLanguageLabel: "Interface language",
+    roundLabel: "Round",
+    roundCompleted: "Round {{round}} completed!",
+    startRoundButton: "Start Round {{round}}",
+    gameCompletedTitle: "You completed the game! Your score: {{score}}",
+    restart: "Restart"
   },
   sci: {
     question: "Quae planta est?",
@@ -30,7 +40,12 @@ export const uiTexts = {
     resultPoints: "points",
     playAgain: "Ludere iterum",
     instruction: "Elige nomen scientificum rectum",
-    interfaceLanguageLabel: "Lingua interfaciei"
+    interfaceLanguageLabel: "Lingua interfaciei",
+    roundLabel: "Orbis",
+    roundCompleted: "Orbis {{round}} perfectus est!",
+    startRoundButton: "Incipe Orbem {{round}}",
+    gameCompletedTitle: "Ludum perfecisti! Puncta tua: {{score}}",
+    restart: "Iterum incipe"
   }
 };
 
