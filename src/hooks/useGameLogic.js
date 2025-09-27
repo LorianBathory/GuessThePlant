@@ -1,5 +1,3 @@
-const { useState, useEffect, useCallback, useMemo, useRef } = React;
-
 import { choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';
@@ -19,6 +17,12 @@ import {
 } from '../gameConfig.js';
 
 export default function useGameLogic() {
+  const ReactGlobal = globalThis.React;
+  if (!ReactGlobal) {
+    throw new Error('React global was not found. Make sure the React UMD bundle is loaded before the app.');
+  }
+
+  const { useState, useEffect, useCallback, useMemo, useRef } = ReactGlobal;
   const timeoutRef = useRef(null);
 
   const [interfaceLanguage, setInterfaceLanguage] = useState(() => getStoredInterfaceLanguage() || defaultLang);

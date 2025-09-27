@@ -4,9 +4,15 @@ import ResultScreen from './ResultScreen.jsx';
 
 export default function PlantQuizGame() {
   const game = useGameLogic();
+  const ReactGlobal = globalThis.React;
+  if (!ReactGlobal) {
+    throw new Error('React global was not found. Make sure the React bundle is loaded before rendering PlantQuizGame.');
+  }
+
+  const { createElement } = ReactGlobal;
 
   if (game.roundPhase === 'playing') {
-    return React.createElement(GameScreen, {
+    return createElement(GameScreen, {
       texts: game.texts,
       isMobile: game.isMobile,
       currentRoundIndex: game.currentRoundIndex,
@@ -26,7 +32,7 @@ export default function PlantQuizGame() {
     });
   }
 
-  return React.createElement(ResultScreen, {
+  return createElement(ResultScreen, {
     phase: game.roundPhase,
     texts: game.texts,
     score: game.score,
