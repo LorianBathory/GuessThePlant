@@ -2,7 +2,7 @@ const { useState, useEffect, useCallback } = React;
 
 const QUESTIONS_PER_ROUND = 6;
 
-const AVAILABLE_LANGUAGES = ['ru', 'en', 'sci'];
+const PLANT_LANGUAGES = ['ru', 'en', 'sci'];
 const INTERFACE_LANGUAGES = ['ru', 'en'];
 const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
 const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
@@ -22,7 +22,7 @@ function getStoredPlantLanguage() {
   }
 
   const stored = window.localStorage.getItem(PLANT_LANGUAGE_STORAGE_KEY);
-  return stored && AVAILABLE_LANGUAGES.includes(stored) ? stored : null;
+  return stored && PLANT_LANGUAGES.includes(stored) ? stored : null;
 }
 
 import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
@@ -56,8 +56,8 @@ export default function PlantQuizGame() {
     }
 
     const storedInterface = getStoredInterfaceLanguage();
-    if (storedInterface) {
-      return storedInterface === defaultLang ? defaultLang : storedInterface;
+    if (storedInterface && PLANT_LANGUAGES.includes(storedInterface)) {
+      return storedInterface;
     }
 
     return defaultLang;
@@ -217,6 +217,10 @@ export default function PlantQuizGame() {
 
   // Изменение языка названий растений
   function changePlantLanguage(newLang) {
+    if (!PLANT_LANGUAGES.includes(newLang)) {
+      return;
+    }
+
     setPlantLanguage(newLang);
   }
 
@@ -363,7 +367,7 @@ export default function PlantQuizGame() {
           }, `${texts.score}: ${score}`),
 
           React.createElement('div', { key: 'lang-buttons', className: 'flex gap-2' },
-            AVAILABLE_LANGUAGES.map(lang =>
+            PLANT_LANGUAGES.map(lang =>
               React.createElement('button', {
                 key: lang,
                 onClick: () => changePlantLanguage(lang),
