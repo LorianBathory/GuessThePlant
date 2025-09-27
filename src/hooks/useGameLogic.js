@@ -15,11 +15,12 @@ import {
   getInitialIsMobile,
   subscribeToViewportChange
 } from '../gameConfig.js';
+import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
 
 export default function useGameLogic() {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
-    throw new Error('React global was not found. Make sure the React UMD bundle is loaded before the app.');
+    throw new DataLoadingError('React не найден. Проверьте загрузку React перед запуском приложения.');
   }
 
   const { useState, useEffect, useCallback, useMemo, useRef } = ReactGlobal;
@@ -54,7 +55,7 @@ export default function useGameLogic() {
   const startRound = useCallback((roundIndex, resetScore = false) => {
     const roundConfig = ROUNDS[roundIndex];
     if (!roundConfig) {
-      return;
+      throw new GameLogicError(`Конфигурация раунда №${roundIndex + 1} отсутствует.`);
     }
 
     const questions = getQuestionsForRound(roundConfig.difficulty);
@@ -191,14 +192,14 @@ export default function useGameLogic() {
 
   const changePlantLanguage = useCallback(newLang => {
     if (!PLANT_LANGUAGES.includes(newLang)) {
-      return;
+      throw new GameLogicError(`Язык растений "${newLang}" не поддерживается.`);
     }
     setPlantLanguage(newLang);
   }, []);
 
   const changeInterfaceLanguage = useCallback(newLang => {
     if (!INTERFACE_LANGUAGES.includes(newLang)) {
-      return;
+      throw new GameLogicError(`Язык интерфейса "${newLang}" не поддерживается.`);
     }
     setInterfaceLanguage(newLang);
   }, []);
@@ -223,9 +224,12 @@ export default function useGameLogic() {
 
     return optionIds.map(optionId => {
       const cell = choicesById[optionId];
+      if (!cell) {
+        throw new DataLoadingError(`Данные для растения с идентификатором ${optionId} не найдены.`);
+      }
       return {
         id: optionId,
-        label: cell ? (cell[plantLanguage] || cell[defaultLang]) : ''
+        label: cell[plantLanguage] || cell[defaultLang] || ''
       };
     });
   }, [optionIds, plantLanguage]);
