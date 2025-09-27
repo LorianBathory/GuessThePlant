@@ -55,7 +55,21 @@ export const speciesById = {
   46: { names:{ru:"Пион", en:"Peony", sci:"Paeonia"} },
   47: { names:{ru:"Анемона корончатая", en:"Рoppy anemone", sci:"Anemone coronaria"} },
   48: { names:{ru:"Каллистемон", en:"Bottlebrushes", sci:"Callistemon"} },
-  49: { names:{ru:"Мирт", en:"Myrtle", sci:"Myrtus "} }
+  49: { names:{ru:"Мирт", en:"Myrtle", sci:"Myrtus "} },
+
+  // Новые с изображениями  
+  50:  { names:{ru:"Жакаранда", en:"Blue jacaranda", sci:"Jacaranda mimosifolia"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] }, 
+  //Глициния, Акация, Павловния
+  51:  { names:{ru:"Гранат", en:"Pomegranate", sci:"Punica granatum"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] }, 
+  // Шиповник, Боярышник, Драгонфрут
+  52:  { names:{ru:"Смолосемянник", en:"Japanese pittosporum", sci:"Pittosporum tobira"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] }, 
+  // Шеффлера, Яблоня
+  53:  { names:{ru:"Скабиоза", en:"Sweet scabious", sci:"Sixalix atropurpurea"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] }, 
+  // Дикий лук 
+  54:  { names:{ru:"Лантана", en:"Common lantana", sci:"Lantana Camara"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] }, 
+  // Вербена, Незабудка, Мята
+  55:  { names:{ru:"Гибискус", en:"Hibiscus", sci:"Hibiscus"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] } 
+  // Лаватера, Камелия, Олеандр
 
 };
 
