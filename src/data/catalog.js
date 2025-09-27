@@ -31,7 +31,7 @@ export const speciesById = {
   26: { names:{ru:"Георгин",               en:"Dahlia",      sci:"Dahlia"} },
   27: { names:{ru:"Эхинацея",              en:"Coneflower",  sci:"Echinacea"} },
   28: { names:{ru:"Арктотис",              en:"African Daisy", sci:"Arctotis"} },
-  29: { names:{ru:"Хризантема крупноцветковая", en:"Max Chrysanthemum", sci:"Chrysanthemum maximum"} },
+  29: { names:{ru:"Хризантема", en:"Chrysanthemum", sci:"Chrysanthemum"} },
 
   // Новые с изображениями (игровые вопросы уже сейчас)
   30: { names:{ru:"Остеоспермум",          en:"African Daisy", sci:"Osteospermum"},       image:"images/Osteospermum.JPG", wrongAnswers:[38, 39, 40, 6, 25, 16] },
