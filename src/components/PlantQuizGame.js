@@ -257,7 +257,7 @@ export default function PlantQuizGame() {
   }
 
   // Экран завершения раунда
-  сonst desktopBackgroundPattern = !isMobile
+  const desktopBackgroundPattern = !isMobile
     ? React.createElement('div', {
       key: 'background-pattern',
       className: 'absolute inset-0 pointer-events-none flex justify-between px-10',
