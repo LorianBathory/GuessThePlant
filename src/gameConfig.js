@@ -1,6 +1,7 @@
 import { plants } from './data/catalog.js';
 import { shuffleArray } from './utils/random.js';
 import { difficultyLevels } from './data/difficulties.js';
+import { DataLoadingError, StorageError } from './utils/errorHandling.js';
 
 export const QUESTIONS_PER_ROUND = 6;
 
@@ -19,6 +20,10 @@ export const ROUNDS = Object.freeze([
 export const TOTAL_ROUNDS = ROUNDS.length;
 
 export function getQuestionsForRound(difficulty) {
+  if (!Array.isArray(plants)) {
+    throw new DataLoadingError('Данные с растениями повреждены или не загружены.');
+  }
+
   const pool = plants.filter(plant => plant.difficulty === difficulty);
   const roundLength = Math.min(QUESTIONS_PER_ROUND, pool.length);
   if (roundLength === 0) {
@@ -32,8 +37,12 @@ export function getStoredInterfaceLanguage() {
     return null;
   }
 
-  const stored = window.localStorage.getItem(DEFAULT_LANGUAGE_STORAGE_KEY);
-  return stored && INTERFACE_LANGUAGES.includes(stored) ? stored : null;
+  try {
+    const stored = window.localStorage.getItem(DEFAULT_LANGUAGE_STORAGE_KEY);
+    return stored && INTERFACE_LANGUAGES.includes(stored) ? stored : null;
+  } catch (error) {
+    throw new StorageError('Не удалось прочитать язык интерфейса из localStorage.', { cause: error });
+  }
 }
 
 export function getStoredPlantLanguage() {
@@ -41,22 +50,34 @@ export function getStoredPlantLanguage() {
     return null;
   }
 
-  const stored = window.localStorage.getItem(PLANT_LANGUAGE_STORAGE_KEY);
-  return stored && PLANT_LANGUAGES.includes(stored) ? stored : null;
+  try {
+    const stored = window.localStorage.getItem(PLANT_LANGUAGE_STORAGE_KEY);
+    return stored && PLANT_LANGUAGES.includes(stored) ? stored : null;
+  } catch (error) {
+    throw new StorageError('Не удалось прочитать язык названий растений из localStorage.', { cause: error });
+  }
 }
 
 export function storeInterfaceLanguage(language) {
   if (typeof window === 'undefined') {
     return;
   }
-  window.localStorage.setItem(DEFAULT_LANGUAGE_STORAGE_KEY, language);
+  try {
+    window.localStorage.setItem(DEFAULT_LANGUAGE_STORAGE_KEY, language);
+  } catch (error) {
+    throw new StorageError('Не удалось сохранить язык интерфейса. Проверьте доступ к localStorage.', { cause: error });
+  }
 }
 
 export function storePlantLanguage(language) {
   if (typeof window === 'undefined') {
     return;
   }
-  window.localStorage.setItem(PLANT_LANGUAGE_STORAGE_KEY, language);
+  try {
+    window.localStorage.setItem(PLANT_LANGUAGE_STORAGE_KEY, language);
+  } catch (error) {
+    throw new StorageError('Не удалось сохранить язык названий растений. Проверьте доступ к localStorage.', { cause: error });
+  }
 }
 
 const MOBILE_BREAKPOINT = 600;

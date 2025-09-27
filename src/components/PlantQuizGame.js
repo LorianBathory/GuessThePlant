@@ -1,13 +1,14 @@
 import useGameLogic from '../hooks/useGameLogic.js';
 import GameScreen from './GameScreen.js';
 import ResultScreen from './ResultScreen.js';
+import { DataLoadingError } from '../utils/errorHandling.js';
 
 export default function PlantQuizGame() 
   {
   const game = useGameLogic();
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
-    throw new Error('React global was not found. Make sure the React bundle is loaded before rendering PlantQuizGame.');
+    throw new DataLoadingError('React не найден. Проверьте загрузку React перед запуском игры.');
   }
 
   const { createElement } = ReactGlobal;
