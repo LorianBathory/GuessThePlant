@@ -1,6 +1,6 @@
 import useGameLogic from '../hooks/useGameLogic.js';
-import GameScreen from './GameScreen.jsx';
-import ResultScreen from './ResultScreen.jsx';
+import GameScreen from './GameScreen.js';
+import ResultScreen from './ResultScreen.js';
 
 export default function PlantQuizGame() {
   const game = useGameLogic();
