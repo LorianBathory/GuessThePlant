@@ -1,8 +1,12 @@
-const { useState, useEffect, useRef, useCallback } = React;
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
+import { shuffleArray } from '../utils/random.js';
+import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
+import { difficultyLevels } from '../data/difficulties.js';
 
-const QUESTIONS_PER_SESSION = 6;
+const QUESTIONS_PER_ROUND = 6;
 
-const AVAILABLE_LANGUAGES = ['ru', 'en', 'sci'];
+const PLANT_LANGUAGES = ['ru', 'en', 'sci'];
 const INTERFACE_LANGUAGES = ['ru', 'en'];
 const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
 const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
@@ -22,12 +26,25 @@ function getStoredPlantLanguage() {
   }
 
   const stored = window.localStorage.getItem(PLANT_LANGUAGE_STORAGE_KEY);
-  return stored && AVAILABLE_LANGUAGES.includes(stored) ? stored : null;
+  return stored && PLANT_LANGUAGES.includes(stored) ? stored : null;
 }
 
-import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
-import { shuffleArray } from '../utils/random.js';
-import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
+const ROUNDS = Object.freeze([
+  { id: 1, difficulty: difficultyLevels.EASY },
+  { id: 2, difficulty: difficultyLevels.MEDIUM },
+  { id: 3, difficulty: difficultyLevels.HARD }
+]);
+
+const TOTAL_ROUNDS = ROUNDS.length;
+
+function getQuestionsForRound(difficulty) {
+  const pool = plants.filter(plant => plant.difficulty === difficulty);
+  const roundLength = Math.min(QUESTIONS_PER_ROUND, pool.length);
+  if (roundLength === 0) {
+    return [];
+  }
+  return shuffleArray(pool).slice(0, roundLength);
+}
 
 export default function PlantQuizGame() {
   const [interfaceLanguage, setInterfaceLanguage] = useState(() => getStoredInterfaceLanguage() || defaultLang);
@@ -38,66 +55,65 @@ export default function PlantQuizGame() {
     }
 
     const storedInterface = getStoredInterfaceLanguage();
-    if (storedInterface) {
-      return storedInterface === defaultLang ? defaultLang : storedInterface;
+    if (storedInterface && PLANT_LANGUAGES.includes(storedInterface)) {
+      return storedInterface;
     }
 
     return defaultLang;
   });
+  const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
+  const [roundPhase, setRoundPhase] = useState('playing');
   const [sessionPlants, setSessionPlants] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState('playing');
   const [optionIds, setOptionIds] = useState([]);
   const [correctAnswerId, setCorrectAnswerId] = useState(null);
+  const answerTimeoutRef = useRef(null);
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
       return window.innerWidth < 600;
     }
     return false;
   });
-  const remainingDeckRef = useRef([]);
 
   const texts = uiTexts[interfaceLanguage] || uiTexts[defaultLang];
 
-  // Запуск новой игровой сессии
-  const startNewSession = useCallback((resetDeck = false) => {
-    const currentDeck = Array.isArray(remainingDeckRef.current)
-      ? remainingDeckRef.current
-      : [];
-    let workingDeck = currentDeck.slice();
-
-    if (resetDeck || workingDeck.length < QUESTIONS_PER_SESSION) {
-      const existingIds = new Set(workingDeck.map(plant => plant.id));
-      const replenished = shuffleArray(plants).filter(plant => !existingIds.has(plant.id));
-      workingDeck = [...workingDeck, ...replenished];
-
-      if (workingDeck.length < QUESTIONS_PER_SESSION) {
-        workingDeck = [...workingDeck, ...shuffleArray(plants)];
-      }
-    }
-
-    if (workingDeck.length === 0) {
-      setSessionPlants([]);
-      setCurrentQuestion(0);
-      setScore(0);
-      setGameState('playing');
-      setOptionIds([]);
-      setCorrectAnswerId(null);
+  // Запуск нового раунда
+  const startRound = useCallback((roundIndex, resetScore = false) => {
+    const roundConfig = ROUNDS[roundIndex];
+    if (!roundConfig) {
       return;
     }
 
-    const shuffledDeck = shuffleArray(workingDeck);
-    const sessionSelection = shuffledDeck.slice(0, QUESTIONS_PER_SESSION);
-    remainingDeckRef.current = shuffledDeck.slice(QUESTIONS_PER_SESSION);
+    const questions = getQuestionsForRound(roundConfig.difficulty);
+    setCurrentRoundIndex(roundIndex);
 
-    setSessionPlants(sessionSelection);
+    if (answerTimeoutRef.current) {
+      clearTimeout(answerTimeoutRef.current);
+      answerTimeoutRef.current = null;
+    }
+
+    if (resetScore) {
+      setScore(0);
+    }
+
+    setSessionPlants(questions);
     setCurrentQuestion(0);
-    setScore(0);
     setGameState('playing');
     setOptionIds([]);
     setCorrectAnswerId(null);
-  }, [plants, shuffleArray]);
+
+    if (questions.length === 0) {
+      setRoundPhase(roundIndex >= TOTAL_ROUNDS - 1 ? 'gameComplete' : 'roundComplete');
+    } else {
+      setRoundPhase('playing');
+    }
+  }, []);
+
+  const startGame = useCallback(() => {
+    startRound(0, true);
+  }, [startRound]);
 
   // Генерация ID вариантов ответов для растения
   function generateOptionIds(plant) {
@@ -122,10 +138,10 @@ export default function PlantQuizGame() {
     return shuffleArray([correctId, ...wrongIds]);
   }
 
-  // Инициализация первой игровой сессии
+  // Инициализация игры
   useEffect(() => {
-    startNewSession(true);
-  }, [startNewSession]);
+    startGame();
+  }, [startGame]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -143,6 +159,10 @@ export default function PlantQuizGame() {
 
   // Генерация вариантов при смене вопроса
   useEffect(() => {
+    if (roundPhase !== 'playing') {
+      return;
+    }
+
     if (sessionPlants.length > 0 && currentQuestion < sessionPlants.length) {
       const currentPlant = sessionPlants[currentQuestion];
       if (gameState === 'playing' || currentQuestion === 0) {
@@ -151,7 +171,7 @@ export default function PlantQuizGame() {
         setCorrectAnswerId(currentPlant.id);
       }
     }
-  }, [currentQuestion, sessionPlants]);
+  }, [currentQuestion, sessionPlants, gameState, roundPhase]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -171,8 +191,20 @@ export default function PlantQuizGame() {
     }
   }, [interfaceLanguage]);
 
+  useEffect(() => {
+    return () => {
+      if (answerTimeoutRef.current) {
+        clearTimeout(answerTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Обработка ответа
   function handleAnswer(selectedId) {
+    if (roundPhase !== 'playing' || gameState !== 'playing') {
+      return;
+    }
+
     if (selectedId === correctAnswerId) {
       setScore(prev => prev + 1);
       setGameState('correct');
@@ -180,18 +212,33 @@ export default function PlantQuizGame() {
       setGameState('incorrect');
     }
 
-    setTimeout(() => {
-      if (currentQuestion + 1 < sessionPlants.length) {
+    const isLastQuestion = currentQuestion + 1 >= sessionPlants.length;
+
+    if (answerTimeoutRef.current) {
+      clearTimeout(answerTimeoutRef.current);
+    }
+
+    answerTimeoutRef.current = setTimeout(() => {
+      if (isLastQuestion) {
+        const isFinalRound = currentRoundIndex === TOTAL_ROUNDS - 1;
+        setRoundPhase(isFinalRound ? 'gameComplete' : 'roundComplete');
+        setGameState('playing');
+        setOptionIds([]);
+        setCorrectAnswerId(null);
+      } else {
         setCurrentQuestion(prev => prev + 1);
         setGameState('playing');
-      } else {
-        setGameState('finished');
       }
+      answerTimeoutRef.current = null;
     }, 1500);
   }
 
   // Изменение языка названий растений
   function changePlantLanguage(newLang) {
+    if (!PLANT_LANGUAGES.includes(newLang)) {
+      return;
+    }
+
     setPlantLanguage(newLang);
   }
 
@@ -200,6 +247,17 @@ export default function PlantQuizGame() {
       return;
     }
     setInterfaceLanguage(newLang);
+  }
+
+  function handleStartNextRound() {
+    const nextRoundIndex = currentRoundIndex + 1;
+    if (nextRoundIndex < TOTAL_ROUNDS) {
+      startRound(nextRoundIndex);
+    }
+  }
+
+  function handleRestart() {
+    startGame();
   }
 
   // Получение изображения растения
@@ -216,8 +274,50 @@ export default function PlantQuizGame() {
     return null;
   }
 
-  // Экран завершения
-  if (gameState === 'finished') {
+  // Экран завершения раунда
+  if (roundPhase === 'roundComplete') {
+    const roundNumber = currentRoundIndex + 1;
+    const nextRoundNumber = currentRoundIndex + 2;
+    const roundCompletedText = (texts.roundCompleted || '').replace('{{round}}', roundNumber);
+    const startNextRoundText = (texts.startRoundButton || '').replace('{{round}}', nextRoundNumber);
+
+    return React.createElement('div', {
+      className: 'min-h-screen flex items-center justify-center relative',
+      style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
+    }, [
+      !isMobile && React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor3', className: 'absolute bottom-4 right-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      React.createElement('div', {
+        key: 'round-result',
+        className: 'p-8 shadow-lg text-center max-w-md mx-4 flex flex-col gap-4',
+        style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+      }, [
+        React.createElement('h1', {
+          key: 'round-title',
+          className: 'text-3xl font-bold',
+          style: { color: '#C29C27' }
+        }, roundCompletedText || `Round ${roundNumber} completed!`),
+        React.createElement('p', {
+          key: 'round-score',
+          className: 'text-2xl font-semibold',
+          style: { color: '#C29C27' }
+        }, `${texts.score}: ${score}`),
+        React.createElement('button', {
+          key: 'next-round',
+          onClick: handleStartNextRound,
+          className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
+          style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
+        }, startNextRoundText || 'Start next round')
+      ])
+    ]);
+  }
+
+  // Экран завершения игры
+  if (roundPhase === 'gameComplete') {
+    const completedText = (texts.gameCompletedTitle || '').replace('{{score}}', score);
+
     return React.createElement('div', {
       className: 'min-h-screen flex items-center justify-center relative',
       style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
@@ -228,20 +328,20 @@ export default function PlantQuizGame() {
       !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
       React.createElement('div', {
         key: 'result',
-        className: 'p-8 shadow-lg text-center max-w-md mx-4',
+        className: 'p-8 shadow-lg text-center max-w-md mx-4 flex flex-col gap-4',
         style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
       }, [
         React.createElement('h1', {
           key: 'title',
-          className: 'text-4xl font-bold mb-6',
+          className: 'text-3xl font-bold',
           style: { color: '#C29C27' }
-        }, `${texts.result} ${score} ${texts.resultPoints}!`),
+        }, completedText || `${texts.result} ${score} ${texts.resultPoints}!`),
         React.createElement('button', {
           key: 'restart',
-          onClick: () => startNewSession(),
+          onClick: handleRestart,
           className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
           style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
-        }, texts.playAgain)
+        }, texts.restart || texts.playAgain || 'Restart')
       ])
     ]);
   }
@@ -259,14 +359,23 @@ export default function PlantQuizGame() {
     !isMobile && React.createElement('div', { key: 'decor6', className: 'absolute bottom-12 right-12 w-16 h-1', style: { backgroundColor: '#C29C27' } }),
 
     React.createElement('div', { key: 'container', className: 'w-full max-w-5xl mx-auto relative z-10' }, [
-      React.createElement('div', { key: 'header', className: 'flex justify-between items-center mb-6' }, [
+      React.createElement('div', { key: 'header', className: 'flex justify-between items-center mb-6 flex-wrap gap-4' }, [
         React.createElement('div', {
-          key: 'progress',
-          className: 'text-2xl font-bold',
+          key: 'progress-info',
+          className: 'flex flex-col',
           style: { color: '#C29C27' }
-        }, sessionPlants.length > 0
-          ? `${currentQuestion + 1}/${sessionPlants.length}`
-          : `0/${QUESTIONS_PER_SESSION}`),
+        }, [
+          React.createElement('span', {
+            key: 'round-info',
+            className: 'text-lg font-semibold'
+          }, `${texts.roundLabel || 'Round'} ${currentRoundIndex + 1}/${TOTAL_ROUNDS}`),
+          React.createElement('span', {
+            key: 'progress',
+            className: 'text-2xl font-bold'
+          }, sessionPlants.length > 0
+            ? `${currentQuestion + 1}/${sessionPlants.length}`
+            : `0/${QUESTIONS_PER_ROUND}`)
+        ]),
 
         React.createElement('div', { key: 'right-section', className: 'flex items-center gap-4' }, [
           React.createElement('div', {
@@ -276,7 +385,7 @@ export default function PlantQuizGame() {
           }, `${texts.score}: ${score}`),
 
           React.createElement('div', { key: 'lang-buttons', className: 'flex gap-2' },
-            AVAILABLE_LANGUAGES.map(lang =>
+            PLANT_LANGUAGES.map(lang =>
               React.createElement('button', {
                 key: lang,
                 onClick: () => changePlantLanguage(lang),
