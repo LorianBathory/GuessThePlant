@@ -81,7 +81,7 @@ export const speciesById = {
   66: { names:{ru:"Мята", en:"Mint", sci:"Mentha"} },
   67: { names:{ru:"Лаватера", en:"Mallow", sci:"Lavatera"} },
   68: { names:{ru:"Лаванда", en:"Lavender", sci:"Lavandula"} },
-  69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"}, image:"images/Eustoma.JPG", wrongAnswers:[31, 22] }, //
+  69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"}, image:"images/Eustoma.JPG", wrongAnswers:[31, 22] }, 
   70: { names:{ru:"Физалис", en:"Groundcherry", sci:"Physalis"} },
   71: { names:{ru:"Каштан", en:"Chestnut", sci:"Castanea"} },
   72: { names:{ru:"Лопух", en:"Burdock", sci:"Arctium"} },
@@ -89,7 +89,7 @@ export const speciesById = {
   74: { names:{ru:"Флокс", en:"Phlox", sci:"Phlox"} },
   75: { names:{ru:"Сирень", en:"Lilac", sci:"Syringa"} },
   76: { names:{ru:"Петуния", en:"Petunia", sci:"Petunia"} },
-  77: { names:{ru:"Родомирт", en:"Rose Myrtle", sci:"Rhodomyrtus"}, image:"images/Rhodomyrtus.JPG", wrongAnswers:[58, 48, 57] } },
+  77: { names:{ru:"Родомирт", en:"Rose Myrtle", sci:"Rhodomyrtus"}, image:"images/Rhodomyrtus.JPG", wrongAnswers:[58, 48, 57] },
   78: { names:{ru:"Картофельное дерево", en:"Potato Tree", sci:"Solanum"} },
   79: { names:{ru:"Свинчатка", en:"Leadwort", sci:"Plumbago"} }
 
