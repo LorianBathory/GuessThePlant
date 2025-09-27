@@ -25,6 +25,28 @@ export default function useGameLogic() {
 
   const { useState, useEffect, useCallback, useMemo, useRef } = ReactGlobal;
   const timeoutRef = useRef(null);
+  const preloadedImagesRef = useRef(new Set());
+
+  const preloadPlantImages = useCallback(plantsToPreload => {
+    if (typeof Image === 'undefined' || !Array.isArray(plantsToPreload)) {
+      return;
+    }
+
+    plantsToPreload.forEach(plant => {
+      if (!plant || typeof plant.image !== 'string') {
+        return;
+      }
+
+      const src = plant.image;
+      if (!src || preloadedImagesRef.current.has(src)) {
+        return;
+      }
+
+      const img = new Image();
+      img.src = src;
+      preloadedImagesRef.current.add(src);
+    });
+  }, []);
 
   const [interfaceLanguage, setInterfaceLanguage] = useState(() => getStoredInterfaceLanguage() || defaultLang);
   const [plantLanguage, setPlantLanguage] = useState(() => {
@@ -115,6 +137,14 @@ export default function useGameLogic() {
   }, [startGame]);
 
   useEffect(() => {
+    if (sessionPlants.length === 0) {
+      return;
+    }
+
+    preloadPlantImages(sessionPlants);
+  }, [sessionPlants, preloadPlantImages]);
+
+  useEffect(() => {
     const unsubscribe = subscribeToViewportChange(value => setIsMobile(value));
     return () => {
       if (typeof unsubscribe === 'function') {
@@ -130,13 +160,14 @@ export default function useGameLogic() {
 
     if (sessionPlants.length > 0 && currentQuestionIndex < sessionPlants.length) {
       const currentPlant = sessionPlants[currentQuestionIndex];
+      preloadPlantImages([currentPlant, sessionPlants[currentQuestionIndex + 1]].filter(Boolean));
       if (gameState === 'playing' || currentQuestionIndex === 0) {
         const newOptionIds = generateOptionIds(currentPlant);
         setOptionIds(newOptionIds);
         setCorrectAnswerId(currentPlant.id);
       }
     }
-  }, [currentQuestionIndex, sessionPlants, gameState, roundPhase, generateOptionIds]);
+  }, [currentQuestionIndex, sessionPlants, gameState, roundPhase, generateOptionIds, preloadPlantImages]);
 
   useEffect(() => {
     storeInterfaceLanguage(interfaceLanguage);
@@ -171,6 +202,7 @@ export default function useGameLogic() {
     }
 
     const isLastQuestion = currentQuestionIndex + 1 >= sessionPlants.length;
+    preloadPlantImages([sessionPlants[currentQuestionIndex + 1]].filter(Boolean));
 
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -188,7 +220,7 @@ export default function useGameLogic() {
         setGameState('playing');
       }
     }, 1500);
-  }, [roundPhase, gameState, correctAnswerId, currentQuestionIndex, sessionPlants, currentRoundIndex]);
+  }, [roundPhase, gameState, correctAnswerId, currentQuestionIndex, sessionPlants, currentRoundIndex, preloadPlantImages]);
 
   const changePlantLanguage = useCallback(newLang => {
     if (!PLANT_LANGUAGES.includes(newLang)) {
