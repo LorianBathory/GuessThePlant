@@ -1,0 +1,30 @@
+# Project Structure Overview
+
+## Top-Level Files
+- `index.html` — HTML entry point that loads React and Tailwind from CDNs and mounts the quiz application into the `#root` element.【F:index.html†L1-L27】
+- `package.json` — Declares project metadata and development tooling scripts (currently ESLint).【F:package.json†L1-L20】
+- `eslint.config.js` — Configures ESLint rules for the project (see file for detailed setup).【F:eslint.config.js†L1-L68】
+- `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/catalog.js†L6-L103】
+
+## Source Directory (`src/`)
+- `index.js` — Bootstraps the React application by rendering `<PlantQuizGame />` into the DOM root.【F:src/index.js†L1-L5】
+- `gameConfig.js` — Centralizes game constants (round definitions, language options) and helper utilities for persistence and viewport detection.【F:src/gameConfig.js†L1-L67】【F:src/gameConfig.js†L69-L98】
+- `components/`
+  - `PlantQuizGame.js` — Top-level component that wires game logic into either the in-round `GameScreen` or the post-round `ResultScreen`.【F:src/components/PlantQuizGame.js†L1-L38】
+  - `GameScreen.js` — Renders the active quiz round UI, including plant imagery, answer buttons, language controls, and progress indicators.【F:src/components/GameScreen.js†L1-L128】【F:src/components/GameScreen.js†L130-L205】
+  - `ResultScreen.js` — Displays round-complete or game-complete summaries with navigation actions.【F:src/components/ResultScreen.js†L1-L86】
+- `hooks/`
+  - `useGameLogic.js` — Custom hook encapsulating quiz state, round progression, scoring, option generation, and language persistence side effects.【F:src/hooks/useGameLogic.js†L1-L109】【F:src/hooks/useGameLogic.js†L111-L210】【F:src/hooks/useGameLogic.js†L212-L253】
+- `data/`
+  - `catalog.js` — Master catalog of plant species, exposing question-ready entries and lookup helpers for answer choices.【F:src/data/catalog.js†L1-L115】【F:src/data/catalog.js†L117-L141】
+  - `difficulties.js` — Defines difficulty tiers and maps question IDs to their difficulty level for round selection.【F:src/data/difficulties.js†L1-L20】
+- `i18n/`
+  - `uiTexts.js` — Provides localized interface strings (Russian/English) and a helper to select language bundles.【F:src/i18n/uiTexts.js†L1-L28】【F:src/i18n/uiTexts.js†L30-L34】
+- `utils/`
+  - `random.js` — Utility helpers for shuffling arrays and picking random elements used in question/option selection.【F:src/utils/random.js†L1-L18】
+
+## Application Flow Summary
+1. `index.html` loads the React runtime; `src/index.js` mounts `PlantQuizGame`.
+2. `PlantQuizGame` uses `useGameLogic` to manage quiz rounds and chooses between `GameScreen` (active round) and `ResultScreen` (between rounds or after completion).
+3. `useGameLogic` pulls plant data from `data/catalog.js`, groups questions by difficulty from `data/difficulties.js`, and relies on helpers in `gameConfig.js` and `utils/random.js` for selection, persistence, and responsiveness.
+4. UI text is localized via `i18n/uiTexts.js`, while language and viewport preferences persist using storage helpers in `gameConfig.js`.
