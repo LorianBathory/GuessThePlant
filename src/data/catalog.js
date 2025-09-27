@@ -60,18 +60,38 @@ export const speciesById = {
   49: { names:{ru:"Мирт", en:"Myrtle", sci:"Myrtus "} },
 
   // Новые с изображениями  
-  50:  { names:{ru:"Жакаранда", en:"Blue jacaranda", sci:"Jacaranda mimosifolia"},             image:"images/Jacaranda.JPG", wrongAnswers:[18] }, 
-  //Акация, Павловния
-  51:  { names:{ru:"Гранат", en:"Pomegranate", sci:"Punica granatum"},             image:"images/Pomegranate.JPG", wrongAnswers:[1, 2, 3] }, 
-  // Шиповник, Боярышник, Драгонфрут
-  52:  { names:{ru:"Смолосемянник", en:"Japanese pittosporum", sci:"Pittosporum tobira"},             image:"images/Pittosporum.JPG", wrongAnswers:[1, 2, 3] }, 
-  // Шеффлера, Яблоня
-  53:  { names:{ru:"Скабиоза", en:"Sweet scabious", sci:"Sixalix atropurpurea"},             image:"images/Scabious.JPG", wrongAnswers:[1, 2, 3] }, 
-  // Дикий лук 
-  54:  { names:{ru:"Лантана", en:"Common lantana", sci:"Lantana Camara"},             image:"images/Lantana.JPG", wrongAnswers:[1, 2, 3] }, 
-  // Вербена, Незабудка, Мята
-  55:  { names:{ru:"Гибискус", en:"Hibiscus", sci:"Hibiscus"},             image:"images/Hibiscus.JPG", wrongAnswers:[19, 5] } 
-  // Лаватера
+  50:  { names:{ru:"Жакаранда", en:"Blue jacaranda", sci:"Jacaranda mimosifolia"},             image:"images/Jacaranda.JPG", wrongAnswers:[18, 56, 57, 79] }, 
+  51:  { names:{ru:"Гранат", en:"Pomegranate", sci:"Punica granatum"},             image:"images/Pomegranate.JPG", wrongAnswers:[58, 59, 60] }, 
+  52:  { names:{ru:"Смолосемянник", en:"Japanese pittosporum", sci:"Pittosporum tobira"},             image:"images/Pittosporum.JPG", wrongAnswers:[61, 62] }, 
+  53:  { names:{ru:"Скабиоза", en:"Sweet scabious", sci:"Sixalix atropurpurea"},             image:"images/Scabious.JPG", wrongAnswers:[63] }, 
+  54:  { names:{ru:"Лантана", en:"Common lantana", sci:"Lantana Camara"},             image:"images/Lantana.JPG", wrongAnswers:[64, 65, 66] }, 
+  55:  { names:{ru:"Гибискус", en:"Hibiscus", sci:"Hibiscus"},             image:"images/Hibiscus.JPG", wrongAnswers:[67] },
+  
+  //без картинок
+  56: { names:{ru:"Акация", en:"Acacia", sci:"Acacia"} },
+  57: { names:{ru:"Павловния", en:"Princess Tree", sci:"Paulownia"} },
+  58: { names:{ru:"Шиповник", en:"Dog-rose", sci:"Rosa"} },
+  59: { names:{ru:"Боярышник", en:"Hawthorn", sci:"Crataegus"} },
+  60: { names:{ru:"Драгонфрут", en:"Dragon Fruit", sci:"Hylocereus"} },
+  61: { names:{ru:"Шеффлера", en:"Schefflera", sci:"Schefflera"} },
+  62: { names:{ru:"Яблоня", en:"Apple", sci:"Malus"} },
+  63: { names:{ru:"Дикий лук", en:"Wild Onion", sci:"Allium"} },
+  64: { names:{ru:"Вербена", en:"Verbena", sci:"Verbena"} },
+  65: { names:{ru:"Незабудка", en:"Forget-me-not", sci:"Myosotis"} },
+  66: { names:{ru:"Мята", en:"Mint", sci:"Mentha"} },
+  67: { names:{ru:"Лаватера", en:"Mallow", sci:"Lavatera"} },
+  68: { names:{ru:"Лаванда", en:"Lavender", sci:"Lavandula"} },
+  69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"} },
+  70: { names:{ru:"Физалис", en:"Groundcherry", sci:"Physalis"} },
+  71: { names:{ru:"Каштан", en:"Chestnut", sci:"Castanea"} },
+  72: { names:{ru:"Лопух", en:"Burdock", sci:"Arctium"} },
+  73: { names:{ru:"Астра", en:"Aster", sci:"Aster"} },
+  74: { names:{ru:"Флокс", en:"Phlox", sci:"Phlox"} },
+  75: { names:{ru:"Сирень", en:"Lilac", sci:"Syringa"} },
+  76: { names:{ru:"Петуния", en:"Petunia", sci:"Petunia"} },
+  77: { names:{ru:"Родомирт", en:"Rose Myrtle", sci:"Rhodomyrtus"} },
+  78: { names:{ru:"Картофельное дерево", en:"Potato Tree", sci:"Solanum"} },
+  79: { names:{ru:"Свинчатка", en:"Leadwort", sci:"Plumbago"} }
 
 };
 
