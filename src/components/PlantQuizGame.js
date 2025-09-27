@@ -257,6 +257,25 @@ export default function PlantQuizGame() {
   }
 
   // Экран завершения раунда
+  сonst desktopBackgroundPattern = !isMobile
+    ? React.createElement('div', {
+      key: 'background-pattern',
+      className: 'absolute inset-0 pointer-events-none flex justify-between px-10',
+      style: { zIndex: 0 }
+    }, ['left', 'right'].map(side => React.createElement('div', {
+      key: side,
+      className: 'flex flex-col justify-between h-full py-10'
+    }, Array.from({ length: 8 }).map((_, index) => React.createElement('div', {
+      key: `${side}-circle-${index}`,
+      className: 'rounded-full',
+      style: {
+        width: '24px',
+        height: '24px',
+        backgroundColor: '#C29C27'
+      }
+    })))))
+    : null;
+
   if (roundPhase === 'roundComplete') {
     const roundNumber = currentRoundIndex + 1;
     const nextRoundNumber = currentRoundIndex + 2;
@@ -264,13 +283,10 @@ export default function PlantQuizGame() {
     const startNextRoundText = (texts.startRoundButton || '').replace('{{round}}', nextRoundNumber);
 
     return React.createElement('div', {
-      className: 'min-h-screen flex items-center justify-center relative',
+      className: 'min-h-screen flex items-center justify-center relative overflow-hidden',
       style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
     }, [
-      !isMobile && React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-      !isMobile && React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
-      !isMobile && React.createElement('div', { key: 'decor3', className: 'absolute bottom-4 right-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-      !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      desktopBackgroundPattern,
       React.createElement('div', {
         key: 'round-result',
         className: 'p-8 shadow-lg text-center max-w-md mx-4 flex flex-col gap-4',
@@ -301,13 +317,10 @@ export default function PlantQuizGame() {
     const completedText = (texts.gameCompletedTitle || '').replace('{{score}}', score);
 
     return React.createElement('div', {
-      className: 'min-h-screen flex items-center justify-center relative',
+      className: 'min-h-screen flex items-center justify-center relative overflow-hidden',
       style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
     }, [
-      !isMobile && React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-      !isMobile && React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
-      !isMobile && React.createElement('div', { key: 'decor3', className: 'absolute bottom-4 right-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
-      !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      desktopBackgroundPattern,
       React.createElement('div', {
         key: 'result',
         className: 'p-8 shadow-lg text-center max-w-md mx-4 flex flex-col gap-4',
@@ -330,15 +343,10 @@ export default function PlantQuizGame() {
 
   // Основной экран
   return React.createElement('div', {
-    className: 'min-h-screen relative flex items-center justify-center',
+    className: 'min-h-screen relative flex items-center justify-center overflow-hidden',
     style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
   }, [
-    !isMobile && React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-24 h-1', style: { backgroundColor: '#C29C27' } }),
-    !isMobile && React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-40 h-1', style: { backgroundColor: '#C29C27' } }),
-    !isMobile && React.createElement('div', { key: 'decor3', className: 'absolute top-12 left-12 w-16 h-1', style: { backgroundColor: '#C29C27' } }),
-    !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-4 right-4 w-24 h-1', style: { backgroundColor: '#C29C27' } }),
-    !isMobile && React.createElement('div', { key: 'decor5', className: 'absolute bottom-8 right-8 w-40 h-1', style: { backgroundColor: '#C29C27' } }),
-    !isMobile && React.createElement('div', { key: 'decor6', className: 'absolute bottom-12 right-12 w-16 h-1', style: { backgroundColor: '#C29C27' } }),
+    desktopBackgroundPattern,
 
     React.createElement('div', { key: 'container', className: 'w-full max-w-5xl mx-auto relative z-10' }, [
       React.createElement('div', { key: 'header', className: 'flex justify-between items-center mb-6 flex-wrap gap-4' }, [
