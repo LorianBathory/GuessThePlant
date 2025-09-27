@@ -40,6 +40,8 @@ export default function PlantQuizGame()
     currentRoundIndex: game.currentRoundIndex,
     totalRounds: game.totalRounds,
     isMobile: game.isMobile,
+    plantLanguage: game.plantLanguage,
+    onPlantLanguageChange: game.changePlantLanguage,
     onStartNextRound: game.handleStartNextRound,
     onRestart: game.handleRestart
   });

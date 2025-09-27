@@ -1,4 +1,5 @@
-import { PLANT_LANGUAGES, INTERFACE_LANGUAGES } from '../gameConfig.js';
+import { INTERFACE_LANGUAGES } from '../gameConfig.js';
+import GameHeader from './GameHeader.js';
 
 function renderDesktopBackground(ReactGlobal, isMobile) {
   if (isMobile) {
@@ -68,50 +69,17 @@ export default function GameScreen({
   const totalQuestions = totalQuestionsInRound > 0 ? totalQuestionsInRound : questionsPerRound;
   const questionNumber = Math.min(currentQuestionIndex + 1, totalQuestions);
 
-  return createElement('div', {
-    className: 'min-h-screen relative flex items-center justify-center overflow-hidden',
-    style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
+  const content = createElement('div', {
+    key: 'main',
+    className: 'relative z-10 flex-1 w-full flex flex-col items-center'
   }, [
-    desktopBackgroundPattern,
-    createElement('div', { key: 'container', className: 'w-full max-w-5xl mx-auto relative z-10' }, [
-      createElement('div', { key: 'header', className: 'flex justify-between items-center mb-6 flex-wrap gap-4' }, [
-        createElement('div', {
-          key: 'progress-info',
-          className: 'flex flex-col',
-          style: { color: '#C29C27' }
-        }, [
-          createElement('span', {
-            key: 'round-info',
-            className: 'text-lg font-semibold'
-          }, `${texts.roundLabel || 'Round'} ${currentRoundIndex + 1}/${totalRounds}`),
-          createElement('span', {
-            key: 'progress',
-            className: 'text-2xl font-bold'
-          }, `${questionNumber}/${totalQuestions}`)
-        ]),
-        createElement('div', { key: 'right-section', className: 'flex items-center gap-4' }, [
-          createElement('div', {
-            key: 'score',
-            className: 'text-2xl font-bold',
-            style: { color: '#C29C27' }
-          }, `${texts.score}: ${score}`),
-          createElement('div', { key: 'lang-buttons', className: 'flex gap-2' },
-            PLANT_LANGUAGES.map(lang => createElement('button', {
-              key: lang,
-              onClick: () => onPlantLanguageChange(lang),
-              className: 'px-3 py-1 text-sm font-bold uppercase transition-all',
-              style: {
-                backgroundColor: plantLanguage === lang ? '#C29C27' : 'transparent',
-                color: plantLanguage === lang ? '#163B3A' : '#C29C27',
-                border: '2px solid #C29C27'
-              }
-            }, lang === 'sci' ? 'Sci' : lang.toUpperCase()))
-          )
-        ])
-      ]),
+    createElement('div', {
+      key: 'inner',
+      className: 'w-full max-w-5xl mx-auto flex flex-col items-center'
+    }, [
       createElement('div', {
         key: 'game-area',
-        className: 'shadow-lg',
+        className: 'w-full shadow-lg',
         style: {
           backgroundColor: '#163B3A',
           border: isMobile ? 'none' : '6px solid #C29C27',
@@ -215,4 +183,23 @@ export default function GameScreen({
       ])
     ])
   ]);
+
+  return createElement('div', {
+    className: 'min-h-screen relative flex flex-col overflow-hidden',
+    style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
+  }, [
+    desktopBackgroundPattern,
+    createElement(GameHeader, {
+      key: 'header',
+      texts,
+      currentRoundIndex,
+      totalRounds,
+      score,
+      questionNumber,
+      totalQuestions,
+      plantLanguage,
+      onPlantLanguageChange
+    }),
+    content
+  ].filter(Boolean));
 }

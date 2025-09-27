@@ -1,3 +1,5 @@
+import GameHeader from './GameHeader.js';
+
 function renderDesktopBackground(ReactGlobal, isMobile) {
   if (isMobile) {
     return null;
@@ -91,6 +93,8 @@ export default function ResultScreen({
   currentRoundIndex,
   totalRounds,
   isMobile,
+  plantLanguage,
+  onPlantLanguageChange,
   onStartNextRound,
   onRestart
 }) {
@@ -108,7 +112,28 @@ export default function ResultScreen({
     : renderGameComplete({ ReactGlobal, texts, score, onRestart });
 
   return createElement('div', {
-    className: 'min-h-screen flex items-center justify-center relative overflow-hidden',
+    className: 'min-h-screen relative flex flex-col overflow-hidden',
     style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
-  }, [desktopBackgroundPattern, content]);
+  }, [
+    desktopBackgroundPattern,
+    createElement(GameHeader, {
+      key: 'header',
+      texts,
+      currentRoundIndex,
+      totalRounds,
+      score,
+      plantLanguage,
+      onPlantLanguageChange,
+      showQuestionProgress: false
+    }),
+    createElement('div', {
+      key: 'main',
+      className: 'relative z-10 flex-1 w-full flex items-center justify-center'
+    }, [
+      createElement('div', {
+        key: 'content-wrapper',
+        className: 'w-full max-w-5xl mx-auto flex justify-center'
+      }, [content])
+    ])
+  ].filter(Boolean));
 }
