@@ -30,22 +30,6 @@ export const uiTexts = {
     startRoundButton: "Start Round {{round}}",
     gameCompletedTitle: "You completed the game! Your score: {{score}}",
     restart: "Restart"
-  },
-  sci: {
-    question: "Quae planta est?",
-    score: "Score",
-    correct: "Recte!",
-    incorrect: "Perperam!",
-    result: "Score",
-    resultPoints: "points",
-    playAgain: "Ludere iterum",
-    instruction: "Elige nomen scientificum rectum",
-    interfaceLanguageLabel: "Lingua interfaciei",
-    roundLabel: "Orbis",
-    roundCompleted: "Orbis {{round}} perfectus est!",
-    startRoundButton: "Incipe Orbem {{round}}",
-    gameCompletedTitle: "Ludum perfecisti! Puncta tua: {{score}}",
-    restart: "Iterum incipe"
   }
 };
 
