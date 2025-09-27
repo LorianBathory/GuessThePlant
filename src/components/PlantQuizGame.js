@@ -1,8 +1,12 @@
-const { useState, useEffect, useCallback } = React;
+import React, { useState, useEffect, useCallback } from 'react';
+import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
+import { shuffleArray } from '../utils/random.js';
+import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
+import { difficultyLevels } from '../data/difficulties.js';
 
 const QUESTIONS_PER_ROUND = 6;
 
-const AVAILABLE_LANGUAGES = ['ru', 'en', 'sci'];
+const PLANT_LANGUAGES = ['ru', 'en', 'sci'];
 const INTERFACE_LANGUAGES = ['ru', 'en'];
 const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
 const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
@@ -22,13 +26,8 @@ function getStoredPlantLanguage() {
   }
 
   const stored = window.localStorage.getItem(PLANT_LANGUAGE_STORAGE_KEY);
-  return stored && AVAILABLE_LANGUAGES.includes(stored) ? stored : null;
+  return stored && PLANT_LANGUAGES.includes(stored) ? stored : null;
 }
-
-import { plants, choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
-import { shuffleArray } from '../utils/random.js';
-import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
-import { difficultyLevels } from '../data/difficulties.js';
 
 const ROUNDS = Object.freeze([
   { id: 1, difficulty: difficultyLevels.EASY },
@@ -56,8 +55,8 @@ export default function PlantQuizGame() {
     }
 
     const storedInterface = getStoredInterfaceLanguage();
-    if (storedInterface) {
-      return storedInterface === defaultLang ? defaultLang : storedInterface;
+    if (storedInterface && PLANT_LANGUAGES.includes(storedInterface)) {
+      return storedInterface;
     }
 
     return defaultLang;
@@ -217,6 +216,10 @@ export default function PlantQuizGame() {
 
   // Изменение языка названий растений
   function changePlantLanguage(newLang) {
+    if (!PLANT_LANGUAGES.includes(newLang)) {
+      return;
+    }
+
     setPlantLanguage(newLang);
   }
 
@@ -271,13 +274,48 @@ export default function PlantQuizGame() {
       }
     })))))
     : null;
-
   if (roundPhase === 'roundComplete') {
     const roundNumber = currentRoundIndex + 1;
     const nextRoundNumber = currentRoundIndex + 2;
     const roundCompletedText = (texts.roundCompleted || '').replace('{{round}}', roundNumber);
     const startNextRoundText = (texts.startRoundButton || '').replace('{{round}}', nextRoundNumber);
 
+    return React.createElement('div', {
+      className: 'min-h-screen flex items-center justify-center relative',
+      style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
+    }, [
+      !isMobile && React.createElement('div', { key: 'decor1', className: 'absolute top-4 left-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor2', className: 'absolute top-8 left-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor3', className: 'absolute bottom-4 right-4 w-20 h-1', style: { backgroundColor: '#C29C27' } }),
+      !isMobile && React.createElement('div', { key: 'decor4', className: 'absolute bottom-8 right-8 w-32 h-1', style: { backgroundColor: '#C29C27' } }),
+      React.createElement('div', {
+        key: 'round-result',
+        className: 'p-8 shadow-lg text-center max-w-md mx-4 flex flex-col gap-4',
+        style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+      }, [
+        React.createElement('h1', {
+          key: 'round-title',
+          className: 'text-3xl font-bold',
+          style: { color: '#C29C27' }
+        }, roundCompletedText || `Round ${roundNumber} completed!`),
+        React.createElement('p', {
+          key: 'round-score',
+          className: 'text-2xl font-semibold',
+          style: { color: '#C29C27' }
+        }, `${texts.score}: ${score}`),
+        React.createElement('button', {
+          key: 'next-round',
+          onClick: handleStartNextRound,
+          className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
+          style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
+        }, startNextRoundText || 'Start next round')
+      ])
+    ]);
+  }
+
+  // Экран завершения игры
+  if (roundPhase === 'gameComplete') {
+    const completedText = (texts.gameCompletedTitle || '').replace('{{score}}', score);
     return React.createElement('div', {
       className: 'min-h-screen flex items-center justify-center relative overflow-hidden',
       style: { backgroundColor: '#163B3A', padding: isMobile ? '3px' : '16px' }
@@ -371,7 +409,7 @@ export default function PlantQuizGame() {
           }, `${texts.score}: ${score}`),
 
           React.createElement('div', { key: 'lang-buttons', className: 'flex gap-2' },
-            AVAILABLE_LANGUAGES.map(lang =>
+            PLANT_LANGUAGES.map(lang =>
               React.createElement('button', {
                 key: lang,
                 onClick: () => changePlantLanguage(lang),

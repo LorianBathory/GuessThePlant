@@ -11,7 +11,7 @@ export const uiTexts = {
     interfaceLanguageLabel: "Язык интерфейса",
     roundLabel: "Раунд",
     roundCompleted: "Раунд {{round}} завершён!",
-    startRoundButton: "Начать Раунд {{round}}",
+    startRoundButton: "Начать раунд {{round}}",
     gameCompletedTitle: "Вы прошли игру! Ваши баллы: {{score}}",
     restart: "Начать заново"
   },
