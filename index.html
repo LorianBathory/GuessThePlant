@@ -10,6 +10,35 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <script>
+    (function patchModuleFetch() {
+      const originalFetch = window.fetch;
+
+      window.fetch = async function patchedFetch(input, init) {
+        const response = await originalFetch(input, init);
+        const requestUrl = typeof input === 'string' ? input : input && input.url;
+
+        if (requestUrl && requestUrl.endsWith('.jsx')) {
+          const contentType = response.headers.get('content-type') || '';
+
+          if (!contentType || /(?:application\/octet-stream|text\/plain)/i.test(contentType)) {
+            const sourceCode = await response.text();
+            const headers = new Headers(response.headers);
+            headers.set('Content-Type', 'text/javascript');
+
+            return new Response(sourceCode, {
+              status: response.status,
+              statusText: response.statusText,
+              headers
+            });
+          }
+        }
+
+        return response;
+      };
+    }());
+  </script>
+
   <style>
     body {
       margin: 0;
