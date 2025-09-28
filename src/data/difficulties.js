@@ -10,6 +10,20 @@ export const questionIdsByDifficulty = Object.freeze({
   [difficultyLevels.HARD]: Object.freeze([1, 32, 34, 50, 53, 52, 77, 78, 79])
 });
 
+export const imageIdsByDifficulty = Object.freeze({
+  [difficultyLevels.MEDIUM]: Object.freeze(['p011', 'p014', 'p021', 'p035']),
+  [difficultyLevels.HARD]: Object.freeze(['p018'])
+});
+
+export const imageDifficultyOverrides = Object.freeze(
+  Object.entries(imageIdsByDifficulty).reduce((acc, [difficulty, ids]) => {
+    ids.forEach(id => {
+      acc[id] = difficulty;
+    });
+    return acc;
+  }, {})
+);
+
 const difficultyByQuestionId = Object.freeze(
   Object.entries(questionIdsByDifficulty).reduce((acc, [difficulty, ids]) => {
     ids.forEach(id => {
@@ -21,4 +35,8 @@ const difficultyByQuestionId = Object.freeze(
 
 export function getDifficultyByQuestionId(questionId) {
   return difficultyByQuestionId[questionId] || null;
+}
+
+export function getDifficultyByImageId(imageId) {
+  return imageDifficultyOverrides[imageId] || null;
 }
