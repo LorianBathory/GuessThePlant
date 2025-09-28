@@ -10,6 +10,7 @@ export const INTERFACE_LANGUAGES = ['ru', 'en'];
 
 export const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
 export const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
+export const SEEN_IMAGE_IDS_STORAGE_KEY = 'gtp-seen-image-ids';
 
 export const ROUNDS = Object.freeze([
   { id: 1, difficulty: difficultyLevels.EASY },
@@ -20,6 +21,137 @@ export const ROUNDS = Object.freeze([
 export const TOTAL_ROUNDS = ROUNDS.length;
 
 const usedPlantIdsAcrossGame = new Set();
+const seenImageIdsAcrossSessions = new Set();
+let seenImageIdsLoaded = false;
+
+function ensureSeenImageIdsLoaded() {
+  if (seenImageIdsLoaded) {
+    return;
+  }
+
+  seenImageIdsLoaded = true;
+
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    const stored = window.localStorage.getItem(SEEN_IMAGE_IDS_STORAGE_KEY);
+    if (!stored) {
+      return;
+    }
+
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) {
+      return;
+    }
+
+    parsed.forEach(id => {
+      if (typeof id === 'string') {
+        seenImageIdsAcrossSessions.add(id);
+      }
+    });
+  } catch (error) {
+    throw new StorageError('Не удалось прочитать историю просмотренных изображений из localStorage.', {
+      cause: error
+    });
+  }
+}
+
+function persistSeenImageIds() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    if (seenImageIdsAcrossSessions.size === 0) {
+      window.localStorage.removeItem(SEEN_IMAGE_IDS_STORAGE_KEY);
+      return;
+    }
+
+    window.localStorage.setItem(
+      SEEN_IMAGE_IDS_STORAGE_KEY,
+      JSON.stringify(Array.from(seenImageIdsAcrossSessions))
+    );
+  } catch (error) {
+    throw new StorageError('Не удалось сохранить историю просмотренных изображений. Проверьте доступ к localStorage.', {
+      cause: error
+    });
+  }
+}
+
+function markImagesAsSeen(imageIds) {
+  if (!Array.isArray(imageIds) || imageIds.length === 0) {
+    return;
+  }
+
+  ensureSeenImageIdsLoaded();
+
+  let hasChanges = false;
+  imageIds.forEach(id => {
+    if (typeof id === 'string' && !seenImageIdsAcrossSessions.has(id)) {
+      seenImageIdsAcrossSessions.add(id);
+      hasChanges = true;
+    }
+  });
+
+  if (hasChanges) {
+    persistSeenImageIds();
+  }
+}
+
+function isImageSeen(imageId) {
+  if (typeof imageId !== 'string') {
+    return false;
+  }
+
+  ensureSeenImageIdsLoaded();
+  return seenImageIdsAcrossSessions.has(imageId);
+}
+
+export function clearSeenImagesTracking() {
+  ensureSeenImageIdsLoaded();
+  if (seenImageIdsAcrossSessions.size > 0) {
+    seenImageIdsAcrossSessions.clear();
+  }
+
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.removeItem(SEEN_IMAGE_IDS_STORAGE_KEY);
+  } catch (error) {
+    throw new StorageError('Не удалось очистить историю просмотренных изображений. Проверьте доступ к localStorage.', {
+      cause: error
+    });
+  }
+}
+
+export function hasUnseenImagesForDifficulty(difficulty) {
+  ensureSeenImageIdsLoaded();
+
+  return plants
+    .filter(plant => plant.difficulty === difficulty)
+    .some(plant => !isImageSeen(plant.imageId));
+}
+
+export function prepareSeenImagesForRound(roundIndex) {
+  const thirdRoundIndex = 2;
+
+  if (roundIndex !== thirdRoundIndex) {
+    return;
+  }
+
+  const firstRound = ROUNDS[0];
+  if (!firstRound) {
+    return;
+  }
+
+  if (!hasUnseenImagesForDifficulty(firstRound.difficulty)) {
+    clearSeenImagesTracking();
+  }
+}
 
 export function getQuestionsForRound(difficulty) {
   if (!Array.isArray(plants)) {
@@ -37,25 +169,30 @@ export function getQuestionsForRound(difficulty) {
   }
 
   const shuffledPool = shuffleArray(pool);
-  const selected = [];
   const seenInRound = new Set();
+  const unseenCandidates = [];
+  const seenCandidates = [];
 
-  for (const plant of shuffledPool) {
-    if (selected.length >= roundLength) {
-      break;
-    }
-
+  shuffledPool.forEach(plant => {
     if (usedPlantIdsAcrossGame.has(plant.id) || seenInRound.has(plant.id)) {
-      continue;
+      return;
     }
 
-    selected.push(plant);
+    if (isImageSeen(plant.imageId)) {
+      seenCandidates.push(plant);
+    } else {
+      unseenCandidates.push(plant);
+    }
+
     seenInRound.add(plant.id);
-  }
+  });
 
-  selected.forEach(plant => usedPlantIdsAcrossGame.add(plant.id));
+  const prioritized = unseenCandidates.concat(seenCandidates).slice(0, roundLength);
 
-  return selected;
+  prioritized.forEach(plant => usedPlantIdsAcrossGame.add(plant.id));
+  markImagesAsSeen(prioritized.map(plant => plant.imageId));
+
+  return prioritized;
 }
 
 export function resetUsedPlantTracking() {
