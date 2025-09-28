@@ -9,15 +9,17 @@
 ## Source Directory (`src/`)
 - `index.js` — Bootstraps the React application by rendering `<PlantQuizGame />` into the DOM root.【F:src/index.js†L1-L5】
 - `gameConfig.js` — Centralizes game constants (round definitions, language options) and helper utilities for persistence and viewport detection.【F:src/gameConfig.js†L1-L67】【F:src/gameConfig.js†L69-L98】
-- `components/`
-  - `PlantQuizGame.js` — Top-level component that wires game logic into either the in-round `GameScreen` or the post-round `ResultScreen`.【F:src/components/PlantQuizGame.js†L1-L38】
+  - `components/`
+    - `PlantQuizGame.js` — Top-level component that wires game logic into either the in-round `GameScreen` or the post-round `ResultScreen`.【F:src/components/PlantQuizGame.js†L1-L55】
   - `GameScreen.js` — Renders the active quiz round UI, including plant imagery, answer buttons, language controls, and progress indicators.【F:src/components/GameScreen.js†L1-L128】【F:src/components/GameScreen.js†L130-L205】
   - `ResultScreen.js` — Displays round-complete or game-complete summaries with navigation actions.【F:src/components/ResultScreen.js†L1-L86】
 - `hooks/`
   - `useGameLogic.js` — Custom hook encapsulating quiz state, round progression, scoring, option generation, and language persistence side effects.【F:src/hooks/useGameLogic.js†L1-L109】【F:src/hooks/useGameLogic.js†L111-L210】【F:src/hooks/useGameLogic.js†L212-L253】
 - `data/`
-  - `catalog.js` — Master catalog of plant species, exposing question-ready entries and lookup helpers for answer choices.【F:src/data/catalog.js†L1-L115】【F:src/data/catalog.js†L117-L141】
-  - `difficulties.js` — Defines difficulty tiers and maps question IDs to their difficulty level for round selection.【F:src/data/difficulties.js†L1-L20】
+  - `plantNames.js` — Localization table for plant names in Russian, English, and Latin, keyed by catalog ID.【F:src/data/plantNames.js†L1-L81】
+  - `images.js` — Canonical list of plant images with unique IDs and helpers to look up image metadata by plant.【F:src/data/images.js†L1-L44】
+  - `catalog.js` — Master catalog that merges localized names, supplemental metadata, and image definitions into quiz-ready entries.【F:src/data/catalog.js†L1-L103】【F:src/data/catalog.js†L105-L141】
+  - `difficulties.js` — Defines difficulty tiers and maps both question IDs and specific image IDs to their difficulty level.【F:src/data/difficulties.js†L1-L25】
 - `i18n/`
   - `uiTexts.js` — Provides localized interface strings (Russian/English) and a helper to select language bundles.【F:src/i18n/uiTexts.js†L1-L28】【F:src/i18n/uiTexts.js†L30-L34】
 - `utils/`

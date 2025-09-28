@@ -1,14 +1,20 @@
 import useGameLogic from '../hooks/useGameLogic.js';
 import GameScreen from './GameScreen.js';
 import ResultScreen from './ResultScreen.js';
+import { plants } from '../data/catalog.js';
 import { DataLoadingError } from '../utils/errorHandling.js';
 
-export default function PlantQuizGame() 
-  {
+export default function PlantQuizGame() {
   const game = useGameLogic();
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
     throw new DataLoadingError('React не найден. Проверьте загрузку React перед запуском игры.');
+  }
+
+  if (!Array.isArray(plants) || plants.length === 0) {
+    throw new DataLoadingError(
+      'Каталог растений не загружен. Убедитесь, что data/*.js подключены как ESM-модули.'
+    );
   }
 
   const { createElement } = ReactGlobal;
