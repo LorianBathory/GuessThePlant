@@ -21,7 +21,7 @@ export const speciesById = {
   14: { names:{ru:"Камассия",              en:"Camas",       sci:"Camassia"} },
   15: { names:{ru:"Глобулярия",            en:"Globe Daisy", sci:"Globularia"} },
   16: { names:{ru:"Рябчик",                en:"Fritillary",  sci:"Fritillaria"} },
-  17: { names:{ru:"Клематис",              en:"Clematis",    sci:"Clematis"} },
+  17: { names:{ru:"Клематис",              en:"Clematis",    sci:"Clematis"}, image:"images/Clematis_Medium.JPG" },
   18: { names:{ru:"Глициния",              en:"Wisteria",    sci:"Wisteria"} },
   19: { names:{ru:"Олеандр",               en:"Oleander",    sci:"Nerium oleander"} },
   20: { names:{ru:"Азалия",                en:"Azalea",      sci:"Rhododendron"} },
@@ -31,9 +31,13 @@ export const speciesById = {
   24: { names:{ru:"Магнолия",              en:"Magnolia",    sci:"Magnolia"} },
   25: { names:{ru:"Нивяник",               en:"Shasta Daisy", sci:"Leucanthemum x superbum"} },
   26: { names:{ru:"Георгин",               en:"Dahlia",      sci:"Dahlia"}, image:"images/Dahlia.JPG", wrongAnswers:[33, 73, 77, 39]},
-  27: { names:{ru:"Эхинацея",              en:"Coneflower",  sci:"Echinacea"} },
+  27: { names:{ru:"Эхинацея",              en:"Coneflower",  sci:"Echinacea"}, image:"images/Echinacea_AlexasFotos.JPG", wrongAnswers:[6, 26] },
   28: { names:{ru:"Арктотис",              en:"African Daisy", sci:"Arctotis"} },
-  29: { names:{ru:"Хризантема", en:"Chrysanthemum", sci:"Chrysanthemum"} },
+  29: { names:{ru:"Хризантема", en:"Chrysanthemum", sci:"Chrysanthemum"},
+       images:[
+         { src:"images/Chrysanthemum_Easy_AliefBaldwin.JPG" },
+         { src:"images/Chrysanthemum_Medium_Hartono Subagio.JPG", difficulty: difficultyLevels.MEDIUM }
+       ], wrongAnswers:[7, 41, 42] },
 
   // Новые с изображениями (игровые вопросы уже сейчас)
   30: { names:{ru:"Остеоспермум",          en:"African Daisy", sci:"Osteospermum"},       image:"images/Osteospermum.JPG", wrongAnswers:[38, 39, 40, 6, 25, 16] },
@@ -58,7 +62,10 @@ export const speciesById = {
   44: { names:{ru:"Ананас", en:"Pineapple", sci:"Ananas comosus"} },
   45: { names:{ru:"Юкка", en:"Yucca ", sci:"Yucca "} },
   46: { names:{ru:"Пион", en:"Peony", sci:"Paeonia"} },
-  47: { names:{ru:"Анемона корончатая", en:"Рoppy anemone", sci:"Anemone coronaria"} },
+  47: { names:{ru:"Анемона", en:"Anemone", sci:"Anemone"},  images:[
+    { src:"images/Anemone_Medium_Catalin M.JPG" },
+    { src:"images/Anemone_Medium_NikoD.JPG"}
+  ], wrongAnswers:[76] }, },
   48: { names:{ru:"Каллистемон", en:"Bottlebrushes", sci:"Callistemon"} },
   49: { names:{ru:"Мирт", en:"Myrtle", sci:"Myrtus "} },
 
@@ -88,7 +95,7 @@ export const speciesById = {
   70: { names:{ru:"Физалис", en:"Groundcherry", sci:"Physalis"} },
   71: { names:{ru:"Каштан", en:"Chestnut", sci:"Castanea"} },
   72: { names:{ru:"Лопух", en:"Burdock", sci:"Arctium"} },
-  73: { names:{ru:"Астра", en:"Aster", sci:"Aster"} },
+  73: { names:{ru:"Астра", en:"Aster", sci:"Aster"}, image:"images/Aster_Medium_HartonoSubagio.JPG", wrongAnswers:[29] },
   74: { names:{ru:"Флокс", en:"Phlox", sci:"Phlox"} },
   75: { names:{ru:"Сирень", en:"Lilac", sci:"Syringa"} },
   76: { names:{ru:"Петуния", en:"Petunia", sci:"Petunia"} },
