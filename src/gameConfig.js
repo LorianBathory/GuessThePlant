@@ -19,17 +19,47 @@ export const ROUNDS = Object.freeze([
 
 export const TOTAL_ROUNDS = ROUNDS.length;
 
+const usedPlantIdsAcrossGame = new Set();
+
 export function getQuestionsForRound(difficulty) {
   if (!Array.isArray(plants)) {
     throw new DataLoadingError('Данные с растениями повреждены или не загружены.');
   }
 
   const pool = plants.filter(plant => plant.difficulty === difficulty);
-  const roundLength = Math.min(QUESTIONS_PER_ROUND, pool.length);
+  const uniqueAvailableIds = new Set(
+    pool.filter(plant => !usedPlantIdsAcrossGame.has(plant.id)).map(plant => plant.id)
+  );
+
+  const roundLength = Math.min(QUESTIONS_PER_ROUND, uniqueAvailableIds.size);
   if (roundLength === 0) {
     return [];
   }
-  return shuffleArray(pool).slice(0, roundLength);
+
+  const shuffledPool = shuffleArray(pool);
+  const selected = [];
+  const seenInRound = new Set();
+
+  for (const plant of shuffledPool) {
+    if (selected.length >= roundLength) {
+      break;
+    }
+
+    if (usedPlantIdsAcrossGame.has(plant.id) || seenInRound.has(plant.id)) {
+      continue;
+    }
+
+    selected.push(plant);
+    seenInRound.add(plant.id);
+  }
+
+  selected.forEach(plant => usedPlantIdsAcrossGame.add(plant.id));
+
+  return selected;
+}
+
+export function resetUsedPlantTracking() {
+  usedPlantIdsAcrossGame.clear();
 }
 
 export function getStoredInterfaceLanguage() {

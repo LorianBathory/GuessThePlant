@@ -13,7 +13,8 @@ import {
   storeInterfaceLanguage,
   storePlantLanguage,
   getInitialIsMobile,
-  subscribeToViewportChange
+  subscribeToViewportChange,
+  resetUsedPlantTracking
 } from '../gameConfig.js';
 import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
 
@@ -101,6 +102,7 @@ export default function useGameLogic() {
   }, []);
 
   const startGame = useCallback(() => {
+    resetUsedPlantTracking();
     startRound(0, true);
   }, [startRound]);
 

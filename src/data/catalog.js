@@ -1,4 +1,4 @@
-import { getDifficultyByQuestionId } from './difficulties.js';
+import { getDifficultyByQuestionId, difficultyLevels } from './difficulties.js';
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
 // У некоторых есть image => они могут быть вопросами; у остальных пока только варианты.
@@ -37,7 +37,10 @@ export const speciesById = {
 
   // Новые с изображениями (игровые вопросы уже сейчас)
   30: { names:{ru:"Остеоспермум",          en:"African Daisy", sci:"Osteospermum"},       image:"images/Osteospermum.JPG", wrongAnswers:[38, 39, 40, 6, 25, 16] },
-  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               image:"images/RoseEasy_HartonoSubagio.JPG", wrongAnswers:[7, 41, 42] },
+  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               images:[
+    { src:"images/RoseEasy_HartonoSubagio.JPG" },
+    { src:"images/Rose_Hard.JPG", difficulty: difficultyLevels.HARD }
+  ], wrongAnswers:[7, 41, 42] },
   32: { names:{ru:"Гузмания",              en:"Scarlet Star",  sci:"Guzmania lingulata"}, image:"images/Guzmania.JPG", wrongAnswers:[43, 44, 45] },
   33: { names:{ru:"Мак",                   en:"Poppy",         sci:"Papaver"},            image:"images/Poppy.JPG", wrongAnswers:[31, 47, 46]},
   34: { names:{ru:"Похутукава",            en:"Pohutukawa",    sci:"Metrosideros excelsa"}, image:"images/Pohutukawa.JPG", wrongAnswers:[43, 48, 49] },
@@ -105,12 +108,26 @@ export const ALL_CHOICE_IDS = Object.freeze(
 );
 
 // Растения, доступные как ВОПРОСЫ прямо сейчас (есть image):
+// Каждое растение может содержать несколько изображений (см. поле images).
+// Для каждого снимка можно указать собственную сложность через поле difficulty.
+// Если она не задана, применяется общее правило из difficulties.js.
+// questionVariantId остаётся уникальным идентификатором конкретного снимка,
+// при этом поле id всегда соответствует идентификатору растения для ответов.
 export const plants = Object.entries(speciesById)
-  .filter(([, v]) => !!v.image)
-  .map(([id, v]) => ({
-    id: Number(id),
-    image: v.image,
-    names: v.names,
-    wrongAnswers: v.wrongAnswers,
-    difficulty: getDifficultyByQuestionId(Number(id))
-  }));
+  .flatMap(([id, v]) => {
+    const numericId = Number(id);
+    const imageEntries = Array.isArray(v.images)
+      ? v.images
+      : (v.image ? [{ src: v.image }] : []);
+
+    return imageEntries
+      .filter(imageEntry => imageEntry && typeof imageEntry.src === 'string')
+      .map((imageEntry, index) => ({
+        id: numericId,
+        image: imageEntry.src,
+        names: v.names,
+        wrongAnswers: v.wrongAnswers,
+        difficulty: imageEntry.difficulty || getDifficultyByQuestionId(numericId),
+        questionVariantId: `${numericId}-${index}`
+      }));
+  });
