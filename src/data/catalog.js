@@ -49,17 +49,17 @@ const speciesCatalog = Object.freeze({
     88: { images: ['p060', 'p061'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
     89: { images: ['p079'], wrongAnswers: [25] }, //Santolina временный wrongAnswer +
     90: { images: ['p058'], wrongAnswers: [26] }, //Fagus временный wrongAnswer +
-    91: { images: ['p049', 'p050'], wrongAnswers: [43, 44] }, //Begonia временный wrongAnswer
-    92: { images: ['p055'], wrongAnswers: [43, 44] }, //Ranunculus временный wrongAnswer
-    93: { images: ['p055'], wrongAnswers: [43, 44] }, //Syngonium временный wrongAnswer
-    94: { images: ['p055'], wrongAnswers: [43, 44] }, //Orchid временный wrongAnswer
-    95: { images: ['p055'], wrongAnswers: [43, 44] }, //Banana временный wrongAnswer
-    96: { images: ['p055'], wrongAnswers: [43, 44] }, //Zamioculcas временный wrongAnswer
-    97: { images: ['p055'], wrongAnswers: [43, 44] }, //Tagetes временный wrongAnswer
-    98: { images: ['p055'], wrongAnswers: [43, 44] }, //Passiflora временный wrongAnswer
+    91: { images: ['p049', 'p050'], wrongAnswers: [27] }, //Begonia временный wrongAnswer+
+    92: { images: ['p074', 'p75'], wrongAnswers: [28] }, //Ranunculus временный wrongAnswer+
+    93: { images: ['p081'], wrongAnswers: [80, 81] }, //Syngonium временный wrongAnswer+
+    //94: { images: ['p055'], wrongAnswers: [43, 44] }, //Orchid временный wrongAnswer
+    //95: { images: ['p055'], wrongAnswers: [43, 44] }, //Banana временный wrongAnswer
+    //96: { images: ['p055'], wrongAnswers: [43, 44] }, //Zamioculcas временный wrongAnswer
+    //97: { images: ['p055'], wrongAnswers: [43, 44] }, //Tagetes временный wrongAnswer
+    //98: { images: ['p055'], wrongAnswers: [43, 44] }, //Passiflora временный wrongAnswer
     // 99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
-    100: { images: ['p055'], wrongAnswers: [43, 44] }, //Sunflower временный wrongAnswer
-    101: { images: ['p055'], wrongAnswers: [43, 44] }, //Cosmos временный wrongAnswer
+    //100: { images: ['p055'], wrongAnswers: [43, 44] }, //Sunflower временный wrongAnswer
+    //101: { images: ['p055'], wrongAnswers: [43, 44] }, //Cosmos временный wrongAnswer
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
