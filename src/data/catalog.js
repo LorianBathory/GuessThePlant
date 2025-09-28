@@ -37,7 +37,29 @@ const speciesCatalog = Object.freeze({
   75: { images: ['p039'] },
   77: { images: ['p040'], wrongAnswers: [58, 48, 57] },
   78: { images: ['p041'], wrongAnswers: [76] },
-  79: { images: ['p042'], wrongAnswers: [18] }
+  79: { images: ['p042'], wrongAnswers: [18] },
+  80: { images: ['p053'], wrongAnswers: [17] }, //временный wrongAnswer +
+  81: { images: ['p059'], wrongAnswers: [19] }, //временный wrongAnswer +
+  82: { images: ['p084'], wrongAnswers: [20] }, //viola. временный wrongAnswer +
+  83: { images: ['p055'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
+  84: { images: ['p062'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
+  85: { images: ['p051'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
+    86: { images: ['p071', 'p072'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
+     //87. Lotus пока не залит.
+    88: { images: ['p060', 'p061'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
+    89: { images: ['p079'], wrongAnswers: [25] }, //Santolina временный wrongAnswer +
+    90: { images: ['p058'], wrongAnswers: [26] }, //Fagus временный wrongAnswer +
+    91: { images: ['p049', 'p050'], wrongAnswers: [43, 44] }, //Begonia временный wrongAnswer
+    92: { images: ['p055'], wrongAnswers: [43, 44] }, //Ranunculus временный wrongAnswer
+    93: { images: ['p055'], wrongAnswers: [43, 44] }, //Syngonium временный wrongAnswer
+    94: { images: ['p055'], wrongAnswers: [43, 44] }, //Orchid временный wrongAnswer
+    95: { images: ['p055'], wrongAnswers: [43, 44] }, //Banana временный wrongAnswer
+    96: { images: ['p055'], wrongAnswers: [43, 44] }, //Zamioculcas временный wrongAnswer
+    97: { images: ['p055'], wrongAnswers: [43, 44] }, //Tagetes временный wrongAnswer
+    98: { images: ['p055'], wrongAnswers: [43, 44] }, //Passiflora временный wrongAnswer
+    // 99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
+    100: { images: ['p055'], wrongAnswers: [43, 44] }, //Sunflower временный wrongAnswer
+    101: { images: ['p055'], wrongAnswers: [43, 44] }, //Cosmos временный wrongAnswer
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.

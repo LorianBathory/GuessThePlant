@@ -80,7 +80,7 @@ export const plantNamesById = Object.freeze({
   79: { ru: "Свинчатка", en: "Leadwort", sci: "Plumbago" },
   80: { ru: "Каладиум", en: "Caladium", sci: "Caladium bicolor" },
   81: { ru: "Хоста", en: "Hosta", sci: "Hosta" },
-  82: { ru: "Анютины глазки", en: "Pansy", sci: "Viola tricolor var. hortensis" },
+  82: { ru: "Анютины глазки", en: "Pansy", sci: "Viola tricolor var. hortensis" }, //
   83: { ru: "Кампанула", en: "Bellflower", sci: "Campanula" },
   84: { ru: "Кольраби", en: "Kohlrabi", sci: "Brassica oleracea Gongylodes Group" },
   85: { ru: "Будлея", en: "Butterfly bush", sci: "Buddleja davidii" },
