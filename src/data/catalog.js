@@ -1,50 +1,67 @@
 import { getDifficultyByQuestionId, getDifficultyByImageId } from './difficulties.js';
 import { plantNamesById } from './plantNames.js';
-import { getImagesByPlantId } from './images.js';
+import { plantImagesById } from './images.js';
 
-// Дополнительные данные для видов (кроме локализации и списка изображений).
-const speciesAdditionalData = {
-  1:  { wrongAnswers: [7, 8, 9] },
-  2:  { wrongAnswers: [10, 11, 12] },
-  3:  { wrongAnswers: [13, 14, 15, 16] },
-  4:  { wrongAnswers: [17, 18, 19, 20] },
-  5:  { wrongAnswers: [20, 21, 31, 23, 24] },
-  6:  { wrongAnswers: [25, 26, 27, 28, 29] },
-  26: { wrongAnswers: [33, 73, 77, 39] },
-  27: { wrongAnswers: [6, 26] },
-  29: { wrongAnswers: [7, 41, 42] },
-  30: { wrongAnswers: [38, 39, 40, 6, 25, 16] },
-  31: { wrongAnswers: [7, 41, 42] },
-  32: { wrongAnswers: [43, 44, 45] },
-  33: { wrongAnswers: [31, 47, 46] },
-  34: { wrongAnswers: [43, 48, 49] },
-  35: { wrongAnswers: [16, 36, 37] },
-  41: { wrongAnswers: [39, 40, 67] },
-  46: { wrongAnswers: [31, 33] },
-  47: { wrongAnswers: [76] },
-  50: { wrongAnswers: [18, 56, 57, 79] },
-  51: { wrongAnswers: [58, 59, 60] },
-  52: { wrongAnswers: [61, 62] },
-  53: { wrongAnswers: [63] },
-  54: { wrongAnswers: [64, 65, 66] },
-  55: { wrongAnswers: [67] },
-  69: { wrongAnswers: [31, 22] },
-  73: { wrongAnswers: [29] },
-  77: { wrongAnswers: [58, 48, 57] },
-  78: { wrongAnswers: [76] },
-  79: { wrongAnswers: [18] }
-};
+// Дополнительные данные для видов (кроме локализации).
+const speciesCatalog = Object.freeze({
+  1:  { images: ['p001'], wrongAnswers: [7, 8, 9] },
+  2:  { images: ['p002'], wrongAnswers: [10, 11, 12] },
+  3:  { images: ['p003'], wrongAnswers: [13, 14, 15, 16] },
+  4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 20] },
+  5:  { images: ['p005', 'p043'], wrongAnswers: [20, 21, 31, 23, 24] },
+  6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 28, 29] },
+  17: { images: ['p007'] },
+  19: { images: ['p008'] },
+  22: { images: ['p009'] },
+  26: { images: ['p010', 'p011'], wrongAnswers: [33, 73, 77, 39] },
+  27: { images: ['p012'], wrongAnswers: [6, 26] },
+  29: { images: ['p013', 'p014'], wrongAnswers: [7, 41, 42] },
+  30: { images: ['p015'], wrongAnswers: [38, 39, 40, 6, 25, 16] },
+  31: { images: ['p016', 'p017', 'p018'], wrongAnswers: [7, 41, 42] },
+  32: { images: ['p019'], wrongAnswers: [43, 44, 45] },
+  33: { images: ['p020', 'p021'], wrongAnswers: [31, 47, 46] },
+  34: { images: ['p022'], wrongAnswers: [43, 48, 49] },
+  35: { images: ['p023'], wrongAnswers: [16, 36, 37] },
+  41: { images: ['p024'], wrongAnswers: [39, 40, 67] },
+  46: { images: ['p025'], wrongAnswers: [31, 33] },
+  47: { images: ['p026', 'p027'], wrongAnswers: [76] },
+  50: { images: ['p028', 'p045'], wrongAnswers: [18, 56, 57, 79] },
+  51: { images: ['p029'], wrongAnswers: [58, 59, 60] },
+  52: { images: ['p030'], wrongAnswers: [61, 62] },
+  53: { images: ['p031'], wrongAnswers: [63] },
+  54: { images: ['p032'], wrongAnswers: [64, 65, 66] },
+  55: { images: ['p033', 'p034', 'p035'], wrongAnswers: [67] },
+  68: { images: ['p036'] },
+  69: { images: ['p037'], wrongAnswers: [31, 22] },
+  73: { images: ['p038'], wrongAnswers: [29] },
+  75: { images: ['p039'] },
+  77: { images: ['p040'], wrongAnswers: [58, 48, 57] },
+  78: { images: ['p041'], wrongAnswers: [76] },
+  79: { images: ['p042'], wrongAnswers: [18] }
+});
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
 export const speciesById = Object.freeze(
   Object.fromEntries(
-    Object.entries(plantNamesById).map(([id, names]) => [
-      Number(id),
-      {
-        names,
-        ...(speciesAdditionalData[id] || {})
-      }
-    ])
+    Object.entries(plantNamesById).map(([id, names]) => {
+      const numericId = Number(id);
+      const catalogEntry = speciesCatalog[numericId] || {};
+      const images = catalogEntry.images
+        ? Object.freeze([...catalogEntry.images])
+        : undefined;
+      const wrongAnswers = catalogEntry.wrongAnswers
+        ? Object.freeze([...catalogEntry.wrongAnswers])
+        : undefined;
+
+      return [
+        numericId,
+        {
+          names,
+          ...(images ? { images } : {}),
+          ...(wrongAnswers ? { wrongAnswers } : {})
+        }
+      ];
+    })
   )
 );
 
@@ -66,11 +83,11 @@ export const ALL_CHOICE_IDS = Object.freeze(
 export const plants = Object.entries(speciesById)
   .flatMap(([id, v]) => {
     const numericId = Number(id);
-    const imageEntries = getImagesByPlantId(numericId);
+    const imageEntries = (v.images || [])
+      .map(imageId => plantImagesById[imageId])
+      .filter(imageEntry => imageEntry && typeof imageEntry.src === 'string');
 
-    return imageEntries
-      .filter(imageEntry => imageEntry && typeof imageEntry.src === 'string')
-      .map((imageEntry, index) => {
+    return imageEntries.map((imageEntry, index) => {
         const overrideDifficulty = getDifficultyByImageId(imageEntry.id);
 
         return {
