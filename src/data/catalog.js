@@ -37,7 +37,7 @@ export const speciesById = {
 
   // Новые с изображениями (игровые вопросы уже сейчас)
   30: { names:{ru:"Остеоспермум",          en:"African Daisy", sci:"Osteospermum"},       image:"images/Osteospermum.JPG", wrongAnswers:[38, 39, 40, 6, 25, 16] },
-  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               image:"images/Rose.JPG", wrongAnswers:[7, 41, 42] },
+  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               image:"images/RoseEasy_HartonoSubagio.JPG", wrongAnswers:[7, 41, 42] },
   32: { names:{ru:"Гузмания",              en:"Scarlet Star",  sci:"Guzmania lingulata"}, image:"images/Guzmania.JPG", wrongAnswers:[43, 44, 45] },
   33: { names:{ru:"Мак",                   en:"Poppy",         sci:"Papaver"},            image:"images/Poppy.JPG", wrongAnswers:[31, 47, 46]},
   34: { names:{ru:"Похутукава",            en:"Pohutukawa",    sci:"Metrosideros excelsa"}, image:"images/Pohutukawa.JPG", wrongAnswers:[43, 48, 49] },
