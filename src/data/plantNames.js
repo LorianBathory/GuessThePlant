@@ -90,7 +90,7 @@ export const plantNamesById = Object.freeze({
   89: { ru: "Сантолина", en: "Cotton lavender", sci: "Santolina chamaecyparissus" },
   90: { ru: "Бук", en: "Beech", sci: "Fagus sylvatica" },
   91: { ru: "Бегония", en: "Begonia", sci: "Begonia" },
-  92: { ru: "Ранункулюс", en: "Buttercup", sci: "Ranunculus" },
+  92: { ru: "Ранункулюс", en: "Ranunculus", sci: "Ranunculus" },
   93: { ru: "Сингониум", en: "Arrowhead vine", sci: "Syngonium podophyllum" },
   94: { ru: "Орхидея", en: "Orchid", sci: "Orchidaceae" },
   95: { ru: "Банан", en: "Banana", sci: "Musa" },
