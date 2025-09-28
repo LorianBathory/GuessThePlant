@@ -26,7 +26,7 @@ export const speciesById = {
   19: { names:{ru:"Олеандр",               en:"Oleander",    sci:"Nerium oleander"}, image:"images/Oleandr_Medium_GabrielBodhi.JPG" },
   20: { names:{ru:"Азалия",                en:"Azalea",      sci:"Rhododendron"} },
   21: { names:{ru:"Рододендрон",           en:"Rhododendron", sci:"Rhododendron"} },
-  22: { names:{ru:"Тюльпан",                  en:"Tulip",        sci:"Tulipa"} },
+  22: { names:{ru:"Тюльпан",                  en:"Tulip",        sci:"Tulipa"}, image:"images/Tulip_Easy_PavelDanilyuk.JPG" },
   23: { names:{ru:"Гардения",              en:"Gardenia",    sci:"Gardenia"} },
   24: { names:{ru:"Магнолия",              en:"Magnolia",    sci:"Magnolia"} },
   25: { names:{ru:"Нивяник",               en:"Shasta Daisy", sci:"Leucanthemum x superbum"} },
@@ -109,11 +109,11 @@ export const speciesById = {
   72: { names:{ru:"Лопух", en:"Burdock", sci:"Arctium"} },
   73: { names:{ru:"Астра", en:"Aster", sci:"Aster"}, image:"images/Aster_Medium_HartonoSubagio.JPG", wrongAnswers:[29] },
   74: { names:{ru:"Флокс", en:"Phlox", sci:"Phlox"} },
-  75: { names:{ru:"Сирень", en:"Lilac", sci:"Syringa"} },
+  75: { names:{ru:"Сирень", en:"Lilac", sci:"Syringa"}, image:"images/Syringa_JuliaFilirovska.JPG"},
   76: { names:{ru:"Петуния", en:"Petunia", sci:"Petunia"} },
   77: { names:{ru:"Родомирт", en:"Rose Myrtle", sci:"Rhodomyrtus"}, image:"images/Rhodomyrtus.JPG", wrongAnswers:[58, 48, 57] },
-  78: { names:{ru:"Картофельное дерево", en:"Potato Tree", sci:"Solanum"} },
-  79: { names:{ru:"Свинчатка", en:"Leadwort", sci:"Plumbago"}, image:"images/Plumbago.JPG" }
+  78: { names:{ru:"Картофельное дерево", en:"Potato Tree", sci:"Solanum"}, image: "images/Solanium_Hard.JPG", wrongAnswers:[76] },
+  79: { names:{ru:"Свинчатка", en:"Leadwort", sci:"Plumbago"}, image:"images/Plumbago.JPG", wrongAnswers:[18] }
 
 };
 
