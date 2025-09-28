@@ -159,40 +159,59 @@ export function getQuestionsForRound(difficulty) {
   }
 
   const pool = plants.filter(plant => plant.difficulty === difficulty);
-  const uniqueAvailableIds = new Set(
-    pool.filter(plant => !usedPlantIdsAcrossGame.has(plant.id)).map(plant => plant.id)
-  );
+  const availablePlants = pool.filter(plant => !usedPlantIdsAcrossGame.has(plant.id));
 
-  const roundLength = Math.min(QUESTIONS_PER_ROUND, uniqueAvailableIds.size);
+  const variantsByPlantId = availablePlants.reduce((acc, plant) => {
+    if (!acc.has(plant.id)) {
+      acc.set(plant.id, []);
+    }
+
+    acc.get(plant.id).push(plant);
+    return acc;
+  }, new Map());
+
+  const roundLength = Math.min(QUESTIONS_PER_ROUND, variantsByPlantId.size);
   if (roundLength === 0) {
     return [];
   }
 
-  const shuffledPool = shuffleArray(pool);
-  const seenInRound = new Set();
-  const unseenCandidates = [];
-  const seenCandidates = [];
+  const groupsWithUnseen = [];
+  const groupsSeenOnly = [];
 
-  shuffledPool.forEach(plant => {
-    if (usedPlantIdsAcrossGame.has(plant.id) || seenInRound.has(plant.id)) {
-      return;
-    }
+  variantsByPlantId.forEach((variants, plantId) => {
+    const unseenVariants = variants.filter(variant => !isImageSeen(variant.imageId));
+    const group = { plantId, variants, unseenVariants };
 
-    if (isImageSeen(plant.imageId)) {
-      seenCandidates.push(plant);
+    if (unseenVariants.length > 0) {
+      groupsWithUnseen.push(group);
     } else {
-      unseenCandidates.push(plant);
+      groupsSeenOnly.push(group);
     }
-
-    seenInRound.add(plant.id);
   });
 
-  const prioritized = unseenCandidates.concat(seenCandidates).slice(0, roundLength);
+  const prioritizedGroups = shuffleArray(groupsWithUnseen).concat(shuffleArray(groupsSeenOnly));
+  const selectedPlants = [];
 
-  prioritized.forEach(plant => usedPlantIdsAcrossGame.add(plant.id));
-  markImagesAsSeen(prioritized.map(plant => plant.imageId));
+  for (const group of prioritizedGroups) {
+    if (selectedPlants.length >= roundLength) {
+      break;
+    }
 
-  return prioritized;
+    const { plantId, variants, unseenVariants } = group;
+    const variantPool = unseenVariants.length > 0 ? unseenVariants : variants;
+    const chosenVariant = shuffleArray(variantPool.slice())[0];
+
+    if (!chosenVariant) {
+      continue;
+    }
+
+    selectedPlants.push(chosenVariant);
+    usedPlantIdsAcrossGame.add(plantId);
+  }
+
+  markImagesAsSeen(selectedPlants.map(plant => plant.imageId));
+
+  return selectedPlants;
 }
 
 export function resetUsedPlantTracking() {
