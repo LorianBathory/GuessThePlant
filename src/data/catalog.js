@@ -30,7 +30,10 @@ export const speciesById = {
   23: { names:{ru:"Гардения",              en:"Gardenia",    sci:"Gardenia"} },
   24: { names:{ru:"Магнолия",              en:"Magnolia",    sci:"Magnolia"} },
   25: { names:{ru:"Нивяник",               en:"Shasta Daisy", sci:"Leucanthemum x superbum"} },
-  26: { names:{ru:"Георгин",               en:"Dahlia",      sci:"Dahlia"}, image:"images/Dahlia.JPG", wrongAnswers:[33, 73, 77, 39]},
+  26: { names:{ru:"Георгин",               en:"Dahlia",      sci:"Dahlia"}, images:[
+          { src:"images/images/Dahlia_Easy.JPG" },
+          { src:"images/Dahlia_Medium.JPG", difficulty: difficultyLevels.MEDIUM }
+      ], wrongAnswers:[33, 73, 77, 39] },
   27: { names:{ru:"Эхинацея",              en:"Coneflower",  sci:"Echinacea"}, image:"images/Echinacea_AlexasFotos.JPG", wrongAnswers:[6, 26] },
   28: { names:{ru:"Арктотис",              en:"African Daisy", sci:"Arctotis"} },
   29: { names:{ru:"Хризантема", en:"Chrysanthemum", sci:"Chrysanthemum"},
