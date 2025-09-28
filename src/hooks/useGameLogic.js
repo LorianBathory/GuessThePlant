@@ -14,7 +14,8 @@ import {
   storePlantLanguage,
   getInitialIsMobile,
   subscribeToViewportChange,
-  resetUsedPlantTracking
+  resetUsedPlantTracking,
+  prepareSeenImagesForRound
 } from '../gameConfig.js';
 import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
 
@@ -80,6 +81,8 @@ export default function useGameLogic() {
     if (!roundConfig) {
       throw new GameLogicError(`Конфигурация раунда №${roundIndex + 1} отсутствует.`);
     }
+
+    prepareSeenImagesForRound(roundIndex);
 
     const questions = getQuestionsForRound(roundConfig.difficulty);
     setCurrentRoundIndex(roundIndex);
