@@ -63,7 +63,7 @@ export const speciesById = {
   45: { names:{ru:"Юкка", en:"Yucca ", sci:"Yucca "} },
   46: { names:{ru:"Пион", en:"Peony", sci:"Paeonia"} },
   47: { names:{ru:"Анемона", en:"Anemone", sci:"Anemone"},  images:[
-    { src:"images/Anemone_Medium_Catalin M.JPG" },
+    { src:"images/Anemone_Medium_CatalinM.JPG" },
     { src:"images/Anemone_Medium_NikoD.JPG"}
   ], wrongAnswers:[76] }, },
   48: { names:{ru:"Каллистемон", en:"Bottlebrushes", sci:"Callistemon"} },
