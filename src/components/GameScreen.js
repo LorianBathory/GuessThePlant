@@ -1,12 +1,68 @@
 import { INTERFACE_LANGUAGES } from '../gameConfig.js';
 import GameHeader from './GameHeader.js';
+import useSecureImageSource from '../hooks/useSecureImageSource.js';
+
+function SecurePlantImage({ src, alt, className, style }) {
+  const ReactGlobal = globalThis.React;
+  if (!ReactGlobal) {
+    throw new Error('React global was not found. Make sure the React bundle is loaded before rendering SecurePlantImage.');
+  }
+
+  const { createElement, useMemo } = ReactGlobal;
+  const { secureSrc, status } = useSecureImageSource(src);
+
+  const mergedStyle = useMemo(() => ({
+    ...(style || {}),
+    userSelect: 'none',
+    pointerEvents: 'none'
+  }), [style]);
+
+  if (status === 'error') {
+    return createElement('div', {
+      className: 'w-full h-full flex items-center justify-center text-center text-sm',
+      style: {
+        ...mergedStyle,
+        color: '#C29C27',
+        backgroundColor: '#163B3A'
+      }
+    }, 'Изображение недоступно');
+  }
+
+  if (status !== 'ready' || !secureSrc) {
+    return createElement('div', {
+      className: 'w-full h-full flex items-center justify-center',
+      style: {
+        ...mergedStyle,
+        backgroundColor: '#163B3A'
+      }
+    }, createElement('span', { className: 'sr-only' }, 'Загрузка изображения'));
+  }
+
+  return createElement('img', {
+    src: secureSrc,
+    alt,
+    className,
+    style: mergedStyle,
+    draggable: false,
+    onContextMenu: event => {
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+    },
+    onDragStart: event => {
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+    }
+  });
+}
 
 function renderDesktopBackground(ReactGlobal, isMobile) {
   if (isMobile) {
     return null;
   }
 
- const { createElement } = ReactGlobal;
+  const { createElement } = ReactGlobal;
 
   return createElement('div', {
     key: 'background-pattern',
@@ -31,7 +87,7 @@ function renderPlantImage(ReactGlobal, plant, isMobile) {
     return null;
   }
 
-return ReactGlobal.createElement('img', {
+  return ReactGlobal.createElement(SecurePlantImage, {
     key: 'plant-image',
     src: plant.image,
     alt: `Растение ${plant.id}`,
