@@ -65,7 +65,7 @@ export const speciesById = {
   47: { names:{ru:"Анемона", en:"Anemone", sci:"Anemone"},  images:[
     { src:"images/Anemone_Medium_CatalinM.JPG" },
     { src:"images/Anemone_Medium_NikoD.JPG"}
-  ], wrongAnswers:[76] }, },
+  ], wrongAnswers:[76] }, 
   48: { names:{ru:"Каллистемон", en:"Bottlebrushes", sci:"Callistemon"} },
   49: { names:{ru:"Мирт", en:"Myrtle", sci:"Myrtus "} },
 
