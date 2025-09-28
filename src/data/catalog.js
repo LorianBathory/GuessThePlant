@@ -23,7 +23,7 @@ export const speciesById = {
   16: { names:{ru:"Рябчик",                en:"Fritillary",  sci:"Fritillaria"} },
   17: { names:{ru:"Клематис",              en:"Clematis",    sci:"Clematis"}, image:"images/Clematis_Medium.JPG" },
   18: { names:{ru:"Глициния",              en:"Wisteria",    sci:"Wisteria"} },
-  19: { names:{ru:"Олеандр",               en:"Oleander",    sci:"Nerium oleander"} },
+  19: { names:{ru:"Олеандр",               en:"Oleander",    sci:"Nerium oleander"}, image:"images/Oleandr_Medium_GabrielBodhi.JPG" },
   20: { names:{ru:"Азалия",                en:"Azalea",      sci:"Rhododendron"} },
   21: { names:{ru:"Рододендрон",           en:"Rhododendron", sci:"Rhododendron"} },
   22: { names:{ru:"Тюльпан",                  en:"Tulip",        sci:"Tulipa"} },
@@ -44,12 +44,15 @@ export const speciesById = {
 
   // Новые с изображениями (игровые вопросы уже сейчас)
   30: { names:{ru:"Остеоспермум",          en:"African Daisy", sci:"Osteospermum"},       image:"images/Osteospermum.JPG", wrongAnswers:[38, 39, 40, 6, 25, 16] },
-  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               images:[
-    { src:"images/RoseEasy_HartonoSubagio.JPG" },
-    { src:"images/Rose_Hard.JPG", difficulty: difficultyLevels.HARD }
+  31: { names:{ru:"Роза",                  en:"Rose",          sci:"Rosa"},               images:[{ src:"images/RoseEasy_HartonoSubagio.JPG" },
+          { src:"images/Rose_Easy_JÉSHOOTS.JPG" },
+          { src:"images/Rose_Hard.JPG", difficulty: difficultyLevels.HARD }
   ], wrongAnswers:[7, 41, 42] },
   32: { names:{ru:"Гузмания",              en:"Scarlet Star",  sci:"Guzmania lingulata"}, image:"images/Guzmania.JPG", wrongAnswers:[43, 44, 45] },
-  33: { names:{ru:"Мак",                   en:"Poppy",         sci:"Papaver"},            image:"images/Poppy.JPG", wrongAnswers:[31, 47, 46]},
+  33: { names:{ru:"Мак",                   en:"Poppy",         sci:"Papaver"},            images: [
+          { src: "images/Poppy.JPG"},
+          { src: "images/Poppy_Medium.JPG", difficulty: difficultyLevels.MEDIUM }
+      ], wrongAnswers:[31, 47, 46]},
   34: { names:{ru:"Похутукава",            en:"Pohutukawa",    sci:"Metrosideros excelsa"}, image:"images/Pohutukawa.JPG", wrongAnswers:[43, 48, 49] },
   35: { names:{ru:"Лилия",                 en:"Lily",          sci:"Lilium"},             image:"images/Lily.JPG", wrongAnswers:[16, 36, 37] },
 
@@ -64,7 +67,7 @@ export const speciesById = {
   43: { names:{ru:"Сансевиерия", en:"Sansevieria", sci:"Sansevieria"} },
   44: { names:{ru:"Ананас", en:"Pineapple", sci:"Ananas comosus"} },
   45: { names:{ru:"Юкка", en:"Yucca ", sci:"Yucca "} },
-  46: { names:{ru:"Пион", en:"Peony", sci:"Paeonia"} },
+  46: { names:{ru:"Пион", en:"Peony", sci:"Paeonia"}, image:"images/Peony_Medium_IrinaIriser.JPG", wrongAnswers:[31, 33] },
   47: { names:{ru:"Анемона", en:"Anemone", sci:"Anemone"},  images:[
     { src:"images/Anemone_Medium_CatalinM.JPG" },
     { src:"images/Anemone_Medium_NikoD.JPG"}
@@ -78,7 +81,13 @@ export const speciesById = {
   52:  { names:{ru:"Смолосемянник", en:"Japanese pittosporum", sci:"Pittosporum tobira"},             image:"images/Pittosporum.JPG", wrongAnswers:[61, 62] }, 
   53:  { names:{ru:"Скабиоза", en:"Sweet scabious", sci:"Sixalix atropurpurea"},             image:"images/Scabious.JPG", wrongAnswers:[63] }, 
   54:  { names:{ru:"Лантана", en:"Common lantana", sci:"Lantana Camara"},             image:"images/Lantana.JPG", wrongAnswers:[64, 65, 66] }, 
-  55:  { names:{ru:"Гибискус", en:"Hibiscus", sci:"Hibiscus"},             image:"images/Hibiscus.JPG", wrongAnswers:[67] },
+  55:  { names:{ru:"Гибискус", en:"Hibiscus", sci:"Hibiscus"},
+        images:[
+          { src: "images/Hibiscus.JPG"},
+          { src: "images/Hibiscus2.JPG"},
+          { src: "images/Hibiscus3.JPG", difficulty: difficultyLevels.MEDIUM }
+        ],
+        wrongAnswers:[67] },
   
   //без картинок
   56: { names:{ru:"Акация", en:"Acacia", sci:"Acacia"} },
@@ -93,7 +102,7 @@ export const speciesById = {
   65: { names:{ru:"Незабудка", en:"Forget-me-not", sci:"Myosotis"} },
   66: { names:{ru:"Мята", en:"Mint", sci:"Mentha"} },
   67: { names:{ru:"Лаватера", en:"Mallow", sci:"Lavatera"} },
-  68: { names:{ru:"Лаванда", en:"Lavender", sci:"Lavandula"} },
+  68: { names:{ru:"Лаванда", en:"Lavender", sci:"Lavandula"}, image:"images/Lavender_Medium_StuartRobinson.JPG" },
   69: { names:{ru:"Эустома", en:"Lisianthus", sci:"Eustoma"}, image:"images/Eustoma.JPG", wrongAnswers:[31, 22] }, 
   70: { names:{ru:"Физалис", en:"Groundcherry", sci:"Physalis"} },
   71: { names:{ru:"Каштан", en:"Chestnut", sci:"Castanea"} },
@@ -104,7 +113,7 @@ export const speciesById = {
   76: { names:{ru:"Петуния", en:"Petunia", sci:"Petunia"} },
   77: { names:{ru:"Родомирт", en:"Rose Myrtle", sci:"Rhodomyrtus"}, image:"images/Rhodomyrtus.JPG", wrongAnswers:[58, 48, 57] },
   78: { names:{ru:"Картофельное дерево", en:"Potato Tree", sci:"Solanum"} },
-  79: { names:{ru:"Свинчатка", en:"Leadwort", sci:"Plumbago"} }
+  79: { names:{ru:"Свинчатка", en:"Leadwort", sci:"Plumbago"}, image:"images/Plumbago.JPG" }
 
 };
 
