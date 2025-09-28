@@ -11,7 +11,7 @@ export const questionIdsByDifficulty = Object.freeze({
 });
 
 export const imageIdsByDifficulty = Object.freeze({
-  [difficultyLevels.MEDIUM]: Object.freeze(['p011', 'p014', 'p021', 'p035']),
+  [difficultyLevels.MEDIUM]: Object.freeze(['p011', 'p014', 'p021', 'p035', 'p044']),
   [difficultyLevels.HARD]: Object.freeze(['p018'])
 });
 

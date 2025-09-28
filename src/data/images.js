@@ -40,7 +40,10 @@ export const plantImages = Object.freeze([
   { id: 'p039', plantId: 75, src: 'images/Syringa_JuliaFilirovska.JPG' },
   { id: 'p040', plantId: 77, src: 'images/Rhodomyrtus.JPG' },
   { id: 'p041', plantId: 78, src: 'images/Solanum_Hard.JPG' },
-  { id: 'p042', plantId: 79, src: 'images/Plumbago.JPG' }
+  { id: 'p042', plantId: 79, src: 'images/Plumbago.JPG' },
+  { id: 'p043', plantId: 5, src: 'images/Camelia_SonnySixteen.JPG' },
+  { id: 'p044', plantId: 4, src: 'images/Bougainvillea_Medium_HartonoSubagio.JPG'},
+  { id: 'p045', plantId: 50, src: 'Jacaranda2.JPG'}
 ]);
 
 export const plantImagesById = Object.freeze(
