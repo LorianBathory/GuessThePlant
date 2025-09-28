@@ -5,8 +5,8 @@ export const difficultyLevels = Object.freeze({
 });
 
 export const questionIdsByDifficulty = Object.freeze({
-  [difficultyLevels.EASY]: Object.freeze([6, 31, 33, 35, 51, 55, 41]),
-  [difficultyLevels.MEDIUM]: Object.freeze([2, 30, 3, 54, 4, 5, 69, 26]),
+  [difficultyLevels.EASY]: Object.freeze([6, 27, 29, 31, 33, 35, 41, 51, 55]),
+  [difficultyLevels.MEDIUM]: Object.freeze([2, 3, 4, 5, 17, 26, 30, 47, 54, 69, 73]),
   [difficultyLevels.HARD]: Object.freeze([1, 32, 34, 50, 53, 52, 77])
 });
 
