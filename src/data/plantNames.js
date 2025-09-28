@@ -52,7 +52,7 @@ export const plantNamesById = Object.freeze({
   51: { ru: "Гранат", en: "Pomegranate", sci: "Punica granatum" },
   52: { ru: "Смолосемянник", en: "Japanese pittosporum", sci: "Pittosporum tobira" },
   53: { ru: "Скабиоза", en: "Sweet scabious", sci: "Sixalix atropurpurea" },
-  54: { ru: "Лантана", en: "Common lantana", sci: "Lantana Camara" },
+  54: { ru: "Лантана", en: "Lantana", sci: "Lantana" },
   55: { ru: "Гибискус", en: "Hibiscus", sci: "Hibiscus" },
   56: { ru: "Акаця", en: "Acacia", sci: "Acacia" },
   57: { ru: "Павловния", en: "Princess Tree", sci: "Paulownia" },
