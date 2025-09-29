@@ -10,11 +10,15 @@
 - `index.js` — Bootstraps the React application by rendering `<PlantQuizGame />` into the DOM root.【F:src/index.js†L1-L5】
 - `gameConfig.js` — Centralizes game constants (round definitions, language options), хранит историю просмотренных изображений в `localStorage` и содержит хелперы для подготовки раундов и отслеживания вьюпорта.【F:src/gameConfig.js†L1-L192】
   - `components/`
-    - `PlantQuizGame.js` — Top-level component that wires game logic into either the in-round `GameScreen` or the post-round `ResultScreen`.【F:src/components/PlantQuizGame.js†L1-L55】
+  - `PlantQuizGame.js` — Top-level component that wires game logic into either the in-round `GameScreen` or the post-round `ResultScreen`, переключает интерфейс между «Обычной» и «Бесконечной» игрой и передаёт в экран текущий режим.【F:src/components/PlantQuizGame.js†L1-L55】
+  - `GameHeader.js` — Заголовок игрового экрана; показывает название выбранного режима и текущее количество очков.【F:src/components/GameHeader.js†L1-L52】
+  - `GameMenu.js` — Домашний экран с кнопками запуска «Обычной» и «Бесконечной» игры и переключением языка.【F:src/components/GameMenu.js†L1-L82】
   - `GameScreen.js` — Renders the active quiz round UI, включая защищённую подачу изображений растений через компонент `SecurePlantImage`, отключающий контекстное меню и перетаскивание.【F:src/components/GameScreen.js†L5-L53】【F:src/components/GameScreen.js†L90-L205】
-  - `ResultScreen.js` — Displays round-complete or game-complete summaries with navigation actions.【F:src/components/ResultScreen.js†L1-L86】
+  - `ResultScreen.js` — Displays round-complete or game-complete summaries with навигацией и специализированными сообщениями для успеха/ошибок в бесконечном режиме.【F:src/components/ResultScreen.js†L1-L86】【F:src/components/ResultScreen.js†L88-L165】
 - `hooks/`
-  - `useGameLogic.js` — Custom hook encapsulating quiz state, round progression, scoring, option generation, and language persistence side effects.【F:src/hooks/useGameLogic.js†L1-L109】【F:src/hooks/useGameLogic.js†L111-L210】【F:src/hooks/useGameLogic.js†L212-L253】
+  - `useGameLogic.js` — Custom hook that переключает между логикой «Обычной игры» и «Бесконечного режима», подготавливает параметры запуска и делегирует управление соответствующим специализированным хукам.【F:src/hooks/useGameLogic.js†L1-L88】【F:src/hooks/useGameLogic.js†L90-L207】
+  - `useClassicMode.js` — Управляет раундами и очками классического режима (прогрессия сложность→сложность, подсчёт и завершение после трёх раундов).【F:src/hooks/useClassicMode.js†L1-L140】
+  - `useEndlessMode.js` — Перемешивает весь каталог вопросов, начисляет +1/−2 балла и завершает сессию по исчерпанию вопросов либо при отрицательном счёте.【F:src/hooks/useEndlessMode.js†L1-L123】
   - `useSecureImageSource.js` — Fetches plant images as Blob URLs, кэширует и освобождает их по мере использования, скрывая оригинальные имена файлов от игроков.【F:src/hooks/useSecureImageSource.js†L1-L84】【F:src/hooks/useSecureImageSource.js†L86-L120】
 - `data/`
   - `plantNames.js` — Localization table for plant names in Russian, English, and Latin, keyed by catalog ID.【F:src/data/plantNames.js†L1-L81】

@@ -15,9 +15,16 @@ export const uiTexts = {
     gameCompletedTitle: "Вы прошли игру! Ваши баллы: {{score}}",
     restart: "Начать заново",
     menuTitle: "Угадай растение",
-    menuSubtitle: "Выберите язык интерфейса и начните игру.",
+    menuSubtitle: "Выберите язык интерфейса и режим игры.",
     startGame: "Начать игру",
-    postGameSubtitle: "Посмотрите результат и попробуйте ещё раз!"
+    postGameSubtitle: "Посмотрите результат и попробуйте ещё раз!",
+    classicModeButton: "Обычная игра",
+    endlessModeButton: "Бесконечный режим",
+    endlessModeHeading: "Бесконечный режим",
+    endlessSuccessTitle: "Поздравляем! Вы прошли бесконечный режим!",
+    endlessFailureTitle: "Слишком много ошибок! Попробуйте ещё раз",
+    endlessRetry: "Повторить",
+    backToMenu: "Вернуться в меню"
   },
   en: {
     question: "What plant is this?",
@@ -35,9 +42,16 @@ export const uiTexts = {
     gameCompletedTitle: "You completed the game! Your score: {{score}}",
     restart: "Restart",
     menuTitle: "Guess the Plant",
-    menuSubtitle: "Select the interface language and start your game.",
+    menuSubtitle: "Select the interface language and game mode.",
     startGame: "Start Game",
-    postGameSubtitle: "Check your result and play again!"
+    postGameSubtitle: "Check your result and play again!",
+    classicModeButton: "Classic Game",
+    endlessModeButton: "Endless Mode",
+    endlessModeHeading: "Endless Mode",
+    endlessSuccessTitle: "Congratulations! You completed Endless Mode!",
+    endlessFailureTitle: "Too many mistakes! Try again",
+    endlessRetry: "Retry",
+    backToMenu: "Back to Menu"
   },
   nl: {
     question: "Wat is deze plant?",
@@ -55,9 +69,16 @@ export const uiTexts = {
     gameCompletedTitle: "Je hebt het spel uitgespeeld! Je score: {{score}}",
     restart: "Opnieuw starten",
     menuTitle: "Raad de plant",
-    menuSubtitle: "Kies de interfacetaal en begin met spelen.",
+    menuSubtitle: "Kies de interfacetaal en spelmodus.",
     startGame: "Start spel",
-    postGameSubtitle: "Bekijk je resultaat en speel nog eens!"
+    postGameSubtitle: "Bekijk je resultaat en speel nog eens!",
+    classicModeButton: "Normaal spel",
+    endlessModeButton: "Eindeloze modus",
+    endlessModeHeading: "Eindeloze modus",
+    endlessSuccessTitle: "Gefeliciteerd! Je hebt de eindeloze modus voltooid!",
+    endlessFailureTitle: "Te veel fouten! Probeer het opnieuw",
+    endlessRetry: "Opnieuw",
+    backToMenu: "Terug naar menu"
   }
 };
 

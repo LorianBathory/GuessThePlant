@@ -6,6 +6,11 @@ import { DataLoadingError, StorageError } from './utils/errorHandling.js';
 export const PLANT_LANGUAGES = ['ru', 'en', 'nl', 'sci'];
 export const INTERFACE_LANGUAGES = ['ru', 'en', 'nl'];
 
+export const GAME_MODES = Object.freeze({
+  CLASSIC: 'classic',
+  ENDLESS: 'endless'
+});
+
 export const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
 export const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
 export const SEEN_IMAGE_IDS_STORAGE_KEY = 'gtp-seen-image-ids';
