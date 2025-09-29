@@ -119,6 +119,38 @@ export default function useGameLogic() {
     startClassicGame();
   }, [startClassicGame]);
 
+  const startEndlessGame = useCallback(() => {
+    resetUsedPlantTracking();
+    setGameMode(GAME_MODES.ENDLESS);
+
+    const aggregatedQuestions = ROUNDS.reduce((acc, roundConfig, index) => {
+      prepareSeenImagesForRound(index);
+      const questions = getQuestionsForRound(roundConfig);
+      if (Array.isArray(questions) && questions.length > 0) {
+        acc.push(...questions);
+      }
+      return acc;
+    }, []);
+
+    setCurrentRoundIndex(0);
+    setSessionPlants(aggregatedQuestions);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setGameState('playing');
+    setOptionIds([]);
+    setCorrectAnswerId(null);
+
+    if (aggregatedQuestions.length === 0) {
+      setRoundPhase('endlessComplete');
+    } else {
+      setRoundPhase('playing');
+    }
+  }, []);
+
+  const startGame = useCallback(() => {
+    startClassicGame();
+  }, [startClassicGame]);
+
   const generateOptionIds = useCallback(plant => {
     if (!plant) {
       return [];
