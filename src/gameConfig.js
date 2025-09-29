@@ -3,8 +3,6 @@ import { shuffleArray } from './utils/random.js';
 import { difficultyLevels } from './data/difficulties.js';
 import { DataLoadingError, StorageError } from './utils/errorHandling.js';
 
-export const QUESTIONS_PER_ROUND = 6;
-
 export const PLANT_LANGUAGES = ['ru', 'en', 'sci'];
 export const INTERFACE_LANGUAGES = ['ru', 'en'];
 
@@ -13,9 +11,24 @@ export const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
 export const SEEN_IMAGE_IDS_STORAGE_KEY = 'gtp-seen-image-ids';
 
 export const ROUNDS = Object.freeze([
-  { id: 1, difficulty: difficultyLevels.EASY },
-  { id: 2, difficulty: difficultyLevels.MEDIUM },
-  { id: 3, difficulty: difficultyLevels.HARD }
+  {
+    id: 1,
+    difficulty: difficultyLevels.EASY,
+    questions: 6,
+    pointsPerQuestion: 1
+  },
+  {
+    id: 2,
+    difficulty: difficultyLevels.MEDIUM,
+    questions: 7,
+    pointsPerQuestion: 2
+  },
+  {
+    id: 3,
+    difficulty: difficultyLevels.HARD,
+    questions: 5,
+    pointsPerQuestion: 3
+  }
 ]);
 
 export const TOTAL_ROUNDS = ROUNDS.length;
@@ -153,11 +166,12 @@ export function prepareSeenImagesForRound(roundIndex) {
   }
 }
 
-export function getQuestionsForRound(difficulty) {
+export function getQuestionsForRound(roundConfig) {
   if (!Array.isArray(plants)) {
     throw new DataLoadingError('Данные с растениями повреждены или не загружены.');
   }
 
+  const { difficulty, questions } = roundConfig ?? {};
   const pool = plants.filter(plant => plant.difficulty === difficulty);
   const availablePlants = pool.filter(plant => !usedPlantIdsAcrossGame.has(plant.id));
 
@@ -170,7 +184,10 @@ export function getQuestionsForRound(difficulty) {
     return acc;
   }, new Map());
 
-  const roundLength = Math.min(QUESTIONS_PER_ROUND, variantsByPlantId.size);
+  const desiredQuestions = Number.isFinite(questions) && questions > 0
+    ? questions
+    : variantsByPlantId.size;
+  const roundLength = Math.min(desiredQuestions, variantsByPlantId.size);
   if (roundLength === 0) {
     return [];
   }
