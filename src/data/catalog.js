@@ -10,9 +10,10 @@ const speciesCatalog = Object.freeze({
   4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 20] },
   5:  { images: ['p005', 'p043', 'p054'], wrongAnswers: [20, 21, 31, 23, 24] },
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 28, 29] },
+  13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3]}, //Allium, need some extra wrong answers
   17: { images: ['p007'] },
   19: { images: ['p008'] },
-    21: {images: ['p076'], wrongAnswers: [5, 14, 62] }, //добавить вишню для вариантов ответа
+  21: {images: ['p076'], wrongAnswers: [5, 14, 62] }, //добавить вишню для вариантов ответа
   22: { images: ['p009'] },
   26: { images: ['p010', 'p011'], wrongAnswers: [33, 73, 77, 39] },
   27: { images: ['p012'], wrongAnswers: [6, 26] },
@@ -25,17 +26,18 @@ const speciesCatalog = Object.freeze({
   35: { images: ['p023'], wrongAnswers: [16, 36, 37] },
   41: { images: ['p024'], wrongAnswers: [39, 40, 67] },
   46: { images: ['p025'], wrongAnswers: [31, 33] },
-  47: { images: ['p026', 'p027'], wrongAnswers: [76] },
+  47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [76] }, //anemone
   50: { images: ['p028', 'p045'], wrongAnswers: [18, 56, 57, 79] },
   51: { images: ['p029', 'p073'], wrongAnswers: [58, 59, 60] },
   52: { images: ['p030'], wrongAnswers: [61, 62] },
-  53: { images: ['p031'], wrongAnswers: [63] },
+  53: { images: ['p031'], wrongAnswers: [64] },
   54: { images: ['p032', 'p063', 'p064'], wrongAnswers: [64, 65, 66] }, //lantana
   55: { images: ['p033', 'p034', 'p035'], wrongAnswers: [67] },
+    62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
   68: { images: ['p036'] },
   69: { images: ['p037'], wrongAnswers: [31, 22] },
   72: { images: ['p052'], wrongAnswers: [11] }, //лопух. wrongAnswers надо заменить
-  73: { images: ['p038', 'p047'], wrongAnswers: [29] }, //астры, wrongAnswers надо
+  73: { images: ['p038', 'p047', 'p092', 'p093'], wrongAnswers: [29] }, //aster, wrongAnswers надо
   74: { images: ['p070'], wrongAnswers: [41, 54] }, //phlox, wrongAnswers надо дополнить
   75: { images: ['p039', 'p082'] },
   76: { images: ['p069'] }, //petunia
@@ -47,7 +49,7 @@ const speciesCatalog = Object.freeze({
   82: { images: ['p084'], wrongAnswers: [20] }, //viola. временный wrongAnswer +
   83: { images: ['p055'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
   84: { images: ['p062'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
-  85: { images: ['p051'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
+  85: { images: ['p051', 'p094'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
     86: { images: ['p071', 'p072'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
      //87. Lotus пока не залит.
     88: { images: ['p060', 'p061'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +

@@ -61,7 +61,7 @@ export const plantNamesById = Object.freeze({
   60: { ru: "Драгонфрут", en: "Dragon Fruit", nl: "Pitahaya, Drakenfruit", sci: "Hylocereus" },
   61: { ru: "Шеффлера", en: "Schefflera", nl: "Vingersboom", sci: "Schefflera" },
   62: { ru: "Яблоня", en: "Apple", nl: "Appel, Appelboom", sci: "Malus" },
-  63: { ru: "Дикий лук", en: "Wild Onion", nl: "Look, Ui", sci: "Allium" },
+  //63: { ru: "Дикий лук", en: "Wild Onion", nl: "Look, Ui", sci: "Allium" }, - заменяем на что-то новое
   64: { ru: "Вербена", en: "Verbena", nl: "Ijzerhard", sci: "Verbena" },
   65: { ru: "Незабудка", en: "Forget-me-not", nl: "Vergeet-mij-nietje", sci: "Myosotis" },
   66: { ru: "Мята", en: "Mint", nl: "Munt", sci: "Mentha" },
