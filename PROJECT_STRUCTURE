@@ -10,11 +10,11 @@
 - `index.js` — Bootstraps the React application by rendering `<PlantQuizGame />` into the DOM root.【F:src/index.js†L1-L5】
 - `gameConfig.js` — Centralizes game constants (round definitions, language options), хранит историю просмотренных изображений в `localStorage` и содержит хелперы для подготовки раундов и отслеживания вьюпорта.【F:src/gameConfig.js†L1-L192】
   - `components/`
-    - `PlantQuizGame.js` — Top-level component that wires game logic into either the in-round `GameScreen` or the post-round `ResultScreen`.【F:src/components/PlantQuizGame.js†L1-L55】
+    - `PlantQuizGame.js` — Top-level component that wires game logic into either the in-round `GameScreen` or the post-round `ResultScreen` и переключает интерфейс между «Обычной» и «Бесконечной» игрой.【F:src/components/PlantQuizGame.js†L1-L55】
   - `GameScreen.js` — Renders the active quiz round UI, включая защищённую подачу изображений растений через компонент `SecurePlantImage`, отключающий контекстное меню и перетаскивание.【F:src/components/GameScreen.js†L5-L53】【F:src/components/GameScreen.js†L90-L205】
   - `ResultScreen.js` — Displays round-complete or game-complete summaries with navigation actions.【F:src/components/ResultScreen.js†L1-L86】
 - `hooks/`
-  - `useGameLogic.js` — Custom hook encapsulating quiz state, round progression, scoring, option generation, and language persistence side effects.【F:src/hooks/useGameLogic.js†L1-L109】【F:src/hooks/useGameLogic.js†L111-L210】【F:src/hooks/useGameLogic.js†L212-L253】
+  - `useGameLogic.js` — Custom hook encapsulating quiz state, режимы (классический и бесконечный), round progression, scoring, option generation, and language persistence side effects.【F:src/hooks/useGameLogic.js†L1-L109】【F:src/hooks/useGameLogic.js†L111-L210】【F:src/hooks/useGameLogic.js†L212-L253】
   - `useSecureImageSource.js` — Fetches plant images as Blob URLs, кэширует и освобождает их по мере использования, скрывая оригинальные имена файлов от игроков.【F:src/hooks/useSecureImageSource.js†L1-L84】【F:src/hooks/useSecureImageSource.js†L86-L120】
 - `data/`
   - `plantNames.js` — Localization table for plant names in Russian, English, and Latin, keyed by catalog ID.【F:src/data/plantNames.js†L1-L81】

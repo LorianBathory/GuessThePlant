@@ -1,4 +1,5 @@
 import GameHeader from './GameHeader.js';
+import { GAME_MODES } from '../gameConfig.js';
 
 function renderDesktopBackground(ReactGlobal, isMobile) {
   if (isMobile) {
@@ -86,6 +87,50 @@ function renderGameComplete({ ReactGlobal, texts, score, onRestart }) {
   ]);
 }
 
+function renderEndlessOutcome({ ReactGlobal, texts, score, isFailure, onRestart, onReturnToMenu }) {
+  const { createElement } = ReactGlobal;
+  const title = isFailure
+    ? texts.endlessFailureTitle || 'Too many mistakes! Try again'
+    : texts.endlessSuccessTitle || 'Congratulations! You completed endless mode!';
+  const retryLabel = texts.endlessRetry || texts.restart || texts.playAgain || 'Retry';
+  const backLabel = texts.backToMenu || 'Back to menu';
+  const scoreLabel = `${texts.score || 'Score'}: ${score}`;
+
+  return createElement('div', {
+    key: 'endless-result',
+    className: 'p-8 shadow-lg text-center max-w-md mx-4 flex flex-col gap-4',
+    style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+  }, [
+    createElement('h1', {
+      key: 'title',
+      className: 'text-3xl font-bold',
+      style: { color: '#C29C27' }
+    }, title),
+    createElement('p', {
+      key: 'score',
+      className: 'text-2xl font-semibold',
+      style: { color: '#C29C27' }
+    }, scoreLabel),
+    createElement('div', {
+      key: 'buttons',
+      className: 'flex flex-col gap-3'
+    }, [
+      createElement('button', {
+        key: 'retry',
+        onClick: onRestart,
+        className: 'px-6 py-3 font-semibold transition-colors hover:opacity-80',
+        style: { backgroundColor: '#C29C27', color: '#163B3A', border: '4px solid #C29C27' }
+      }, retryLabel),
+      createElement('button', {
+        key: 'back',
+        onClick: onReturnToMenu,
+        className: 'px-6 py-3 font-semibold transition-colors hover:opacity-80',
+        style: { backgroundColor: '#163B3A', color: '#C29C27', border: '4px solid #C29C27' }
+      }, backLabel)
+    ])
+  ]);
+}
+
 export default function ResultScreen({
   phase,
   texts,
@@ -96,7 +141,9 @@ export default function ResultScreen({
   plantLanguage,
   onPlantLanguageChange,
   onStartNextRound,
-  onRestart
+  onRestart,
+  gameMode = GAME_MODES.CLASSIC,
+  onReturnToMenu
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -107,9 +154,22 @@ export default function ResultScreen({
 
   const desktopBackgroundPattern = renderDesktopBackground(ReactGlobal, isMobile);
 
-  const content = phase === 'roundComplete'
-    ? renderRoundComplete({ ReactGlobal, texts, score, currentRoundIndex, totalRounds, onStartNextRound })
-    : renderGameComplete({ ReactGlobal, texts, score, onRestart });
+  let content;
+  if (phase === 'endlessComplete' || phase === 'endlessFailed') {
+    const isFailure = phase === 'endlessFailed';
+    content = renderEndlessOutcome({
+      ReactGlobal,
+      texts,
+      score,
+      isFailure,
+      onRestart,
+      onReturnToMenu
+    });
+  } else if (phase === 'roundComplete') {
+    content = renderRoundComplete({ ReactGlobal, texts, score, currentRoundIndex, totalRounds, onStartNextRound });
+  } else {
+    content = renderGameComplete({ ReactGlobal, texts, score, onRestart });
+  }
 
   return createElement('div', {
     className: 'min-h-screen relative flex flex-col overflow-hidden',
@@ -124,6 +184,7 @@ export default function ResultScreen({
       score,
       plantLanguage,
       onPlantLanguageChange,
+      gameMode,
       showQuestionProgress: false
     }),
     createElement('div', {

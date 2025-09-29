@@ -4,6 +4,7 @@ import { shuffleArray } from '../utils/random.js';
 import {
   PLANT_LANGUAGES,
   INTERFACE_LANGUAGES,
+  GAME_MODES,
   ROUNDS,
   TOTAL_ROUNDS,
   getQuestionsForRound,
@@ -65,6 +66,7 @@ export default function useGameLogic() {
   });
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
   const [roundPhase, setRoundPhase] = useState('menu');
+  const [gameMode, setGameMode] = useState(GAME_MODES.CLASSIC);
   const [sessionPlants, setSessionPlants] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -103,10 +105,43 @@ export default function useGameLogic() {
     }
   }, []);
 
-  const startGame = useCallback(() => {
+  const startClassicGame = useCallback(() => {
     resetUsedPlantTracking();
+    setGameMode(GAME_MODES.CLASSIC);
     startRound(0, true);
   }, [startRound]);
+
+  const startEndlessGame = useCallback(() => {
+    resetUsedPlantTracking();
+    setGameMode(GAME_MODES.ENDLESS);
+
+    const aggregatedQuestions = ROUNDS.reduce((acc, roundConfig, index) => {
+      prepareSeenImagesForRound(index);
+      const questions = getQuestionsForRound(roundConfig);
+      if (Array.isArray(questions) && questions.length > 0) {
+        acc.push(...questions);
+      }
+      return acc;
+    }, []);
+
+    setCurrentRoundIndex(0);
+    setSessionPlants(aggregatedQuestions);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setGameState('playing');
+    setOptionIds([]);
+    setCorrectAnswerId(null);
+
+    if (aggregatedQuestions.length === 0) {
+      setRoundPhase('endlessComplete');
+    } else {
+      setRoundPhase('playing');
+    }
+  }, []);
+
+  const startGame = useCallback(() => {
+    startClassicGame();
+  }, [startClassicGame]);
 
   const generateOptionIds = useCallback(plant => {
     if (!plant) {
@@ -134,6 +169,21 @@ export default function useGameLogic() {
     }
 
     return shuffleArray([correctId, ...wrongIds]);
+  }, []);
+
+  const returnToMenu = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setRoundPhase('menu');
+    setSessionPlants([]);
+    setCurrentQuestionIndex(0);
+    setCurrentRoundIndex(0);
+    setGameState('playing');
+    setOptionIds([]);
+    setCorrectAnswerId(null);
+    setScore(0);
   }, []);
 
   useEffect(() => {
@@ -194,7 +244,50 @@ export default function useGameLogic() {
       return;
     }
 
-    if (selectedId === correctAnswerId) {
+    const currentPlant = sessionPlants[currentQuestionIndex];
+    if (!currentPlant) {
+      return;
+    }
+
+    const isCorrect = selectedId === correctAnswerId;
+
+    if (gameMode === GAME_MODES.ENDLESS) {
+      const pointsChange = isCorrect ? 1 : -2;
+      const updatedScore = score + pointsChange;
+      setScore(prev => prev + pointsChange);
+      setGameState(isCorrect ? 'correct' : 'incorrect');
+
+      const isLastQuestion = currentQuestionIndex + 1 >= sessionPlants.length;
+      preloadPlantImages([sessionPlants[currentQuestionIndex + 1]].filter(Boolean));
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        if (updatedScore < 0) {
+          setRoundPhase('endlessFailed');
+          setGameState('playing');
+          setOptionIds([]);
+          setCorrectAnswerId(null);
+          return;
+        }
+
+        if (isLastQuestion) {
+          setRoundPhase('endlessComplete');
+          setGameState('playing');
+          setOptionIds([]);
+          setCorrectAnswerId(null);
+        } else {
+          setCurrentQuestionIndex(prev => prev + 1);
+          setGameState('playing');
+        }
+      }, 1500);
+
+      return;
+    }
+
+    if (isCorrect) {
       const roundConfig = ROUNDS[currentRoundIndex] || {};
       const pointsPerQuestion = Number.isFinite(roundConfig.pointsPerQuestion) && roundConfig.pointsPerQuestion > 0
         ? roundConfig.pointsPerQuestion
@@ -224,7 +317,7 @@ export default function useGameLogic() {
         setGameState('playing');
       }
     }, 1500);
-  }, [roundPhase, gameState, correctAnswerId, currentQuestionIndex, sessionPlants, currentRoundIndex, preloadPlantImages]);
+  }, [roundPhase, gameState, gameMode, correctAnswerId, currentQuestionIndex, sessionPlants, currentRoundIndex, preloadPlantImages, score]);
 
   const changePlantLanguage = useCallback(newLang => {
     if (!PLANT_LANGUAGES.includes(newLang)) {
@@ -237,7 +330,8 @@ export default function useGameLogic() {
     if (!INTERFACE_LANGUAGES.includes(newLang)) {
       throw new GameLogicError(`Язык интерфейса "${newLang}" не поддерживается.`);
     }
-    if (roundPhase !== 'menu' && roundPhase !== 'gameComplete') {
+    const allowedPhases = ['menu', 'gameComplete', 'endlessComplete', 'endlessFailed'];
+    if (!allowedPhases.includes(roundPhase)) {
       return;
     }
     setInterfaceLanguage(newLang);
@@ -278,7 +372,11 @@ export default function useGameLogic() {
     changeInterfaceLanguage,
     changePlantLanguage,
     roundPhase,
+    gameMode,
     startGame,
+    startClassicGame,
+    startEndlessGame,
+    returnToMenu,
     startRound,
     handleAnswer,
     generateOptionIds,

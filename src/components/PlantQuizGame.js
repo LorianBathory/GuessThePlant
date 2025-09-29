@@ -25,7 +25,8 @@ export default function PlantQuizGame() {
       texts: game.texts,
       interfaceLanguage: game.interfaceLanguage,
       onInterfaceLanguageChange: game.changeInterfaceLanguage,
-      onStartGame: game.startGame,
+      onStartClassicGame: game.startClassicGame,
+      onStartEndlessGame: game.startEndlessGame,
       isPostGame: game.roundPhase === 'gameComplete',
       score: game.score,
       isMobile: game.isMobile
@@ -47,9 +48,12 @@ export default function PlantQuizGame() {
       options: game.options,
       plantLanguage: game.plantLanguage,
       onAnswer: game.handleAnswer,
-      onPlantLanguageChange: game.changePlantLanguage
+      onPlantLanguageChange: game.changePlantLanguage,
+      gameMode: game.gameMode
     });
   }
+
+  const isEndlessPhase = game.roundPhase === 'endlessComplete' || game.roundPhase === 'endlessFailed';
 
   return createElement(ResultScreen, {
     phase: game.roundPhase,
@@ -61,6 +65,8 @@ export default function PlantQuizGame() {
     plantLanguage: game.plantLanguage,
     onPlantLanguageChange: game.changePlantLanguage,
     onStartNextRound: game.handleStartNextRound,
-    onRestart: game.startGame
+    onRestart: isEndlessPhase ? game.startEndlessGame : game.startGame,
+    onReturnToMenu: game.returnToMenu,
+    gameMode: game.gameMode
   });
 }

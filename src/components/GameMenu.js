@@ -29,7 +29,8 @@ export default function GameMenu({
   texts,
   interfaceLanguage,
   onInterfaceLanguageChange,
-  onStartGame,
+  onStartClassicGame = () => {},
+  onStartEndlessGame = () => {},
   isPostGame = false,
   score = 0,
   isMobile = false
@@ -48,6 +49,9 @@ export default function GameMenu({
   const subtitle = isPostGame
     ? (texts.postGameSubtitle || texts.menuSubtitle || '')
     : texts.menuSubtitle;
+
+  const classicLabel = texts.classicModeButton || texts.startGame || 'Start Game';
+  const endlessLabel = texts.endlessModeButton || 'Endless Mode';
 
   const desktopBackgroundPattern = renderDesktopBackground(ReactGlobal, isMobile);
 
@@ -93,12 +97,23 @@ export default function GameMenu({
             }
           }, lang.toUpperCase())))
         ]),
-        createElement('button', {
-          key: 'start-button',
-          onClick: onStartGame,
-          className: 'px-6 py-3 font-semibold transition-colors hover:opacity-80',
-          style: { backgroundColor: '#C29C27', color: '#163B3A', border: '4px solid #C29C27' }
-        }, texts.startGame)
+        createElement('div', {
+          key: 'mode-buttons',
+          className: 'flex flex-col gap-3'
+        }, [
+          createElement('button', {
+            key: 'classic-button',
+            onClick: onStartClassicGame,
+            className: 'px-6 py-3 font-semibold transition-colors hover:opacity-80',
+            style: { backgroundColor: '#C29C27', color: '#163B3A', border: '4px solid #C29C27' }
+          }, classicLabel),
+          createElement('button', {
+            key: 'endless-button',
+            onClick: onStartEndlessGame,
+            className: 'px-6 py-3 font-semibold transition-colors hover:opacity-80',
+            style: { backgroundColor: '#163B3A', color: '#C29C27', border: '4px solid #C29C27' }
+          }, endlessLabel)
+        ])
       ])
     ])
   ].filter(Boolean));
