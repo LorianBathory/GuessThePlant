@@ -8,23 +8,23 @@ const speciesCatalog = Object.freeze({
   2:  { images: ['p002'], wrongAnswers: [10, 11, 12] },
   3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16] }, //добавить гиацинт, колокольчик
   4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 20] },
-  5:  { images: ['p005', 'p043', 'p054'], wrongAnswers: [20, 21, 31, 23, 24] },
+  5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [20, 21, 31, 23, 24] }, //camellia
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 28, 29] },
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3]}, //Allium, need some extra wrong answers
   17: { images: ['p007'] },
   19: { images: ['p008'] },
   21: {images: ['p076'], wrongAnswers: [5, 14, 62] }, //добавить вишню для вариантов ответа
   22: { images: ['p009'] },
-  26: { images: ['p010', 'p011'], wrongAnswers: [33, 73, 77, 39] },
-  27: { images: ['p012'], wrongAnswers: [6, 26] },
-  29: { images: ['p013', 'p014'], wrongAnswers: [7, 41, 42] },
+  26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [33, 73, 77, 39] }, //Dahlia
+  27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 26] },
+  29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [7, 41, 42] }, //Chrysanthemum
   30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 16] }, //osteospermum
   31: { images: ['p016', 'p017', 'p018', 'p077', 'p078'], wrongAnswers: [7, 41, 42] },
   32: { images: ['p019'], wrongAnswers: [43, 44, 45] },
   33: { images: ['p020', 'p021'], wrongAnswers: [31, 47, 46] },
   34: { images: ['p022'], wrongAnswers: [43, 48, 49] },
   35: { images: ['p023'], wrongAnswers: [16, 36, 37] },
-  41: { images: ['p024'], wrongAnswers: [39, 40, 67] },
+  41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 67] },
   46: { images: ['p025'], wrongAnswers: [31, 33] },
   47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [76] }, //anemone
   50: { images: ['p028', 'p045'], wrongAnswers: [18, 56, 57, 79] },
@@ -33,6 +33,7 @@ const speciesCatalog = Object.freeze({
   53: { images: ['p031'], wrongAnswers: [64] },
   54: { images: ['p032', 'p063', 'p064'], wrongAnswers: [64, 65, 66] }, //lantana
   55: { images: ['p033', 'p034', 'p035'], wrongAnswers: [67] },
+    58: { images: ['p102'], wrongAnswers: [4] }, //Dog-rose,  wrongAnswers надо
     62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
   68: { images: ['p036'] },
   69: { images: ['p037'], wrongAnswers: [31, 22] },
@@ -65,7 +66,7 @@ const speciesCatalog = Object.freeze({
     98: { images: ['p067', 'p068'], wrongAnswers: [31] }, //Passiflora временный wrongAnswer +
     //99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
     100: { images: ['p080'], wrongAnswers: [6, 39, 27] }, //Sunflower +
-    101: { images: ['p056'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
+    101: { images: ['p056', 'p099'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.

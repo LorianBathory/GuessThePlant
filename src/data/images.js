@@ -3,7 +3,7 @@ export const plantImages = Object.freeze([
   { id: 'p002', src: 'images/MoonCarrot.JPG' },
   { id: 'p003', src: 'images/Agapanthus.JPG' },
   { id: 'p004', src: 'images/bougainvillea.JPG' },
-  { id: 'p005', src: 'images/camelia.JPG' },
+  { id: 'p005', src: 'images/Camellia.JPG' },
   { id: 'p006', src: 'images/Gerbera.JPG' },
   { id: 'p007', src: 'images/Clematis_Medium.JPG' },
   { id: 'p008', src: 'images/Oleandr_Medium_GabrielBodhi.JPG' },
