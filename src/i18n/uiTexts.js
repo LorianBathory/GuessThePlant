@@ -38,6 +38,26 @@ export const uiTexts = {
     menuSubtitle: "Select the interface language and start your game.",
     startGame: "Start Game",
     postGameSubtitle: "Check your result and play again!"
+  },
+  nl: {
+    question: "Wat is deze plant?",
+    score: "Score",
+    correct: "Goed!",
+    incorrect: "Fout!",
+    result: "Je hebt",
+    resultPoints: "punten",
+    playAgain: "Speel opnieuw",
+    instruction: "Kies de juiste naam van de plant",
+    interfaceLanguageLabel: "Interfacetaal",
+    roundLabel: "Ronde",
+    roundCompleted: "Ronde {{round}} voltooid!",
+    startRoundButton: "Start ronde {{round}}",
+    gameCompletedTitle: "Je hebt het spel uitgespeeld! Je score: {{score}}",
+    restart: "Opnieuw starten",
+    menuTitle: "Raad de plant",
+    menuSubtitle: "Kies de interfacetaal en begin met spelen.",
+    startGame: "Start spel",
+    postGameSubtitle: "Bekijk je resultaat en speel nog eens!"
   }
 };
 
