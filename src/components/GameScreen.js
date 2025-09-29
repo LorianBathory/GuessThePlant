@@ -1,4 +1,3 @@
-import { INTERFACE_LANGUAGES } from '../gameConfig.js';
 import GameHeader from './GameHeader.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 
@@ -109,10 +108,8 @@ export default function GameScreen({
   currentPlant,
   options,
   plantLanguage,
-  interfaceLanguage,
   onAnswer,
-  onPlantLanguageChange,
-  onInterfaceLanguageChange
+  onPlantLanguageChange
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -225,29 +222,6 @@ export default function GameScreen({
         className: 'text-center mt-6 opacity-75',
         style: { color: '#C29C27' }
       }, texts.instruction),
-      createElement('div', {
-        key: 'default-lang-selector',
-        className: 'text-center mt-6 flex flex-col items-center gap-3'
-      }, [
-        createElement('span', {
-          key: 'label',
-          className: 'text-lg font-semibold',
-          style: { color: '#C29C27' }
-        }, texts.interfaceLanguageLabel),
-        createElement('div', {
-          key: 'buttons',
-          className: 'flex gap-2'
-        }, INTERFACE_LANGUAGES.map(lang => createElement('button', {
-          key: `interface-${lang}`,
-          onClick: () => onInterfaceLanguageChange(lang),
-          className: 'px-3 py-1 text-sm font-bold uppercase transition-all',
-          style: {
-            backgroundColor: interfaceLanguage === lang ? '#C29C27' : 'transparent',
-            color: interfaceLanguage === lang ? '#163B3A' : '#C29C27',
-            border: '2px solid #C29C27'
-          }
-        }, lang.toUpperCase())))
-      ])
     ])
   ]);
 

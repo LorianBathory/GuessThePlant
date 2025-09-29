@@ -1,6 +1,7 @@
 import useGameLogic from '../hooks/useGameLogic.js';
 import GameScreen from './GameScreen.js';
 import ResultScreen from './ResultScreen.js';
+import GameMenu from './GameMenu.js';
 import { plants } from '../data/catalog.js';
 import { DataLoadingError } from '../utils/errorHandling.js';
 
@@ -19,6 +20,18 @@ export default function PlantQuizGame() {
 
   const { createElement } = ReactGlobal;
 
+  if (game.roundPhase === 'menu' || game.roundPhase === 'gameComplete') {
+    return createElement(GameMenu, {
+      texts: game.texts,
+      interfaceLanguage: game.interfaceLanguage,
+      onInterfaceLanguageChange: game.changeInterfaceLanguage,
+      onStartGame: game.startGame,
+      isPostGame: game.roundPhase === 'gameComplete',
+      score: game.score,
+      isMobile: game.isMobile
+    });
+  }
+
   if (game.roundPhase === 'playing') {
     return createElement(GameScreen, {
       texts: game.texts,
@@ -33,10 +46,8 @@ export default function PlantQuizGame() {
       currentPlant: game.currentPlant,
       options: game.options,
       plantLanguage: game.plantLanguage,
-      interfaceLanguage: game.interfaceLanguage,
       onAnswer: game.handleAnswer,
-      onPlantLanguageChange: game.changePlantLanguage,
-      onInterfaceLanguageChange: game.changeInterfaceLanguage
+      onPlantLanguageChange: game.changePlantLanguage
     });
   }
 
@@ -50,6 +61,6 @@ export default function PlantQuizGame() {
     plantLanguage: game.plantLanguage,
     onPlantLanguageChange: game.changePlantLanguage,
     onStartNextRound: game.handleStartNextRound,
-    onRestart: game.handleRestart
+    onRestart: game.startGame
   });
 }
