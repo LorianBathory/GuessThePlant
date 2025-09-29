@@ -2,7 +2,6 @@ import { choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';
 import {
-  QUESTIONS_PER_ROUND,
   PLANT_LANGUAGES,
   INTERFACE_LANGUAGES,
   ROUNDS,
@@ -84,7 +83,7 @@ export default function useGameLogic() {
 
     prepareSeenImagesForRound(roundIndex);
 
-    const questions = getQuestionsForRound(roundConfig.difficulty);
+    const questions = getQuestionsForRound(roundConfig);
     setCurrentRoundIndex(roundIndex);
 
     if (resetScore) {
@@ -200,7 +199,11 @@ export default function useGameLogic() {
     }
 
     if (selectedId === correctAnswerId) {
-      setScore(prev => prev + 1);
+      const roundConfig = ROUNDS[currentRoundIndex] || {};
+      const pointsPerQuestion = Number.isFinite(roundConfig.pointsPerQuestion) && roundConfig.pointsPerQuestion > 0
+        ? roundConfig.pointsPerQuestion
+        : 1;
+      setScore(prev => prev + pointsPerQuestion);
       setGameState('correct');
     } else {
       setGameState('incorrect');
@@ -253,6 +256,9 @@ export default function useGameLogic() {
   }, [startGame]);
 
   const currentPlant = currentQuestionIndex < sessionPlants.length ? sessionPlants[currentQuestionIndex] : null;
+  const currentRoundConfig = currentRoundIndex >= 0 && currentRoundIndex < ROUNDS.length
+    ? ROUNDS[currentRoundIndex]
+    : null;
 
   const options = useMemo(() => {
     if (optionIds.length === 0) {
@@ -289,7 +295,12 @@ export default function useGameLogic() {
     currentRoundIndex,
     currentQuestionIndex,
     totalQuestionsInRound: sessionPlants.length,
-    questionsPerRound: QUESTIONS_PER_ROUND,
+    questionsPerRound: currentRoundConfig && Number.isFinite(currentRoundConfig.questions)
+      ? currentRoundConfig.questions
+      : null,
+    pointsPerQuestion: currentRoundConfig && Number.isFinite(currentRoundConfig.pointsPerQuestion)
+      ? currentRoundConfig.pointsPerQuestion
+      : 1,
     score,
     gameState,
     currentPlant,
