@@ -1,4 +1,4 @@
-import { PLANT_LANGUAGES } from '../gameConfig.js';
+import { PLANT_LANGUAGES, GAME_MODES } from '../gameConfig.js';
 
 export default function GameHeader({
   texts,
@@ -6,7 +6,8 @@ export default function GameHeader({
   score,
   plantLanguage,
   onPlantLanguageChange,
-  showLanguageSelector = true
+  showLanguageSelector = true,
+  gameMode = GAME_MODES.CLASSIC
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -17,6 +18,15 @@ export default function GameHeader({
 
   const roundLabel = texts && texts.roundLabel ? texts.roundLabel : 'Round';
   const scoreLabel = texts && texts.score ? texts.score : 'Score';
+  const isEndless = gameMode === GAME_MODES.ENDLESS;
+  const endlessLabel = texts && texts.endlessModeHeading
+    ? texts.endlessModeHeading
+    : texts && texts.endlessModeButton
+      ? texts.endlessModeButton
+      : 'Endless Mode';
+  const progressLabelText = isEndless
+    ? endlessLabel
+    : `${roundLabel} ${currentRoundIndex + 1}`;
 
   const progressSection = createElement('div', {
     key: 'progress-info',
@@ -24,7 +34,7 @@ export default function GameHeader({
     style: { color: '#C29C27' }
   }, createElement('span', {
     className: 'text-lg font-semibold whitespace-nowrap'
-  }, `${roundLabel} ${currentRoundIndex + 1}`));
+  }, progressLabelText));
 
   let languageButtons = null;
   if (showLanguageSelector && typeof onPlantLanguageChange === 'function') {

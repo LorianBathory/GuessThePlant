@@ -4,19 +4,19 @@ import { shuffleArray } from '../utils/random.js';
 import {
   PLANT_LANGUAGES,
   INTERFACE_LANGUAGES,
+  GAME_MODES,
   ROUNDS,
   TOTAL_ROUNDS,
-  getQuestionsForRound,
   getStoredInterfaceLanguage,
   getStoredPlantLanguage,
   storeInterfaceLanguage,
   storePlantLanguage,
   getInitialIsMobile,
-  subscribeToViewportChange,
-  resetUsedPlantTracking,
-  prepareSeenImagesForRound
+  subscribeToViewportChange
 } from '../gameConfig.js';
 import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
+import { useClassicMode } from './useClassicMode.js';
+import { useEndlessMode } from './useEndlessMode.js';
 
 export default function useGameLogic() {
   const ReactGlobal = globalThis.React;
@@ -65,6 +65,7 @@ export default function useGameLogic() {
   });
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
   const [roundPhase, setRoundPhase] = useState('menu');
+  const [gameMode, setGameMode] = useState(GAME_MODES.CLASSIC);
   const [sessionPlants, setSessionPlants] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -75,38 +76,48 @@ export default function useGameLogic() {
 
   const texts = uiTexts[interfaceLanguage] || uiTexts[defaultLang];
 
-  const startRound = useCallback((roundIndex, resetScore = false) => {
-    const roundConfig = ROUNDS[roundIndex];
-    if (!roundConfig) {
-      throw new GameLogicError(`Конфигурация раунда №${roundIndex + 1} отсутствует.`);
-    }
+  const {
+    startClassicGame,
+    startRound,
+    handleClassicAnswer,
+    handleStartNextRound
+  } = useClassicMode({
+    setGameMode,
+    setSessionPlants,
+    setCurrentQuestionIndex,
+    setCurrentRoundIndex,
+    setRoundPhase,
+    setScore,
+    setGameState,
+    setOptionIds,
+    setCorrectAnswerId,
+    sessionPlants,
+    currentQuestionIndex,
+    currentRoundIndex,
+    timeoutRef,
+    preloadPlantImages
+  });
 
-    prepareSeenImagesForRound(roundIndex);
-
-    const questions = getQuestionsForRound(roundConfig);
-    setCurrentRoundIndex(roundIndex);
-
-    if (resetScore) {
-      setScore(0);
-    }
-
-    setSessionPlants(questions);
-    setCurrentQuestionIndex(0);
-    setGameState('playing');
-    setOptionIds([]);
-    setCorrectAnswerId(null);
-
-    if (questions.length === 0) {
-      setRoundPhase(roundIndex >= TOTAL_ROUNDS - 1 ? 'gameComplete' : 'roundComplete');
-    } else {
-      setRoundPhase('playing');
-    }
-  }, []);
+  const { startEndlessGame, handleEndlessAnswer } = useEndlessMode({
+    setGameMode,
+    setSessionPlants,
+    setCurrentQuestionIndex,
+    setCurrentRoundIndex,
+    setRoundPhase,
+    setScore,
+    setGameState,
+    setOptionIds,
+    setCorrectAnswerId,
+    sessionPlants,
+    currentQuestionIndex,
+    timeoutRef,
+    preloadPlantImages,
+    score
+  });
 
   const startGame = useCallback(() => {
-    resetUsedPlantTracking();
-    startRound(0, true);
-  }, [startRound]);
+    startClassicGame();
+  }, [startClassicGame]);
 
   const generateOptionIds = useCallback(plant => {
     if (!plant) {
@@ -134,6 +145,22 @@ export default function useGameLogic() {
     }
 
     return shuffleArray([correctId, ...wrongIds]);
+  }, []);
+
+  const returnToMenu = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setRoundPhase('menu');
+    setGameMode(GAME_MODES.CLASSIC);
+    setSessionPlants([]);
+    setCurrentQuestionIndex(0);
+    setCurrentRoundIndex(0);
+    setGameState('playing');
+    setOptionIds([]);
+    setCorrectAnswerId(null);
+    setScore(0);
   }, []);
 
   useEffect(() => {
@@ -194,37 +221,18 @@ export default function useGameLogic() {
       return;
     }
 
-    if (selectedId === correctAnswerId) {
-      const roundConfig = ROUNDS[currentRoundIndex] || {};
-      const pointsPerQuestion = Number.isFinite(roundConfig.pointsPerQuestion) && roundConfig.pointsPerQuestion > 0
-        ? roundConfig.pointsPerQuestion
-        : 1;
-      setScore(prev => prev + pointsPerQuestion);
-      setGameState('correct');
-    } else {
-      setGameState('incorrect');
+    const currentPlant = sessionPlants[currentQuestionIndex];
+    if (!currentPlant || correctAnswerId == null) {
+      return;
     }
 
-    const isLastQuestion = currentQuestionIndex + 1 >= sessionPlants.length;
-    preloadPlantImages([sessionPlants[currentQuestionIndex + 1]].filter(Boolean));
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+    if (gameMode === GAME_MODES.ENDLESS) {
+      handleEndlessAnswer(selectedId, correctAnswerId);
+      return;
     }
 
-    timeoutRef.current = setTimeout(() => {
-      if (isLastQuestion) {
-        const isFinalRound = currentRoundIndex === TOTAL_ROUNDS - 1;
-        setRoundPhase(isFinalRound ? 'gameComplete' : 'roundComplete');
-        setGameState('playing');
-        setOptionIds([]);
-        setCorrectAnswerId(null);
-      } else {
-        setCurrentQuestionIndex(prev => prev + 1);
-        setGameState('playing');
-      }
-    }, 1500);
-  }, [roundPhase, gameState, correctAnswerId, currentQuestionIndex, sessionPlants, currentRoundIndex, preloadPlantImages]);
+    handleClassicAnswer(selectedId, correctAnswerId);
+  }, [roundPhase, gameState, gameMode, correctAnswerId, currentQuestionIndex, sessionPlants, handleEndlessAnswer, handleClassicAnswer]);
 
   const changePlantLanguage = useCallback(newLang => {
     if (!PLANT_LANGUAGES.includes(newLang)) {
@@ -237,18 +245,12 @@ export default function useGameLogic() {
     if (!INTERFACE_LANGUAGES.includes(newLang)) {
       throw new GameLogicError(`Язык интерфейса "${newLang}" не поддерживается.`);
     }
-    if (roundPhase !== 'menu' && roundPhase !== 'gameComplete') {
+    const allowedPhases = ['menu', 'gameComplete', 'endlessComplete', 'endlessFailed'];
+    if (!allowedPhases.includes(roundPhase)) {
       return;
     }
     setInterfaceLanguage(newLang);
   }, [roundPhase]);
-
-  const handleStartNextRound = useCallback(() => {
-    const nextRoundIndex = currentRoundIndex + 1;
-    if (nextRoundIndex < TOTAL_ROUNDS) {
-      startRound(nextRoundIndex);
-    }
-  }, [currentRoundIndex, startRound]);
 
   const currentPlant = currentQuestionIndex < sessionPlants.length ? sessionPlants[currentQuestionIndex] : null;
   const currentRoundConfig = currentRoundIndex >= 0 && currentRoundIndex < ROUNDS.length
@@ -278,7 +280,11 @@ export default function useGameLogic() {
     changeInterfaceLanguage,
     changePlantLanguage,
     roundPhase,
+    gameMode,
     startGame,
+    startClassicGame,
+    startEndlessGame,
+    returnToMenu,
     startRound,
     handleAnswer,
     generateOptionIds,
