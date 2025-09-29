@@ -13,7 +13,11 @@ export const uiTexts = {
     roundCompleted: "Раунд {{round}} завершён!",
     startRoundButton: "Начать раунд {{round}}",
     gameCompletedTitle: "Вы прошли игру! Ваши баллы: {{score}}",
-    restart: "Начать заново"
+    restart: "Начать заново",
+    menuTitle: "Угадай растение",
+    menuSubtitle: "Выберите язык интерфейса и начните игру.",
+    startGame: "Начать игру",
+    postGameSubtitle: "Посмотрите результат и попробуйте ещё раз!"
   },
   en: {
     question: "What plant is this?",
@@ -29,7 +33,11 @@ export const uiTexts = {
     roundCompleted: "Round {{round}} completed!",
     startRoundButton: "Start Round {{round}}",
     gameCompletedTitle: "You completed the game! Your score: {{score}}",
-    restart: "Restart"
+    restart: "Restart",
+    menuTitle: "Guess the Plant",
+    menuSubtitle: "Select the interface language and start your game.",
+    startGame: "Start Game",
+    postGameSubtitle: "Check your result and play again!"
   }
 };
 

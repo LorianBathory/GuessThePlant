@@ -64,7 +64,7 @@ export default function useGameLogic() {
     return defaultLang;
   });
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
-  const [roundPhase, setRoundPhase] = useState('playing');
+  const [roundPhase, setRoundPhase] = useState('menu');
   const [sessionPlants, setSessionPlants] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -135,10 +135,6 @@ export default function useGameLogic() {
 
     return shuffleArray([correctId, ...wrongIds]);
   }, []);
-
-  useEffect(() => {
-    startGame();
-  }, [startGame]);
 
   useEffect(() => {
     if (sessionPlants.length === 0) {
@@ -241,8 +237,11 @@ export default function useGameLogic() {
     if (!INTERFACE_LANGUAGES.includes(newLang)) {
       throw new GameLogicError(`Язык интерфейса "${newLang}" не поддерживается.`);
     }
+    if (roundPhase !== 'menu' && roundPhase !== 'gameComplete') {
+      return;
+    }
     setInterfaceLanguage(newLang);
-  }, []);
+  }, [roundPhase]);
 
   const handleStartNextRound = useCallback(() => {
     const nextRoundIndex = currentRoundIndex + 1;
@@ -250,10 +249,6 @@ export default function useGameLogic() {
       startRound(nextRoundIndex);
     }
   }, [currentRoundIndex, startRound]);
-
-  const handleRestart = useCallback(() => {
-    startGame();
-  }, [startGame]);
 
   const currentPlant = currentQuestionIndex < sessionPlants.length ? sessionPlants[currentQuestionIndex] : null;
   const currentRoundConfig = currentRoundIndex >= 0 && currentRoundIndex < ROUNDS.length
@@ -288,7 +283,6 @@ export default function useGameLogic() {
     handleAnswer,
     generateOptionIds,
     handleStartNextRound,
-    handleRestart,
     texts,
     isMobile,
     totalRounds: TOTAL_ROUNDS,
