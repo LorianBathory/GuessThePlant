@@ -97,7 +97,6 @@ export default function useGameLogic() {
     timeoutRef,
     preloadPlantImages
   });
-
   const { startEndlessGame, handleEndlessAnswer } = useEndlessMode({
     setGameMode,
     setSessionPlants,
