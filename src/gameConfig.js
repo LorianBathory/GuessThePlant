@@ -3,8 +3,8 @@ import { shuffleArray } from './utils/random.js';
 import { difficultyLevels } from './data/difficulties.js';
 import { DataLoadingError, StorageError } from './utils/errorHandling.js';
 
-export const PLANT_LANGUAGES = ['ru', 'en', 'sci'];
-export const INTERFACE_LANGUAGES = ['ru', 'en'];
+export const PLANT_LANGUAGES = ['ru', 'en', 'nl', 'sci'];
+export const INTERFACE_LANGUAGES = ['ru', 'en', 'nl'];
 
 export const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
 export const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
