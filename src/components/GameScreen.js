@@ -95,6 +95,100 @@ function renderPlantImage(ReactGlobal, plant, isMobile) {
   });
 }
 
+function renderFeedbackPanel(ReactGlobal, type, texts, isMobile) {
+  const { createElement } = ReactGlobal;
+  const isCorrect = type === 'correct';
+  const accentColor = isCorrect ? '#4CAF50' : '#E53935';
+  const srText = isCorrect ? texts.correct : texts.incorrect;
+  const iconSize = isMobile ? 200 : 240;
+
+  const icon = isCorrect
+    ? createElement('svg', {
+      key: 'icon',
+      width: iconSize,
+      height: iconSize,
+      viewBox: '0 0 200 200',
+      fill: 'none',
+      'aria-hidden': 'true'
+    }, [
+      createElement('path', {
+        key: 'outline',
+        d: 'M52 108L86 142L148 68',
+        stroke: '#C29C27',
+        strokeWidth: 18,
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
+      }),
+      createElement('path', {
+        key: 'check',
+        d: 'M52 108L86 142L148 68',
+        stroke: accentColor,
+        strokeWidth: 14,
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
+      })
+    ])
+    : createElement('svg', {
+      key: 'icon',
+      width: iconSize,
+      height: iconSize,
+      viewBox: '0 0 200 200',
+      fill: 'none',
+      'aria-hidden': 'true'
+    }, [
+      createElement('path', {
+        key: 'line-1',
+        d: 'M60 60L140 140',
+        stroke: accentColor,
+        strokeWidth: 16,
+        strokeLinecap: 'round'
+      }),
+      createElement('path', {
+        key: 'line-2',
+        d: 'M140 60L60 140',
+        stroke: accentColor,
+        strokeWidth: 16,
+        strokeLinecap: 'round'
+      })
+    ]);
+
+  const reducedBorderWidth = Math.max(1, (isMobile ? 4 : 8) / 7);
+  const outerPadding = isCorrect ? '7px' : (isMobile ? '24px 12px' : '48px');
+  const frameBorder = isCorrect
+    ? `${reducedBorderWidth}px solid ${accentColor}`
+    : (isMobile ? `4px solid ${accentColor}` : `8px solid ${accentColor}`);
+  const frameRadius = isCorrect ? '0px' : (isMobile ? '18px' : '24px');
+  const framePadding = isCorrect ? (isMobile ? '18px' : '32px') : (isMobile ? '18px' : '28px');
+
+  return createElement('div', {
+    className: 'h-full flex items-center justify-center',
+    style: {
+      width: isMobile ? '100%' : '675px',
+      backgroundColor: '#163B3A',
+      border: isMobile ? 'none' : '6px solid #C29C27',
+      padding: outerPadding
+    }
+  }, createElement('div', {
+    className: 'flex items-center justify-center',
+    style: {
+      width: '100%',
+      maxWidth: isCorrect ? '100%' : (isMobile ? '320px' : '420px'),
+      height: isCorrect ? '100%' : 'auto',
+      minHeight: isMobile ? '220px' : '260px',
+      border: frameBorder,
+      borderRadius: frameRadius,
+      backgroundColor: 'transparent',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: framePadding
+    }
+  }, [
+    icon,
+    createElement('span', { key: 'label', className: 'sr-only' }, srText)
+  ]));
+}
+
 export default function GameScreen({
   texts,
   isMobile,
@@ -175,26 +269,8 @@ export default function GameScreen({
               height: '100%'
             }
           }, renderPlantImage(ReactGlobal, currentPlant, isMobile)),
-          gameState === 'correct' && createElement('div', {
-            className: 'h-full flex items-center justify-center text-6xl font-bold',
-            style: {
-              width: isMobile ? '100%' : '675px',
-              color: '#C29C27',
-              backgroundColor: '#163B3A',
-              border: isMobile ? 'none' : '6px solid #C29C27',
-              padding: isMobile ? '24px 12px' : '0'
-            }
-          }, texts.correct),
-          gameState === 'incorrect' && createElement('div', {
-            className: 'h-full flex items-center justify-center text-6xl font-bold',
-            style: {
-              width: isMobile ? '100%' : '675px',
-              color: '#C29C27',
-              backgroundColor: '#163B3A',
-              border: isMobile ? 'none' : '6px solid #C29C27',
-              padding: isMobile ? '24px 12px' : '0'
-            }
-          }, texts.incorrect)
+          gameState === 'correct' && renderFeedbackPanel(ReactGlobal, 'correct', texts, isMobile),
+          gameState === 'incorrect' && renderFeedbackPanel(ReactGlobal, 'incorrect', texts, isMobile)
         ]),
         gameState === 'playing' && options.length > 0 && createElement('div', {
           key: 'options',
