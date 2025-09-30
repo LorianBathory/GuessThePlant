@@ -11,15 +11,16 @@ const speciesCatalog = Object.freeze({
   5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [20, 21, 31, 23, 24] }, //camellia
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 28, 29] },
     8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113']}, //gazania
+    12: {images: ['p124']} //Parsnip
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3]}, //Allium, need some extra wrong answers
     16: {images: ['p105'], wrongAnswers: [4]}, //Fritillary, need some extra wrong answers
   17: { images: ['p007'] },
   19: { images: ['p008'] },
-  21: {images: ['p076'], wrongAnswers: [5, 14, 62] }, //добавить вишню для вариантов ответа
+  21: {images: ['p076', 'p128', 'p129'], wrongAnswers: [5, 14, 62] }, //Rhododendron. добавить вишню для вариантов ответа
   22: { images: ['p009'] },
-    23: { images: ['p106'] }, //gardenia
-    24: { images: ['p120', 'p121'] }, //magnolia
-    26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [33, 73, 77, 39] }, //Dahlia
+  23: { images: ['p106'] }, //gardenia
+  24: { images: ['p120', 'p121'] }, //magnolia
+  26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [33, 73, 77, 39] }, //Dahlia
   27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 26] },
   29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [7, 41, 42] }, //Chrysanthemum
   30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 16] }, //osteospermum
@@ -28,9 +29,9 @@ const speciesCatalog = Object.freeze({
   33: { images: ['p020', 'p021', 'p122', 'p123'], wrongAnswers: [31, 47, 46] }, //Papaver
   34: { images: ['p022'], wrongAnswers: [43, 48, 49] },
   35: { images: ['p023', 'p118', 'p119'], wrongAnswers: [16, 36, 37] },
-    36: { images: ['p114', 'p115'] }, //Hemerocallis
+  36: { images: ['p114', 'p115'] }, //Hemerocallis
   41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 67] },
-  46: { images: ['p025'], wrongAnswers: [31, 33] },
+  46: { images: ['p025', 'p125', 'p126'], wrongAnswers: [31, 33] }, //Peony
   47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [76] }, //anemone
   50: { images: ['p028', 'p045'], wrongAnswers: [18, 56, 57, 79] },
   51: { images: ['p029', 'p073'], wrongAnswers: [58, 59, 60] },
@@ -46,7 +47,7 @@ const speciesCatalog = Object.freeze({
   73: { images: ['p038', 'p047', 'p092', 'p093'], wrongAnswers: [29] }, //aster, wrongAnswers надо
   74: { images: ['p070'], wrongAnswers: [41, 54] }, //phlox, wrongAnswers надо дополнить
   75: { images: ['p039', 'p082'] },
-  76: { images: ['p069'] }, //petunia
+  76: { images: ['p069', 'p127'] }, //petunia
   77: { images: ['p040'], wrongAnswers: [58, 48, 57] },
   78: { images: ['p041'], wrongAnswers: [76] },
   79: { images: ['p042'], wrongAnswers: [18] },
