@@ -11,7 +11,7 @@ export const plantNamesById = Object.freeze({
   10: { ru: "Борщевик", en: "Hogweed", nl: "Berenklauw", sci: "Heracleum" },
   11: { ru: "Дудник лесной", en: "Wild Parsley", nl: "Gewone engelwortel", sci: "Angelica sylvestris" },
   12: { ru: "Пастернак", en: "Parsnip", nl: "Pastinaak", sci: "Pastinaca sativa" },
-  13: { ru: "Лук гигантский", en: "Giant Allium", nl: "Reuzenlook", sci: "Allium giganteum" },
+  13: { ru: "Лук", en: "Allium", nl: "Reuzenlook", sci: "Allium" },
   14: { ru: "Камассия", en: "Camas", nl: "Prairielelie", sci: "Camassia" },
   15: { ru: "Глобулярия", en: "Globe Daisy", nl: "Kogelbloem", sci: "Globularia" },
   16: { ru: "Рябчик", en: "Fritillary", nl: "Keizerskroon", sci: "Fritillaria" },
