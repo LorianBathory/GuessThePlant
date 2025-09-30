@@ -60,11 +60,7 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
       return;
     }
 
-    const questionIntro = Number.isFinite(questionNumber)
-      ? [`Вопрос ${questionNumber}. Выберите правильное название растения.`]
-      : ['Выберите правильное название растения.'];
-
-    speakQueue([...questionIntro, ...spokenOptions]);
+    speakQueue(spokenOptions);
   }, [questionNumber, spokenOptions, gameState]);
 
   useEffect(() => {
