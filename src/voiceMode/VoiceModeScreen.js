@@ -2,6 +2,7 @@ import useSecureImageSource from '../hooks/useSecureImageSource.js';
 import { useVoiceAnnouncements } from './useVoiceAnnouncements.js';
 
 const UPSCALE_FACTOR = 1.1;
+const BUTTON_SCALE_ADJUSTMENT = 1.15;
 const BASE_DESKTOP_IMAGE_WIDTH = 675;
 const BASE_DESKTOP_BUTTON_FONT_SIZE = 20;
 const BASE_MOBILE_BUTTON_FONT_SIZE = 20.8;
@@ -119,9 +120,9 @@ export default function VoiceModeScreen({
   }, []);
 
   const buttonMeasurements = useMemo(() => {
-    const fontSize = (isMobile ? BASE_MOBILE_BUTTON_FONT_SIZE : BASE_DESKTOP_BUTTON_FONT_SIZE) * UPSCALE_FACTOR;
-    const paddingY = (isMobile ? BASE_MOBILE_PADDING_Y : BASE_DESKTOP_PADDING_Y) * UPSCALE_FACTOR;
-    const paddingX = (isMobile ? BASE_MOBILE_PADDING_X : BASE_DESKTOP_PADDING_X) * UPSCALE_FACTOR;
+    const fontSize = (isMobile ? BASE_MOBILE_BUTTON_FONT_SIZE : BASE_DESKTOP_BUTTON_FONT_SIZE) * UPSCALE_FACTOR * BUTTON_SCALE_ADJUSTMENT;
+    const paddingY = (isMobile ? BASE_MOBILE_PADDING_Y : BASE_DESKTOP_PADDING_Y) * UPSCALE_FACTOR * BUTTON_SCALE_ADJUSTMENT;
+    const paddingX = (isMobile ? BASE_MOBILE_PADDING_X : BASE_DESKTOP_PADDING_X) * UPSCALE_FACTOR * BUTTON_SCALE_ADJUSTMENT;
 
     return {
       fontSize: `${fontSize}px`,
