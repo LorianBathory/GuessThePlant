@@ -40,12 +40,24 @@ export function resolveAssetUrl(path) {
   const normalisedPath = trimmed.replace(/^\/+/, '');
 
   const browserLocation = typeof globalThis !== 'undefined' ? globalThis.location : undefined;
-  if (!browserLocation || typeof browserLocation.pathname !== 'string' || typeof browserLocation.origin !== 'string') {
+  if (!browserLocation || typeof browserLocation.pathname !== 'string') {
     return `/${normalisedPath}`;
   }
 
   const basePath = normaliseBasePath(browserLocation.pathname, '/voice-mode/');
-  return new URL(normalisedPath, `${browserLocation.origin}${basePath}`).toString();
+  const origin = typeof browserLocation.origin === 'string' ? browserLocation.origin : '';
+
+  if (origin && origin !== 'null') {
+    try {
+      return new URL(normalisedPath, `${origin}${basePath}`).toString();
+    } catch {
+      // Если сформировать абсолютный URL не удалось (например, из-за неподдерживаемого протокола),
+      // переходим к относительному пути ниже.
+    }
+  }
+
+  const prefix = basePath.startsWith('/') ? basePath : `/${basePath}`;
+  return `${prefix}${normalisedPath}`;
 }
 
 export default resolveAssetUrl;
