@@ -128,7 +128,7 @@ export const plantImages = Object.freeze([
   { id: 'p127', src: 'images/Petunia_RyutaroTsukata.JPG' },
   { id: 'p128', src: 'images/Rhododendron_SiegfriedPoepperl.JPG' },
   { id: 'p129', src: 'images/Rhododendron_SiegfriedPoepperl2.JPG' },
-  { id: 'p130', src: 'images/ShastaDaisy-sherry-197092728-11497015.jpg' },
+  { id: 'p130', src: 'images/ShastaDaisy_Sherry.JPG' },
   { id: 'p131', src: 'images/Tagetes_KamalBNandasena.JPG' },
   { id: 'p132', src: 'images/Tagetes_Medium_KirilGruev.JPG' },
   { id: 'p133', src: 'images/Tulipa_SkyVaughan.JPG' }

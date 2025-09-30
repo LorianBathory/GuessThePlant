@@ -12,7 +12,7 @@ export const questionIdsByDifficulty = Object.freeze({
 
 export const imageIdsByDifficulty = Object.freeze({
     [difficultyLevels.EASY]: Object.freeze(['p092']),
-    [difficultyLevels.MEDIUM]: Object.freeze(['p011', 'p014', 'p021', 'p035', 'p044', 'p060', 'p050', 'p078','p082', 'p097', 'p104']),
+    [difficultyLevels.MEDIUM]: Object.freeze(['p011', 'p014', 'p021', 'p035', 'p044', 'p060', 'p050', 'p078','p082', 'p097', 'p104', 'p133']),
     [difficultyLevels.HARD]: Object.freeze(['p018', 'p067', 'p072', 'p074', 'p046', 'p047', 'p054', 'p063', 'p064', 'p073', 'p095','p096', 'p100', 'p109', 'p110', 'p111', 'p112']),
 });
 
