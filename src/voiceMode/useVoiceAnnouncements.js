@@ -74,7 +74,6 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
 
     speakOptions();
   }, [questionNumber, gameState, speakOptions]);
-
   useEffect(() => {
     if (!checkSpeechSupport()) {
       return;
@@ -89,7 +88,6 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
       speakQueue(['Неверно.']);
     }
   }, [gameState]);
-
   return { isSpeechSupported: checkSpeechSupport(), repeatOptions };
 }
 

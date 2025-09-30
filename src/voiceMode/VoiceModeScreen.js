@@ -13,6 +13,13 @@ const BASE_MOBILE_PADDING_Y = 12;
 const BASE_MOBILE_PADDING_X = 14;
 
 const DESKTOP_IMAGE_WIDTH = BASE_DESKTOP_IMAGE_WIDTH * UPSCALE_FACTOR;
+const NUMBER_COMMAND_PATTERNS = [
+  { index: 0, patterns: [/\bодин\b/, /\b1\b/] },
+  { index: 1, patterns: [/\bдва\b/, /\b2\b/] },
+  { index: 2, patterns: [/\bтри\b/, /\b3\b/] },
+  { index: 3, patterns: [/\bчетыре\b/, /\b4\b/] }
+];
+const REPEAT_PATTERNS = [/\bповтори\b/, /\bповторить\b/, /\bповтор\b/];
 
 function VoicePlantImage({ src, alt, containerStyle, sectionStyle }) {
   const ReactGlobal = globalThis.React;
