@@ -1,3 +1,5 @@
+import resolveAssetUrl from '../utils/resolveAssetUrl.js';
+
 const objectUrlCache = new Map();
 
 function retainObjectUrl(imageUrl) {
@@ -94,10 +96,12 @@ export default function useSecureImageSource(imageUrl) {
     setSecureSrc(null);
     setStatus('loading');
 
-    retainObjectUrl(imageUrl)
+    const resolvedUrl = resolveAssetUrl(imageUrl);
+
+    retainObjectUrl(resolvedUrl)
       .then(objectUrl => {
         if (!isSubscribed) {
-          releaseObjectUrl(imageUrl);
+          releaseObjectUrl(resolvedUrl);
           return;
         }
         setSecureSrc(objectUrl);
@@ -113,7 +117,7 @@ export default function useSecureImageSource(imageUrl) {
 
     return () => {
       isSubscribed = false;
-      releaseObjectUrl(imageUrl);
+      releaseObjectUrl(resolvedUrl);
     };
   }, [imageUrl]);
 
