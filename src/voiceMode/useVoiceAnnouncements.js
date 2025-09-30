@@ -47,12 +47,8 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
     });
   }, [options]);
 
-  const repeatAnnouncements = useCallback(() => {
+  const speakOptions = useCallback(() => {
     if (!checkSpeechSupport()) {
-      return;
-    }
-
-    if (gameState !== 'playing') {
       return;
     }
 
@@ -61,12 +57,23 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
     }
 
     speakQueue(spokenOptions);
-  }, [spokenOptions, gameState]);
+  }, [spokenOptions]);
+
+  const repeatOptions = useCallback(() => {
+    if (gameState !== 'playing') {
+      return;
+    }
+
+    speakOptions();
+  }, [gameState, speakOptions]);
 
   useEffect(() => {
-    repeatAnnouncements();
-  }, [questionNumber, repeatAnnouncements]);
+    if (gameState !== 'playing') {
+      return;
+    }
 
+    speakOptions();
+  }, [questionNumber, gameState, speakOptions]);
   useEffect(() => {
     if (!checkSpeechSupport()) {
       return;
@@ -81,8 +88,7 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
       speakQueue(['Неверно.']);
     }
   }, [gameState]);
-
-  return { isSpeechSupported: checkSpeechSupport(), repeatAnnouncements };
+  return { isSpeechSupported: checkSpeechSupport(), repeatOptions };
 }
 
 export function isSpeechSynthesisSupported() {
