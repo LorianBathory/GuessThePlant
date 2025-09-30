@@ -29,7 +29,8 @@ export default function PlantQuizGame() {
       onStartEndlessGame: game.startEndlessGame,
       isPostGame: game.roundPhase === 'gameComplete',
       score: game.score,
-      isMobile: game.isMobile
+      isMobile: game.isMobile,
+      isClassicModeUnavailable: game.isClassicModeUnavailable
     });
   }
 

@@ -14,6 +14,7 @@ export const GAME_MODES = Object.freeze({
 export const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';
 export const PLANT_LANGUAGE_STORAGE_KEY = 'gtp-plant-language';
 export const SEEN_IMAGE_IDS_STORAGE_KEY = 'gtp-seen-image-ids';
+export const CLASSIC_MODE_DISABLED_STORAGE_KEY = 'gtp-classic-disabled';
 
 export const ROUNDS = Object.freeze([
   {
@@ -41,6 +42,47 @@ export const TOTAL_ROUNDS = ROUNDS.length;
 const usedPlantIdsAcrossGame = new Set();
 const seenImageIdsAcrossSessions = new Set();
 let seenImageIdsLoaded = false;
+let classicModeDisabledLoaded = false;
+let classicModeDisabled = false;
+
+function ensureClassicModeDisabledLoaded() {
+  if (classicModeDisabledLoaded) {
+    return;
+  }
+
+  classicModeDisabledLoaded = true;
+
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    const stored = window.localStorage.getItem(CLASSIC_MODE_DISABLED_STORAGE_KEY);
+    classicModeDisabled = stored === '1';
+  } catch (error) {
+    throw new StorageError('Не удалось определить доступность обычного режима в localStorage.', {
+      cause: error
+    });
+  }
+}
+
+function persistClassicModeDisabled() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    if (classicModeDisabled) {
+      window.localStorage.setItem(CLASSIC_MODE_DISABLED_STORAGE_KEY, '1');
+    } else {
+      window.localStorage.removeItem(CLASSIC_MODE_DISABLED_STORAGE_KEY);
+    }
+  } catch (error) {
+    throw new StorageError('Не удалось сохранить статус обычного режима в localStorage.', {
+      cause: error
+    });
+  }
+}
 
 function ensureSeenImageIdsLoaded() {
   if (seenImageIdsLoaded) {
@@ -133,6 +175,8 @@ export function clearSeenImagesTracking() {
     seenImageIdsAcrossSessions.clear();
   }
 
+  clearClassicModeDisabledFlag();
+
   if (typeof window === 'undefined') {
     return;
   }
@@ -154,21 +198,34 @@ export function hasUnseenImagesForDifficulty(difficulty) {
     .some(plant => !isImageSeen(plant.imageId));
 }
 
-export function prepareSeenImagesForRound(roundIndex) {
-  const thirdRoundIndex = 2;
+export function prepareSeenImagesForRound() {
+  // История просмотренных изображений больше не сбрасывается между раундами.
+  // Функция сохранена для совместимости, но не выполняет действий.
+}
 
-  if (roundIndex !== thirdRoundIndex) {
+export function isClassicModeDisabled() {
+  ensureClassicModeDisabledLoaded();
+  return classicModeDisabled;
+}
+
+export function markClassicModeDisabled() {
+  ensureClassicModeDisabledLoaded();
+  if (classicModeDisabled) {
     return;
   }
 
-  const firstRound = ROUNDS[0];
-  if (!firstRound) {
+  classicModeDisabled = true;
+  persistClassicModeDisabled();
+}
+
+export function clearClassicModeDisabledFlag() {
+  ensureClassicModeDisabledLoaded();
+  if (!classicModeDisabled) {
     return;
   }
 
-  if (!hasUnseenImagesForDifficulty(firstRound.difficulty)) {
-    clearSeenImagesTracking();
-  }
+  classicModeDisabled = false;
+  persistClassicModeDisabled();
 }
 
 export function getQuestionsForRound(roundConfig) {
@@ -178,7 +235,9 @@ export function getQuestionsForRound(roundConfig) {
 
   const { difficulty, questions } = roundConfig ?? {};
   const pool = plants.filter(plant => plant.difficulty === difficulty);
-  const availablePlants = pool.filter(plant => !usedPlantIdsAcrossGame.has(plant.id));
+  const availablePlants = pool.filter(plant => {
+    return !usedPlantIdsAcrossGame.has(plant.id) && !isImageSeen(plant.imageId);
+  });
 
   const variantsByPlantId = availablePlants.reduce((acc, plant) => {
     if (!acc.has(plant.id)) {
@@ -192,36 +251,21 @@ export function getQuestionsForRound(roundConfig) {
   const desiredQuestions = Number.isFinite(questions) && questions > 0
     ? questions
     : variantsByPlantId.size;
-  const roundLength = Math.min(desiredQuestions, variantsByPlantId.size);
-  if (roundLength === 0) {
+
+  if (variantsByPlantId.size < desiredQuestions) {
+    markClassicModeDisabled();
     return [];
   }
 
-  const groupsWithUnseen = [];
-  const groupsSeenOnly = [];
-
-  variantsByPlantId.forEach((variants, plantId) => {
-    const unseenVariants = variants.filter(variant => !isImageSeen(variant.imageId));
-    const group = { plantId, variants, unseenVariants };
-
-    if (unseenVariants.length > 0) {
-      groupsWithUnseen.push(group);
-    } else {
-      groupsSeenOnly.push(group);
-    }
-  });
-
-  const prioritizedGroups = shuffleArray(groupsWithUnseen).concat(shuffleArray(groupsSeenOnly));
+  const prioritizedGroups = shuffleArray(Array.from(variantsByPlantId.entries()));
   const selectedPlants = [];
 
-  for (const group of prioritizedGroups) {
-    if (selectedPlants.length >= roundLength) {
+  for (const [plantId, variants] of prioritizedGroups) {
+    if (selectedPlants.length >= desiredQuestions) {
       break;
     }
 
-    const { plantId, variants, unseenVariants } = group;
-    const variantPool = unseenVariants.length > 0 ? unseenVariants : variants;
-    const chosenVariant = shuffleArray(variantPool.slice())[0];
+    const chosenVariant = shuffleArray(variants.slice())[0];
 
     if (!chosenVariant) {
       continue;
@@ -229,6 +273,11 @@ export function getQuestionsForRound(roundConfig) {
 
     selectedPlants.push(chosenVariant);
     usedPlantIdsAcrossGame.add(plantId);
+  }
+
+  if (selectedPlants.length < desiredQuestions) {
+    markClassicModeDisabled();
+    return [];
   }
 
   markImagesAsSeen(selectedPlants.map(plant => plant.imageId));

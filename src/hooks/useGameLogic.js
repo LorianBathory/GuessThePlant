@@ -12,7 +12,8 @@ import {
   storeInterfaceLanguage,
   storePlantLanguage,
   getInitialIsMobile,
-  subscribeToViewportChange
+  subscribeToViewportChange,
+  isClassicModeDisabled
 } from '../gameConfig.js';
 import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
 import { useClassicMode } from './useClassicMode.js';
@@ -73,6 +74,7 @@ export default function useGameLogic() {
   const [optionIds, setOptionIds] = useState([]);
   const [correctAnswerId, setCorrectAnswerId] = useState(null);
   const [isMobile, setIsMobile] = useState(() => getInitialIsMobile());
+  const [isClassicModeUnavailable, setClassicModeUnavailable] = useState(() => isClassicModeDisabled());
 
   const texts = uiTexts[interfaceLanguage] || uiTexts[defaultLang];
 
@@ -95,7 +97,9 @@ export default function useGameLogic() {
     currentQuestionIndex,
     currentRoundIndex,
     timeoutRef,
-    preloadPlantImages
+    preloadPlantImages,
+    isClassicModeUnavailable,
+    setClassicModeUnavailable
   });
 
   const { startEndlessGame, handleEndlessAnswer } = useEndlessMode({
@@ -290,6 +294,7 @@ export default function useGameLogic() {
     handleStartNextRound,
     texts,
     isMobile,
+    isClassicModeUnavailable,
     totalRounds: TOTAL_ROUNDS,
     currentRoundIndex,
     currentQuestionIndex,
