@@ -28,7 +28,7 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
     throw new Error('React global was not found. Make sure the React bundle is loaded before using useVoiceAnnouncements.');
   }
 
-  const { useEffect, useMemo } = ReactGlobal;
+  const { useEffect, useMemo, useCallback } = ReactGlobal;
 
   useEffect(() => () => {
     if (checkSpeechSupport()) {
@@ -47,12 +47,8 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
     });
   }, [options]);
 
-  useEffect(() => {
+  const speakOptions = useCallback(() => {
     if (!checkSpeechSupport()) {
-      return;
-    }
-
-    if (gameState !== 'playing') {
       return;
     }
 
@@ -60,12 +56,24 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
       return;
     }
 
-    const questionIntro = Number.isFinite(questionNumber)
-      ? [`Вопрос ${questionNumber}. Выберите правильное название растения.`]
-      : ['Выберите правильное название растения.'];
+    speakQueue(spokenOptions);
+  }, [spokenOptions]);
 
-    speakQueue([...questionIntro, ...spokenOptions]);
-  }, [questionNumber, spokenOptions, gameState]);
+  const repeatOptions = useCallback(() => {
+    if (gameState !== 'playing') {
+      return;
+    }
+
+    speakOptions();
+  }, [gameState, speakOptions]);
+
+  useEffect(() => {
+    if (gameState !== 'playing') {
+      return;
+    }
+
+    speakOptions();
+  }, [questionNumber, gameState, speakOptions]);
 
   useEffect(() => {
     if (!checkSpeechSupport()) {
@@ -82,7 +90,7 @@ export function useVoiceAnnouncements({ questionNumber, options, gameState }) {
     }
   }, [gameState]);
 
-  return { isSpeechSupported: checkSpeechSupport() };
+  return { isSpeechSupported: checkSpeechSupport(), repeatOptions };
 }
 
 export function isSpeechSynthesisSupported() {

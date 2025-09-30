@@ -1,5 +1,6 @@
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 import { useVoiceAnnouncements } from './useVoiceAnnouncements.js';
+import useVoiceCommands from './useVoiceCommands.js';
 
 const UPSCALE_FACTOR = 1.1;
 const BUTTON_SCALE_ADJUSTMENT = 1.15;
@@ -83,8 +84,15 @@ export default function VoiceModeScreen({
   }
 
   const { createElement, useEffect, useMemo, useState } = ReactGlobal;
-  useVoiceAnnouncements({ questionNumber, options, gameState });
+  const { repeatOptions } = useVoiceAnnouncements({ questionNumber, options, gameState });
   const isInteractionLocked = gameState !== 'playing';
+
+  useVoiceCommands({
+    enabled: !isInteractionLocked,
+    options,
+    onAnswer,
+    onRepeat: repeatOptions
+  });
 
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') {
@@ -133,27 +141,54 @@ export default function VoiceModeScreen({
   const optionsContainerStyle = useMemo(() => ({
     gap: isMobile ? '6.6px' : '1.1rem',
     width: '100%',
-    maxWidth: isMobile ? '100%' : '844.8px'
+    maxWidth: isMobile ? '100%' : '844.8px',
+    padding: isMobile ? '28px 16px 44px' : '0px'
   }), [isMobile]);
 
-  const imageContainerStyle = useMemo(() => ({
-    width: '100%',
-    maxWidth: isMobile ? '100%' : `${DESKTOP_IMAGE_WIDTH}px`,
-    aspectRatio: '3 / 2',
-    backgroundColor: '#163B3A',
-    border: isMobile ? 'none' : '6px solid #C29C27',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-    overflow: 'hidden',
-    borderRadius: '0px'
-  }), [isMobile]);
+  const imageContainerStyle = useMemo(() => {
+    if (isMobile) {
+      return {
+        width: '100%',
+        maxWidth: '100%',
+        height: '100%',
+        maxHeight: '100vh',
+        backgroundColor: '#163B3A',
+        border: 'none',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+        overflow: 'hidden',
+        borderRadius: '0px'
+      };
+    }
+
+    return {
+      width: '100%',
+      maxWidth: `${DESKTOP_IMAGE_WIDTH}px`,
+      aspectRatio: '3 / 2',
+      backgroundColor: '#163B3A',
+      border: '6px solid #C29C27',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+      overflow: 'hidden',
+      borderRadius: '0px'
+    };
+  }, [isMobile]);
 
   const imageSectionStyle = useMemo(() => ({
     width: '100%',
-    marginBottom: isMobile ? '13.2px' : '35.2px'
+    marginBottom: isMobile ? '0px' : '35.2px',
+    minHeight: isMobile ? '100vh' : 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }), [isMobile]);
+
+  const rootLayoutStyle = useMemo(() => ({
+    width: '100%',
+    rowGap: isMobile ? '0px' : '2.5rem'
   }), [isMobile]);
 
   return createElement('div', {
-    className: 'w-full max-w-6xl mx-auto flex flex-col items-center gap-10'
+    className: 'w-full max-w-6xl mx-auto flex flex-col items-center',
+    style: rootLayoutStyle
   }, [
     currentPlant && currentPlant.image && createElement(VoicePlantImage, {
       key: 'image',
