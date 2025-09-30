@@ -71,11 +71,11 @@ export default function VoiceModeScreen({
       key: option.id,
       onClick: () => onAnswer(option.id),
       disabled: isInteractionLocked,
-      className: 'flex items-center justify-center rounded-[2rem] border-4 border-emerald-500 bg-emerald-900/80 px-6 py-8 text-left shadow-[0_12px_30px_rgba(6,95,70,0.45)] focus:outline-none focus-visible:ring-8 focus-visible:ring-emerald-300 transition transform hover:scale-[1.01] disabled:opacity-60 disabled:cursor-not-allowed',
+      className: 'flex items-center justify-center rounded-[1.5rem] border-4 border-emerald-500 bg-emerald-900/80 px-4 py-6 text-left shadow-[0_12px_30px_rgba(6,95,70,0.45)] focus:outline-none focus-visible:ring-8 focus-visible:ring-emerald-300 transition transform hover:scale-[1.01] disabled:opacity-60 disabled:cursor-not-allowed',
       style: {
-        fontSize: '2.0625rem',
+        fontSize: '1.546875rem',
         lineHeight: 1.2,
-        padding: '1.875rem 1.5rem'
+        padding: '1.40625rem 1.125rem'
       }
     }, `${index + 1}. ${option.label}`)))
   ]);
