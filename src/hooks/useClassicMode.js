@@ -1,4 +1,11 @@
-import { GAME_MODES, ROUNDS, TOTAL_ROUNDS, getQuestionsForRound, prepareSeenImagesForRound, resetUsedPlantTracking } from '../gameConfig.js';
+import {
+  GAME_MODES,
+  ROUNDS,
+  TOTAL_ROUNDS,
+  getQuestionsForRound,
+  prepareSeenImagesForRound,
+  resetUsedPlantTracking
+} from '../gameConfig.js';
 import { GameLogicError } from '../utils/errorHandling.js';
 
 export function useClassicMode({
@@ -15,7 +22,9 @@ export function useClassicMode({
   currentQuestionIndex,
   currentRoundIndex,
   timeoutRef,
-  preloadPlantImages
+  preloadPlantImages,
+  isClassicModeUnavailable,
+  setClassicModeUnavailable
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -46,17 +55,49 @@ export function useClassicMode({
     setCorrectAnswerId(null);
 
     if (questions.length === 0) {
-      setRoundPhase(roundIndex >= TOTAL_ROUNDS - 1 ? 'gameComplete' : 'roundComplete');
+      setClassicModeUnavailable(true);
+      setRoundPhase('gameComplete');
     } else {
+      setClassicModeUnavailable(false);
       setRoundPhase('playing');
     }
-  }, [setCurrentRoundIndex, setScore, setSessionPlants, setCurrentQuestionIndex, setGameState, setOptionIds, setCorrectAnswerId, setRoundPhase]);
+  }, [setCurrentRoundIndex, setScore, setSessionPlants, setCurrentQuestionIndex, setGameState, setOptionIds, setCorrectAnswerId, setRoundPhase, setClassicModeUnavailable]);
 
   const startClassicGame = useCallback(() => {
-    resetUsedPlantTracking();
     setGameMode(GAME_MODES.CLASSIC);
+
+    if (isClassicModeUnavailable) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      setSessionPlants([]);
+      setCurrentQuestionIndex(0);
+      setCurrentRoundIndex(0);
+      setGameState('playing');
+      setOptionIds([]);
+      setCorrectAnswerId(null);
+      setScore(0);
+      setRoundPhase('gameComplete');
+      return;
+    }
+
+    resetUsedPlantTracking();
     startRound(0, true);
-  }, [setGameMode, startRound]);
+  }, [
+    isClassicModeUnavailable,
+    setGameMode,
+    setSessionPlants,
+    setCurrentQuestionIndex,
+    setCurrentRoundIndex,
+    setGameState,
+    setOptionIds,
+    setCorrectAnswerId,
+    setScore,
+    setRoundPhase,
+    startRound,
+    timeoutRef
+  ]);
 
   const handleClassicAnswer = useCallback((selectedId, correctAnswerId) => {
     const currentPlant = sessionPlants[currentQuestionIndex];

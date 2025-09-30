@@ -33,7 +33,8 @@ export default function GameMenu({
   onStartEndlessGame = () => {},
   isPostGame = false,
   score = 0,
-  isMobile = false
+  isMobile = false,
+  isClassicModeUnavailable = false
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -42,13 +43,19 @@ export default function GameMenu({
 
   const { createElement } = ReactGlobal;
 
-  const heading = isPostGame
-    ? (texts.gameCompletedTitle || '').replace('{{score}}', score)
-    : texts.menuTitle;
+  const isOutOfQuestions = isPostGame && isClassicModeUnavailable;
 
-  const subtitle = isPostGame
-    ? (texts.postGameSubtitle || texts.menuSubtitle || '')
-    : texts.menuSubtitle;
+  const heading = isOutOfQuestions
+    ? (texts.classicModeUnavailableTitle || texts.gameCompletedTitle || texts.menuTitle || '').replace('{{score}}', score)
+    : isPostGame
+      ? (texts.gameCompletedTitle || '').replace('{{score}}', score)
+      : texts.menuTitle;
+
+  const subtitle = isOutOfQuestions
+    ? texts.classicModeUnavailableSubtitle || texts.postGameSubtitle || texts.menuSubtitle || ''
+    : isPostGame
+      ? (texts.postGameSubtitle || texts.menuSubtitle || '')
+      : texts.menuSubtitle;
 
   const classicLabel = texts.classicModeButton || texts.startGame || 'Start Game';
   const endlessLabel = texts.endlessModeButton || 'Endless Mode';
