@@ -212,7 +212,7 @@ export default function GameScreen({
             border: '4px solid #C29C27',
             color: '#C29C27',
             boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-            fontSize: isMobile ? '16px' : '20px',
+            fontSize: isMobile ? '20.8px' : '20px',
             padding: isMobile ? '12px 14px' : '16px 24px',
             width: '100%'
           }
