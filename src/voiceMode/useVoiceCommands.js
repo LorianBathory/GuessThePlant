@@ -10,19 +10,82 @@ const REPEAT_PATTERNS = [
 const NUMBER_PATTERNS = [
   {
     index: 0,
-    patterns: ['1', 'один', 'первый', 'вариант один', 'номер один', 'ответ один']
+    patterns: [
+      '1',
+      'один',
+      'одна',
+      'одно',
+      'первый',
+      'первое',
+      'первая',
+      'вариант один',
+      'вариант 1',
+      'номер один',
+      'номер 1',
+      'ответ один',
+      'ответ 1',
+      'первый вариант',
+      'первый ответ'
+    ]
   },
   {
     index: 1,
-    patterns: ['2', 'два', 'второй', 'вариант два', 'номер два', 'ответ два']
+    patterns: [
+      '2',
+      'два',
+      'две',
+      'второй',
+      'второе',
+      'вторая',
+      'вариант два',
+      'вариант 2',
+      'номер два',
+      'номер 2',
+      'ответ два',
+      'ответ 2',
+      'второй вариант',
+      'второй ответ'
+    ]
   },
   {
     index: 2,
-    patterns: ['3', 'три', 'третий', 'вариант три', 'номер три', 'ответ три']
+    patterns: [
+      '3',
+      'три',
+      'третья',
+      'третье',
+      'третий',
+      'вариант три',
+      'вариант 3',
+      'номер три',
+      'номер 3',
+      'ответ три',
+      'ответ 3',
+      'третий вариант',
+      'третий ответ'
+    ]
   },
   {
     index: 3,
-    patterns: ['4', 'четыре', 'четвертый', 'четвёртый', 'вариант четыре', 'номер четыре', 'ответ четыре']
+    patterns: [
+      '4',
+      'четыре',
+      'четвертая',
+      'четвертое',
+      'четвертый',
+      'четвёртый',
+      'четвёртая',
+      'вариант четыре',
+      'вариант 4',
+      'номер четыре',
+      'номер 4',
+      'ответ четыре',
+      'ответ 4',
+      'четвертый вариант',
+      'четвёртый вариант',
+      'четвертый ответ',
+      'четвёртый ответ'
+    ]
   }
 ];
 
@@ -81,7 +144,7 @@ function getSpeechRecognitionConstructor() {
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
 }
 
-export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat }) {
+export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat, questionId }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
     throw new Error('React global was not found. Make sure the React bundle is loaded before using useVoiceCommands.');
@@ -97,6 +160,7 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat 
   const enabledRef = useRef(Boolean(enabled));
   const startListeningRef = useRef(() => {});
   const stopListeningRef = useRef(() => {});
+  const questionIdRef = useRef(questionId);
 
   useEffect(() => {
     latestOptionsRef.current = options;
@@ -113,6 +177,28 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat 
   useEffect(() => {
     enabledRef.current = Boolean(enabled);
   }, [enabled]);
+
+  useEffect(() => {
+    if (questionId === questionIdRef.current) {
+      return;
+    }
+
+    questionIdRef.current = questionId;
+
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch (error) {
+        if (error?.name !== 'InvalidStateError') {
+          console.warn('Не удалось перезапустить распознавание речи при смене вопроса:', error);
+        }
+      }
+    }
+
+    if (enabledRef.current && shouldListenRef.current) {
+      startListeningRef.current();
+    }
+  }, [questionId]);
 
   useEffect(() => {
     const SpeechRecognition = getSpeechRecognitionConstructor();
@@ -159,25 +245,91 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat 
       const transcripts = [];
       for (let i = 0; i < event.results.length; i += 1) {
         const result = event.results[i];
-        if (result && result[0] && typeof result[0].transcript === 'string') {
-          transcripts.push(result[0].transcript);
+        if (!result) {
+          continue;
+        }
+
+        for (let j = 0; j < result.length; j += 1) {
+          const alternative = result[j];
+          if (alternative && typeof alternative.transcript === 'string') {
+            transcripts.push(alternative.transcript);
+          }
         }
       }
 
-      const normalized = normalizeTranscript(transcripts.join(' '));
-      if (!normalized) {
+      if (transcripts.length === 0) {
         return;
       }
 
-      if (detectRepeatCommand(normalized)) {
+      const normalizedVariants = transcripts
+        .map(normalizeTranscript)
+        .filter(Boolean);
+
+      if (normalizedVariants.length === 0) {
+        return;
+      }
+
+      let handled = false;
+
+      for (const normalized of normalizedVariants) {
+        if (!normalized) {
+          continue;
+        }
+
+        if (detectRepeatCommand(normalized)) {
+          if (typeof repeatHandlerRef.current === 'function') {
+            repeatHandlerRef.current();
+          }
+          handled = true;
+          break;
+        }
+      }
+
+      if (handled) {
+        return;
+      }
+
+      for (const normalized of normalizedVariants) {
+        const optionIndex = detectOptionIndex(normalized, latestOptionsRef.current?.length || 0);
+        if (optionIndex === null || optionIndex === undefined) {
+          continue;
+        }
+
+        const currentOptions = Array.isArray(latestOptionsRef.current)
+          ? latestOptionsRef.current
+          : [];
+        const selectedOption = currentOptions[optionIndex];
+
+        if (!selectedOption || typeof answerHandlerRef.current !== 'function') {
+          continue;
+        }
+
+        enabledRef.current = false;
+        shouldListenRef.current = false;
+        stopRecognition();
+        answerHandlerRef.current(selectedOption.id);
+        handled = true;
+        break;
+      }
+
+      if (handled) {
+        return;
+      }
+
+      const combined = normalizeTranscript(transcripts.join(' '));
+      if (!combined) {
+        return;
+      }
+
+      if (detectRepeatCommand(combined)) {
         if (typeof repeatHandlerRef.current === 'function') {
           repeatHandlerRef.current();
         }
         return;
       }
 
-      const optionIndex = detectOptionIndex(normalized, latestOptionsRef.current?.length || 0);
-      if (optionIndex === null) {
+      const optionIndex = detectOptionIndex(combined, latestOptionsRef.current?.length || 0);
+      if (optionIndex === null || optionIndex === undefined) {
         return;
       }
 
@@ -190,6 +342,9 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat 
         return;
       }
 
+      enabledRef.current = false;
+      shouldListenRef.current = false;
+      stopRecognition();
       answerHandlerRef.current(selectedOption.id);
     };
 

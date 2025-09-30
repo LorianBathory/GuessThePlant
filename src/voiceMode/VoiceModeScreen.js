@@ -13,14 +13,6 @@ const BASE_MOBILE_PADDING_Y = 12;
 const BASE_MOBILE_PADDING_X = 14;
 
 const DESKTOP_IMAGE_WIDTH = BASE_DESKTOP_IMAGE_WIDTH * UPSCALE_FACTOR;
-const NUMBER_COMMAND_PATTERNS = [
-  { index: 0, patterns: [/\bодин\b/, /\b1\b/] },
-  { index: 1, patterns: [/\bдва\b/, /\b2\b/] },
-  { index: 2, patterns: [/\bтри\b/, /\b3\b/] },
-  { index: 3, patterns: [/\bчетыре\b/, /\b4\b/] }
-];
-const REPEAT_PATTERNS = [/\bповтори\b/, /\bповторить\b/, /\bповтор\b/];
-
 function VoicePlantImage({ src, alt, containerStyle, sectionStyle }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -98,8 +90,31 @@ export default function VoiceModeScreen({
     enabled: !isInteractionLocked,
     options,
     onAnswer,
-    onRepeat: repeatOptions
+    onRepeat: repeatOptions,
+    questionId: currentPlant?.id || `${questionNumber}`
   });
+
+  const feedbackState = useMemo(() => {
+    if (gameState === 'correct') {
+      return {
+        icon: '✔',
+        label: 'Ответ засчитан',
+        description: 'Верный ответ',
+        accentColor: '#34d399'
+      };
+    }
+
+    if (gameState === 'incorrect') {
+      return {
+        icon: '✖',
+        label: 'Ответ засчитан',
+        description: 'Неверный ответ',
+        accentColor: '#f87171'
+      };
+    }
+
+    return null;
+  }, [gameState]);
 
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') {
@@ -194,7 +209,7 @@ export default function VoiceModeScreen({
   }), [isMobile]);
 
   return createElement('div', {
-    className: 'w-full max-w-6xl mx-auto flex flex-col items-center',
+    className: 'w-full max-w-6xl mx-auto flex flex-col items-center relative',
     style: rootLayoutStyle
   }, [
     currentPlant && currentPlant.image && createElement(VoicePlantImage, {
@@ -226,6 +241,48 @@ export default function VoiceModeScreen({
         padding: buttonMeasurements.padding,
         borderRadius: '0px'
       }
-    }, `${index + 1}. ${option.label}`)))
+    }, `${index + 1}. ${option.label}`))),
+    feedbackState && createElement('div', {
+      key: 'feedback-overlay',
+      role: 'status',
+      'aria-live': 'assertive',
+      className: 'absolute inset-0 flex items-center justify-center px-4',
+      style: {
+        backgroundColor: 'rgba(15, 31, 30, 0.86)',
+        pointerEvents: 'none'
+      }
+    }, createElement('div', {
+      className: 'flex flex-col items-center text-center gap-4',
+      style: {
+        backgroundColor: '#102926',
+        border: `4px solid ${feedbackState.accentColor}`,
+        boxShadow: '0 12px 30px rgba(0,0,0,0.45)',
+        padding: isMobile ? '36px 24px' : '48px 56px',
+        maxWidth: 'min(480px, 90vw)'
+      }
+    }, [
+      createElement('span', {
+        key: 'icon',
+        'aria-hidden': 'true',
+        style: {
+          fontSize: isMobile ? '48px' : '64px',
+          color: feedbackState.accentColor
+        }
+      }, feedbackState.icon),
+      createElement('p', {
+        key: 'label',
+        style: {
+          fontSize: isMobile ? '24px' : '28px',
+          fontWeight: 700
+        }
+      }, feedbackState.label),
+      createElement('p', {
+        key: 'description',
+        style: {
+          fontSize: isMobile ? '20px' : '22px',
+          color: '#e5f3f0'
+        }
+      }, feedbackState.description)
+    ]))
   ]);
 }
