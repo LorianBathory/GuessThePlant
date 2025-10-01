@@ -1,5 +1,5 @@
 import { GAME_MODES, resetUsedPlantTracking } from '../gameConfig.js';
-import { plants } from '../data/catalog.js';
+import { allQuestions } from '../data/questions.js';
 import { shuffleArray } from '../utils/random.js';
 import { GameLogicError } from '../utils/errorHandling.js';
 
@@ -30,7 +30,7 @@ export function useEndlessMode({
     resetUsedPlantTracking();
     setGameMode(GAME_MODES.ENDLESS);
 
-    const aggregatedQuestions = shuffleArray(plants);
+    const aggregatedQuestions = shuffleArray(allQuestions);
 
     setCurrentRoundIndex(0);
     setSessionPlants(aggregatedQuestions);

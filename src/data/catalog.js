@@ -1,6 +1,7 @@
 import { getDifficultyByQuestionId, getDifficultyByImageId } from './difficulties.js';
 import { plantNamesById } from './plantNames.js';
 import { plantImagesById } from './images.js';
+import { questionTypes } from './questionTypes.js';
 
 // Дополнительные данные для видов (кроме локализации).
 const speciesCatalog = Object.freeze({
@@ -124,16 +125,20 @@ export const plants = Object.entries(speciesById)
       .filter(imageEntry => imageEntry && typeof imageEntry.src === 'string');
 
     return imageEntries.map((imageEntry, index) => {
-        const overrideDifficulty = getDifficultyByImageId(imageEntry.id);
+      const overrideDifficulty = getDifficultyByImageId(imageEntry.id, questionTypes.PLANT);
 
-        return {
-          id: numericId,
-          imageId: imageEntry.id,
-          image: imageEntry.src,
-          names: v.names,
-          wrongAnswers: v.wrongAnswers,
-          difficulty: overrideDifficulty || getDifficultyByQuestionId(numericId),
-          questionVariantId: `${numericId}-${index}`
-        };
-      });
+      return {
+        id: numericId,
+        correctAnswerId: numericId,
+        imageId: imageEntry.id,
+        image: imageEntry.src,
+        names: v.names,
+        wrongAnswers: v.wrongAnswers,
+        difficulty: overrideDifficulty || getDifficultyByQuestionId(numericId, questionTypes.PLANT),
+        questionVariantId: `${numericId}-${index}`,
+        questionType: questionTypes.PLANT,
+        selectionGroupId: `plant-${numericId}`,
+        questionPromptKey: 'question'
+      };
+    });
   });

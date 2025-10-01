@@ -226,7 +226,12 @@ export default function GameScreen({
     ? Math.min(tentativeQuestionNumber, availableQuestions)
     : tentativeQuestionNumber;
   const displayQuestionNumber = questionNumber > 0 ? questionNumber : tentativeQuestionNumber;
-  const questionHeading = texts && texts.question ? texts.question : '';
+  const questionPromptKey = currentPlant?.questionPromptKey && texts && texts[currentPlant.questionPromptKey]
+    ? currentPlant.questionPromptKey
+    : 'question';
+  const questionHeading = texts && texts[questionPromptKey]
+    ? texts[questionPromptKey]
+    : (texts && texts.question ? texts.question : '');
 
   const completedSegments = Math.min(
     totalQuestions,
