@@ -253,6 +253,31 @@ export default function GameScreen({
             marginBottom: isMobile ? '12px' : '32px'
           }
         }, questionHeading ? `${displayQuestionNumber}. ${questionHeading}` : `${displayQuestionNumber}.`),
+
+        createElement('div', {
+          key: 'progress-bar',
+          className: 'flex',
+          style: {
+            gap: '4px',
+            marginBottom: isMobile ? '8px' : '16px',
+            width: '100%'
+          }
+        }, Array.from({ length: totalQuestions }).map((_, index) => 
+  createElement('div', {
+    key: `progress-${index}`,
+    style: {
+      height: isMobile ? '6px' : '8px',
+      flex: '1',
+      backgroundColor: index < normalizedQuestionIndex 
+        ? '#C29C27' 
+        : 'transparent',
+      border: index < normalizedQuestionIndex 
+        ? 'none' 
+        : '1px solid rgba(194, 156, 39, 0.4)',
+      borderRadius: '2px'
+    }
+  })
+))
         createElement('div', {
           key: 'image-area',
           className: 'flex justify-center',
