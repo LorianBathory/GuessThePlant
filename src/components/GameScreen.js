@@ -228,6 +228,11 @@ export default function GameScreen({
   const displayQuestionNumber = questionNumber > 0 ? questionNumber : tentativeQuestionNumber;
   const questionHeading = texts && texts.question ? texts.question : '';
 
+  const completedSegments = Math.min(
+    totalQuestions,
+    normalizedQuestionIndex + (gameState !== 'playing' ? 1 : 0)
+  );
+
   const content = createElement('div', {
     key: 'main',
     className: 'relative z-10 flex-1 w-full flex flex-col items-center'
@@ -262,17 +267,17 @@ export default function GameScreen({
             marginBottom: isMobile ? '8px' : '16px',
             width: '100%'
           }
-        }, Array.from({ length: totalQuestions }).map((_, index) => 
+        }, Array.from({ length: totalQuestions }).map((_, index) =>
   createElement('div', {
     key: `progress-${index}`,
     style: {
       height: isMobile ? '6px' : '8px',
       flex: '1',
-      backgroundColor: index < normalizedQuestionIndex 
-        ? '#C29C27' 
+      backgroundColor: index < completedSegments
+        ? '#C29C27'
         : 'transparent',
-      border: index < normalizedQuestionIndex 
-        ? 'none' 
+      border: index < completedSegments
+        ? 'none'
         : '1px solid rgba(194, 156, 39, 0.4)',
       borderRadius: '2px'
     }
