@@ -277,7 +277,7 @@ export default function GameScreen({
       borderRadius: '2px'
     }
   })
-))
+)),
         createElement('div', {
           key: 'image-area',
           className: 'flex justify-center',
