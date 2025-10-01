@@ -1,6 +1,7 @@
 export const uiTexts = {
   ru: {
     question: "Что это за растение?",
+    bouquetQuestion: "Какого цветка нет в букете?",
     score: "Баллы",
     correct: "Верно!",
     incorrect: "Неверно!",
@@ -33,6 +34,7 @@ export const uiTexts = {
   },
   en: {
     question: "What plant is this?",
+    bouquetQuestion: "Which flower is missing from the bouquet?",
     score: "Score",
     correct: "Correct!",
     incorrect: "Incorrect!",
@@ -65,6 +67,7 @@ export const uiTexts = {
   },
   nl: {
     question: "Wat is deze plant?",
+    bouquetQuestion: "Welke bloem zit niet in het boeket?",
     score: "Score",
     correct: "Goed!",
     incorrect: "Fout!",

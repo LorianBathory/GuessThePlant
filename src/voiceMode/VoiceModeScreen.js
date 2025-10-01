@@ -91,7 +91,7 @@ export default function VoiceModeScreen({
   }
 
   const { createElement, useEffect, useMemo, useState } = ReactGlobal;
-  const { repeatAnnouncements } = useVoiceAnnouncements({ questionNumber, options, gameState });
+  const { repeatOptions } = useVoiceAnnouncements({ questionNumber, options, gameState });
   const isInteractionLocked = gameState !== 'playing';
 
   useEffect(() => {
@@ -150,7 +150,7 @@ export default function VoiceModeScreen({
       }
 
       if (REPEAT_PATTERNS.some(pattern => pattern.test(sanitized))) {
-        repeatAnnouncements();
+        repeatOptions();
         return;
       }
 
@@ -204,7 +204,7 @@ export default function VoiceModeScreen({
         }
       }
     };
-  }, [gameState, options, onAnswer, repeatAnnouncements]);
+  }, [gameState, options, onAnswer, repeatOptions]);
   useVoiceCommands({
     enabled: !isInteractionLocked,
     options,

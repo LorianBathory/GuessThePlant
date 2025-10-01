@@ -1,4 +1,5 @@
-import { plants } from './data/catalog.js';
+import { allQuestions } from './data/questions.js';
+import { questionTypes } from './data/questionTypes.js';
 import { shuffleArray } from './utils/random.js';
 import { difficultyLevels } from './data/difficulties.js';
 import { DataLoadingError, StorageError } from './utils/errorHandling.js';
@@ -39,7 +40,7 @@ export const ROUNDS = Object.freeze([
 
 export const TOTAL_ROUNDS = ROUNDS.length;
 
-const usedPlantIdsAcrossGame = new Set();
+const usedQuestionGroupIdsAcrossGame = new Set();
 const seenImageIdsAcrossSessions = new Set();
 let seenImageIdsLoaded = false;
 let classicModeDisabledLoaded = false;
@@ -193,9 +194,9 @@ export function clearSeenImagesTracking() {
 export function hasUnseenImagesForDifficulty(difficulty) {
   ensureSeenImageIdsLoaded();
 
-  return plants
-    .filter(plant => plant.difficulty === difficulty)
-    .some(plant => !isImageSeen(plant.imageId));
+  return allQuestions
+    .filter(question => question.difficulty === difficulty)
+    .some(question => !isImageSeen(question.imageId));
 }
 
 export function prepareSeenImagesForRound() {
@@ -228,65 +229,137 @@ export function clearClassicModeDisabledFlag() {
   persistClassicModeDisabled();
 }
 
-export function getQuestionsForRound(roundConfig) {
-  if (!Array.isArray(plants)) {
-    throw new DataLoadingError('Данные с растениями повреждены или не загружены.');
+export function getQuestionsForRound(roundConfig, selectionOptions = {}) {
+  if (!Array.isArray(allQuestions)) {
+    throw new DataLoadingError('Данные с вопросами повреждены или не загружены.');
   }
 
   const { difficulty, questions } = roundConfig ?? {};
-  const pool = plants.filter(plant => plant.difficulty === difficulty);
-  const availablePlants = pool.filter(plant => {
-    return !usedPlantIdsAcrossGame.has(plant.id) && !isImageSeen(plant.imageId);
+  const {
+    bouquetRemaining = Number.POSITIVE_INFINITY,
+    bouquetPerRoundLimit = Number.POSITIVE_INFINITY,
+    afterSelection
+  } = selectionOptions;
+
+  const pool = allQuestions.filter(question => question.difficulty === difficulty);
+  const availableQuestions = pool.filter(question => {
+    const groupId = typeof question.selectionGroupId === 'string'
+      ? question.selectionGroupId
+      : String(question.questionVariantId ?? question.id);
+    return !usedQuestionGroupIdsAcrossGame.has(groupId) && !isImageSeen(question.imageId);
   });
 
-  const variantsByPlantId = availablePlants.reduce((acc, plant) => {
-    if (!acc.has(plant.id)) {
-      acc.set(plant.id, []);
+  const variantsByGroupId = availableQuestions.reduce((acc, question) => {
+    const groupId = typeof question.selectionGroupId === 'string'
+      ? question.selectionGroupId
+      : String(question.questionVariantId ?? question.id);
+
+    if (!acc.has(groupId)) {
+      acc.set(groupId, {
+        type: question.questionType || questionTypes.PLANT,
+        variants: []
+      });
     }
 
-    acc.get(plant.id).push(plant);
+    acc.get(groupId).variants.push(question);
     return acc;
   }, new Map());
 
   const desiredQuestions = Number.isFinite(questions) && questions > 0
     ? questions
-    : variantsByPlantId.size;
+    : variantsByGroupId.size;
 
-  if (variantsByPlantId.size < desiredQuestions) {
+  if (variantsByGroupId.size < desiredQuestions) {
     markClassicModeDisabled();
     return [];
   }
 
-  const prioritizedGroups = shuffleArray(Array.from(variantsByPlantId.entries()));
-  const selectedPlants = [];
+  const bouquetGroups = [];
+  const plantGroups = [];
 
-  for (const [plantId, variants] of prioritizedGroups) {
-    if (selectedPlants.length >= desiredQuestions) {
-      break;
+  for (const [groupId, groupEntry] of variantsByGroupId.entries()) {
+    const normalizedType = groupEntry?.type || questionTypes.PLANT;
+    if (normalizedType === questionTypes.BOUQUET) {
+      bouquetGroups.push([groupId, groupEntry.variants]);
+    } else {
+      plantGroups.push([groupId, groupEntry.variants]);
     }
-
-    const chosenVariant = shuffleArray(variants.slice())[0];
-
-    if (!chosenVariant) {
-      continue;
-    }
-
-    selectedPlants.push(chosenVariant);
-    usedPlantIdsAcrossGame.add(plantId);
   }
 
-  if (selectedPlants.length < desiredQuestions) {
+  const allowedBouquetQuestions = Math.min(
+    bouquetPerRoundLimit,
+    bouquetRemaining,
+    bouquetGroups.length,
+    desiredQuestions
+  );
+
+  if ((plantGroups.length + allowedBouquetQuestions) < desiredQuestions) {
     markClassicModeDisabled();
     return [];
   }
 
-  markImagesAsSeen(selectedPlants.map(plant => plant.imageId));
+  const selectedQuestions = [];
+  let selectedBouquetCount = 0;
 
-  return selectedPlants;
+  if (allowedBouquetQuestions > 0) {
+    const selectedBouquetGroups = shuffleArray(bouquetGroups.slice()).slice(0, allowedBouquetQuestions);
+
+    for (const [groupId, variants] of selectedBouquetGroups) {
+      if (!Array.isArray(variants) || variants.length === 0) {
+        continue;
+      }
+
+      const chosenVariant = shuffleArray(variants.slice())[0];
+      if (!chosenVariant) {
+        continue;
+      }
+
+      selectedQuestions.push(chosenVariant);
+      usedQuestionGroupIdsAcrossGame.add(groupId);
+      selectedBouquetCount += 1;
+    }
+  }
+
+  const remainingQuestionsNeeded = desiredQuestions - selectedQuestions.length;
+
+  if (remainingQuestionsNeeded > 0) {
+    const prioritizedPlantGroups = shuffleArray(plantGroups.slice());
+
+    for (const [groupId, variants] of prioritizedPlantGroups) {
+      if (selectedQuestions.length >= desiredQuestions) {
+        break;
+      }
+
+      if (!Array.isArray(variants) || variants.length === 0) {
+        continue;
+      }
+
+      const chosenVariant = shuffleArray(variants.slice())[0];
+      if (!chosenVariant) {
+        continue;
+      }
+
+      selectedQuestions.push(chosenVariant);
+      usedQuestionGroupIdsAcrossGame.add(groupId);
+    }
+  }
+
+  if (selectedQuestions.length < desiredQuestions) {
+    markClassicModeDisabled();
+    return [];
+  }
+
+  markImagesAsSeen(selectedQuestions.map(question => question.imageId));
+
+  if (typeof afterSelection === 'function') {
+    afterSelection({ bouquetCount: selectedBouquetCount });
+  }
+
+  return shuffleArray(selectedQuestions.slice());
 }
 
 export function resetUsedPlantTracking() {
-  usedPlantIdsAcrossGame.clear();
+  usedQuestionGroupIdsAcrossGame.clear();
 }
 
 export function getStoredInterfaceLanguage() {
