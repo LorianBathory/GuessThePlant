@@ -66,12 +66,6 @@ export default function GameMenu({
       ? (texts.gameCompletedTitle || '').replace('{{score}}', score)
       : texts.menuTitle;
 
-  const subtitle = isOutOfQuestions
-    ? texts.classicModeUnavailableSubtitle || texts.postGameSubtitle || ''
-    : isPostGame
-      ? (texts.postGameSubtitle || '')
-      : '';
-
   const classicLabel = texts.classicModeButton || texts.startGame || 'Start Game';
   const endlessLabel = texts.endlessModeButton || 'Endless Mode';
   const classicDescription = texts.classicModeDescription;

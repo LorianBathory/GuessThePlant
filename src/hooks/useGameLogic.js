@@ -219,6 +219,26 @@ export default function useGameLogic() {
     }
   }, []);
 
+  const logAnswerSelectedEvent = useCallback((selectedId, correctId) => {
+    if (typeof window === 'undefined' || typeof window.gtag !== 'function') {
+      return;
+    }
+
+    const getChoiceLabel = id => {
+      const cell = choicesById[id];
+      if (!cell) {
+        return '';
+      }
+      return cell[plantLanguage] || cell[defaultLang] || '';
+    };
+
+    window.gtag('event', 'answer_selected', {
+      correct_answer: getChoiceLabel(correctId),
+      selected_answer: getChoiceLabel(selectedId),
+      is_correct: selectedId === correctId
+    });
+  }, [plantLanguage]);
+
   const handleAnswer = useCallback(selectedId => {
     if (roundPhase !== 'playing' || gameState !== 'playing') {
       return;
@@ -229,13 +249,17 @@ export default function useGameLogic() {
       return;
     }
 
+    if (correctAnswerId) {
+      logAnswerSelectedEvent(selectedId, correctAnswerId);
+    }
+
     if (gameMode === GAME_MODES.ENDLESS) {
       handleEndlessAnswer(selectedId, correctAnswerId);
       return;
     }
 
     handleClassicAnswer(selectedId, correctAnswerId);
-  }, [roundPhase, gameState, gameMode, correctAnswerId, currentQuestionIndex, sessionPlants, handleEndlessAnswer, handleClassicAnswer]);
+  }, [roundPhase, gameState, gameMode, correctAnswerId, currentQuestionIndex, sessionPlants, handleEndlessAnswer, handleClassicAnswer, logAnswerSelectedEvent]);
 
   const changePlantLanguage = useCallback(newLang => {
     if (!PLANT_LANGUAGES.includes(newLang)) {

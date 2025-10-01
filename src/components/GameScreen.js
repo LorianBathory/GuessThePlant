@@ -228,6 +228,11 @@ export default function GameScreen({
   const displayQuestionNumber = questionNumber > 0 ? questionNumber : tentativeQuestionNumber;
   const questionHeading = texts && texts.question ? texts.question : '';
 
+  const completedSegments = Math.min(
+    totalQuestions,
+    normalizedQuestionIndex + (gameState !== 'playing' ? 1 : 0)
+  );
+
   const content = createElement('div', {
     key: 'main',
     className: 'relative z-10 flex-1 w-full flex flex-col items-center'
@@ -253,6 +258,31 @@ export default function GameScreen({
             marginBottom: isMobile ? '12px' : '32px'
           }
         }, questionHeading ? `${displayQuestionNumber}. ${questionHeading}` : `${displayQuestionNumber}.`),
+
+        createElement('div', {
+          key: 'progress-bar',
+          className: 'flex',
+          style: {
+            gap: '4px',
+            marginBottom: isMobile ? '8px' : '16px',
+            width: '100%'
+          }
+        }, Array.from({ length: totalQuestions }).map((_, index) =>
+  createElement('div', {
+    key: `progress-${index}`,
+    style: {
+      height: isMobile ? '6px' : '8px',
+      flex: '1',
+      backgroundColor: index < completedSegments
+        ? '#C29C27'
+        : 'transparent',
+      border: index < completedSegments
+        ? 'none'
+        : '1px solid rgba(194, 156, 39, 0.4)',
+      borderRadius: '2px'
+    }
+  })
+)),
         createElement('div', {
           key: 'image-area',
           className: 'flex justify-center',
@@ -294,11 +324,6 @@ export default function GameScreen({
           }
         }, option.label)))
       ]),
-      createElement('div', {
-        key: 'instruction',
-        className: 'text-center mt-6 opacity-75',
-        style: { color: '#C29C27' }
-      }, texts.instruction),
     ])
   ]);
 
