@@ -324,11 +324,6 @@ export default function GameScreen({
           }
         }, option.label)))
       ]),
-      createElement('div', {
-        key: 'instruction',
-        className: 'text-center mt-6 opacity-75',
-        style: { color: '#C29C27' }
-      }, texts.instruction),
     ])
   ]);
 
