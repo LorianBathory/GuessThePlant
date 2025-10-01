@@ -7,11 +7,11 @@ const speciesCatalog = Object.freeze({
   1:  { images: ['p001'], wrongAnswers: [7, 8, 9] },
   2:  { images: ['p002'], wrongAnswers: [10, 11, 12] },
   3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16] }, //добавить гиацинт, колокольчик
-  4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 20] },
-  5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [20, 21, 31, 23, 24] }, //camellia
-  6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 28, 29] },
-    8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113']}, //gazania
-    12: {images: ['p124']}, //Parsnip
+  4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 21] },
+  5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [21, 31, 23, 24] }, //camellia
+  6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] },
+    8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113'], wrongAnswers: [30, 100, 39]}, //gazania
+    12: {images: ['p124'], wrongAnswers: [2]}, //Parsnip
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3]}, //Allium, need some extra wrong answers
     16: {images: ['p105'], wrongAnswers: [4]}, //Fritillary, need some extra wrong answers
   17: { images: ['p007'] },

@@ -116,7 +116,7 @@ export const plantNamesById = Object.freeze({
   115: { ru: "Рудбекия", en: "Rudbeckia / Black-eyed Susan", nl: "Zonnehoed", sci: "Rudbeckia" },
   116: { ru: "Василек", en: "Cornflower (esp. C. cyanus)", nl: "Korenbloem", sci: "Centaurea cyanus" },
   117: { ru: "Василек", en: "Knapweeds", nl: "Knoopkruid", sci: "Centaurea" },
-  118: { ru: "Журавельник (Герань)", en: "Geranium / Crane's-bill", nl: "Ooievaarsbek", sci: "Geranium" },
+  118: { ru: "Журавельник (Герань)", en: "Hardy Geranium / Crane's-bill", nl: "Ooievaarsbek", sci: "Geranium" },
   119: { ru: "Маргаритка", en: "English daisy", nl: "Tuinmadeliefje", sci: "Bellis perennis" },
   120: { ru: "Дицентра", en: "Bleeding heart", nl: "Gebroken hartje", sci: "Lamprocapnos (old: Dicentra)" },
   121: { ru: "Гайлардия", en: "Gaillardia / Blanket flower", nl: "Kokardebloem", sci: "Gaillardia" },
