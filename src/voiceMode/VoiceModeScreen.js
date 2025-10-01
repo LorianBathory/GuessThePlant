@@ -12,6 +12,14 @@ const BASE_DESKTOP_PADDING_X = 24;
 const BASE_MOBILE_PADDING_Y = 12;
 const BASE_MOBILE_PADDING_X = 14;
 
+const NUMBER_COMMAND_PATTERNS = [
+  { index: 0, patterns: [/\bодин\b/, /\b1\b/] },
+  { index: 1, patterns: [/\bдва\b/, /\b2\b/] },
+  { index: 2, patterns: [/\bтри\b/, /\b3\b/] },
+  { index: 3, patterns: [/\bчетыре\b/, /\b4\b/] }
+];
+const REPEAT_PATTERNS = [/\bповтори\b/, /\bповторить\b/, /\bповтор\b/];
+
 const DESKTOP_IMAGE_WIDTH = BASE_DESKTOP_IMAGE_WIDTH * UPSCALE_FACTOR;
 function VoicePlantImage({ src, alt, containerStyle, sectionStyle }) {
   const ReactGlobal = globalThis.React;
@@ -83,9 +91,120 @@ export default function VoiceModeScreen({
   }
 
   const { createElement, useEffect, useMemo, useState } = ReactGlobal;
-  const { repeatOptions } = useVoiceAnnouncements({ questionNumber, options, gameState });
+  const { repeatAnnouncements } = useVoiceAnnouncements({ questionNumber, options, gameState });
   const isInteractionLocked = gameState !== 'playing';
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const RecognitionConstructor = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (typeof RecognitionConstructor !== 'function') {
+      return undefined;
+    }
+
+    const recognition = new RecognitionConstructor();
+    let isDisposed = false;
+
+    recognition.lang = 'ru-RU';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.continuous = true;
+
+    const startRecognition = () => {
+      if (isDisposed || gameState !== 'playing') {
+        return;
+      }
+
+      try {
+        recognition.start();
+      } catch (error) {
+        if (error?.name !== 'InvalidStateError') {
+          console.error('Не удалось запустить распознавание речи.', error);
+        }
+      }
+    };
+
+    recognition.onresult = event => {
+      if (!event?.results || event.results.length === 0) {
+        return;
+      }
+
+      const lastResult = event.results[event.results.length - 1];
+      const alternative = lastResult && lastResult[0];
+      const transcript = typeof alternative?.transcript === 'string' ? alternative.transcript : '';
+      const normalized = transcript.trim().toLowerCase();
+
+      if (!normalized) {
+        return;
+      }
+
+      const sanitized = normalized
+        .replace(/[.,!?]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      if (!sanitized) {
+        return;
+      }
+
+      if (REPEAT_PATTERNS.some(pattern => pattern.test(sanitized))) {
+        repeatAnnouncements();
+        return;
+      }
+
+      for (const command of NUMBER_COMMAND_PATTERNS) {
+        if (!Array.isArray(command.patterns)) {
+          continue;
+        }
+
+        const isMatch = command.patterns.some(pattern => pattern.test(sanitized));
+        if (!isMatch) {
+          continue;
+        }
+
+        const option = options?.[command.index];
+        if (option && typeof onAnswer === 'function') {
+          onAnswer(option.id);
+        }
+        return;
+      }
+    };
+
+    recognition.onerror = event => {
+      if (event?.error === 'no-speech') {
+        return;
+      }
+
+      console.error('Ошибка распознавания речи.', event);
+    };
+
+    recognition.onend = () => {
+      if (isDisposed) {
+        return;
+      }
+
+      if (gameState === 'playing') {
+        startRecognition();
+      }
+    };
+
+    if (gameState === 'playing') {
+      startRecognition();
+    }
+
+    return () => {
+      isDisposed = true;
+      try {
+        recognition.stop();
+      } catch (error) {
+        if (error?.name !== 'InvalidStateError') {
+          console.error('Не удалось остановить распознавание речи.', error);
+        }
+      }
+    };
+  }, [gameState, options, onAnswer, repeatAnnouncements]);
   useVoiceCommands({
     enabled: !isInteractionLocked,
     options,
