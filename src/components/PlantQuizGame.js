@@ -70,6 +70,7 @@ export default function PlantQuizGame() {
     onRestart: isEndlessPhase ? game.startEndlessGame : game.startGame,
     onReturnToMenu: game.returnToMenu,
     gameMode: game.gameMode,
-    interfaceLanguage: game.interfaceLanguage
+    interfaceLanguage: game.interfaceLanguage,
+    roundMistakes: game.roundMistakes
   });
 }
