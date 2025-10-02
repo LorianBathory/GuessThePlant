@@ -23,11 +23,11 @@ const speciesCatalog = Object.freeze({
   23: { images: ['p106'], }, wrongAnswers: [5, 21, 31], //gardenia
   24: { images: ['p120', 'p121'] }, //magnolia
   25: { images: ['p130'],  wrongAnswers: [29, 119] }, //Shasta Daisy, добавить ромашку аптечную в список растений
-  26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [33, 73, 77, 39] }, //Dahlia
-  27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 26] },
-  29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [7, 41, 42] }, //Chrysanthemum
-  30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 16] }, //osteospermum
-  31: { images: ['p016', 'p017', 'p018', 'p077', 'p078'], wrongAnswers: [7, 41, 42] },
+  26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [29, 33, 73, 77] }, //Dahlia. добавить циннию
+  27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 38, 115, 121] }, //Echinacea
+  29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [6, 26, 41, 73] }, //Chrysanthemum
+  30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 8] }, //osteospermum
+  31: { images: ['p016', 'p017', 'p018', 'p077', 'p078'], wrongAnswers: [41, 69, 46, 5] },
   32: { images: ['p019'], wrongAnswers: [43, 44, 45] },
   33: { images: ['p020', 'p021', 'p122', 'p123'], wrongAnswers: [31, 47, 46] }, //Papaver
   34: { images: ['p022'], wrongAnswers: [43, 48, 49] },

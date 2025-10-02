@@ -125,7 +125,8 @@ export const plantNamesById = Object.freeze({
   124: { ru: "Опунция", en: "Opuntia / Prickly pear cactus", nl: "Schijfcactus", sci: "Opuntia" },
   125: { ru: "Ширококолокольчик", en: "Platycodon / Balloon flower", nl: "Ballonklokje", sci: "Platycodon grandiflorus" },
     126: { ru: "Эвкалипт", en: 'Eucalyptus', nl: 'Eucalyptus', sci: 'Eucalyptus' },
-    //127: Карпобротус съедобный
+    //127: цинния
+    //128: Карпобротус съедобный
   // 128: { ru: "Крокус" }
     129: { ru: 'Черемша', en: 'Ramsons', nl: 'Daslook', sci: 'Allium ursinum' }
 });
