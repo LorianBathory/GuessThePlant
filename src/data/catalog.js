@@ -12,7 +12,7 @@ const speciesCatalog = Object.freeze({
   5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [21, 31, 23, 24] }, //camellia
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] },
     8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113'], wrongAnswers: [30, 100, 39]}, //gazania
-    12: {images: ['p124'], wrongAnswers: [2]}, //Parsnip
+    12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3]}, //Allium, need some extra wrong answers
     16: {images: ['p105'], wrongAnswers: [4]}, //Fritillary, need some extra wrong answers
   17: { images: ['p007'] },
