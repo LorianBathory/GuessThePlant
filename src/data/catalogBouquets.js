@@ -7,15 +7,15 @@ const rawBouquetQuestions = Object.freeze([
     id: 'b1',
     imageId: 'bq001',
     image: 'images/bouquets/bq001.jpg',
-    correctPlantId: 25,
-    wrongAnswerIds: [29, 22,]
+    correctPlantId: 112,
+    wrongAnswerIds: [29, 22, 126]
   },
   {
     id: 'b2',
     imageId: 'bq002',
     image: 'images/bouquets/bq002.jpg',
-    correctPlantId: 31,
-    wrongAnswerIds: [26, 35, 55]
+    correctPlantId: 32,
+    wrongAnswerIds: [6, 69, 31]
   }
 ]);
 
