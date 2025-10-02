@@ -29,9 +29,9 @@ const speciesCatalog = Object.freeze({
   30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 8] }, //osteospermum
   31: { images: ['p016', 'p017', 'p018', 'p077', 'p078'], wrongAnswers: [41, 69, 46, 5] },
   32: { images: ['p019'], wrongAnswers: [43, 44, 45] },
-  33: { images: ['p020', 'p021', 'p122', 'p123'], wrongAnswers: [31, 47, 46] }, //Papaver
-  34: { images: ['p022'], wrongAnswers: [43, 48, 49] },
-  35: { images: ['p023', 'p118', 'p119'], wrongAnswers: [16, 36, 37] },
+  33: { images: ['p020', 'p021', 'p122', 'p123'], wrongAnswers: [47, 41, 26] }, //Papaver
+  34: { images: ['p022'], wrongAnswers: [448, 49] },
+  35: { images: ['p023', 'p118', 'p119'], wrongAnswers: [36, 37] }, //Lily
   36: { images: ['p114', 'p115'] }, //Hemerocallis
   41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 67] },
   46: { images: ['p025', 'p125', 'p126'], wrongAnswers: [31, 33] }, //Peony
