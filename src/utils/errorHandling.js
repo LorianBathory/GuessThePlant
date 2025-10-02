@@ -189,15 +189,15 @@ export function attachGlobalErrorHandlers() {
   };
 
   window.addEventListener('error', event => {
-    if (event?.error) {
+    if (event && event.error) {
       handleError(event.error);
-    } else if (event?.message) {
+    } else if (event && typeof event.message === 'string') {
       handleError(new Error(event.message));
     }
   });
 
   window.addEventListener('unhandledrejection', event => {
-    const reason = event?.reason;
+    const reason = event ? event.reason : undefined;
     if (reason instanceof Error) {
       handleError(reason);
     } else {
@@ -206,7 +206,7 @@ export function attachGlobalErrorHandlers() {
   });
 
   window.addEventListener('gtp:app-error', event => {
-    if (event?.detail) {
+    if (event && event.detail) {
       handleError(event.detail);
     }
   });

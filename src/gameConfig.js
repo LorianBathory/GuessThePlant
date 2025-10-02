@@ -234,7 +234,9 @@ export function getQuestionsForRound(roundConfig, selectionOptions = {}) {
     throw new DataLoadingError('Данные с вопросами повреждены или не загружены.');
   }
 
-  const { difficulty, questions } = roundConfig ?? {};
+  const normalizedRoundConfig = roundConfig || {};
+  const difficulty = normalizedRoundConfig.difficulty;
+  const questions = normalizedRoundConfig.questions;
   const {
     bouquetRemaining = Number.POSITIVE_INFINITY,
     bouquetPerRoundLimit = Number.POSITIVE_INFINITY,
@@ -243,16 +245,22 @@ export function getQuestionsForRound(roundConfig, selectionOptions = {}) {
 
   const pool = allQuestions.filter(question => question.difficulty === difficulty);
   const availableQuestions = pool.filter(question => {
+    const fallbackVariantId = (question.questionVariantId !== undefined && question.questionVariantId !== null)
+      ? question.questionVariantId
+      : question.id;
     const groupId = typeof question.selectionGroupId === 'string'
       ? question.selectionGroupId
-      : String(question.questionVariantId ?? question.id);
+      : String(fallbackVariantId);
     return !usedQuestionGroupIdsAcrossGame.has(groupId) && !isImageSeen(question.imageId);
   });
 
   const variantsByGroupId = availableQuestions.reduce((acc, question) => {
+    const fallbackVariantId = (question.questionVariantId !== undefined && question.questionVariantId !== null)
+      ? question.questionVariantId
+      : question.id;
     const groupId = typeof question.selectionGroupId === 'string'
       ? question.selectionGroupId
-      : String(question.questionVariantId ?? question.id);
+      : String(fallbackVariantId);
 
     if (!acc.has(groupId)) {
       acc.set(groupId, {
@@ -278,7 +286,9 @@ export function getQuestionsForRound(roundConfig, selectionOptions = {}) {
   const plantGroups = [];
 
   for (const [groupId, groupEntry] of variantsByGroupId.entries()) {
-    const normalizedType = groupEntry?.type || questionTypes.PLANT;
+    const normalizedType = groupEntry && groupEntry.type
+      ? groupEntry.type
+      : questionTypes.PLANT;
     if (normalizedType === questionTypes.BOUQUET) {
       bouquetGroups.push([groupId, groupEntry.variants]);
     } else {

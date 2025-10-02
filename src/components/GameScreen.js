@@ -215,7 +215,7 @@ export default function GameScreen({
   }
 
   const { createElement } = ReactGlobal;
-  const isBouquetQuestion = currentPlant?.questionType === questionTypes.BOUQUET;
+  const isBouquetQuestion = currentPlant && currentPlant.questionType === questionTypes.BOUQUET;
   const interfaceAccentColor = isBouquetQuestion ? '#C9A9A6' : '#C29C27';
   const interfaceAccentColorTransparent = isBouquetQuestion
     ? 'rgba(201, 169, 166, 0.4)'
@@ -234,8 +234,12 @@ export default function GameScreen({
     ? Math.min(tentativeQuestionNumber, availableQuestions)
     : tentativeQuestionNumber;
   const displayQuestionNumber = questionNumber > 0 ? questionNumber : tentativeQuestionNumber;
-  const questionPromptKey = currentPlant?.questionPromptKey && texts && texts[currentPlant.questionPromptKey]
+  const plantQuestionKey = currentPlant && currentPlant.questionPromptKey
     ? currentPlant.questionPromptKey
+    : null;
+  const hasCustomPrompt = plantQuestionKey && texts && Object.prototype.hasOwnProperty.call(texts, plantQuestionKey);
+  const questionPromptKey = hasCustomPrompt
+    ? plantQuestionKey
     : 'question';
   const questionHeading = texts && texts[questionPromptKey]
     ? texts[questionPromptKey]
