@@ -4,14 +4,14 @@ import { questionTypes } from './questionTypes.js';
 
 const rawBouquetQuestions = Object.freeze([
   {
-    id: 'bouquet-1',
+    id: 'b1',
     imageId: 'bq001',
     image: 'images/bouquets/pexels-kathrinepnw-25016128.jpg',
     correctPlantId: 25,
     wrongAnswerIds: [31, 35, 41]
   },
   {
-    id: 'bouquet-2',
+    id: 'b2',
     imageId: 'bq002',
     image: 'images/bouquets/pexels-pixabay-267360.jpg',
     correctPlantId: 31,
