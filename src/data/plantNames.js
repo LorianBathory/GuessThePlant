@@ -124,5 +124,6 @@ export const plantNamesById = Object.freeze({
   123: { ru: "Целозия", en: "Celosia / Cockscomb", nl: "Hanekam", sci: "Celosia" },
   124: { ru: "Опунция", en: "Opuntia / Prickly pear cactus", nl: "Schijfcactus", sci: "Opuntia" },
   125: { ru: "Ширококолокольчик", en: "Platycodon / Balloon flower", nl: "Ballonklokje", sci: "Platycodon grandiflorus" },
+    126: { ru: "Эвкалипт", en: 'Eucalyptus', nl: 'Eucalyptus', sci: 'Eucalyptus' }
   // заменить 126: { ru: "Гомфрена", en: "Gomphrena / Globe amaranth", nl: "Kogelamarant", sci: "Gomphrena" }
 });
