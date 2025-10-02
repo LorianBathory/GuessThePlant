@@ -103,6 +103,10 @@ export const uiTexts = {
 export const defaultLang = 'ru';
 
 export function t(lang) {
-  return uiTexts[lang] ?? uiTexts[defaultLang];
+  const candidate = uiTexts[lang];
+  if (candidate && typeof candidate === 'object') {
+    return candidate;
+  }
+  return uiTexts[defaultLang];
 }
 
