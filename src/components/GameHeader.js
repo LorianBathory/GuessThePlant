@@ -1,4 +1,4 @@
-import { PLANT_LANGUAGES, GAME_MODES } from '../gameConfig.js';
+import { GAME_MODES } from '../gameConfig.js';
 
 export default function GameHeader({
   texts,
@@ -7,7 +7,8 @@ export default function GameHeader({
   plantLanguage,
   onPlantLanguageChange,
   showLanguageSelector = true,
-  gameMode = GAME_MODES.CLASSIC
+  gameMode = GAME_MODES.CLASSIC,
+  interfaceLanguage
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -38,10 +39,15 @@ export default function GameHeader({
 
   let languageButtons = null;
   if (showLanguageSelector && typeof onPlantLanguageChange === 'function') {
+    const availablePlantLanguages = Array.from(new Set([
+      interfaceLanguage,
+      'sci'
+    ].filter(Boolean)));
+
     languageButtons = createElement('div', {
       key: 'lang-buttons',
       className: 'flex gap-2'
-    }, PLANT_LANGUAGES.map(lang => createElement('button', {
+    }, availablePlantLanguages.map(lang => createElement('button', {
       key: lang,
       onClick: () => onPlantLanguageChange(lang),
       className: 'px-2.5 py-1 text-xs font-bold uppercase transition-all tracking-wide',

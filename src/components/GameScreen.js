@@ -204,7 +204,8 @@ export default function GameScreen({
   plantLanguage,
   onAnswer,
   onPlantLanguageChange,
-  gameMode
+  gameMode,
+  interfaceLanguage
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -347,7 +348,8 @@ export default function GameScreen({
       totalQuestions,
       plantLanguage,
       onPlantLanguageChange,
-      gameMode
+      gameMode,
+      interfaceLanguage
     }),
     content
   ].filter(Boolean));
