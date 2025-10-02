@@ -50,7 +50,8 @@ export default function PlantQuizGame() {
       plantLanguage: game.plantLanguage,
       onAnswer: game.handleAnswer,
       onPlantLanguageChange: game.changePlantLanguage,
-      gameMode: game.gameMode
+      gameMode: game.gameMode,
+      interfaceLanguage: game.interfaceLanguage
     });
   }
 
@@ -68,6 +69,7 @@ export default function PlantQuizGame() {
     onStartNextRound: game.handleStartNextRound,
     onRestart: isEndlessPhase ? game.startEndlessGame : game.startGame,
     onReturnToMenu: game.returnToMenu,
-    gameMode: game.gameMode
+    gameMode: game.gameMode,
+    interfaceLanguage: game.interfaceLanguage
   });
 }

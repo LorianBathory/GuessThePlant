@@ -2,7 +2,6 @@ import { choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';
 import {
-  PLANT_LANGUAGES,
   INTERFACE_LANGUAGES,
   GAME_MODES,
   ROUNDS,
@@ -18,6 +17,10 @@ import {
 import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
 import { useClassicMode } from './useClassicMode.js';
 import { useEndlessMode } from './useEndlessMode.js';
+
+function getAllowedPlantLanguageSet(interfaceLang) {
+  return new Set([interfaceLang, 'sci'].filter(Boolean));
+}
 
 export default function useGameLogic() {
   const ReactGlobal = globalThis.React;
@@ -50,16 +53,20 @@ export default function useGameLogic() {
     });
   }, []);
 
-  const [interfaceLanguage, setInterfaceLanguage] = useState(() => getStoredInterfaceLanguage() || defaultLang);
+  const storedInterfaceLanguage = getStoredInterfaceLanguage();
+  const initialInterfaceLanguage = storedInterfaceLanguage || defaultLang;
+
+  const [interfaceLanguage, setInterfaceLanguage] = useState(initialInterfaceLanguage);
   const [plantLanguage, setPlantLanguage] = useState(() => {
     const storedPlantLanguage = getStoredPlantLanguage();
-    if (storedPlantLanguage) {
+    const allowedLanguages = getAllowedPlantLanguageSet(initialInterfaceLanguage);
+
+    if (storedPlantLanguage && allowedLanguages.has(storedPlantLanguage)) {
       return storedPlantLanguage;
     }
 
-    const storedInterface = getStoredInterfaceLanguage();
-    if (storedInterface && PLANT_LANGUAGES.includes(storedInterface)) {
-      return storedInterface;
+    if (allowedLanguages.has(initialInterfaceLanguage)) {
+      return initialInterfaceLanguage;
     }
 
     return defaultLang;
@@ -208,6 +215,13 @@ export default function useGameLogic() {
   }, [plantLanguage]);
 
   useEffect(() => {
+    const allowedLanguages = getAllowedPlantLanguageSet(interfaceLanguage);
+    if (!allowedLanguages.has(plantLanguage)) {
+      setPlantLanguage(interfaceLanguage);
+    }
+  }, [interfaceLanguage, plantLanguage]);
+
+  useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = interfaceLanguage;
     }
@@ -262,11 +276,12 @@ export default function useGameLogic() {
   }, [roundPhase, gameState, gameMode, correctAnswerId, currentQuestionIndex, sessionPlants, handleEndlessAnswer, handleClassicAnswer, logAnswerSelectedEvent]);
 
   const changePlantLanguage = useCallback(newLang => {
-    if (!PLANT_LANGUAGES.includes(newLang)) {
-      throw new GameLogicError(`Язык растений "${newLang}" не поддерживается.`);
+    const allowedLanguages = getAllowedPlantLanguageSet(interfaceLanguage);
+    if (!allowedLanguages.has(newLang)) {
+      throw new GameLogicError(`Язык растений "${newLang}" не поддерживается для текущего языка интерфейса.`);
     }
     setPlantLanguage(newLang);
-  }, []);
+  }, [interfaceLanguage]);
 
   const changeInterfaceLanguage = useCallback(newLang => {
     if (!INTERFACE_LANGUAGES.includes(newLang)) {
