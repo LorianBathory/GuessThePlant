@@ -22,7 +22,7 @@ const speciesCatalog = Object.freeze({
   22: { images: ['p009', 'p133'], wrongAnswers: [35, 46]  }, //Tulip
   23: { images: ['p106'], }, wrongAnswers: [5, 21, 31] //gardenia
   24: { images: ['p120', 'p121'] }, //magnolia
-  25: { images: ['p130'] }, //Shasta Daisy
+  25: { images: ['p130'],  wrongAnswers: [29] }, //Shasta Daisy, добавить ромашку аптечную в список растений
   26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [33, 73, 77, 39] }, //Dahlia
   27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 26] },
   29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [7, 41, 42] }, //Chrysanthemum

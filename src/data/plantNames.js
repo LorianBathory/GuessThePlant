@@ -23,7 +23,7 @@ export const plantNamesById = Object.freeze({
   22: { ru: "Тюльпан", en: "Tulip", nl: "Tulp", sci: "Tulipa" },
   23: { ru: "Гардения", en: "Gardenia", nl: "Gardenia", sci: "Gardenia" },
   24: { ru: "Магнолия", en: "Magnolia", nl: "Magnolia, Beverboom", sci: "Magnolia" },
-  25: { ru: "Нивяник", en: "Shasta Daisy", nl: "Margiet", sci: "Leucanthemum x superbum" },
+  25: { ru: "Нивяник обыкновенный", en: "Oxeye daisy", nl: "Gewone margriet", sci: "Leucanthemum vulgare" },
   26: { ru: "Георгин", en: "Dahlia", nl: "Dahlia", sci: "Dahlia" },
   27: { ru: "Эхинацея", en: "Coneflower", nl: "Zonnehoed", sci: "Echinacea" },
   28: { ru: "Гомфрена", en: "Gomphrena / Globe amaranth", nl: "Kogelamarant", sci: "Gomphrena" },
