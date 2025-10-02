@@ -189,7 +189,7 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat,
       try {
         recognitionRef.current.abort();
       } catch (error) {
-        if (error?.name !== 'InvalidStateError') {
+        if (!error || error.name !== 'InvalidStateError') {
           console.warn('Не удалось перезапустить распознавание речи при смене вопроса:', error);
         }
       }
@@ -221,7 +221,7 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat,
         recognition.start();
       } catch (error) {
         // Thrown if recognition is already running; safe to ignore.
-        if (error?.name !== 'InvalidStateError') {
+        if (!error || error.name !== 'InvalidStateError') {
           console.error('Ошибка запуска распознавания речи:', error);
         }
       }
@@ -231,7 +231,7 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat,
       try {
         recognition.stop();
       } catch (error) {
-        if (error?.name !== 'InvalidStateError') {
+        if (!error || error.name !== 'InvalidStateError') {
           console.error('Ошибка остановки распознавания речи:', error);
         }
       }
@@ -290,14 +290,14 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat,
       }
 
       for (const normalized of normalizedVariants) {
-        const optionIndex = detectOptionIndex(normalized, latestOptionsRef.current?.length || 0);
+        const currentOptions = Array.isArray(latestOptionsRef.current)
+          ? latestOptionsRef.current
+          : [];
+        const optionIndex = detectOptionIndex(normalized, currentOptions.length || 0);
         if (optionIndex === null || optionIndex === undefined) {
           continue;
         }
 
-        const currentOptions = Array.isArray(latestOptionsRef.current)
-          ? latestOptionsRef.current
-          : [];
         const selectedOption = currentOptions[optionIndex];
 
         if (!selectedOption || typeof answerHandlerRef.current !== 'function') {
@@ -328,14 +328,14 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat,
         return;
       }
 
-      const optionIndex = detectOptionIndex(combined, latestOptionsRef.current?.length || 0);
+      const currentOptions = Array.isArray(latestOptionsRef.current)
+        ? latestOptionsRef.current
+        : [];
+      const optionIndex = detectOptionIndex(combined, currentOptions.length || 0);
       if (optionIndex === null || optionIndex === undefined) {
         return;
       }
 
-      const currentOptions = Array.isArray(latestOptionsRef.current)
-        ? latestOptionsRef.current
-        : [];
       const selectedOption = currentOptions[optionIndex];
 
       if (!selectedOption || typeof answerHandlerRef.current !== 'function') {
@@ -349,18 +349,19 @@ export default function useVoiceCommands({ enabled, options, onAnswer, onRepeat,
     };
 
     recognition.onerror = event => {
-      if (event?.error === 'not-allowed' || event?.error === 'service-not-allowed') {
+      const eventError = event && event.error;
+      if (eventError === 'not-allowed' || eventError === 'service-not-allowed') {
         shouldListenRef.current = false;
         stopRecognition();
         return;
       }
 
-      if (event?.error === 'no-speech') {
+      if (eventError === 'no-speech') {
         startRecognition();
         return;
       }
 
-      console.warn('Ошибка распознавания речи:', event?.error);
+      console.warn('Ошибка распознавания речи:', eventError);
       startRecognition();
     };
 
