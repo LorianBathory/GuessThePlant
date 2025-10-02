@@ -24,7 +24,8 @@ export function useClassicMode({
   timeoutRef,
   preloadPlantImages,
   isClassicModeUnavailable,
-  setClassicModeUnavailable
+  setClassicModeUnavailable,
+  setRoundMistakes
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -72,6 +73,7 @@ export function useClassicMode({
     setGameState('playing');
     setOptionIds([]);
     setCorrectAnswerId(null);
+    setRoundMistakes([]);
 
     if (questions.length === 0) {
       setClassicModeUnavailable(true);
@@ -80,7 +82,18 @@ export function useClassicMode({
       setClassicModeUnavailable(false);
       setRoundPhase('playing');
     }
-  }, [setCurrentRoundIndex, setScore, setSessionPlants, setCurrentQuestionIndex, setGameState, setOptionIds, setCorrectAnswerId, setRoundPhase, setClassicModeUnavailable]);
+  }, [
+    setCurrentRoundIndex,
+    setScore,
+    setSessionPlants,
+    setCurrentQuestionIndex,
+    setGameState,
+    setOptionIds,
+    setCorrectAnswerId,
+    setRoundMistakes,
+    setRoundPhase,
+    setClassicModeUnavailable
+  ]);
 
   const startClassicGame = useCallback(() => {
     setGameMode(GAME_MODES.CLASSIC);
@@ -98,6 +111,7 @@ export function useClassicMode({
       setCorrectAnswerId(null);
       setScore(0);
       setRoundPhase('gameComplete');
+      setRoundMistakes([]);
       return;
     }
 
@@ -115,7 +129,8 @@ export function useClassicMode({
     setScore,
     setRoundPhase,
     startRound,
-    timeoutRef
+    timeoutRef,
+    setRoundMistakes
   ]);
 
   const handleClassicAnswer = useCallback((selectedId, correctAnswerId) => {
@@ -135,6 +150,15 @@ export function useClassicMode({
       setGameState('correct');
     } else {
       setGameState('incorrect');
+      setRoundMistakes(prev => [
+        ...prev,
+        {
+          id: currentPlant.id,
+          image: currentPlant.image,
+          names: currentPlant.names,
+          questionVariantId: currentPlant.questionVariantId
+        }
+      ]);
     }
 
     const isLastQuestion = currentQuestionIndex + 1 >= sessionPlants.length;
@@ -156,7 +180,20 @@ export function useClassicMode({
         setGameState('playing');
       }
     }, 1500);
-  }, [sessionPlants, currentQuestionIndex, currentRoundIndex, preloadPlantImages, timeoutRef, setScore, setGameState, setRoundPhase, setOptionIds, setCorrectAnswerId, setCurrentQuestionIndex]);
+  }, [
+    sessionPlants,
+    currentQuestionIndex,
+    currentRoundIndex,
+    preloadPlantImages,
+    timeoutRef,
+    setScore,
+    setGameState,
+    setRoundPhase,
+    setOptionIds,
+    setCorrectAnswerId,
+    setCurrentQuestionIndex,
+    setRoundMistakes
+  ]);
 
   const handleStartNextRound = useCallback(() => {
     const nextRoundIndex = currentRoundIndex + 1;
