@@ -13,7 +13,7 @@ const plantQuestionIdsByDifficulty = Object.freeze({
 });
 
 const bouquetQuestionIdsByDifficulty = Object.freeze({
-  [difficultyLevels.MEDIUM]: Object.freeze(['bouquet-1', 'bouquet-2'])
+  [difficultyLevels.MEDIUM]: Object.freeze(['b1', 'b2'])
 });
 
 export const questionIdsByDifficulty = Object.freeze({
