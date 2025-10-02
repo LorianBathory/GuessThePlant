@@ -19,8 +19,8 @@ const speciesCatalog = Object.freeze({
   19: { images: ['p008'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
     //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
   21: {images: ['p076', 'p128', 'p129'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
-  22: { images: ['p009', 'p133'] },
-  23: { images: ['p106'] }, //gardenia
+  22: { images: ['p009', 'p133'], wrongAnswers: [35, 46]  }, //Tulip
+  23: { images: ['p106'], }, wrongAnswers: [5, 21, 31] //gardenia
   24: { images: ['p120', 'p121'] }, //magnolia
   25: { images: ['p130'] }, //Shasta Daisy
   26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [33, 73, 77, 39] }, //Dahlia
