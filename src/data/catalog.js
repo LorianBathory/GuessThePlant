@@ -5,19 +5,20 @@ import { questionTypes } from './questionTypes.js';
 
 // Дополнительные данные для видов (кроме локализации).
 const speciesCatalog = Object.freeze({
-  1:  { images: ['p001'], wrongAnswers: [7, 8, 9] },
-  2:  { images: ['p002'], wrongAnswers: [10, 11, 12] },
-  3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16] }, //добавить гиацинт, колокольчик
-  4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 21] },
+  1:  { images: ['p001'], wrongAnswers: [7, 8, 9] }, //Asteriscus
+  2:  { images: ['p002'], wrongAnswers: [10, 11, 12] }, //Daucus carota
+  3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16] }, //Agapanthus. добавить гиацинт
+  4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 21] }, //Bougainvillea
   5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [21, 31, 23, 24] }, //camellia
-  6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] },
+  6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] }, //Gerbera
     8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113'], wrongAnswers: [30, 100, 39]}, //gazania
     12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
-  13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3]}, //Allium, need some extra wrong answers
-    16: {images: ['p105'], wrongAnswers: [4]}, //Fritillary, need some extra wrong answers
+  13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3, 11, 129]}, //Allium
+    16: {images: ['p105'], wrongAnswers: [35, 111]}, //Fritillary
   17: { images: ['p007'] },
-  19: { images: ['p008'] },
-  21: {images: ['p076', 'p128', 'p129'], wrongAnswers: [5, 14, 62] }, //Rhododendron. добавить вишню для вариантов ответа
+  19: { images: ['p008'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
+    //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
+  21: {images: ['p076', 'p128', 'p129'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
   22: { images: ['p009', 'p133'] },
   23: { images: ['p106'] }, //gardenia
   24: { images: ['p120', 'p121'] }, //magnolia
