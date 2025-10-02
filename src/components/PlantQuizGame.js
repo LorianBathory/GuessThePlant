@@ -2,7 +2,7 @@ import useGameLogic from '../hooks/useGameLogic.js';
 import GameScreen from './GameScreen.js';
 import ResultScreen from './ResultScreen.js';
 import GameMenu from './GameMenu.js';
-import { plants } from '../data/catalog.js';
+import { allQuestions } from '../data/questions.js';
 import { DataLoadingError } from '../utils/errorHandling.js';
 
 export default function PlantQuizGame() {
@@ -12,7 +12,7 @@ export default function PlantQuizGame() {
     throw new DataLoadingError('React не найден. Проверьте загрузку React перед запуском игры.');
   }
 
-  if (!Array.isArray(plants) || plants.length === 0) {
+  if (!Array.isArray(allQuestions) || allQuestions.length === 0) {
     throw new DataLoadingError(
       'Каталог растений не загружен. Убедитесь, что data/*.js подключены как ESM-модули.'
     );
@@ -50,7 +50,8 @@ export default function PlantQuizGame() {
       plantLanguage: game.plantLanguage,
       onAnswer: game.handleAnswer,
       onPlantLanguageChange: game.changePlantLanguage,
-      gameMode: game.gameMode
+      gameMode: game.gameMode,
+      interfaceLanguage: game.interfaceLanguage
     });
   }
 
@@ -68,6 +69,7 @@ export default function PlantQuizGame() {
     onStartNextRound: game.handleStartNextRound,
     onRestart: isEndlessPhase ? game.startEndlessGame : game.startGame,
     onReturnToMenu: game.returnToMenu,
-    gameMode: game.gameMode
+    gameMode: game.gameMode,
+    interfaceLanguage: game.interfaceLanguage
   });
 }

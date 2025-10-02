@@ -143,7 +143,8 @@ export default function ResultScreen({
   onStartNextRound,
   onRestart,
   gameMode = GAME_MODES.CLASSIC,
-  onReturnToMenu
+  onReturnToMenu,
+  interfaceLanguage
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -185,7 +186,8 @@ export default function ResultScreen({
       plantLanguage,
       onPlantLanguageChange,
       gameMode,
-      showQuestionProgress: false
+      showQuestionProgress: false,
+      interfaceLanguage
     }),
     createElement('div', {
       key: 'main',
