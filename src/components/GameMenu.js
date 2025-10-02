@@ -71,6 +71,10 @@ export default function GameMenu({
       ? (texts.postGameSubtitle || texts.menuSubtitle || '')
       : (texts.menuSubtitle || '');
 
+  const subtitle = isOutOfQuestions
+    ? (texts.classicModeUnavailableSubtitle ?? texts.menuSubtitle ?? '')
+    : (texts.menuSubtitle ?? '');
+
   const classicLabel = texts.classicModeButton || texts.startGame || 'Start Game';
   const endlessLabel = texts.endlessModeButton || 'Endless Mode';
   const classicDescription = texts.classicModeDescription;
