@@ -1,7 +1,8 @@
 import GameHeader from './GameHeader.js';
+import { questionTypes } from '../data/questionTypes.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 
-function SecurePlantImage({ src, alt, className, style }) {
+function SecurePlantImage({ src, alt, className, style, accentColor = '#C29C27' }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
     throw new Error('React global was not found. Make sure the React bundle is loaded before rendering SecurePlantImage.');
@@ -21,7 +22,7 @@ function SecurePlantImage({ src, alt, className, style }) {
       className: 'w-full h-full flex items-center justify-center text-center text-sm',
       style: {
         ...mergedStyle,
-        color: '#C29C27',
+        color: accentColor,
         backgroundColor: '#163B3A'
       }
     }, 'Изображение недоступно');
@@ -56,7 +57,7 @@ function SecurePlantImage({ src, alt, className, style }) {
   });
 }
 
-function renderDesktopBackground(ReactGlobal, isMobile) {
+function renderDesktopBackground(ReactGlobal, isMobile, accentColor) {
   if (isMobile) {
     return null;
   }
@@ -76,12 +77,12 @@ function renderDesktopBackground(ReactGlobal, isMobile) {
     style: {
       width: '24px',
       height: '24px',
-      backgroundColor: '#C29C27'
+      backgroundColor: accentColor
     }
   })))));
 }
 
-function renderPlantImage(ReactGlobal, plant, isMobile) {
+function renderPlantImage(ReactGlobal, plant, isMobile, accentColor) {
   if (!plant || !plant.image || !plant.image.startsWith('images/')) {
     return null;
   }
@@ -91,11 +92,12 @@ function renderPlantImage(ReactGlobal, plant, isMobile) {
     src: plant.image,
     alt: `Растение ${plant.id}`,
     className: 'w-full h-full object-cover',
-    style: { border: isMobile ? 'none' : '6px solid #C29C27' }
+    style: { border: isMobile ? 'none' : `6px solid ${accentColor}` },
+    accentColor
   });
 }
 
-function renderFeedbackPanel(ReactGlobal, type, texts, isMobile) {
+function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColor) {
   const { createElement } = ReactGlobal;
   const isCorrect = type === 'correct';
   const accentColor = isCorrect ? '#4CAF50' : '#E53935';
@@ -110,15 +112,15 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile) {
       viewBox: '0 0 200 200',
       fill: 'none',
       'aria-hidden': 'true'
-    }, [
-      createElement('path', {
-        key: 'outline',
-        d: 'M52 108L86 142L148 68',
-        stroke: '#C29C27',
-        strokeWidth: 18,
-        strokeLinecap: 'round',
-        strokeLinejoin: 'round'
-      }),
+      }, [
+        createElement('path', {
+          key: 'outline',
+          d: 'M52 108L86 142L148 68',
+          stroke: themeAccentColor,
+          strokeWidth: 18,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round'
+        }),
       createElement('path', {
         key: 'check',
         d: 'M52 108L86 142L148 68',
@@ -165,7 +167,7 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile) {
     style: {
       width: isMobile ? '100%' : '675px',
       backgroundColor: '#163B3A',
-      border: isMobile ? 'none' : '6px solid #C29C27',
+      border: isMobile ? 'none' : `6px solid ${themeAccentColor}`,
       padding: outerPadding
     }
   }, createElement('div', {
@@ -213,8 +215,13 @@ export default function GameScreen({
   }
 
   const { createElement } = ReactGlobal;
+  const isBouquetQuestion = currentPlant?.questionType === questionTypes.BOUQUET;
+  const interfaceAccentColor = isBouquetQuestion ? '#C9A9A6' : '#C29C27';
+  const interfaceAccentColorTransparent = isBouquetQuestion
+    ? 'rgba(201, 169, 166, 0.4)'
+    : 'rgba(194, 156, 39, 0.4)';
 
-  const desktopBackgroundPattern = renderDesktopBackground(ReactGlobal, isMobile);
+  const desktopBackgroundPattern = renderDesktopBackground(ReactGlobal, isMobile, interfaceAccentColor);
   const normalizedQuestionIndex = Number.isFinite(currentQuestionIndex) && currentQuestionIndex >= 0
     ? currentQuestionIndex
     : 0;
@@ -252,7 +259,7 @@ export default function GameScreen({
         className: 'w-full shadow-lg',
         style: {
           backgroundColor: '#163B3A',
-          border: isMobile ? 'none' : '6px solid #C29C27',
+          border: isMobile ? 'none' : `6px solid ${interfaceAccentColor}`,
           padding: isMobile ? '3px' : '32px'
         }
       }, [
@@ -260,7 +267,7 @@ export default function GameScreen({
           key: 'question',
           className: 'text-3xl font-bold text-center',
           style: {
-            color: '#C29C27',
+            color: interfaceAccentColor,
             marginBottom: isMobile ? '12px' : '32px'
           }
         }, questionHeading ? `${displayQuestionNumber}. ${questionHeading}` : `${displayQuestionNumber}.`),
@@ -280,11 +287,11 @@ export default function GameScreen({
       height: isMobile ? '6px' : '8px',
       flex: '1',
       backgroundColor: index < completedSegments
-        ? '#C29C27'
+        ? interfaceAccentColor
         : 'transparent',
       border: index < completedSegments
         ? 'none'
-        : '1px solid rgba(194, 156, 39, 0.4)',
+        : `1px solid ${interfaceAccentColorTransparent}`,
       borderRadius: '2px'
     }
   })
@@ -304,9 +311,9 @@ export default function GameScreen({
               width: isMobile ? '100%' : '675px',
               height: '100%'
             }
-          }, renderPlantImage(ReactGlobal, currentPlant, isMobile)),
-          gameState === 'correct' && renderFeedbackPanel(ReactGlobal, 'correct', texts, isMobile),
-          gameState === 'incorrect' && renderFeedbackPanel(ReactGlobal, 'incorrect', texts, isMobile)
+          }, renderPlantImage(ReactGlobal, currentPlant, isMobile, interfaceAccentColor)),
+          gameState === 'correct' && renderFeedbackPanel(ReactGlobal, 'correct', texts, isMobile, interfaceAccentColor),
+          gameState === 'incorrect' && renderFeedbackPanel(ReactGlobal, 'incorrect', texts, isMobile, interfaceAccentColor)
         ]),
         gameState === 'playing' && options.length > 0 && createElement('div', {
           key: 'options',
@@ -321,8 +328,8 @@ export default function GameScreen({
           className: 'font-semibold transition-all duration-200 hover:opacity-80 hover:scale-105',
           style: {
             backgroundColor: '#163B3A',
-            border: '4px solid #C29C27',
-            color: '#C29C27',
+            border: `4px solid ${interfaceAccentColor}`,
+            color: interfaceAccentColor,
             boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
             fontSize: isMobile ? '20.8px' : '20px',
             padding: isMobile ? '12px 14px' : '16px 24px',
@@ -349,7 +356,8 @@ export default function GameScreen({
       plantLanguage,
       onPlantLanguageChange,
       gameMode,
-      interfaceLanguage
+      interfaceLanguage,
+      accentColor: interfaceAccentColor
     }),
     content
   ].filter(Boolean));

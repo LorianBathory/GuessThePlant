@@ -8,7 +8,8 @@ export default function GameHeader({
   onPlantLanguageChange,
   showLanguageSelector = true,
   gameMode = GAME_MODES.CLASSIC,
-  interfaceLanguage
+  interfaceLanguage,
+  accentColor = '#C29C27'
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -32,7 +33,7 @@ export default function GameHeader({
   const progressSection = createElement('div', {
     key: 'progress-info',
     className: 'flex items-end gap-3 flex-wrap',
-    style: { color: '#C29C27' }
+    style: { color: accentColor }
   }, createElement('span', {
     className: 'text-lg font-semibold whitespace-nowrap'
   }, progressLabelText));
@@ -52,9 +53,9 @@ export default function GameHeader({
       onClick: () => onPlantLanguageChange(lang),
       className: 'px-2.5 py-1 text-xs font-bold uppercase transition-all tracking-wide',
       style: {
-        backgroundColor: plantLanguage === lang ? '#C29C27' : 'transparent',
-        color: plantLanguage === lang ? '#163B3A' : '#C29C27',
-        border: '2px solid #C29C27',
+        backgroundColor: plantLanguage === lang ? accentColor : 'transparent',
+        color: plantLanguage === lang ? '#163B3A' : accentColor,
+        border: `2px solid ${accentColor}`,
         lineHeight: 1.1
       }
     }, lang === 'sci' ? 'Sci' : lang.toUpperCase())));
@@ -71,7 +72,7 @@ export default function GameHeader({
       width: '50px',
       height: '50px',
       borderRadius: '50%',
-      backgroundColor: '#C29C27',
+      backgroundColor: accentColor,
       color: '#163B3A',
       fontSize: '20px',
       boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)'
