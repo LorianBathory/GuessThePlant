@@ -78,6 +78,8 @@ const speciesCatalog = Object.freeze({
     //99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
     100: { images: ['p080'], wrongAnswers: [6, 39, 27] }, //Sunflower +
     101: { images: ['p056', 'p099'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
+    //102-111
+    112: { images: ['p140', 'p141', 'p142'] },
     //102-141
     142: {images: ['p134', 'p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus
 });
