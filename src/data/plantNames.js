@@ -129,6 +129,8 @@ export const plantNamesById = Object.freeze({
     //128: Карпобротус съедобный
   // 128: { ru: "Крокус" }
     129: { ru: 'Черемша', en: 'Ramsons', nl: 'Daslook', sci: 'Allium ursinum' },
+    //130
+    131: { ru: 'Вероника австрийская', en: 'Veronica austriaca', nl: 'Brede ereprijs', sci: 'Veronica austriaca'},
     //130-141
     142: { ru: 'Гиацинт', en: 'Hyacinth', nl: 'Hyacint', sci: 'Hyacinthus' }
 });
