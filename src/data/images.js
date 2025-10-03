@@ -143,6 +143,7 @@ export const plantImages = Object.freeze([
   { id: 'p142', src: 'images/Delphinium_RebeccaNiver.JPG' },
   { id: 'p143', src: 'images/VeronicaAustriaca_TatyanaAleksandrovna.JPG' },
   {id: 'p144', src: 'images/Globularia-Nennieinszweidrei.JPG' },
+    {id: 'p145', src: 'images/Cornflower_ElizabethOlson.JPG'}
     // { id: 'p140', src: '' }
     //{ id: '', src: '' }
 ]);

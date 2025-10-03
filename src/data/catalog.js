@@ -15,7 +15,7 @@ const speciesCatalog = Object.freeze({
     12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3, 11, 129]}, //Allium
   14: {images: ['p057'], wrongAnswers: [112, 131, 142]}, //camassia
-    15: {images: ['p088']}, //globularia
+    15: {images: ['p088'], wrongAnswers: [116]}, //globularia
   16: {images: ['p105'], wrongAnswers: [35, 111]}, //Fritillary
   17: { images: ['p007'] },
   19: { images: ['p008'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
@@ -82,6 +82,8 @@ const speciesCatalog = Object.freeze({
     //102-111
     112: { images: ['p140', 'p141', 'p142'], wrongAnswers: [131] }, //Delphinium+
     //113-130
+    116: { images: ['p145']}, //cornflower
+    //117+
     131: { images: ['p143'], wrongAnswers: [14, 112] }, //veronica+
     //132-141
     142: {images: ['p134', 'p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus+
