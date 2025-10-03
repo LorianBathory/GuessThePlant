@@ -4,7 +4,9 @@ import {
   TOTAL_ROUNDS,
   getQuestionsForRound,
   prepareSeenImagesForRound,
-  resetUsedPlantTracking
+  resetUsedPlantTracking,
+  BOUQUET_QUESTIONS_TARGET,
+  BOUQUET_PER_ROUND_LIMIT
 } from '../gameConfig.js';
 import { GameLogicError } from '../utils/errorHandling.js';
 
@@ -34,8 +36,6 @@ export function useClassicMode({
 
   const { useCallback, useRef } = ReactGlobal;
 
-  const BOUQUET_QUESTIONS_TARGET = 2;
-  const BOUQUET_PER_ROUND_LIMIT = 1;
   const bouquetQuestionsRemainingRef = useRef(BOUQUET_QUESTIONS_TARGET);
 
   const startRound = useCallback((roundIndex, resetScore = false) => {

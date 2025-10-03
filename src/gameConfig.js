@@ -40,6 +40,9 @@ export const ROUNDS = Object.freeze([
 
 export const TOTAL_ROUNDS = ROUNDS.length;
 
+export const BOUQUET_QUESTIONS_TARGET = 2;
+export const BOUQUET_PER_ROUND_LIMIT = 1;
+
 const usedQuestionGroupIdsAcrossGame = new Set();
 const seenImageIdsAcrossSessions = new Set();
 let seenImageIdsLoaded = false;
@@ -170,6 +173,132 @@ function isImageSeen(imageId) {
   return seenImageIdsAcrossSessions.has(imageId);
 }
 
+function getSelectionGroupId(question) {
+  const hasQuestion = Boolean(question);
+  const hasVariantId = hasQuestion && question.questionVariantId !== undefined && question.questionVariantId !== null;
+  const fallbackVariantId = hasVariantId
+    ? question.questionVariantId
+    : hasQuestion
+      ? question.id
+      : null;
+
+  if (hasQuestion && typeof question.selectionGroupId === 'string') {
+    return question.selectionGroupId;
+  }
+
+  return fallbackVariantId != null ? String(fallbackVariantId) : '';
+}
+
+function collectAvailableQuestionGroupsByDifficulty() {
+  ensureSeenImageIdsLoaded();
+
+  const groups = new Map();
+
+  allQuestions.forEach(question => {
+    if (!question) {
+      return;
+    }
+
+    const difficulty = question.difficulty;
+    if (!difficulty) {
+      return;
+    }
+
+    const imageId = question.imageId;
+    if (typeof imageId !== 'string' || isImageSeen(imageId)) {
+      return;
+    }
+
+    const groupId = getSelectionGroupId(question);
+    if (!groupId) {
+      return;
+    }
+
+    const normalizedType = question.questionType || questionTypes.PLANT;
+
+    if (!groups.has(difficulty)) {
+      groups.set(difficulty, {
+        plant: new Set(),
+        bouquet: new Set()
+      });
+    }
+
+    const entry = groups.get(difficulty);
+    if (normalizedType === questionTypes.BOUQUET) {
+      entry.bouquet.add(groupId);
+    } else {
+      entry.plant.add(groupId);
+    }
+  });
+
+  return groups;
+}
+
+function canAssembleClassicGameFrom(groupsByDifficulty) {
+  if (!(groupsByDifficulty instanceof Map)) {
+    return false;
+  }
+
+  const usedGroupIds = new Set();
+  let bouquetRemaining = BOUQUET_QUESTIONS_TARGET;
+
+  for (const roundConfig of ROUNDS) {
+    if (!roundConfig) {
+      return false;
+    }
+
+    const desiredQuestions = Number.isFinite(roundConfig.questions) && roundConfig.questions > 0
+      ? roundConfig.questions
+      : 0;
+
+    if (desiredQuestions === 0) {
+      continue;
+    }
+
+    const difficulty = roundConfig.difficulty;
+    const difficultyEntry = difficulty ? groupsByDifficulty.get(difficulty) : null;
+
+    const availablePlantGroups = difficultyEntry
+      ? Array.from(difficultyEntry.plant).filter(groupId => !usedGroupIds.has(groupId))
+      : [];
+    const availableBouquetGroups = difficultyEntry
+      ? Array.from(difficultyEntry.bouquet).filter(groupId => !usedGroupIds.has(groupId))
+      : [];
+
+    const allowedBouquetQuestions = Math.min(
+      BOUQUET_PER_ROUND_LIMIT,
+      bouquetRemaining,
+      availableBouquetGroups.length,
+      desiredQuestions
+    );
+
+    if ((availablePlantGroups.length + allowedBouquetQuestions) < desiredQuestions) {
+      return false;
+    }
+
+    for (let i = 0; i < allowedBouquetQuestions; i += 1) {
+      usedGroupIds.add(availableBouquetGroups[i]);
+    }
+    bouquetRemaining -= allowedBouquetQuestions;
+
+    const remainingNeeded = desiredQuestions - allowedBouquetQuestions;
+    for (let i = 0; i < remainingNeeded; i += 1) {
+      usedGroupIds.add(availablePlantGroups[i]);
+    }
+  }
+
+  return true;
+}
+
+function hasEnoughUnseenQuestionsForClassicGame() {
+  const groupsByDifficulty = collectAvailableQuestionGroupsByDifficulty();
+  if (groupsByDifficulty.size === 0) {
+    return false;
+  }
+
+  return canAssembleClassicGameFrom(groupsByDifficulty);
+}
+
 export function clearSeenImagesTracking() {
   ensureSeenImageIdsLoaded();
   if (seenImageIdsAcrossSessions.size > 0) {
@@ -206,6 +335,15 @@ export function prepareSeenImagesForRound() {
 
 export function isClassicModeDisabled() {
   ensureClassicModeDisabledLoaded();
+
+  if (classicModeDisabled) {
+    const canAssembleGame = hasEnoughUnseenQuestionsForClassicGame();
+    if (canAssembleGame) {
+      classicModeDisabled = false;
+      persistClassicModeDisabled();
+    }
+  }
+
   return classicModeDisabled;
 }
 
