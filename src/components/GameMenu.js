@@ -46,6 +46,7 @@ export default function GameMenu({
   onInterfaceLanguageChange,
   onStartClassicGame = () => {},
   onStartEndlessGame = () => {},
+  onStartMemorizationMode = () => {},
   isPostGame = false,
   score = 0,
   isMobile = false,
@@ -74,8 +75,10 @@ export default function GameMenu({
 
   const classicLabel = texts.classicModeButton || texts.startGame || 'Start Game';
   const endlessLabel = texts.endlessModeButton || 'Endless Mode';
+  const memorizationLabel = texts.memorizationModeButton || 'Memorization';
   const classicDescription = texts.classicModeDescription;
   const endlessDescription = texts.endlessModeDescription;
+  const memorizationDescription = texts.memorizationModeDescription;
   const unavailableLabel = texts.classicModeUnavailableButton || 'Unavailable';
 
   const [hoveredMode, setHoveredMode] = useState(null);
@@ -145,7 +148,13 @@ export default function GameMenu({
               onClick: onStartEndlessGame,
               className: 'px-6 py-3 font-semibold transition-colors hover:opacity-80',
               style: { backgroundColor: '#163B3A', color: '#C29C27', border: '4px solid #C29C27' }
-            }, endlessLabel)
+            }, endlessLabel),
+            createElement('button', {
+              key: 'memorization-button',
+              onClick: onStartMemorizationMode,
+              className: 'px-6 py-3 font-semibold transition-colors hover:opacity-80',
+              style: { backgroundColor: '#163B3A', color: '#C29C27', border: '4px solid #C29C27' }
+            }, texts.startMemorization || memorizationLabel)
           ])
         ])
       ])
@@ -327,6 +336,69 @@ export default function GameMenu({
                 opacity: hoveredMode === 'endless' ? 0.9 : 1
               }
             }, texts.startGame || 'Start'))
+          ].filter(Boolean))
+        ]),
+        createElement('div', {
+          key: 'memorization-card',
+          className: 'flex-1 relative transition-all cursor-pointer',
+          style: {
+            maxWidth: '520px',
+            transform: hoveredMode === 'memorization' ? 'translateY(-4px)' : 'translateY(0)',
+            transition: 'transform 0.3s ease'
+          },
+          onMouseEnter: () => setHoveredMode('memorization'),
+          onMouseLeave: () => setHoveredMode(null),
+          onClick: onStartMemorizationMode
+        }, [
+          createElement('div', {
+            key: 'memorization-border-outer',
+            className: 'absolute inset-0',
+            style: { border: '6px solid #C29C27' }
+          }),
+          createElement('div', {
+            key: 'memorization-border-inner',
+            className: 'absolute',
+            style: {
+              top: '16px',
+              left: '16px',
+              right: '16px',
+              bottom: '16px',
+              border: '2px solid #C29C27',
+              opacity: 0.6
+            }
+          }),
+          createElement('div', {
+            key: 'memorization-content',
+            className: 'relative p-8 flex flex-col text-center gap-4',
+            style: { minHeight: '240px' }
+          }, [
+            createElement('h2', {
+              key: 'memorization-title',
+              className: 'text-2xl font-bold',
+              style: { color: '#C29C27' }
+            }, memorizationLabel),
+            memorizationDescription && createElement('p', {
+              key: 'memorization-description',
+              className: 'text-base leading-relaxed',
+              style: { color: '#C29C27', opacity: 0.85 }
+            }, memorizationDescription),
+            createElement('div', {
+              key: 'memorization-button-wrapper',
+              className: 'mt-auto'
+            }, createElement('button', {
+              key: 'memorization-action',
+              onClick: event => {
+                event.stopPropagation();
+                onStartMemorizationMode();
+              },
+              className: 'w-full px-8 py-3 font-semibold transition-all',
+              style: {
+                backgroundColor: '#C29C27',
+                color: '#163B3A',
+                border: '3px solid #C29C27',
+                opacity: hoveredMode === 'memorization' ? 0.9 : 1
+              }
+            }, texts.startMemorization || memorizationLabel))
           ].filter(Boolean))
         ])
       ])

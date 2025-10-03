@@ -1,4 +1,4 @@
-import { choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
+import { choicesById, ALL_CHOICE_IDS, plants as catalogPlants } from '../data/catalog.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';
 import {
@@ -80,6 +80,7 @@ export default function useGameLogic() {
   const [gameState, setGameState] = useState('playing');
   const [optionIds, setOptionIds] = useState([]);
   const [correctAnswerId, setCorrectAnswerId] = useState(null);
+  const [memorizationPlant, setMemorizationPlant] = useState(null);
   const [isMobile, setIsMobile] = useState(() => getInitialIsMobile());
   const [isClassicModeUnavailable, setClassicModeUnavailable] = useState(() => isClassicModeDisabled());
   const [roundMistakes, setRoundMistakes] = useState([]);
@@ -132,6 +133,60 @@ export default function useGameLogic() {
     startClassicGame();
   }, [startClassicGame]);
 
+  const pickRandomMemorizationPlant = useCallback(() => {
+    const candidates = Array.isArray(catalogPlants)
+      ? catalogPlants.filter(plant => plant && typeof plant.image === 'string')
+      : [];
+
+    if (candidates.length === 0) {
+      return null;
+    }
+
+    const shuffled = shuffleArray(candidates);
+    if (!memorizationPlant) {
+      return shuffled[0];
+    }
+
+    const nextCandidate = shuffled.find(plant => (
+      plant.questionVariantId !== memorizationPlant.questionVariantId
+    ));
+
+    return nextCandidate || shuffled[0];
+  }, [memorizationPlant]);
+
+  const startMemorizationMode = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    const nextPlant = pickRandomMemorizationPlant();
+
+    setGameMode(GAME_MODES.MEMORIZATION);
+    setRoundPhase('memorization');
+    setSessionPlants([]);
+    setCurrentQuestionIndex(0);
+    setCurrentRoundIndex(0);
+    setScore(0);
+    setGameState('playing');
+    setOptionIds([]);
+    setCorrectAnswerId(null);
+    setRoundMistakes([]);
+    setMemorizationPlant(nextPlant || null);
+
+    if (nextPlant) {
+      preloadPlantImages([nextPlant]);
+    }
+  }, [pickRandomMemorizationPlant, preloadPlantImages]);
+
+  const showNextMemorizationPlant = useCallback(() => {
+    const nextPlant = pickRandomMemorizationPlant();
+    setMemorizationPlant(nextPlant || null);
+
+    if (nextPlant) {
+      preloadPlantImages([nextPlant]);
+    }
+  }, [pickRandomMemorizationPlant, preloadPlantImages]);
+
   const generateOptionIds = useCallback(plant => {
     if (!plant) {
       return [];
@@ -166,6 +221,7 @@ export default function useGameLogic() {
     }
 
     setRoundPhase('menu');
+    setGameMode(GAME_MODES.CLASSIC);
     setSessionPlants([]);
     setCurrentQuestionIndex(0);
     setCurrentRoundIndex(0);
@@ -174,6 +230,7 @@ export default function useGameLogic() {
     setCorrectAnswerId(null);
     setScore(0);
     setRoundMistakes([]);
+    setMemorizationPlant(null);
   }, []);
 
   useEffect(() => {
@@ -290,7 +347,7 @@ export default function useGameLogic() {
     if (!INTERFACE_LANGUAGES.includes(newLang)) {
       throw new GameLogicError(`Язык интерфейса "${newLang}" не поддерживается.`);
     }
-    const allowedPhases = ['menu', 'gameComplete', 'endlessComplete', 'endlessFailed'];
+    const allowedPhases = ['menu', 'gameComplete', 'endlessComplete', 'endlessFailed', 'memorization'];
     if (!allowedPhases.includes(roundPhase)) {
       return;
     }
@@ -329,6 +386,7 @@ export default function useGameLogic() {
     startGame,
     startClassicGame,
     startEndlessGame,
+    startMemorizationMode,
     returnToMenu,
     startRound,
     handleAnswer,
@@ -351,6 +409,8 @@ export default function useGameLogic() {
     gameState,
     currentPlant,
     options,
-    roundMistakes
+    roundMistakes,
+    memorizationPlant,
+    showNextMemorizationPlant
   };
 }

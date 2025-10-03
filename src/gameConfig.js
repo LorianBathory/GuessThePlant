@@ -9,7 +9,8 @@ export const INTERFACE_LANGUAGES = ['ru', 'en', 'nl'];
 
 export const GAME_MODES = Object.freeze({
   CLASSIC: 'classic',
-  ENDLESS: 'endless'
+  ENDLESS: 'endless',
+  MEMORIZATION: 'memorization'
 });
 
 export const DEFAULT_LANGUAGE_STORAGE_KEY = 'gtp-default-language';

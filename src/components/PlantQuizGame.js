@@ -2,6 +2,7 @@ import useGameLogic from '../hooks/useGameLogic.js';
 import GameScreen from './GameScreen.js';
 import ResultScreen from './ResultScreen.js';
 import GameMenu from './GameMenu.js';
+import MemorizationScreen from './MemorizationScreen.js';
 import { allQuestions } from '../data/questions.js';
 import { DataLoadingError } from '../utils/errorHandling.js';
 
@@ -27,10 +28,24 @@ export default function PlantQuizGame() {
       onInterfaceLanguageChange: game.changeInterfaceLanguage,
       onStartClassicGame: game.startClassicGame,
       onStartEndlessGame: game.startEndlessGame,
+      onStartMemorizationMode: game.startMemorizationMode,
       isPostGame: game.roundPhase === 'gameComplete',
       score: game.score,
       isMobile: game.isMobile,
       isClassicModeUnavailable: game.isClassicModeUnavailable
+    });
+  }
+
+  if (game.roundPhase === 'memorization') {
+    return createElement(MemorizationScreen, {
+      texts: game.texts,
+      plantLanguage: game.plantLanguage,
+      interfaceLanguage: game.interfaceLanguage,
+      onPlantLanguageChange: game.changePlantLanguage,
+      onNextPlant: game.showNextMemorizationPlant,
+      onReturnToMenu: game.returnToMenu,
+      plant: game.memorizationPlant,
+      isMobile: game.isMobile
     });
   }
 

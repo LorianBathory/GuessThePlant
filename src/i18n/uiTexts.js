@@ -31,7 +31,20 @@ export const uiTexts = {
     endlessSuccessTitle: "Поздравляем! Вы прошли бесконечный режим!",
     endlessFailureTitle: "Слишком много ошибок! Попробуйте ещё раз",
     endlessRetry: "Повторить",
-    backToMenu: "Вернуться в меню"
+    backToMenu: "Вернуться в меню",
+    memorizationModeButton: "Заучивание",
+    memorizationModeDescription: "Изучайте растения с фото, названиями и важными параметрами.",
+    startMemorization: "Начать заучивание",
+    memorizationModeHeading: "Режим заучивания",
+    memorizationInstruction: "Запоминайте название и характеристики, затем переходите к следующему растению.",
+    memorizationFamilyLabel: "Семейство",
+    memorizationLifeCycleLabel: "Продолжительность жизни",
+    memorizationHardinessLabel: "Зона морозостойкости",
+    memorizationLightLabel: "Освещение",
+    memorizationToxicityLabel: "Токсичность",
+    memorizationNextButton: "Следующее растение",
+    memorizationUnknown: "Нет данных",
+    memorizationNoPlant: "Нет данных для отображения."
   },
   en: {
     question: "What plant is this?",
@@ -65,7 +78,20 @@ export const uiTexts = {
     endlessSuccessTitle: "Congratulations! You completed Endless Mode!",
     endlessFailureTitle: "Too many mistakes! Try again",
     endlessRetry: "Retry",
-    backToMenu: "Back to Menu"
+    backToMenu: "Back to Menu",
+    memorizationModeButton: "Study Mode",
+    memorizationModeDescription: "Explore plants with photos, names, and key facts.",
+    startMemorization: "Start studying",
+    memorizationModeHeading: "Study Mode",
+    memorizationInstruction: "Review the details and move to the next plant when you are ready.",
+    memorizationFamilyLabel: "Family",
+    memorizationLifeCycleLabel: "Life cycle",
+    memorizationHardinessLabel: "Hardiness zone",
+    memorizationLightLabel: "Light requirements",
+    memorizationToxicityLabel: "Toxicity",
+    memorizationNextButton: "Next plant",
+    memorizationUnknown: "Not specified",
+    memorizationNoPlant: "No plant data available."
   },
   nl: {
     question: "Wat is deze plant?",
@@ -99,7 +125,20 @@ export const uiTexts = {
     endlessSuccessTitle: "Gefeliciteerd! Je hebt de eindeloze modus voltooid!",
     endlessFailureTitle: "Te veel fouten! Probeer het opnieuw",
     endlessRetry: "Opnieuw",
-    backToMenu: "Terug naar menu"
+    backToMenu: "Terug naar menu",
+    memorizationModeButton: "Studiemodus",
+    memorizationModeDescription: "Leer planten kennen met foto's, namen en belangrijke kenmerken.",
+    startMemorization: "Start studeren",
+    memorizationModeHeading: "Studiemodus",
+    memorizationInstruction: "Bekijk de details en ga verder naar de volgende plant wanneer je klaar bent.",
+    memorizationFamilyLabel: "Familie",
+    memorizationLifeCycleLabel: "Levensduur",
+    memorizationHardinessLabel: "Winterhardheidszone",
+    memorizationLightLabel: "Lichtbehoefte",
+    memorizationToxicityLabel: "Giftigheid",
+    memorizationNextButton: "Volgende plant",
+    memorizationUnknown: "Niet gespecificeerd",
+    memorizationNoPlant: "Geen plantgegevens beschikbaar."
   }
 };
 
