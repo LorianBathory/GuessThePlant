@@ -82,6 +82,7 @@ export default function useGameLogic() {
   const [correctAnswerId, setCorrectAnswerId] = useState(null);
   const [isMobile, setIsMobile] = useState(() => getInitialIsMobile());
   const [isClassicModeUnavailable, setClassicModeUnavailable] = useState(() => isClassicModeDisabled());
+  const [roundMistakes, setRoundMistakes] = useState([]);
 
   const texts = uiTexts[interfaceLanguage] || uiTexts[defaultLang];
 
@@ -106,7 +107,8 @@ export default function useGameLogic() {
     timeoutRef,
     preloadPlantImages,
     isClassicModeUnavailable,
-    setClassicModeUnavailable
+    setClassicModeUnavailable,
+    setRoundMistakes
   });
 
   const { startEndlessGame, handleEndlessAnswer } = useEndlessMode({
@@ -171,6 +173,7 @@ export default function useGameLogic() {
     setOptionIds([]);
     setCorrectAnswerId(null);
     setScore(0);
+    setRoundMistakes([]);
   }, []);
 
   useEffect(() => {
@@ -347,6 +350,7 @@ export default function useGameLogic() {
     score,
     gameState,
     currentPlant,
-    options
+    options,
+    roundMistakes
   };
 }

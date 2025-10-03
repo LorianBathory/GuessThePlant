@@ -1,3 +1,4 @@
+import './polyfills.js';
 import PlantQuizGame from './components/PlantQuizGame.js';
 import ErrorBoundary from './components/ErrorBoundary.js';
 import {

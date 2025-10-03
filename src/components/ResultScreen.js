@@ -1,5 +1,6 @@
 import GameHeader from './GameHeader.js';
 import { GAME_MODES } from '../gameConfig.js';
+import { defaultLang } from '../i18n/uiTexts.js';
 
 function renderDesktopBackground(ReactGlobal, isMobile) {
   if (isMobile) {
@@ -26,23 +27,90 @@ function renderDesktopBackground(ReactGlobal, isMobile) {
   })))));
 }
 
+function renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage }) {
+  if (!Array.isArray(roundMistakes) || roundMistakes.length === 0) {
+    return null;
+  }
+
+  const { createElement } = ReactGlobal;
+  const mistakesTitle = texts.roundMistakesTitle || 'Растения, в которых были ошибки';
+  const isSingleMistake = roundMistakes.length === 1;
+
+  const listClassName = `flex flex-col gap-4 w-full ${isSingleMistake ? 'items-center' : 'items-stretch'}`;
+
+  return createElement('div', {
+    key: 'round-mistakes',
+    className: 'w-full flex flex-col gap-4',
+    style: { color: '#C29C27' }
+  }, [
+    createElement('h2', {
+      key: 'mistakes-title',
+      className: 'text-2xl font-semibold text-center'
+    }, mistakesTitle),
+    createElement('div', {
+      key: 'mistakes-list',
+      className: listClassName
+    }, roundMistakes.map((mistake, index) => {
+      const names = mistake && mistake.names ? mistake.names : {};
+      const label = names[plantLanguage]
+        || names[defaultLang]
+        || Object.values(names)[0]
+        || '';
+
+      return createElement('div', {
+        key: mistake.questionVariantId || mistake.id || `mistake-${index}`,
+        className: 'flex flex-col sm:flex-row items-center justify-center gap-4 w-full p-4 rounded-2xl',
+        style: {
+          backgroundColor: '#0F2A2A',
+          border: '3px solid #C29C27'
+        }
+      }, [
+        createElement('img', {
+          key: 'image',
+          src: mistake.image,
+          alt: label,
+          className: 'object-cover',
+          style: {
+            width: isSingleMistake ? '220px' : '140px',
+            height: isSingleMistake ? '220px' : '140px',
+            borderRadius: '18px',
+            border: '4px solid #C29C27',
+            backgroundColor: '#163B3A'
+          }
+        }),
+        createElement('span', {
+          key: 'label',
+          className: 'text-xl font-semibold text-center sm:text-left',
+          style: {
+            color: '#C29C27',
+            maxWidth: '100%'
+          }
+        }, label)
+      ]);
+    }))
+  ]);
+}
+
 function renderRoundComplete({
   ReactGlobal,
   texts,
   score,
   currentRoundIndex,
   totalRounds,
-  onStartNextRound
+  onStartNextRound,
+  roundMistakes,
+  plantLanguage
 }) {
   const { createElement } = ReactGlobal;
   const roundNumber = currentRoundIndex + 1;
   const nextRoundNumber = Math.min(currentRoundIndex + 2, totalRounds);
   const roundCompletedText = (texts.roundCompleted || '').replace('{{round}}', roundNumber);
   const startNextRoundText = (texts.startRoundButton || '').replace('{{round}}', nextRoundNumber);
+  const mistakesSection = renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage });
 
   return createElement('div', {
     key: 'round-result',
-    className: 'p-8 shadow-lg text-center max-w-md mx-4 flex flex-col gap-4',
+    className: 'p-8 shadow-lg text-center w-full max-w-4xl mx-4 flex flex-col gap-6 items-center',
     style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
   }, [
     createElement('h1', {
@@ -55,13 +123,14 @@ function renderRoundComplete({
       className: 'text-2xl font-semibold',
       style: { color: '#C29C27' }
     }, `${texts.score}: ${score}`),
+    mistakesSection,
     createElement('button', {
       key: 'next-round',
       onClick: onStartNextRound,
       className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
       style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
     }, startNextRoundText || 'Start next round')
-  ]);
+  ].filter(Boolean));
 }
 
 function renderGameComplete({ ReactGlobal, texts, score, onRestart }) {
@@ -144,7 +213,8 @@ export default function ResultScreen({
   onRestart,
   gameMode = GAME_MODES.CLASSIC,
   onReturnToMenu,
-  interfaceLanguage
+  interfaceLanguage,
+  roundMistakes = []
 }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -167,7 +237,16 @@ export default function ResultScreen({
       onReturnToMenu
     });
   } else if (phase === 'roundComplete') {
-    content = renderRoundComplete({ ReactGlobal, texts, score, currentRoundIndex, totalRounds, onStartNextRound });
+    content = renderRoundComplete({
+      ReactGlobal,
+      texts,
+      score,
+      currentRoundIndex,
+      totalRounds,
+      onStartNextRound,
+      roundMistakes,
+      plantLanguage
+    });
   } else {
     content = renderGameComplete({ ReactGlobal, texts, score, onRestart });
   }

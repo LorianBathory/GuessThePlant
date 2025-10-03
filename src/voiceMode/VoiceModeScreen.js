@@ -54,8 +54,16 @@ function VoicePlantImage({ src, alt, containerStyle, sectionStyle }) {
         pointerEvents: 'none'
       },
       draggable: false,
-      onContextMenu: event => event?.preventDefault?.(),
-      onDragStart: event => event?.preventDefault?.()
+      onContextMenu: event => {
+        if (event && typeof event.preventDefault === 'function') {
+          event.preventDefault();
+        }
+      },
+      onDragStart: event => {
+        if (event && typeof event.preventDefault === 'function') {
+          event.preventDefault();
+        }
+      }
     })
     : createElement('div', {
       role: 'status',
@@ -120,20 +128,22 @@ export default function VoiceModeScreen({
       try {
         recognition.start();
       } catch (error) {
-        if (error?.name !== 'InvalidStateError') {
+        if (!error || error.name !== 'InvalidStateError') {
           console.error('Не удалось запустить распознавание речи.', error);
         }
       }
     };
 
     recognition.onresult = event => {
-      if (!event?.results || event.results.length === 0) {
+      if (!event || !event.results || event.results.length === 0) {
         return;
       }
 
       const lastResult = event.results[event.results.length - 1];
       const alternative = lastResult && lastResult[0];
-      const transcript = typeof alternative?.transcript === 'string' ? alternative.transcript : '';
+      const transcript = alternative && typeof alternative.transcript === 'string'
+        ? alternative.transcript
+        : '';
       const normalized = transcript.trim().toLowerCase();
 
       if (!normalized) {
@@ -164,7 +174,7 @@ export default function VoiceModeScreen({
           continue;
         }
 
-        const option = options?.[command.index];
+        const option = options && options.length > command.index ? options[command.index] : undefined;
         if (option && typeof onAnswer === 'function') {
           onAnswer(option.id);
         }
@@ -173,7 +183,7 @@ export default function VoiceModeScreen({
     };
 
     recognition.onerror = event => {
-      if (event?.error === 'no-speech') {
+      if (event && event.error === 'no-speech') {
         return;
       }
 
@@ -199,7 +209,7 @@ export default function VoiceModeScreen({
       try {
         recognition.stop();
       } catch (error) {
-        if (error?.name !== 'InvalidStateError') {
+        if (!error || error.name !== 'InvalidStateError') {
           console.error('Не удалось остановить распознавание речи.', error);
         }
       }
@@ -210,7 +220,7 @@ export default function VoiceModeScreen({
     options,
     onAnswer,
     onRepeat: repeatOptions,
-    questionId: currentPlant?.id || `${questionNumber}`
+    questionId: currentPlant && currentPlant.id ? currentPlant.id : `${questionNumber}`
   });
 
   const feedbackState = useMemo(() => {
@@ -334,7 +344,7 @@ export default function VoiceModeScreen({
     currentPlant && currentPlant.image && createElement(VoicePlantImage, {
       key: 'image',
       src: currentPlant.image,
-      alt: currentPlant?.ru ? `Растение: ${currentPlant.ru}` : 'Фотография растения',
+      alt: currentPlant && currentPlant.ru ? `Растение: ${currentPlant.ru}` : 'Фотография растения',
       containerStyle: imageContainerStyle,
       sectionStyle: imageSectionStyle
     }),
