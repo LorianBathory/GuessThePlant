@@ -55,7 +55,7 @@ export const plantImages = Object.freeze([
   { id: 'p054', src: 'images/Camellia_Hard_KaramAlani.JPG' },
   { id: 'p055', src: 'images/Campanula_EllieBurgin.JPG' },
   { id: 'p056', src: 'images/Cosmo_WutthichaiCharoenburi.JPG' },
-  //{ id: 'p057', src: 'images/Dahlia.JPG' }, - дубль, надо заменить
+  { id: 'p057', src: 'images/Camassia_AaronCloward.JPG' },
   { id: 'p058', src: 'images/Fagus.JPG' },
   { id: 'p059', src: 'images/Hosta_BrettSayles.JPG' },
   { id: 'p060', src: 'images/Hydrangea.JPG' },

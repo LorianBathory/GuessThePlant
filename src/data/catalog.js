@@ -14,7 +14,8 @@ const speciesCatalog = Object.freeze({
     8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113'], wrongAnswers: [30, 100, 39]}, //gazania
     12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3, 11, 129]}, //Allium
-    16: {images: ['p105'], wrongAnswers: [35, 111]}, //Fritillary
+  14: {images: ['p057'], wrongAnswers: [142]}, //camassia
+  16: {images: ['p105'], wrongAnswers: [35, 111]}, //Fritillary
   17: { images: ['p007'] },
   19: { images: ['p008'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
     //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
