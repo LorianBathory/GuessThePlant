@@ -1,6 +1,6 @@
 export const plantImages = Object.freeze([
   { id: 'p001', src: 'images/BeachDaisy.JPG' },
-  { id: 'p002', src: 'images/MoonCarrot.JPG' },
+  { id: 'p002', src: 'images/DaucusCarota2.JPG' },
   { id: 'p003', src: 'images/Agapanthus.JPG' },
   { id: 'p004', src: 'images/bougainvillea.JPG' },
   { id: 'p005', src: 'images/Camellia.JPG' },
