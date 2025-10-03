@@ -392,15 +392,24 @@ export default function MemorizationScreen({
     };
   }, [plant, interfaceLanguage, unknownLabel]);
 
-  const outerStyle = useMemo(() => ({
-    minHeight: '100vh',
-    width: '100%',
-    background: '#163B3A',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: isMobile ? '16px' : '48px'
-  }), [isMobile]);
+  const outerStyle = useMemo(() => {
+    const sidePadding = isMobile ? 16 : 48;
+    const bottomPadding = isMobile ? 32 : 56;
+
+    return {
+      minHeight: '100vh',
+      width: '100%',
+      background: '#163B3A',
+      display: 'flex',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      paddingTop: '24px',
+      paddingRight: `${sidePadding}px`,
+      paddingLeft: `${sidePadding}px`,
+      paddingBottom: `${bottomPadding}px`,
+      boxSizing: 'border-box'
+    };
+  }, [isMobile]);
 
   const cardStyle = useMemo(() => ({
     width: '100%',
@@ -605,10 +614,10 @@ export default function MemorizationScreen({
       key: 'hardiness-zones',
       style: {
         display: 'flex',
-        flexWrap: 'nowrap',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         gap: '6px',
-        overflowX: 'auto'
+        rowGap: '8px'
       }
     }, zoneElements)
   ]);
@@ -637,13 +646,14 @@ export default function MemorizationScreen({
         key: 'heading-wrapper',
         className: 'absolute inset-x-0',
         style: {
-          padding: isMobile ? '20px' : '32px',
+          padding: isMobile ? '8px 20px 12px' : '12px 32px 14px',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          gap: '10px',
+          alignItems: 'flex-start',
+          gap: '8px',
           zIndex: 10,
-          bottom: isMobile ? '28px' : '40px'
+          bottom: 0,
+          textAlign: 'left'
         }
       }, [
         createElement('h1', {
@@ -651,18 +661,17 @@ export default function MemorizationScreen({
           className: isMobile ? 'text-2xl font-bold' : 'text-3xl font-bold',
           style: {
             color: ACCENT_COLOR,
-            textAlign: 'center'
+            textAlign: 'left',
+            width: '100%'
           }
         }, plantName),
         (scientificName || parameters.family) && createElement('div', {
           key: 'scientific-line',
           style: {
             display: 'flex',
-            alignItems: 'baseline',
-            justifyContent: 'center',
-            gap: '12px',
-            flexWrap: 'nowrap',
-            whiteSpace: 'nowrap',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            gap: '6px',
             color: ACCENT_COLOR
           }
         }, [
