@@ -33,16 +33,17 @@ const speciesCatalog = Object.freeze({
   34: { images: ['p022'], wrongAnswers: [448, 49] },
   35: { images: ['p023', 'p118', 'p119'], wrongAnswers: [36, 37] }, //Lily
   36: { images: ['p114', 'p115'] }, //Hemerocallis
-  41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 67] },
-  46: { images: ['p025', 'p125', 'p126'], wrongAnswers: [31, 33] }, //Peony
-  47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [76] }, //anemone
-  50: { images: ['p028', 'p045'], wrongAnswers: [18, 56, 57, 79] },
-  51: { images: ['p029', 'p073'], wrongAnswers: [58, 59, 60] },
-  52: { images: ['p030'], wrongAnswers: [61, 62] },
-  53: { images: ['p031'], wrongAnswers: [64] },
+    39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, надо добавить топинамбур - 135
+  41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
+  46: { images: ['p025', 'p125', 'p126'], wrongAnswers: [31, 33, 41] }, //Peony
+  47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [33] }, //anemone
+  50: { images: ['p028', 'p045'], wrongAnswers: [18, 34, 56, 57, 79] },
+  51: { images: ['p029', 'p073'], wrongAnswers: [58, 59, 5] },
+  52: { images: ['p030'], wrongAnswers: [61] }, //Japanese pittosporum
+  53: { images: ['p031'], wrongAnswers: [13, 15, 116] }, //scabious
   54: { images: ['p032', 'p063', 'p064'], wrongAnswers: [64, 65, 66] }, //lantana
-  55: { images: ['p033', 'p034', 'p035'], wrongAnswers: [67] },
-    58: { images: ['p102'], wrongAnswers: [4] }, //Dog-rose,  wrongAnswers надо
+  55: { images: ['p033', 'p034', 'p035'], wrongAnswers: [67] }, //Hibiscus
+    58: { images: ['p102'], wrongAnswers: [4] }, //Dog-rose, wrongAnswers надо
     62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
   68: { images: ['p036', 'p116', 'p117'] }, //lavender
   69: { images: ['p037'], wrongAnswers: [31, 22] },

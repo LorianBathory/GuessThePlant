@@ -131,7 +131,8 @@ export const plantImages = Object.freeze([
   { id: 'p130', src: 'images/ShastaDaisy_Sherry.JPG' },
   { id: 'p131', src: 'images/Tagetes_KamalBNandasena.JPG' },
   { id: 'p132', src: 'images/Tagetes_Medium_KirilGruev.JPG' },
-  { id: 'p133', src: 'images/Tulipa_SkyVaughan.JPG' }
+  { id: 'p133', src: 'images/Tulipa_SkyVaughan.JPG' },
+    { id: 'p134', src: 'images/Heliopsis_SaeedKhokhar.JPG' }
 ]);
 
 export const plantImagesById = Object.freeze(
