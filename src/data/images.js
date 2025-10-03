@@ -132,7 +132,14 @@ export const plantImages = Object.freeze([
   { id: 'p131', src: 'images/Tagetes_KamalBNandasena.JPG' },
   { id: 'p132', src: 'images/Tagetes_Medium_KirilGruev.JPG' },
   { id: 'p133', src: 'images/Tulipa_SkyVaughan.JPG' },
-    { id: 'p134', src: 'images/Heliopsis_SaeedKhokhar.JPG' }
+    { id: 'p134', src: 'images/Heliopsis_SaeedKhokhar.JPG' },
+    { id: 'p135', src: 'images/Hyacinth_Medium_AsimAlnamat.JPG' },
+    { id: 'p136', src: 'images/Hyacinth_NataliyaVaitkevich.JPG' },
+    { id: 'p137', src: 'images/Hyacinth_RomanBiernacki.JPG' },
+    { id: 'p138', src: 'images/Hyacinth_fox.JPG' },
+    { id: 'p139', src: 'images/Hyacinthus_NataliaSevruk.JPG' }
+   // { id: 'p140', src: '' }
+    //{ id: '', src: '' }
 ]);
 
 export const plantImagesById = Object.freeze(

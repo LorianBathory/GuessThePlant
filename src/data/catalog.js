@@ -7,7 +7,7 @@ import { questionTypes } from './questionTypes.js';
 const speciesCatalog = Object.freeze({
   1:  { images: ['p001'], wrongAnswers: [7, 8, 9] }, //Asteriscus
   2:  { images: ['p002'], wrongAnswers: [10, 11, 12] }, //Daucus carota
-  3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16] }, //Agapanthus. добавить гиацинт
+  3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16, 142] }, //Agapanthus
   4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 21] }, //Bougainvillea
   5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [21, 31, 23, 24] }, //camellia
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] }, //Gerbera
@@ -77,6 +77,8 @@ const speciesCatalog = Object.freeze({
     //99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
     100: { images: ['p080'], wrongAnswers: [6, 39, 27] }, //Sunflower +
     101: { images: ['p056', 'p099'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
+    //102-141
+    142: {images: ['p134', 'p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.

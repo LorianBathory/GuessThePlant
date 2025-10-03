@@ -128,5 +128,7 @@ export const plantNamesById = Object.freeze({
     //127: цинния
     //128: Карпобротус съедобный
   // 128: { ru: "Крокус" }
-    129: { ru: 'Черемша', en: 'Ramsons', nl: 'Daslook', sci: 'Allium ursinum' }
+    129: { ru: 'Черемша', en: 'Ramsons', nl: 'Daslook', sci: 'Allium ursinum' },
+    //130-141
+    142: { ru: 'Гиацинт', en: 'Hyacinth', nl: 'Hyacint', sci: 'Hyacinthus' }
 });
