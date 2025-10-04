@@ -1,3 +1,4 @@
+import { getParameterTagLabel } from '../data/parameterTags.js';
 import { getPlantParameters } from '../data/plantParameters.js';
 import { defaultLang } from '../i18n/uiTexts.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
@@ -105,44 +106,25 @@ function ArrowIcon() {
   return createIcon(arrowIconPaths);
 }
 
-function getToxicityIcon(toxicity) {
-  switch (toxicity) {
-    case 'Non-toxic':
-    case 'Нетоксично для людей и животных':
-    case 'Niet giftig voor mensen en dieren':
-    case 'Нетоксично, но осторожно с шипами':
-    case 'Non-toxic to people and pets':
-      return { icon: ShieldIcon, color: colors.green };
-    case 'Mildly toxic':
-    case 'Легко токсична для животных при проглатывании':
-    case 'Mildly toxic to pets if ingested':
+function getToxicityIcon(toxicityTag) {
+  switch (toxicityTag) {
+    case 'mildlyToxic':
       return { icon: AlertTriangleIcon, color: colors.yellow };
-    case 'Toxic':
-    case 'Toxic if ingested':
-    case 'Highly toxic to people and pets':
-    case 'Токсичен для людей и животных':
-    case 'Токсична при проглатывании':
-    case 'Сильно токсично для людей и животных':
+    case 'toxic':
       return { icon: AlertTriangleIcon, color: colors.red };
+    case 'nonToxic':
     default:
       return { icon: ShieldIcon, color: colors.green };
   }
 }
 
-function getSunlightIcon(sunlight) {
-  switch (sunlight) {
-    case 'Full sun':
-    case 'Full sun (6+ hours)':
-    case 'Полное солнце (6+ часов)':
-      return { icon: SunIcon, color: colors.lightYellow };
-    case 'Partial shade':
-    case 'Bright filtered light or partial shade':
-    case 'Dappled light or partial shade':
-    case 'Полутень':
-    case 'Рассеянный свет, полутень':
+function getSunlightIcon(lightTag) {
+  switch (lightTag) {
+    case 'partialShade':
       return { icon: CloudIcon, color: colors.accent };
-    case 'Full shade':
+    case 'fullShade':
       return { icon: MoonIcon, color: colors.gray };
+    case 'fullSun':
     default:
       return { icon: SunIcon, color: colors.lightYellow };
   }
@@ -166,19 +148,13 @@ function getPhColor(phLevel) {
   return colors.blue;
 }
 
-function getLifespanIcon(lifespan) {
-  switch (lifespan) {
-    case 'Annual':
-    case 'Однолетник':
-      return { content: '1', icon: null };
-    case 'Biennial':
-    case 'Двулетник':
+function getLifespanIcon(lifeCycleTag) {
+  switch (lifeCycleTag) {
+    case 'biennial':
       return { content: '2', icon: null };
-    case 'Perennial':
-    case 'Perennial shrub':
-    case 'Многолетник':
-    case 'Многолетний кустарник':
+    case 'perennial':
       return { content: null, icon: InfinityIcon };
+    case 'annual':
     default:
       return { content: '1', icon: null };
   }
@@ -344,9 +320,23 @@ export default function MemorizationScreen({
 
     const data = getPlantParameters(plant.id);
     const familyValue = getLocalizedValue(data?.family, interfaceLanguage) || unknownLabel;
-    const lifeCycleValue = getLocalizedValue(data?.lifeCycle, interfaceLanguage) || unknownLabel;
-    const lightValue = getLocalizedValue(data?.light, interfaceLanguage) || unknownLabel;
-    const toxicityValue = getLocalizedValue(data?.toxicity, interfaceLanguage) || unknownLabel;
+    const lifeCycleTag = typeof data?.lifeCycle === 'string' ? data.lifeCycle : null;
+    const lightTag = typeof data?.light === 'string' ? data.light : null;
+    const toxicityTag = typeof data?.toxicity === 'string' ? data.toxicity : null;
+
+    const lifeCycleValue = lifeCycleTag
+      ? getParameterTagLabel('lifeCycle', lifeCycleTag, interfaceLanguage)
+      : null;
+    const lightValue = lightTag
+      ? getParameterTagLabel('light', lightTag, interfaceLanguage)
+      : null;
+    const toxicityValue = toxicityTag
+      ? getParameterTagLabel('toxicity', toxicityTag, interfaceLanguage)
+      : null;
+
+    const resolvedLifeCycleValue = lifeCycleValue || unknownLabel;
+    const resolvedLightValue = lightValue || unknownLabel;
+    const resolvedToxicityValue = toxicityValue || unknownLabel;
     const phValue = getLocalizedValue(data?.ph, interfaceLanguage) || getLocalizedValue(data?.soilPh, interfaceLanguage) || unknownLabel;
 
     const hardinessRaw = typeof data?.hardinessZone === 'string' && data.hardinessZone.trim()
@@ -354,9 +344,9 @@ export default function MemorizationScreen({
       : unknownLabel;
     const hardinessRange = hardinessRaw !== unknownLabel ? parseHardinessRange(hardinessRaw) : null;
 
-    const sunlightMeta = getSunlightIcon(lightValue);
-    const toxicityMeta = getToxicityIcon(toxicityValue);
-    const lifespanMeta = getLifespanIcon(lifeCycleValue);
+    const sunlightMeta = getSunlightIcon(lightTag);
+    const toxicityMeta = getToxicityIcon(toxicityTag);
+    const lifespanMeta = getLifespanIcon(lifeCycleTag);
     const phColor = getPhColor(phValue);
 
     return {
@@ -364,22 +354,22 @@ export default function MemorizationScreen({
       parameterCards: [
         {
           key: 'lifeCycle',
-          value: lifeCycleValue,
+          value: resolvedLifeCycleValue,
           Icon: lifespanMeta.icon,
           content: lifespanMeta.content,
-          accent: lifeCycleValue === unknownLabel ? FALLBACK_ACCENT : colors.yellow
+          accent: resolvedLifeCycleValue === unknownLabel ? FALLBACK_ACCENT : colors.yellow
         },
         {
           key: 'light',
-          value: lightValue,
+          value: resolvedLightValue,
           Icon: sunlightMeta.icon,
-          accent: lightValue === unknownLabel ? FALLBACK_ACCENT : sunlightMeta.color
+          accent: resolvedLightValue === unknownLabel ? FALLBACK_ACCENT : sunlightMeta.color
         },
         {
           key: 'toxicity',
-          value: toxicityValue,
+          value: resolvedToxicityValue,
           Icon: toxicityMeta.icon,
-          accent: toxicityValue === unknownLabel ? FALLBACK_ACCENT : toxicityMeta.color
+          accent: resolvedToxicityValue === unknownLabel ? FALLBACK_ACCENT : toxicityMeta.color
         },
         {
           key: 'ph',
