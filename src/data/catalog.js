@@ -9,7 +9,7 @@ const speciesCatalog = Object.freeze({
   2:  { images: ['p002'], wrongAnswers: [10, 11, 12] }, //Daucus carota
   3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16, 142] }, //Agapanthus
   4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 21] }, //Bougainvillea
-  5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [21, 31, 23, 24] }, //camellia
+  5:  { images: ['p005', 'p043', 'p054', 'p095', 'p158'], wrongAnswers: [21, 31, 23, 24] }, //camellia
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] }, //Gerbera
   //7: - не будет
     8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113'], wrongAnswers: [30, 100, 39]}, //gazania
@@ -19,10 +19,10 @@ const speciesCatalog = Object.freeze({
   12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3, 11, 129]}, //Allium
   14: {images: ['p057'], wrongAnswers: [112, 131, 142]}, //camassia
-  15: {images: ['p088'], wrongAnswers: [116]}, //globularia
+  15: { images: ['p144'], wrongAnswers: [116] }, //globularia
   16: {images: ['p105'], wrongAnswers: [35, 111]}, //Fritillary
   17: { images: ['p007'] },
-  //18
+  18: { images: ['p209', 'p210'] }, //Wisteria
   19: { images: ['p008'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
   //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
   21: {images: ['p076', 'p128', 'p129'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
@@ -30,9 +30,9 @@ const speciesCatalog = Object.freeze({
   23: { images: ['p106'], }, wrongAnswers: [5, 21, 31], //gardenia
   24: { images: ['p120', 'p121'] }, //magnolia
   25: { images: ['p130'],  wrongAnswers: [29, 119] }, //Shasta Daisy, добавить ромашку аптечную в список растений
-  26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [29, 33, 73, 77] }, //Dahlia. добавить циннию
+  26: { images: ['p010', 'p011', 'p100', 'p190'], wrongAnswers: [29, 33, 73, 77] }, //Dahlia. добавить циннию
   27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 38, 115, 121] }, //Echinacea
-  //28
+  28: { images: ['p198'] }, //Gomphrena
   29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [6, 26, 41, 73] }, //Chrysanthemum
   30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 8] }, //osteospermum
   31: { images: ['p016', 'p017', 'p018', 'p077', 'p078'], wrongAnswers: [41, 69, 46, 5] },
@@ -44,14 +44,14 @@ const speciesCatalog = Object.freeze({
   //37
   //38
   39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, надо добавить топинамбур - 135
-  //40
+  40: { images: ['p161', 'p162'] }, //Coreopsis
   41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
   //42
   //43
-  //44
+  44: { images: ['p152'] }, //Pineapple
   //45
   46: { images: ['p025', 'p125', 'p126'], wrongAnswers: [31, 33, 41] }, //Peony
-  47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [33] }, //anemone
+  47: { images: ['p026', 'p027', 'p089', 'p179'], wrongAnswers: [33] }, //anemone
   //48
   //49
   50: { images: ['p028', 'p045'], wrongAnswers: [18, 34, 56, 57, 79] },
@@ -63,12 +63,12 @@ const speciesCatalog = Object.freeze({
   //56
   //57
   58: { images: ['p102'], wrongAnswers: [4] }, //Dog-rose, wrongAnswers надо
-  //59
+  59: { images: ['p165', 'p166', 'p189'] }, //Hawthorn
   //60
   //61
   62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
-  //63
-  //64
+  63: { images: ['p188'] }, //Corn
+  64: { images: ['p176'] }, //Verbena
     //65
     //66
     //67
@@ -77,7 +77,7 @@ const speciesCatalog = Object.freeze({
   //70
   //71
   72: { images: ['p052'], wrongAnswers: [11] }, //лопух. wrongAnswers надо заменить
-  73: { images: ['p038', 'p047', 'p092', 'p093'], wrongAnswers: [29] }, //aster, wrongAnswers надо
+  73: { images: ['p038', 'p047', 'p092', 'p093', 'p180'], wrongAnswers: [29] }, //aster, wrongAnswers надо
   74: { images: ['p070'], wrongAnswers: [41, 54] }, //phlox, wrongAnswers надо дополнить
   75: { images: ['p039', 'p082'] },
   76: { images: ['p069', 'p127'] }, //petunia
@@ -104,16 +104,51 @@ const speciesCatalog = Object.freeze({
     97: { images: ['p083', 'p131', 'p132'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
     98: { images: ['p067', 'p068'], wrongAnswers: [31] }, //Passiflora временный wrongAnswer +
     //99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
-    100: { images: ['p080'], wrongAnswers: [6, 39, 27] }, //Sunflower +
-    101: { images: ['p056', 'p099'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
-    //102-111
+    100: { images: ['p080', 'p199'], wrongAnswers: [6, 39, 27] }, //Sunflower +
+    101: { images: ['p056', 'p099', 'p164'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
+    102: { images: ['p177', 'p178'] }, //Aglaonema
+    //103 без изображений
+    104: { images: ['p206'] }, //Scilla
+    105: { images: ['p202'] }, //Narcissus
+    //106 без изображений
+    107: { images: ['p201'] }, //Muscari
+    108: { images: ['p172'] }, //Pelargonium
+    109: { images: ['p184'] }, //Calibrachoa
+    110: { images: ['p187'] }, //Coleus
+    //111 без изображений
     112: { images: ['p140', 'p141', 'p142'], wrongAnswers: [131] }, //Delphinium+
-    //113-130
-    116: { images: ['p145']}, //cornflower
-    //117+
-    131: { images: ['p143'], wrongAnswers: [14, 112] }, //veronica+
-    //132-141
-    142: {images: ['p134', 'p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus+
+    113: { images: ['p157'] }, //Brunnera
+    114: { images: ['p183'] }, //Betula
+    //115 без изображений
+    116: { images: ['p145'] }, //cornflower
+    117: { images: ['p186'] }, //Centaurea (knapweeds)
+    118: { images: ['p194', 'p195', 'p196', 'p197'] }, //Hardy geranium
+    119: { images: ['p181', 'p182'] }, //Bellis
+    120: { images: ['p191'] }, //Dicentra
+    121: { images: ['p192'] }, //Gaillardia
+    122: { images: ['p193'] }, //Galanthus
+    123: { images: ['p185'] }, //Celosia
+    124: { images: ['p203'] }, //Opuntia
+    125: { images: ['p205'] }, //Platycodon
+    //126 без изображений
+    127: { images: ['p211'] }, //Zinnia
+    130: { images: ['p167'] }, //Crocus
+    131: { images: ['p143', 'p207'], wrongAnswers: [14, 112] }, //veronica+
+    139: { images: ['p174'] }, //Star jasmine
+    142: { images: ['p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus+
+    146: { images: ['p160'] }, //Red clover
+    155: { images: ['p153'] }, //Angelonia
+    156: { images: ['p155'] }, //Artichoke
+    157: { images: ['p171'] }, //Jasmine
+    158: { images: ['p173'] }, //Sanchezia
+    159: { images: ['p150'] }, //Ageratum
+    160: { images: ['p154'] }, //Aquilegia
+    161: { images: ['p156'] }, //Aubrieta
+    162: { images: ['p159'] }, //Catharanthus
+    163: { images: ['p168'] }, //Fittonia
+    164: { images: ['p169'] }, //Fumaria
+    165: { images: ['p170'] }, //Helleborus
+    166: { images: ['p175'] }, //Hollyhock
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
