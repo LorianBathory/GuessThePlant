@@ -179,6 +179,7 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColo
       minHeight: isMobile ? '220px' : '260px',
       border: frameBorder,
       borderRadius: frameRadius,
+      boxSizing: 'border-box',
       backgroundColor: 'transparent',
       display: 'flex',
       alignItems: 'center',
