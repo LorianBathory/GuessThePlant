@@ -9,7 +9,7 @@ const speciesCatalog = Object.freeze({
   2:  { images: ['p002'], wrongAnswers: [10, 11, 12] }, //Daucus carota
   3:  { images: ['p003', 'p046'], wrongAnswers: [13, 14, 15, 16, 142] }, //Agapanthus
   4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 21] }, //Bougainvillea
-  5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [21, 31, 23, 24] }, //camellia
+  5:  { images: ['p005', 'p043', 'p054', 'p095', 'p158'], wrongAnswers: [21, 31, 23, 24] }, //camellia
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] }, //Gerbera
   //7: - не будет
     8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113'], wrongAnswers: [30, 100, 39]}, //gazania
@@ -44,11 +44,11 @@ const speciesCatalog = Object.freeze({
   //37
   //38
   39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, надо добавить топинамбур - 135
-  //40
+  40: { images: ['p161', 'p162'] }, //Coreopsis
   41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
   //42
   //43
-  //44
+  44: { images: ['p152'] }, //Pineapple
   //45
   46: { images: ['p025', 'p125', 'p126'], wrongAnswers: [31, 33, 41] }, //Peony
   47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [33] }, //anemone
@@ -63,12 +63,12 @@ const speciesCatalog = Object.freeze({
   //56
   //57
   58: { images: ['p102'], wrongAnswers: [4] }, //Dog-rose, wrongAnswers надо
-  //59
+  59: { images: ['p165', 'p166'] }, //Hawthorn
   //60
   //61
   62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
   //63
-  //64
+  64: { images: ['p176'] }, //Verbena
     //65
     //66
     //67
@@ -105,15 +105,31 @@ const speciesCatalog = Object.freeze({
     98: { images: ['p067', 'p068'], wrongAnswers: [31] }, //Passiflora временный wrongAnswer +
     //99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
     100: { images: ['p080'], wrongAnswers: [6, 39, 27] }, //Sunflower +
-    101: { images: ['p056', 'p099'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
-    //102-111
+    101: { images: ['p056', 'p099', 'p164'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
+    //102-107
+    108: { images: ['p172'] }, //Pelargonium
+    //109-111
     112: { images: ['p140', 'p141', 'p142'], wrongAnswers: [131] }, //Delphinium+
-    //113-130
-    116: { images: ['p145']}, //cornflower
-    //117+
+    113: { images: ['p157'] }, //Brunnera
+    //114-115
+    116: { images: ['p145'] }, //cornflower
+    130: { images: ['p167'] }, //Crocus
     131: { images: ['p143'], wrongAnswers: [14, 112] }, //veronica+
-    //132-141
+    139: { images: ['p174'] }, //Star jasmine
     142: {images: ['p134', 'p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus+
+    146: { images: ['p160'] }, //Red clover
+    155: { images: ['p153'] }, //Angelonia
+    156: { images: ['p155'] }, //Artichoke
+    157: { images: ['p171'] }, //Jasmine
+    158: { images: ['p173'] }, //Sanchezia
+    159: { images: ['p150'] }, //Ageratum
+    160: { images: ['p154'] }, //Aquilegia
+    161: { images: ['p156'] }, //Aubrieta
+    162: { images: ['p159'] }, //Catharanthus
+    163: { images: ['p168'] }, //Fittonia
+    164: { images: ['p169'] }, //Fumaria
+    165: { images: ['p170'] }, //Helleborus
+    166: { images: ['p175'] }, //Hollyhock
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
