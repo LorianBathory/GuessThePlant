@@ -549,7 +549,7 @@ export default function MemorizationScreen({
             ? (isEdge ? ACCENT_COLOR : 'rgba(194, 156, 39, 0.82)')
             : 'rgba(7, 32, 30, 0.85)',
           color: isInRange ? '#163B3A' : '#C29C27',
-          border: isInRange ? 'none' : '1px solid rgba(194, 156, 39, 0.35)'
+          border: isInRange ? 'none' : '1px solid rgba(194, 156, 39, 0.35)',
           overflow: 'hidden'
         }
       }, zone);
