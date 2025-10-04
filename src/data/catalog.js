@@ -11,15 +11,20 @@ const speciesCatalog = Object.freeze({
   4:  { images: ['p004', 'p044'], wrongAnswers: [17, 18, 19, 21] }, //Bougainvillea
   5:  { images: ['p005', 'p043', 'p054', 'p095'], wrongAnswers: [21, 31, 23, 24] }, //camellia
   6:  { images: ['p006'], wrongAnswers: [25, 26, 27, 29] }, //Gerbera
+  //7: - не будет
     8: {images: ['p107', 'p108', 'p109', 'p110', 'p111', 'p112', 'p113'], wrongAnswers: [30, 100, 39]}, //gazania
-    12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
+  //9 - не будет
+  //10 - не будет
+  //11 - не будет
+  12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
   13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3, 11, 129]}, //Allium
   14: {images: ['p057'], wrongAnswers: [112, 131, 142]}, //camassia
-    15: {images: ['p088'], wrongAnswers: [116]}, //globularia
+  15: {images: ['p088'], wrongAnswers: [116]}, //globularia
   16: {images: ['p105'], wrongAnswers: [35, 111]}, //Fritillary
   17: { images: ['p007'] },
+  //18
   19: { images: ['p008'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
-    //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
+  //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
   21: {images: ['p076', 'p128', 'p129'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
   22: { images: ['p009', 'p133'], wrongAnswers: [35, 46]  }, //Tulip
   23: { images: ['p106'], }, wrongAnswers: [5, 21, 31], //gardenia
@@ -27,6 +32,7 @@ const speciesCatalog = Object.freeze({
   25: { images: ['p130'],  wrongAnswers: [29, 119] }, //Shasta Daisy, добавить ромашку аптечную в список растений
   26: { images: ['p010', 'p011', 'p100'], wrongAnswers: [29, 33, 73, 77] }, //Dahlia. добавить циннию
   27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 38, 115, 121] }, //Echinacea
+  //28
   29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [6, 26, 41, 73] }, //Chrysanthemum
   30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 8] }, //osteospermum
   31: { images: ['p016', 'p017', 'p018', 'p077', 'p078'], wrongAnswers: [41, 69, 46, 5] },
@@ -35,20 +41,41 @@ const speciesCatalog = Object.freeze({
   34: { images: ['p022'], wrongAnswers: [448, 49] },
   35: { images: ['p023', 'p118', 'p119'], wrongAnswers: [36, 37] }, //Lily
   36: { images: ['p114', 'p115'] }, //Hemerocallis
-    39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, надо добавить топинамбур - 135
+  //37
+  //38
+  39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, надо добавить топинамбур - 135
+  //40
   41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
+  //42
+  //43
+  //44
+  //45
   46: { images: ['p025', 'p125', 'p126'], wrongAnswers: [31, 33, 41] }, //Peony
   47: { images: ['p026', 'p027', 'p089'], wrongAnswers: [33] }, //anemone
+  //48
+  //49
   50: { images: ['p028', 'p045'], wrongAnswers: [18, 34, 56, 57, 79] },
   51: { images: ['p029', 'p073'], wrongAnswers: [58, 59, 5] },
   52: { images: ['p030'], wrongAnswers: [61] }, //Japanese pittosporum
   53: { images: ['p031'], wrongAnswers: [13, 15, 116] }, //scabious
   54: { images: ['p032', 'p063', 'p064'], wrongAnswers: [64, 65, 66] }, //lantana
   55: { images: ['p033', 'p034', 'p035'], wrongAnswers: [67] }, //Hibiscus
-    58: { images: ['p102'], wrongAnswers: [4] }, //Dog-rose, wrongAnswers надо
-    62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
+  //56
+  //57
+  58: { images: ['p102'], wrongAnswers: [4] }, //Dog-rose, wrongAnswers надо
+  //59
+  //60
+  //61
+  62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
+  //63
+  //64
+    //65
+    //66
+    //67
   68: { images: ['p036', 'p116', 'p117'] }, //lavender
   69: { images: ['p037'], wrongAnswers: [31, 22] },
+  //70
+  //71
   72: { images: ['p052'], wrongAnswers: [11] }, //лопух. wrongAnswers надо заменить
   73: { images: ['p038', 'p047', 'p092', 'p093'], wrongAnswers: [29] }, //aster, wrongAnswers надо
   74: { images: ['p070'], wrongAnswers: [41, 54] }, //phlox, wrongAnswers надо дополнить

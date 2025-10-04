@@ -534,7 +534,7 @@ export default function MemorizationScreen({
           '--zone-size': zoneSize,
           width: 'var(--zone-size)',
           height: 'var(--zone-size)',
-          flex: '0 0 var(--zone-size)',
+           flex: '0 1 var(--zone-size)',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
@@ -579,48 +579,49 @@ export default function MemorizationScreen({
     ]));
   }
 
-  const hardinessSection = createElement('div', {
-    key: 'hardiness',
-    style: {
-      background: HARDINESS_BACKGROUND,
-      border: '1px solid rgba(194, 156, 39, 0.3)',
-      borderRadius: 0,
-      padding: isMobile ? '12px' : '16px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px'
-    }
-  }, [
-    createElement('div', {
-      key: 'hardiness-header',
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '12px'
-      }
-    }, [
-      createElement('span', {
-        key: 'hardiness-label',
+    const hardinessSection = createElement('div', {
+        key: 'hardiness',
         style: {
-          textTransform: 'uppercase',
-          letterSpacing: '0.12em',
-          fontSize: '0.75rem',
-          color: 'rgba(248, 242, 208, 0.65)'
+            background: HARDINESS_BACKGROUND,
+            border: '1px solid rgba(194, 156, 39, 0.3)',
+            borderRadius: 0,
+            padding: isMobile ? '12px' : '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px'
         }
-      }, texts.memorizationHardinessLabel || 'Hardiness zone')
-    ]),
-    createElement('div', {
-      key: 'hardiness-zones',
-      style: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        gap: '6px',
-        rowGap: '8px'
-      }
-    }, zoneElements)
-  ]);
+    }, [
+        createElement('div', {
+            key: 'hardiness-header',
+            style: {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '12px'
+            }
+        }, [
+            createElement('span', {
+                key: 'hardiness-label',
+                style: {
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    fontSize: '0.75rem',
+                    color: 'rgba(248, 242, 208, 0.65)'
+                }
+            }, texts.memorizationHardinessLabel || 'Hardiness zone')
+        ]),
+        createElement('div', {
+            key: 'hardiness-zones',
+            style: {
+                display: 'flex',
+                flexWrap: 'nowrap',  // ← Изменено с 'wrap' на 'nowrap'
+                justifyContent: 'center',
+                gap: 'clamp(2px, 0.5vw, 6px)',  // ← Адаптивный gap
+                overflow: 'hidden',  // ← Добавлено
+                width: '100%'  // ← Добавлено
+            }
+        }, zoneElements)
+    ]);
 
   const cardElement = createElement('div', {
     key: 'card',
