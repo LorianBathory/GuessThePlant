@@ -151,7 +151,7 @@ export const plantNamesById = Object.freeze({
   150: { ru: "Шалфей", en: "Sage", nl: "Salie", sci: "Salvia" },
   151: { ru: "Плектрантус", en: "Plectranthus", nl: "Plectranthus", sci: "Plectranthus" },
   152: { ru: "Мальва", en: "Mallow", nl: "Kaasjeskruid", sci: "Malva" },
-  153: { ru: "Кизил", en: "Cornelian cherry", nl: "Kornoelje", sci: "Cornus mas" },
+  153: { ru: "Кизил", en: "Flowering Dogwood", nl: "Oostamerikaanse kornoelje", sci: "Cornus Florida" },
   154: { ru: "Эджевортия", en: "Edgeworthia", nl: "Edgeworthia", sci: "Edgeworthia chrysantha" },
   155: { ru: "Ангелония", en: "Angelonia", nl: "Angelonia", sci: "Angelonia" },
   156: { ru: "Артишок", en: "Artichoke", nl: "Artisjok", sci: "Cynara cardunculus" },
