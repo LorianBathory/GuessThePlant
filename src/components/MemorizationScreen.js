@@ -516,45 +516,41 @@ export default function MemorizationScreen({
     }
   }, parameterItems);
 
-  const zoneElements = useMemo(() => {
-    const range = parameters.hardinessRange;
-    const hasRange = Boolean(range);
-    const minZone = hasRange ? range.min : null;
-    const maxZone = hasRange ? range.max : null;
-    const zoneSize = isMobile ? 'clamp(1px, 9vw, 44px)' : 'clamp(1px, 3.2vw, 48px)';
-    const fontScale = isMobile ? '0.46' : '0.44';
+    const zoneElements = useMemo(() => {
+        const range = parameters.hardinessRange;
+        const hasRange = Boolean(range);
+        const minZone = hasRange ? range.min : null;
+        const maxZone = hasRange ? range.max : null;
+        const zoneSize = isMobile ? 'min(32px, 7vw)' : 'min(40px, 3vw)';
+        const fontScale = isMobile ? 0.46 : 0.44;
 
-    return HARDINESS_ZONES.map(zone => {
-      const isInRange = hasRange && zone >= minZone && zone <= maxZone;
-      const isEdge = hasRange && (zone === minZone || zone === maxZone);
+        return HARDINESS_ZONES.map(zone => {
+            const isInRange = hasRange && zone >= minZone && zone <= maxZone;
+            const isEdge = hasRange && (zone === minZone || zone === maxZone);
 
-      return createElement('div', {
-        key: `zone-${zone}`,
-        style: {
-          '--zone-size': zoneSize,
-          width: 'var(--zone-size)',
-          height: 'var(--zone-size)',
-          minWidth: '1px',
-          minHeight: '1px',
-          flex: '0 1 var(--zone-size)',
-          aspectRatio: '1 / 1',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontWeight: 700,
-          fontSize: `clamp(0px, calc(var(--zone-size) * ${fontScale}), 24px)`,
-          lineHeight: 1,
-          backgroundColor: isInRange
-            ? (isEdge ? ACCENT_COLOR : 'rgba(194, 156, 39, 0.82)')
-            : 'rgba(7, 32, 30, 0.85)',
-          color: isInRange ? '#163B3A' : '#C29C27',
-          border: isInRange ? 'none' : '1px solid rgba(194, 156, 39, 0.35)',
-          overflow: 'hidden'
-        }
-      }, zone);
-    });
-  }, [createElement, isMobile, parameters.hardinessRange]);
+            return createElement('div', {
+                key: `zone-${zone}`,
+                style: {
+                    width: zoneSize,
+                    height: zoneSize,
+                    flex: '0 0 auto',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 700,
+                    fontSize: `calc(${zoneSize} * ${fontScale})`,
+                    lineHeight: 1,
+                    backgroundColor: isInRange
+                        ? (isEdge ? ACCENT_COLOR : 'rgba(194, 156, 39, 0.82)')
+                        : 'rgba(7, 32, 30, 0.85)',
+                    color: isInRange ? '#163B3A' : '#C29C27',
+                    border: isInRange ? 'none' : '1px solid rgba(194, 156, 39, 0.35)',
+                    overflow: 'hidden'
+                }
+            }, zone);
+        });
+    }, [createElement, isMobile, parameters.hardinessRange]);
 
   if (!plant) {
     return createElement('div', {
