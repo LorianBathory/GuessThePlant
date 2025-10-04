@@ -251,6 +251,14 @@ export default function useGameLogic() {
   }, []);
 
   useEffect(() => {
+    if (roundPhase !== 'menu') {
+      return;
+    }
+
+    setClassicModeUnavailable(isClassicModeDisabled());
+  }, [roundPhase, setClassicModeUnavailable]);
+
+  useEffect(() => {
     if (roundPhase !== 'playing') {
       return;
     }
