@@ -1,3 +1,4 @@
+//запрещено добавлять изображения из папки images/bouquets/
 export const plantImages = Object.freeze([
   { id: 'p001', src: 'images/BeachDaisy.JPG' },
   { id: 'p002', src: 'images/DaucusCarota2.JPG' },
