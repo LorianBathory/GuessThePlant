@@ -137,6 +137,7 @@ const speciesCatalog = Object.freeze({
     139: { images: ['p174'] }, //Star jasmine
     142: { images: ['p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus+
     146: { images: ['p160'] }, //Red clover
+  153: {images: ['p163'], wrongAnswers: [17, 24]}, //Cornus Florida
     155: { images: ['p153'] }, //Angelonia
     156: { images: ['p155'] }, //Artichoke
     157: { images: ['p171'] }, //Jasmine
