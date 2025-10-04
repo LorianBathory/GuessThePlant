@@ -204,7 +204,9 @@ export const plantImages = Object.freeze([
   { id: 'p208', src: 'images/WaterLily_Amitrai10.JPG' },
   { id: 'p209', src: 'images/Wisteria_MyNguyen.JPG' },
   { id: 'p210', src: 'images/Wysteria_AnnieSpratt.JPG' },
-  { id: 'p211', src: 'images/Zinnia_SukiLee.JPG' }
+  { id: 'p211', src: 'images/Zinnia_SukiLee.JPG' },
+  { id: 'p212', src: 'images/bouquets/bq001.jpg' },
+  { id: 'p213', src: 'images/bouquets/bq002.jpg' }
     // { id: 'p140', src: '' }
     //{ id: '', src: '' }
 ]);
