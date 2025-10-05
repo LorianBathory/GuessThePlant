@@ -1,5 +1,9 @@
 const plantParametersRaw = Object.freeze({
-  1: Object.freeze({ scientificName: 'Asteriscus maritimus', lifeCycle: 'perennial' }),
+  1: Object.freeze({
+    scientificName: 'Asteriscus maritimus',
+    lifeCycle: 'perennial',
+    additionalInfo: 'Компактный средиземноморский кустарник, предпочитает солнце и устойчив к засухе.'
+  }),
   2: Object.freeze({ scientificName: 'Daucus carota', lifeCycle: 'biennial' }), //в дикой форме; в культуре однолетник
   3: Object.freeze({ scientificName: 'Agapanthus africanus', lifeCycle: 'perennial' }),
   4: Object.freeze({ scientificName: 'Bougainvillea spectabilis' }),
