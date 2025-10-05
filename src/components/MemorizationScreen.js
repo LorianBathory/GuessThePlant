@@ -5,10 +5,7 @@ import useSecureImageSource from '../hooks/useSecureImageSource.js';
 
 const ACCENT_COLOR = '#C29C27';
 const FALLBACK_ACCENT = 'rgba(194, 156, 39, 0.35)';
-const PARAMETER_CARD_BACKGROUND = 'linear-gradient(135deg, rgba(10, 42, 40, 0.88) 0%, rgba(13, 55, 53, 0.92) 100%)';
-const HARDINESS_BACKGROUND = 'linear-gradient(135deg, rgba(13, 52, 50, 0.85) 0%, rgba(16, 64, 61, 0.9) 100%)';
 const CARD_BACKGROUND = 'linear-gradient(155deg, rgba(8, 38, 36, 0.95) 0%, rgba(16, 72, 69, 0.92) 45%, rgba(24, 100, 95, 0.88) 100%)';
-const HARDINESS_ZONES = Array.from({ length: 13 }, (_, index) => index + 1);
 
 function ensureReact() {
   const ReactGlobal = globalThis.React;
@@ -23,6 +20,8 @@ const colors = Object.freeze({
   yellow: '#F2D16B',
   lightYellow: '#FFDE8A',
   accent: '#5FB0C9',
+  accentLight: '#D2EEF5',
+  primaryLight: '#1F6F6B',
   gray: '#8EA7A9',
   red: '#E0594A',
   redOrange: '#E7774A',
@@ -43,20 +42,6 @@ function createIcon(pathElements, viewBox = '0 0 24 24') {
     strokeLinejoin: 'round',
     'aria-hidden': 'true'
   }, pathElements.map((props, index) => createElement(props.tag, { key: index, ...props.attrs })));
-}
-
-function ShieldIcon() {
-  return createIcon([
-    { tag: 'path', attrs: { d: 'M12 3l7 3v5c0 5-3.5 9.2-7 10-3.5-.8-7-5-7-10V6l7-3z' } }
-  ]);
-}
-
-function AlertTriangleIcon() {
-  return createIcon([
-    { tag: 'path', attrs: { d: 'M10.3 3.5l-7 12A1 1 0 0 0 4.2 17.5h15.6a1 1 0 0 0 .87-1.5l-7-12a1 1 0 0 0-1.74 0z' } },
-    { tag: 'line', attrs: { x1: 12, y1: 9, x2: 12, y2: 13 } },
-    { tag: 'line', attrs: { x1: 12, y1: 16, x2: 12.01, y2: 16 } }
-  ]);
 }
 
 function SunIcon() {
@@ -91,9 +76,48 @@ function InfinityIcon() {
   ]);
 }
 
-function DropletIcon() {
+function ThermometerIcon() {
   return createIcon([
-    { tag: 'path', attrs: { d: 'M12 3.5C9.5 7 6 10 6 13.5a6 6 0 0 0 12 0c0-3.5-3.5-6.5-6-10z' } }
+    { tag: 'path', attrs: { d: 'M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0z' } },
+    { tag: 'line', attrs: { x1: 12, y1: 8, x2: 12, y2: 12 } }
+  ]);
+}
+
+function DropletToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z' } }
+  ]);
+}
+
+function DrumstickToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M15.4 15.63a7.875 6 135 1 1 6.23-6.23 4.5 3.43 135 0 0-6.23 6.23' } },
+    { tag: 'path', attrs: { d: 'm8.29 12.71-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59' } }
+  ]);
+}
+
+function FlameToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4' } }
+  ]);
+}
+
+function CatToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z' } },
+    { tag: 'path', attrs: { d: 'M8 14v.5' } },
+    { tag: 'path', attrs: { d: 'M16 14v.5' } },
+    { tag: 'path', attrs: { d: 'M11.25 16.25h1.5L12 17l-.75-.75Z' } }
+  ]);
+}
+
+function DogToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M11.25 16.25h1.5L12 17z' } },
+    { tag: 'path', attrs: { d: 'M16 14v.5' } },
+    { tag: 'path', attrs: { d: 'M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309' } },
+    { tag: 'path', attrs: { d: 'M8 14v.5' } },
+    { tag: 'path', attrs: { d: 'M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5' } }
   ]);
 }
 
@@ -102,20 +126,50 @@ const arrowIconPaths = [
   { tag: 'path', attrs: { d: 'M13 6l6 6-6 6' } }
 ];
 
+const toxicityLevelColors = Object.freeze({
+  1: colors.blue,
+  2: colors.yellow,
+  3: colors.red
+});
+
+const toxicityNoticeLabels = Object.freeze({
+  skin: Object.freeze({
+    ru: 'не трогать сок',
+    en: 'Avoid sap contact',
+    nl: 'Sap vermijden'
+  }),
+  eat: Object.freeze({
+    ru: 'не есть',
+    en: 'Do not eat',
+    nl: 'Niet eten'
+  }),
+  smoke: Object.freeze({
+    ru: 'не жечь',
+    en: 'Do not burn',
+    nl: 'Niet verbranden'
+  }),
+  cat: Object.freeze({
+    ru: 'опасно для кошек',
+    en: 'Dangerous to cats',
+    nl: 'Gevaarlijk voor katten'
+  }),
+  dog: Object.freeze({
+    ru: 'опасно для собак',
+    en: 'Dangerous to dogs',
+    nl: 'Gevaarlijk voor honden'
+  })
+});
+
+const toxicityNoticeTypeMeta = Object.freeze({
+  skin: Object.freeze({ icon: DropletToxicityIcon, label: toxicityNoticeLabels.skin }),
+  eat: Object.freeze({ icon: DrumstickToxicityIcon, label: toxicityNoticeLabels.eat }),
+  smoke: Object.freeze({ icon: FlameToxicityIcon, label: toxicityNoticeLabels.smoke }),
+  cat: Object.freeze({ icon: CatToxicityIcon, label: toxicityNoticeLabels.cat }),
+  dog: Object.freeze({ icon: DogToxicityIcon, label: toxicityNoticeLabels.dog })
+});
+
 function ArrowIcon() {
   return createIcon(arrowIconPaths);
-}
-
-function getToxicityIcon(toxicityTag) {
-  switch (toxicityTag) {
-    case 'mildlyToxic':
-      return { icon: AlertTriangleIcon, color: colors.yellow };
-    case 'toxic':
-      return { icon: AlertTriangleIcon, color: colors.red };
-    case 'nonToxic':
-    default:
-      return { icon: ShieldIcon, color: colors.green };
-  }
 }
 
 function getSunlightIcon(lightTag) {
@@ -213,6 +267,53 @@ function getLocalizedValue(value, language) {
     return typeof firstValue === 'string' ? firstValue : null;
   }
   return null;
+}
+
+function buildToxicityParameterItems(toxicityData, language, unknownLabel) {
+  if (!toxicityData) {
+    return [];
+  }
+
+  const entries = Array.isArray(toxicityData) ? toxicityData : [toxicityData];
+
+  return entries
+    .map((entry, index) => {
+      if (!entry || typeof entry !== 'object') {
+        return null;
+      }
+
+      const typeKey = typeof entry.type === 'string' ? entry.type : (typeof entry.tag === 'string' ? entry.tag : null);
+      const typeMeta = typeKey ? toxicityNoticeTypeMeta[typeKey] : null;
+
+      if (!typeMeta) {
+        return null;
+      }
+
+      const severityLevel = typeof entry.level === 'number'
+        ? entry.level
+        : Number.parseInt(entry.level, 10);
+      const circleColor = toxicityLevelColors[severityLevel] || FALLBACK_ACCENT;
+
+      const customLabelSource = entry.label ?? entry.text;
+
+      const resolvedLabel = typeof customLabelSource === 'string'
+        ? customLabelSource
+        : getLocalizedValue(customLabelSource, language) || getLocalizedValue(typeMeta.label, language);
+
+      const labelText = typeof resolvedLabel === 'string' && resolvedLabel.trim()
+        ? resolvedLabel.trim()
+        : (getLocalizedValue(typeMeta.label, language) || unknownLabel);
+
+      return {
+        key: `toxicity-${index}-${typeKey}`,
+        label: labelText,
+        icon: typeMeta.icon,
+        circleContent: null,
+        circleColor,
+        isUnknown: labelText === unknownLabel
+      };
+    })
+    .filter(Boolean);
 }
 
 function PlantImage({ plant }) {
@@ -313,8 +414,9 @@ export default function MemorizationScreen({
     if (!plant) {
       return {
         family: unknownLabel,
-        parameterCards: [],
-        hardinessRange: null
+        parameterItems: [],
+        hardinessRange: null,
+        additionalInfo: null
       };
     }
 
@@ -322,7 +424,6 @@ export default function MemorizationScreen({
     const familyValue = getLocalizedValue(data?.family, interfaceLanguage) || unknownLabel;
     const lifeCycleTag = typeof data?.lifeCycle === 'string' ? data.lifeCycle : null;
     const lightTag = typeof data?.light === 'string' ? data.light : null;
-    const toxicityTag = typeof data?.toxicity === 'string' ? data.toxicity : null;
 
     const lifeCycleValue = lifeCycleTag
       ? getParameterTagLabel('lifeCycle', lifeCycleTag, interfaceLanguage)
@@ -330,55 +431,68 @@ export default function MemorizationScreen({
     const lightValue = lightTag
       ? getParameterTagLabel('light', lightTag, interfaceLanguage)
       : null;
-    const toxicityValue = toxicityTag
-      ? getParameterTagLabel('toxicity', toxicityTag, interfaceLanguage)
-      : null;
 
-    const resolvedLifeCycleValue = lifeCycleValue || unknownLabel;
+    const resolvedLifeCycleValue = lifeCycleValue || null;
     const resolvedLightValue = lightValue || unknownLabel;
-    const resolvedToxicityValue = toxicityValue || unknownLabel;
-    const phValue = getLocalizedValue(data?.ph, interfaceLanguage) || getLocalizedValue(data?.soilPh, interfaceLanguage) || unknownLabel;
-
-    const hardinessRaw = typeof data?.hardinessZone === 'string' && data.hardinessZone.trim()
-      ? data.hardinessZone
-      : unknownLabel;
-    const hardinessRange = hardinessRaw !== unknownLabel ? parseHardinessRange(hardinessRaw) : null;
+    const phRawValue = getLocalizedValue(data?.ph, interfaceLanguage) || getLocalizedValue(data?.soilPh, interfaceLanguage) || unknownLabel;
 
     const sunlightMeta = getSunlightIcon(lightTag);
-    const toxicityMeta = getToxicityIcon(toxicityTag);
     const lifespanMeta = getLifespanIcon(lifeCycleTag);
-    const phColor = getPhColor(phValue);
+    const phColor = phRawValue === unknownLabel ? FALLBACK_ACCENT : getPhColor(phRawValue);
+
+    const toxicityParameterItems = buildToxicityParameterItems(data?.toxicity, interfaceLanguage, unknownLabel);
+
+    const hardinessRange = parseHardinessRange(
+      getLocalizedValue(data?.hardiness, interfaceLanguage) ||
+      getLocalizedValue(data?.hardinessZone, interfaceLanguage)
+    );
+
+    const phDisplayValue = phRawValue === unknownLabel
+      ? unknownLabel
+      : phRawValue.replace(/pH\s*/gi, '').trim() || unknownLabel;
+
+    const parameterItems = [];
+
+    if (resolvedLightValue) {
+      parameterItems.push({
+        key: 'light',
+        label: resolvedLightValue,
+        icon: sunlightMeta.icon,
+        circleContent: null,
+        circleColor: resolvedLightValue === unknownLabel ? FALLBACK_ACCENT : sunlightMeta.color,
+        isUnknown: resolvedLightValue === unknownLabel
+      });
+    }
+
+    parameterItems.push({
+      key: 'ph',
+      label: phDisplayValue,
+      icon: null,
+      circleContent: 'pH',
+      circleColor: phRawValue === unknownLabel ? FALLBACK_ACCENT : phColor,
+      isUnknown: phDisplayValue === unknownLabel
+    });
+
+    parameterItems.push(...toxicityParameterItems);
+
+    if (lifeCycleTag && resolvedLifeCycleValue) {
+      parameterItems.push({
+        key: 'lifeCycle',
+        label: resolvedLifeCycleValue,
+        icon: lifespanMeta.icon,
+        circleContent: lifespanMeta.content,
+        circleColor: colors.purple,
+        isUnknown: false
+      });
+    }
+
+    const additionalInfo = getLocalizedValue(data?.additionalInfo, interfaceLanguage);
 
     return {
       family: familyValue,
-      parameterCards: [
-        {
-          key: 'lifeCycle',
-          value: resolvedLifeCycleValue,
-          Icon: lifespanMeta.icon,
-          content: lifespanMeta.content,
-          accent: resolvedLifeCycleValue === unknownLabel ? FALLBACK_ACCENT : colors.yellow
-        },
-        {
-          key: 'light',
-          value: resolvedLightValue,
-          Icon: sunlightMeta.icon,
-          accent: resolvedLightValue === unknownLabel ? FALLBACK_ACCENT : sunlightMeta.color
-        },
-        {
-          key: 'toxicity',
-          value: resolvedToxicityValue,
-          Icon: toxicityMeta.icon,
-          accent: resolvedToxicityValue === unknownLabel ? FALLBACK_ACCENT : toxicityMeta.color
-        },
-        {
-          key: 'ph',
-          value: phValue,
-          Icon: DropletIcon,
-          accent: phValue === unknownLabel ? FALLBACK_ACCENT : phColor
-        }
-      ],
-      hardinessRange
+      parameterItems,
+      hardinessRange,
+      additionalInfo: typeof additionalInfo === 'string' && additionalInfo.trim() ? additionalInfo.trim() : null
     };
   }, [plant, interfaceLanguage, unknownLabel]);
 
@@ -414,8 +528,7 @@ export default function MemorizationScreen({
   const infoSectionStyle = useMemo(() => ({
     display: 'flex',
     flexDirection: 'column',
-    gap: isMobile ? '16px' : '24px',
-    padding: '24px',
+    padding: isMobile ? '20px' : '28px',
     color: '#F8F2D0'
   }), [isMobile]);
 
@@ -424,9 +537,9 @@ export default function MemorizationScreen({
     flexDirection: isMobile ? 'column' : 'row',
     alignItems: 'stretch',
     justifyContent: 'center',
-    gap: isMobile ? '16px' : '28px',
+    gap: isMobile ? '16px' : '24px',
     width: '100%',
-    maxWidth: isMobile ? '560px' : '1040px'
+    maxWidth: isMobile ? '560px' : '860px'
   }), [isMobile]);
 
   const arrowButtonStyle = useMemo(() => ({
@@ -443,104 +556,166 @@ export default function MemorizationScreen({
     color: ACCENT_COLOR
   }), [isMobile]);
 
-  const parameterItems = useMemo(() => parameters.parameterCards.map(card => {
-    const IconComponent = card.Icon;
-    const isUnknownValue = card.value === unknownLabel;
-
-    return createElement('div', {
-      key: card.key,
-      style: {
-        background: PARAMETER_CARD_BACKGROUND,
-        border: '1px solid rgba(194, 156, 39, 0.25)',
-        borderRadius: 0,
-        padding: isMobile ? '16px' : '20px',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: '16px'
-      }
-    }, [
-      createElement('div', {
-        key: `${card.key}-icon`,
-        style: {
-          width: isMobile ? '52px' : '56px',
-          height: isMobile ? '52px' : '56px',
-          borderRadius: '50%',
-          backgroundColor: card.accent,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: isUnknownValue ? 'rgba(15, 45, 43, 0.6)' : '#0B2423',
-          fontWeight: 700,
-          fontSize: '1.2rem',
-          flex: '0 0 auto'
-        }
-      }, IconComponent
-        ? createElement(IconComponent)
-        : createElement('span', {
-          style: {
-            fontWeight: 700,
-            fontSize: '1.1rem'
-          }
-        }, card.content || '—')
-      ),
-      createElement('span', {
-        key: `${card.key}-value`,
+  const parameterElements = useMemo(() => {
+    if (!parameters.parameterItems.length) {
+      return [createElement('span', {
+        key: 'parameters-empty',
         style: {
           fontSize: isMobile ? '0.95rem' : '1.05rem',
           fontWeight: 600,
-          color: isUnknownValue ? 'rgba(248, 242, 208, 0.65)' : '#FDF6D8',
-          textAlign: 'left',
-          lineHeight: 1.35
+          color: 'rgba(248, 242, 208, 0.65)'
         }
-      }, card.value)
-    ]);
-  }), [createElement, isMobile, parameters.parameterCards, unknownLabel]);
+      }, unknownLabel)];
+    }
 
-  const parameterGrid = createElement('div', {
+    return parameters.parameterItems.map(item => {
+      const IconComponent = item.icon;
+      const label = item.label || unknownLabel;
+      const isUnknownValue = item.isUnknown || label === unknownLabel;
+
+      return createElement('div', {
+        key: item.key,
+        style: {
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '8px'
+        }
+      }, [
+        createElement('div', {
+          key: `${item.key}-icon`,
+          style: {
+            width: '28px',
+            height: '28px',
+            borderRadius: '50%',
+            backgroundColor: item.circleColor || FALLBACK_ACCENT,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: isUnknownValue ? 'rgba(15, 45, 43, 0.6)' : '#052625',
+            fontWeight: 700,
+            fontSize: '0.85rem'
+          }
+        }, IconComponent
+          ? createElement(IconComponent)
+          : createElement('span', {
+            style: {
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }
+          }, item.circleContent || '—')
+        ),
+        createElement('span', {
+          key: `${item.key}-label`,
+          style: {
+            fontSize: isMobile ? '0.92rem' : '1rem',
+            fontWeight: 600,
+            color: isUnknownValue ? 'rgba(248, 242, 208, 0.65)' : '#FDF6D8',
+            lineHeight: 1.35,
+            whiteSpace: 'nowrap'
+          }
+        }, label)
+      ]);
+    });
+  }, [createElement, isMobile, parameters.parameterItems, unknownLabel]);
+
+  const parameterRow = createElement('div', {
     key: 'parameters',
     style: {
-      display: 'grid',
-      gap: isMobile ? '16px' : '20px',
-      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))'
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '16px',
+      textAlign: 'center'
     }
-  }, parameterItems);
+  }, parameterElements);
 
-    const zoneElements = useMemo(() => {
-        const range = parameters.hardinessRange;
-        const hasRange = Boolean(range);
-        const minZone = hasRange ? range.min : null;
-        const maxZone = hasRange ? range.max : null;
-        const zoneSize = isMobile ? 'min(32px, 7vw)' : 'min(40px, 3vw)';
-        const fontScale = isMobile ? 0.46 : 0.44;
+  const headingSection = createElement('div', {
+    key: 'heading-section',
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      textAlign: 'center',
+      gap: '8px',
+      marginBottom: '16px'
+    }
+  }, [
+    createElement('h1', {
+      key: 'plant-name-heading',
+      style: {
+        fontSize: isMobile ? '28px' : '36px',
+        fontWeight: 700,
+        color: ACCENT_COLOR,
+        margin: 0
+      }
+    }, plantName || unknownLabel),
+    scientificName && createElement('span', {
+      key: 'plant-scientific-name',
+      style: {
+        fontStyle: 'italic',
+        fontSize: isMobile ? '18px' : '20px',
+        color: 'rgba(194, 156, 39, 0.85)'
+      }
+    }, scientificName),
+    parameters.family && createElement('span', {
+      key: 'plant-family-name',
+      style: {
+        fontSize: '14px',
+        color: 'rgba(194, 156, 39, 0.8)'
+      }
+    }, parameters.family)
+  ].filter(Boolean));
 
-        return HARDINESS_ZONES.map(zone => {
-            const isInRange = hasRange && zone >= minZone && zone <= maxZone;
-            const isEdge = hasRange && (zone === minZone || zone === maxZone);
+  const additionalInfoText = parameters.additionalInfo || texts.memorizationAdditionalInfoEmpty || 'не заполнено';
 
-            return createElement('div', {
-                key: `zone-${zone}`,
-                style: {
-                    width: zoneSize,
-                    height: zoneSize,
-                    flex: '0 0 auto',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 700,
-                    fontSize: `calc(${zoneSize} * ${fontScale})`,
-                    lineHeight: 1,
-                    backgroundColor: isInRange
-                        ? (isEdge ? ACCENT_COLOR : 'rgba(194, 156, 39, 0.82)')
-                        : 'rgba(7, 32, 30, 0.85)',
-                    color: isInRange ? '#163B3A' : '#C29C27',
-                    border: isInRange ? 'none' : '1px solid rgba(194, 156, 39, 0.35)',
-                    overflow: 'hidden'
-                }
-            }, zone);
-        });
-    }, [createElement, isMobile, parameters.hardinessRange]);
+  const additionalInfoBlock = createElement('div', {
+    key: 'additional-info',
+    style: {
+      padding: '12px',
+      backgroundColor: `${colors.primaryLight}4D`,
+      border: `1px solid ${ACCENT_COLOR}`,
+      color: colors.accentLight,
+      fontSize: '14px',
+      lineHeight: 1.5,
+      whiteSpace: 'pre-wrap',
+      marginTop: '16px'
+    }
+  }, additionalInfoText);
+
+  const hardinessScale = useMemo(() => {
+    const range = parameters.hardinessRange;
+    if (!range) {
+      return null;
+    }
+
+    const clampZone = zone => Math.min(13, Math.max(1, zone));
+    const segmentWidth = 100 / 12;
+    const minZone = clampZone(range.min);
+    const maxZone = clampZone(range.max);
+
+    let highlightLeft = ((minZone - 1) / 12) * 100;
+    let highlightWidth = Math.min(100 - highlightLeft, (maxZone - minZone + 1) * segmentWidth);
+
+    if (highlightWidth <= 0) {
+      highlightWidth = segmentWidth;
+      highlightLeft = Math.max(0, highlightLeft - segmentWidth);
+    }
+
+    const uniqueZones = Array.from(new Set([minZone, maxZone]));
+    const ticks = uniqueZones.map(zone => ({
+      zone,
+      percent: ((zone - 1) / 12) * 100
+    }));
+
+    return {
+      highlightLeft,
+      highlightWidth,
+      ticks
+    };
+  }, [parameters.hardinessRange]);
 
   if (!plant) {
     return createElement('div', {
@@ -570,127 +745,106 @@ export default function MemorizationScreen({
     ]));
   }
 
-    const hardinessSection = createElement('div', {
-        key: 'hardiness',
-        style: {
-            background: HARDINESS_BACKGROUND,
-            border: '1px solid rgba(194, 156, 39, 0.3)',
-            borderRadius: 0,
-            padding: isMobile ? '12px' : '16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px'
-        }
+  const hardinessSection = createElement('div', {
+    key: 'hardiness',
+    style: {
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '16px',
+      marginTop: additionalInfoBlock ? '20px' : '24px'
+    }
+  }, [
+    createElement('div', {
+      key: 'hardiness-icon',
+      style: {
+        width: '32px',
+        height: '32px',
+        transform: 'translateY(18px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: ACCENT_COLOR
+      }
+    }, createElement(ThermometerIcon)),
+    createElement('div', {
+      key: 'hardiness-scale',
+      style: {
+        flex: '1 1 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px'
+      }
     }, [
-        createElement('div', {
-            key: 'hardiness-header',
-            style: {
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '12px'
-            }
-        }, [
-            createElement('span', {
-                key: 'hardiness-label',
-                style: {
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    fontSize: '0.75rem',
-                    color: 'rgba(248, 242, 208, 0.65)'
-                }
-            }, texts.memorizationHardinessLabel || 'Hardiness zone')
-        ]),
-        createElement('div', {
-            key: 'hardiness-zones',
-            style: {
-                display: 'flex',
-                flexWrap: 'nowrap',  // ← Изменено с 'wrap' на 'nowrap'
-                justifyContent: 'center',
-                gap: 'clamp(2px, 0.5vw, 6px)',  // ← Адаптивный gap
-                overflow: 'hidden',  // ← Добавлено
-                width: '100%'  // ← Добавлено
-            }
-        }, zoneElements)
-    ]);
+      createElement('div', {
+        key: 'hardiness-numbers',
+        style: {
+          position: 'relative',
+          height: '24px'
+        }
+      }, hardinessScale
+        ? hardinessScale.ticks.map(tick => createElement('span', {
+          key: `zone-label-${tick.zone}`,
+          style: {
+            position: 'absolute',
+            left: `${tick.percent}%`,
+            transform: 'translateX(-50%)',
+            fontSize: '16px',
+            fontWeight: 700,
+            color: ACCENT_COLOR
+          }
+        }, tick.zone))
+        : null),
+      createElement('div', {
+        key: 'hardiness-bar',
+        style: {
+          position: 'relative',
+          height: '12px',
+          background: 'linear-gradient(to right, #3B82F6 0%, #10B981 25%, #FBBF24 50%, #F59E0B 75%, #EF4444 100%)',
+          overflow: 'visible'
+        }
+      }, [
+        hardinessScale && createElement('div', {
+          key: 'hardiness-active',
+          style: {
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: `${hardinessScale.highlightLeft}%`,
+            width: `${hardinessScale.highlightWidth}%`,
+            backgroundColor: 'rgba(194, 156, 39, 0.4)'
+          }
+        }),
+        ...(hardinessScale ? hardinessScale.ticks.map(tick => createElement('div', {
+          key: `zone-tick-${tick.zone}`,
+          style: {
+            position: 'absolute',
+            top: '-6px',
+            left: `${tick.percent}%`,
+            transform: 'translateX(-50%)',
+            width: '4px',
+            height: '24px',
+            backgroundColor: ACCENT_COLOR
+          }
+        })) : [])
+      ])
+    ])
+  ]);
 
   const cardElement = createElement('div', {
     key: 'card',
     className: 'w-full',
     style: cardStyle
   }, [
-    createElement('div', {
-      key: 'image-section',
-      style: {
-        position: 'relative'
-      }
-    }, [
-      createElement('div', {
-        key: 'heading-overlay',
-        className: 'absolute inset-0 pointer-events-none',
-        style: {
-          background: 'linear-gradient(180deg, rgba(194, 156, 39, 0.1) 0%, rgba(9, 39, 38, 0) 60%)',
-          zIndex: 5
-        }
-      }),
-      createElement(PlantImage, { plant }),
-      createElement('div', {
-        key: 'heading-wrapper',
-        className: 'absolute inset-x-0',
-        style: {
-          padding: isMobile ? '8px 20px 12px' : '12px 32px 14px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          gap: '8px',
-          zIndex: 10,
-          bottom: 0,
-          textAlign: 'left'
-        }
-      }, [
-        createElement('h1', {
-          key: 'plant-name',
-          className: isMobile ? 'text-2xl font-bold' : 'text-3xl font-bold',
-          style: {
-            color: ACCENT_COLOR,
-            textAlign: 'left',
-            width: '100%'
-          }
-        }, plantName),
-        (scientificName || parameters.family) && createElement('div', {
-          key: 'scientific-line',
-          style: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            gap: '6px',
-            color: ACCENT_COLOR
-          }
-        }, [
-          scientificName && createElement('span', {
-            key: 'scientific-name',
-            style: {
-              fontStyle: 'italic',
-              fontSize: isMobile ? '1rem' : '1.125rem'
-            }
-          }, scientificName),
-          parameters.family && createElement('span', {
-            key: 'family-name',
-            style: {
-              fontSize: isMobile ? '0.95rem' : '1.05rem',
-              fontWeight: 600
-            }
-          }, `${texts.memorizationFamilyLabel || 'Family'}: ${parameters.family}`)
-        ])
-      ])
-    ]),
+    createElement(PlantImage, { plant }),
     createElement('div', {
       key: 'info-section',
       style: infoSectionStyle
     }, [
-      parameterGrid,
+      headingSection,
+      parameterRow,
+      additionalInfoBlock,
       hardinessSection
-    ])
+    ].filter(Boolean))
   ]);
 
   const arrowButton = createElement('button', {
