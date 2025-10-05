@@ -44,20 +44,6 @@ function createIcon(pathElements, viewBox = '0 0 24 24') {
   }, pathElements.map((props, index) => createElement(props.tag, { key: index, ...props.attrs })));
 }
 
-function ShieldIcon() {
-  return createIcon([
-    { tag: 'path', attrs: { d: 'M12 3l7 3v5c0 5-3.5 9.2-7 10-3.5-.8-7-5-7-10V6l7-3z' } }
-  ]);
-}
-
-function AlertTriangleIcon() {
-  return createIcon([
-    { tag: 'path', attrs: { d: 'M10.3 3.5l-7 12A1 1 0 0 0 4.2 17.5h15.6a1 1 0 0 0 .87-1.5l-7-12a1 1 0 0 0-1.74 0z' } },
-    { tag: 'line', attrs: { x1: 12, y1: 9, x2: 12, y2: 13 } },
-    { tag: 'line', attrs: { x1: 12, y1: 16, x2: 12.01, y2: 16 } }
-  ]);
-}
-
 function SunIcon() {
   return createIcon([
     { tag: 'circle', attrs: { cx: 12, cy: 12, r: 4 } },
@@ -97,25 +83,93 @@ function ThermometerIcon() {
   ]);
 }
 
+function DropletToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z' } }
+  ]);
+}
+
+function DrumstickToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M15.4 15.63a7.875 6 135 1 1 6.23-6.23 4.5 3.43 135 0 0-6.23 6.23' } },
+    { tag: 'path', attrs: { d: 'm8.29 12.71-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59' } }
+  ]);
+}
+
+function FlameToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4' } }
+  ]);
+}
+
+function CatToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z' } },
+    { tag: 'path', attrs: { d: 'M8 14v.5' } },
+    { tag: 'path', attrs: { d: 'M16 14v.5' } },
+    { tag: 'path', attrs: { d: 'M11.25 16.25h1.5L12 17l-.75-.75Z' } }
+  ]);
+}
+
+function DogToxicityIcon() {
+  return createIcon([
+    { tag: 'path', attrs: { d: 'M11.25 16.25h1.5L12 17z' } },
+    { tag: 'path', attrs: { d: 'M16 14v.5' } },
+    { tag: 'path', attrs: { d: 'M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309' } },
+    { tag: 'path', attrs: { d: 'M8 14v.5' } },
+    { tag: 'path', attrs: { d: 'M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5' } }
+  ]);
+}
+
 const arrowIconPaths = [
   { tag: 'path', attrs: { d: 'M5 12h14' } },
   { tag: 'path', attrs: { d: 'M13 6l6 6-6 6' } }
 ];
 
+const toxicityLevelColors = Object.freeze({
+  1: colors.blue,
+  2: colors.yellow,
+  3: colors.red
+});
+
+const toxicityNoticeLabels = Object.freeze({
+  skin: Object.freeze({
+    ru: 'не трогать сок',
+    en: 'Avoid sap contact',
+    nl: 'Sap vermijden'
+  }),
+  eat: Object.freeze({
+    ru: 'не есть',
+    en: 'Do not eat',
+    nl: 'Niet eten'
+  }),
+  smoke: Object.freeze({
+    ru: 'не жечь',
+    en: 'Do not burn',
+    nl: 'Niet verbranden'
+  }),
+  cat: Object.freeze({
+    ru: 'опасно для кошек',
+    en: 'Dangerous to cats',
+    nl: 'Gevaarlijk voor katten'
+  }),
+  dog: Object.freeze({
+    ru: 'опасно для собак',
+    en: 'Dangerous to dogs',
+    nl: 'Gevaarlijk voor honden'
+  })
+});
+
+const toxicityNoticeTypeMeta = Object.freeze({
+  skin: Object.freeze({ icon: DropletToxicityIcon, label: toxicityNoticeLabels.skin }),
+  eat: Object.freeze({ icon: DrumstickToxicityIcon, label: toxicityNoticeLabels.eat }),
+  smoke: Object.freeze({ icon: FlameToxicityIcon, label: toxicityNoticeLabels.smoke }),
+  cat: Object.freeze({ icon: CatToxicityIcon, label: toxicityNoticeLabels.cat }),
+  dog: Object.freeze({ icon: DogToxicityIcon, label: toxicityNoticeLabels.dog })
+});
+
 function ArrowIcon() {
   return createIcon(arrowIconPaths);
-}
-
-function getToxicityIcon(toxicityTag) {
-  switch (toxicityTag) {
-    case 'mildlyToxic':
-      return { icon: AlertTriangleIcon, color: colors.yellow };
-    case 'toxic':
-      return { icon: AlertTriangleIcon, color: colors.red };
-    case 'nonToxic':
-    default:
-      return { icon: ShieldIcon, color: colors.green };
-  }
 }
 
 function getSunlightIcon(lightTag) {
@@ -213,6 +267,53 @@ function getLocalizedValue(value, language) {
     return typeof firstValue === 'string' ? firstValue : null;
   }
   return null;
+}
+
+function buildToxicityParameterItems(toxicityData, language, unknownLabel) {
+  if (!toxicityData) {
+    return [];
+  }
+
+  const entries = Array.isArray(toxicityData) ? toxicityData : [toxicityData];
+
+  return entries
+    .map((entry, index) => {
+      if (!entry || typeof entry !== 'object') {
+        return null;
+      }
+
+      const typeKey = typeof entry.type === 'string' ? entry.type : (typeof entry.tag === 'string' ? entry.tag : null);
+      const typeMeta = typeKey ? toxicityNoticeTypeMeta[typeKey] : null;
+
+      if (!typeMeta) {
+        return null;
+      }
+
+      const severityLevel = typeof entry.level === 'number'
+        ? entry.level
+        : Number.parseInt(entry.level, 10);
+      const circleColor = toxicityLevelColors[severityLevel] || FALLBACK_ACCENT;
+
+      const customLabelSource = entry.label ?? entry.text;
+
+      const resolvedLabel = typeof customLabelSource === 'string'
+        ? customLabelSource
+        : getLocalizedValue(customLabelSource, language) || getLocalizedValue(typeMeta.label, language);
+
+      const labelText = typeof resolvedLabel === 'string' && resolvedLabel.trim()
+        ? resolvedLabel.trim()
+        : (getLocalizedValue(typeMeta.label, language) || unknownLabel);
+
+      return {
+        key: `toxicity-${index}-${typeKey}`,
+        label: labelText,
+        icon: typeMeta.icon,
+        circleContent: null,
+        circleColor,
+        isUnknown: labelText === unknownLabel
+      };
+    })
+    .filter(Boolean);
 }
 
 function PlantImage({ plant }) {
@@ -323,7 +424,6 @@ export default function MemorizationScreen({
     const familyValue = getLocalizedValue(data?.family, interfaceLanguage) || unknownLabel;
     const lifeCycleTag = typeof data?.lifeCycle === 'string' ? data.lifeCycle : null;
     const lightTag = typeof data?.light === 'string' ? data.light : null;
-    const toxicityTag = typeof data?.toxicity === 'string' ? data.toxicity : null;
 
     const lifeCycleValue = lifeCycleTag
       ? getParameterTagLabel('lifeCycle', lifeCycleTag, interfaceLanguage)
@@ -331,19 +431,16 @@ export default function MemorizationScreen({
     const lightValue = lightTag
       ? getParameterTagLabel('light', lightTag, interfaceLanguage)
       : null;
-    const toxicityValue = toxicityTag
-      ? getParameterTagLabel('toxicity', toxicityTag, interfaceLanguage)
-      : null;
 
     const resolvedLifeCycleValue = lifeCycleValue || null;
     const resolvedLightValue = lightValue || unknownLabel;
-    const resolvedToxicityValue = toxicityValue || null;
     const phRawValue = getLocalizedValue(data?.ph, interfaceLanguage) || getLocalizedValue(data?.soilPh, interfaceLanguage) || unknownLabel;
 
     const sunlightMeta = getSunlightIcon(lightTag);
-    const toxicityMeta = getToxicityIcon(toxicityTag);
     const lifespanMeta = getLifespanIcon(lifeCycleTag);
     const phColor = phRawValue === unknownLabel ? FALLBACK_ACCENT : getPhColor(phRawValue);
+
+    const toxicityParameterItems = buildToxicityParameterItems(data?.toxicity, interfaceLanguage, unknownLabel);
 
     const hardinessRange = parseHardinessRange(
       getLocalizedValue(data?.hardiness, interfaceLanguage) ||
@@ -376,16 +473,7 @@ export default function MemorizationScreen({
       isUnknown: phDisplayValue === unknownLabel
     });
 
-    if (toxicityTag && resolvedToxicityValue) {
-      parameterItems.push({
-        key: 'toxicity',
-        label: resolvedToxicityValue,
-        icon: toxicityMeta.icon,
-        circleContent: null,
-        circleColor: toxicityMeta.color,
-        isUnknown: false
-      });
-    }
+    parameterItems.push(...toxicityParameterItems);
 
     if (lifeCycleTag && resolvedLifeCycleValue) {
       parameterItems.push({

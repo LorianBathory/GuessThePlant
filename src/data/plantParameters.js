@@ -2,7 +2,11 @@ const plantParametersRaw = Object.freeze({
   1: Object.freeze({
     scientificName: 'Asteriscus maritimus',
     lifeCycle: 'perennial',
-    additionalInfo: 'Компактный средиземноморский кустарник, предпочитает солнце и устойчив к засухе.'
+    additionalInfo: 'Компактный средиземноморский кустарник, предпочитает солнце и устойчив к засухе.',
+    toxicity: Object.freeze([
+      Object.freeze({ level: 2, tag: 'skin' }),
+      Object.freeze({ level: 3, tag: 'cat' })
+    ])
   }),
   2: Object.freeze({ scientificName: 'Daucus carota', lifeCycle: 'biennial' }), //в дикой форме; в культуре однолетник
   3: Object.freeze({ scientificName: 'Agapanthus africanus', lifeCycle: 'perennial' }),
