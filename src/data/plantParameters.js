@@ -9,14 +9,45 @@ const plantParametersRaw = Object.freeze({
     ])
   }),
   2: Object.freeze({ scientificName: 'Daucus carota', lifeCycle: 'biennial' }), //в дикой форме; в культуре однолетник
-  3: Object.freeze({ scientificName: 'Agapanthus africanus', lifeCycle: 'perennial' }),
-  4: Object.freeze({ scientificName: 'Bougainvillea spectabilis' }),
-  5: Object.freeze({ scientificName: 'Camellia japonica' }),
-  6: Object.freeze({ scientificName: 'Gerbera jamesonii', lifeCycle: 'perennial' }), //но часто выращивают как однолетник
+  3: Object.freeze({
+    scientificName: 'Agapanthus africanus',
+    lifeCycle: 'perennial',
+    additionalInfo: 'Вечнозеленый травянистый многолетник. Высота цветочных стрелок — около 80 см.',
+    toxicity: Object.freeze([
+      Object.freeze({ level: 2, tag: 'eat' })
+    ]),
+    hardinessZone: 'H2',
+    light: 'fullSun'
+  }),
+  4: Object.freeze({
+    scientificName: 'Bougainvillea spectabilis',
+    additionalInfo: 'Компактный и густой кустарник, цветущий с яркими прицветниками. Минимально допустимая ночная температура — 10° С.',
+    hardinessZone: 'H1C',
+    light: 'fullSun'
+  }),
+  5: Object.freeze({
+    scientificName: 'Camellia japonica',
+    additionalInfo: 'Вечнозеленый кустарник, цветущий весной. Бутоны нуждаются в защите от холодного ветра и утреннего солнца.',
+    hardinessZone: 'H5',
+    light: 'partialShade'
+  }),
+  6: Object.freeze({
+    scientificName: 'Gerbera jamesonii',
+    lifeCycle: 'perennial',
+    additionalInfo: 'Вечнозеленое растение, цветет с конца весны до конца лета. Часто выращивается как однолетник.',
+    hardinessZone: 'H1C',
+    light: 'fullSun'
+  }), //но часто выращивают как однолетник
   8: Object.freeze({ scientificName: 'Gazania', lifeCycle: 'perennial' }), //в умеренном климате — как однолетник
   12: Object.freeze({ scientificName: 'Pastinaca sativa', lifeCycle: 'biennial' }),
   13: Object.freeze({ scientificName: 'Allium', lifeCycle: 'perennial' }),
-  14: Object.freeze({ scientificName: 'Camassia', lifeCycle: 'perennial' }),
+  14: Object.freeze({
+    scientificName: 'Camassia',
+    lifeCycle: 'perennial',
+    additionalInfo: 'Луковичное многолетнее растение высотой до 1,2 м. Предпочитает полутень, переносит полное солнце.',
+    hardinessZone: 'H4',
+    light: 'partialShade'
+  }),
   15: Object.freeze({ scientificName: 'Globularia', lifeCycle: 'perennial' }),
   16: Object.freeze({ scientificName: 'Fritillaria', lifeCycle: 'perennial' }),
   17: Object.freeze({ scientificName: 'Clematis', lifeCycle: 'perennial' }),
