@@ -1,4 +1,5 @@
-import { choicesById, ALL_CHOICE_IDS, plants as catalogPlants } from '../data/catalog.js';
+import { choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
+import { memorizationPlants } from '../data/memorization/memorizationCatalog.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';
 import {
@@ -134,8 +135,8 @@ export default function useGameLogic() {
   }, [startClassicGame]);
 
   const pickRandomMemorizationPlant = useCallback(() => {
-    const candidates = Array.isArray(catalogPlants)
-      ? catalogPlants.filter(plant => plant && typeof plant.image === 'string')
+    const candidates = Array.isArray(memorizationPlants)
+      ? memorizationPlants.filter(plant => plant && typeof plant.image === 'string')
       : [];
 
     if (candidates.length === 0) {
