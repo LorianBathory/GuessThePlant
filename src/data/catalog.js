@@ -150,6 +150,20 @@ const speciesCatalog = Object.freeze({
     164: { images: ['p169'] }, //Fumaria
     165: { images: ['p170'] }, //Helleborus
     166: { images: ['p175'] }, //Hollyhock
+    168: { images: ['p208'] }, //Water Lily
+    169: { images: ['p230'] }, //Red amaranth
+    170: { images: ['p229'] }, //Prince's-feather
+    171: { images: ['p231'] }, //Ceanothus impressus
+    172: { images: ['p232'] }, //Euonymus
+    173: { images: ['p233'] }, //Hebe speciosa
+    174: { images: ['p234'] }, //Fan aloe
+    175: { images: ['p235'] }, //Lewisia cotyledon
+    176: { images: ['p236'] }, //Paulownia / Princess tree
+    177: { images: ['p237'] }, //Phacelia
+    178: { images: ['p238', 'p239', 'p240', 'p241'] }, //Cherry laurel
+    179: { images: ['p242'] }, //Pyracantha coccinea
+    180: { images: ['p243'] }, //Rosemary
+    181: { images: ['p244'] }, //Dandelion
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.

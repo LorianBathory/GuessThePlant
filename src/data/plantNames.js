@@ -164,5 +164,20 @@ export const plantNamesById = Object.freeze({
   163: { ru: "Фитония", en: "Fittonia", nl: "Fittonia", sci: "Fittonia" },
   164: { ru: "Дымянка", en: "Fumitory", nl: "Duivenkervel", sci: "Fumaria" },
   165: { ru: "Морозник", en: "Hellebore", nl: "Nieskruid", sci: "Helleborus" },
-  166: { ru: "Шток-роза", en: "Hollyhock", nl: "Stokroos", sci: "Alcea" }
+  166: { ru: "Шток-роза", en: "Hollyhock", nl: "Stokroos", sci: "Alcea" },
+  167: { ru: "Цикорий", en: "Chicory", nl: "Wilde Cichorei", sci: "Cichorium Intybus" },
+  168: { ru: "Кувшинка", en: "Water Lily", nl: "Waterlelie", sci: "Nymphaea" },
+  169: { ru: "Амарант багряный", en: "Red amaranth", nl: "Rode amarant", sci: "Amaranthus Cruentus" },
+  170: { ru: "Амарант тёмный (печальный)", en: "Prince's-feather", nl: "Amaranthus hypochondriacus", sci: "Amaranthus hypochondriacus" },
+  171: { ru: "Цеанотус (краснокоренник) вдавленный", en: "Santa Barbara ceanothus", nl: "Amerikaanse sering", sci: "Ceanothus Impressus" },
+  172: { ru: "Бересклет", en: "Spindle tree", nl: "Kardinaalsmuts", sci: "Euonymus" },
+  173: { ru: "Хебе красивая", en: "Showy hebe / Shrubby veronica", nl: "Struikveronica", sci: "Hebe Speciosa" },
+  174: { ru: "Алоэ складчатое", en: "Fan aloe", nl: "Waaier-aloë", sci: "Kumara Plicatilis" },
+  175: { ru: "Левизия котиледон (туполистная)", en: "Siskiyou lewisia", nl: "Lewisia", sci: "Lewisia Cotyledon" },
+  176: { ru: "Павловния", en: "Paulownia / Princess tree", nl: "Anna Paulownaboom", sci: "Paulownia" },
+  177: { ru: "Фацелия", en: "Phacelia / Scorpionweed", nl: "Phacelia", sci: "Phacelia" },
+  178: { ru: "Лавровишня", en: "Cherry laurel", nl: "Laurierkers", sci: "Prunus Laurocerasus" },
+  179: { ru: "Пираканта алая", en: "Firethorn / Scarlet firethorn", nl: "Vuurdoorn", sci: "Pyracantha Coccinea" },
+  180: { ru: "Розмарин", en: "Rosemary", nl: "Rozemarijn", sci: "Salvia Rosmarinus" },
+  181: { ru: "Одуванчик", en: "Dandelion", nl: "Paardenbloem", sci: "Taraxacum Officinale" }
 });
