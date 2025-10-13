@@ -198,7 +198,7 @@ export const plantImages = Object.freeze([
   { id: 'p201', src: 'images/Muscari_RomanBiernacki3.JPG' },
   { id: 'p202', src: 'images/Narcissus_Grigoriy.JPG' },
   { id: 'p203', src: 'images/Opuntia.JPG' },
-  { id: 'p204', src: 'images/Peter_ganaj.JPG' },
+  { id: 'p204', src: 'images/CichoriumIntybus_PeterGanaj.JPG' },
   { id: 'p205', src: 'images/Platycodon_AlexandrBondar.JPG' },
   { id: 'p206', src: 'images/Scilla_Grigoriy.JPG' },
   { id: 'p207', src: 'images/Veronica_DiegoFabra.JPG' },
