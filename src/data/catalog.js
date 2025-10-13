@@ -32,20 +32,20 @@ const speciesCatalog = Object.freeze({
   25: { images: ['p130'],  wrongAnswers: [29, 119] }, //Shasta Daisy, добавить ромашку аптечную в список растений
   26: { images: ['p010', 'p011', 'p100', 'p190'], wrongAnswers: [29, 33, 73, 77] }, //Dahlia. добавить циннию
   27: { images: ['p012', 'p103', 'p104'], wrongAnswers: [6, 38, 115, 121] }, //Echinacea
-  28: { images: ['p198'] }, //Gomphrena
+  28: { images: ['p198', 'p220'] }, //Gomphrena
   29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [6, 26, 41, 73] }, //Chrysanthemum
   30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 8] }, //osteospermum
-  31: { images: ['p016', 'p017', 'p018', 'p077', 'p078'], wrongAnswers: [41, 69, 46, 5] },
+  31: { images: ['p016', 'p017', 'p018', 'p077', 'p078', 'p224'], wrongAnswers: [41, 69, 46, 5] },
   32: { images: ['p019'], wrongAnswers: [43, 44, 45] },
   33: { images: ['p020', 'p021', 'p122', 'p123'], wrongAnswers: [47, 41, 26] }, //Papaver
   34: { images: ['p022'], wrongAnswers: [448, 49] },
-  35: { images: ['p023', 'p118', 'p119'], wrongAnswers: [36, 37] }, //Lily
+  35: { images: ['p023', 'p118', 'p119', 'p222'], wrongAnswers: [36, 37] }, //Lily
   36: { images: ['p114', 'p115'] }, //Hemerocallis
   //37
   //38
   39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, надо добавить топинамбур - 135
   40: { images: ['p161', 'p162'] }, //Coreopsis
-  41: { images: ['p024', 'p101'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
+  41: { images: ['p024', 'p101', 'p218'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
   //42
   //43
   44: { images: ['p152'] }, //Pineapple
@@ -68,7 +68,7 @@ const speciesCatalog = Object.freeze({
   //61
   62: {images: ['p090', 'p091'], wrongAnswers: [2] }, //apple, wrongAnswers надо
   63: { images: ['p188'] }, //Corn
-  64: { images: ['p176'] }, //Verbena
+  64: { images: ['p176', 'p226', 'p227'] }, //Verbena
     //65
     //66
     //67
@@ -77,29 +77,29 @@ const speciesCatalog = Object.freeze({
   //70
   //71
   72: { images: ['p052'], wrongAnswers: [11] }, //лопух. wrongAnswers надо заменить
-  73: { images: ['p038', 'p047', 'p092', 'p093', 'p180'], wrongAnswers: [29] }, //aster, wrongAnswers надо
+  73: { images: ['p038', 'p047', 'p092', 'p093', 'p180', 'p212'], wrongAnswers: [29] }, //aster, wrongAnswers надо
   74: { images: ['p070'], wrongAnswers: [41, 54] }, //phlox, wrongAnswers надо дополнить
   75: { images: ['p039', 'p082'] },
   76: { images: ['p069', 'p127'] }, //petunia
   77: { images: ['p040'], wrongAnswers: [58, 48, 57] },
   78: { images: ['p041'], wrongAnswers: [76] },
-  79: { images: ['p042'], wrongAnswers: [18] },
+  79: { images: ['p042', 'p223'], wrongAnswers: [18] },
   80: { images: ['p053'], wrongAnswers: [17] }, //временный wrongAnswer +
   81: { images: ['p059'], wrongAnswers: [19] }, //временный wrongAnswer +
   82: { images: ['p084'], wrongAnswers: [20] }, //viola. временный wrongAnswer +
-  83: { images: ['p055'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
+  83: { images: ['p055', 'p228'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
   84: { images: ['p062'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
-  85: { images: ['p051', 'p094'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
+  85: { images: ['p051', 'p094', 'p214', 'p215'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
     86: { images: ['p071', 'p072'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
      //87. Lotus пока не залит.
-    88: { images: ['p060', 'p061'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
+    88: { images: ['p060', 'p061', 'p221'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
     89: { images: ['p079'], wrongAnswers: [25] }, //Santolina временный wrongAnswer +
     90: { images: ['p058'], wrongAnswers: [26] }, //Fagus временный wrongAnswer +
     91: { images: ['p049', 'p050'], wrongAnswers: [27] }, //Begonia временный wrongAnswer+
     92: { images: ['p074', 'p075'], wrongAnswers: [28] }, //Ranunculus временный wrongAnswer+
     93: { images: ['p081'], wrongAnswers: [80, 81] }, //Syngonium временный wrongAnswer+
     94: { images: ['p065'], wrongAnswers: [86, 79, 69] }, //Orchid, временный wrongAnswer
-    95: { images: ['p048'], wrongAnswers: [62, 44] }, //Banana временный wrongAnswer +
+    95: { images: ['p048', 'p213'], wrongAnswers: [62, 44] }, //Banana временный wrongAnswer +
     96: { images: ['p085'], wrongAnswers: [29, 93] }, //Zamioculcas временный wrongAnswer +
     97: { images: ['p083', 'p131', 'p132'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
     98: { images: ['p067', 'p068'], wrongAnswers: [31] }, //Passiflora временный wrongAnswer +
@@ -114,7 +114,7 @@ const speciesCatalog = Object.freeze({
     107: { images: ['p201'] }, //Muscari
     108: { images: ['p172'] }, //Pelargonium
     109: { images: ['p184'] }, //Calibrachoa
-    110: { images: ['p187'] }, //Coleus
+    110: { images: ['p187', 'p216', 'p217'] }, //Coleus
     //111 без изображений
     112: { images: ['p140', 'p141', 'p142'], wrongAnswers: [131] }, //Delphinium+
     113: { images: ['p157'] }, //Brunnera
@@ -125,7 +125,7 @@ const speciesCatalog = Object.freeze({
     118: { images: ['p194', 'p195', 'p196', 'p197'] }, //Hardy geranium
     119: { images: ['p181', 'p182'] }, //Bellis
     120: { images: ['p191'] }, //Dicentra
-    121: { images: ['p192'] }, //Gaillardia
+    121: { images: ['p192', 'p219'] }, //Gaillardia
     122: { images: ['p193'] }, //Galanthus
     123: { images: ['p185'] }, //Celosia
     124: { images: ['p203'] }, //Opuntia
@@ -136,7 +136,7 @@ const speciesCatalog = Object.freeze({
     131: { images: ['p143', 'p207'], wrongAnswers: [14, 112] }, //veronica+
     139: { images: ['p174'] }, //Star jasmine
     142: { images: ['p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus+
-    146: { images: ['p160'] }, //Red clover
+    146: { images: ['p160', 'p225'] }, //Red clover
   153: {images: ['p163'], wrongAnswers: [17, 24]}, //Cornus Florida
     155: { images: ['p153'] }, //Angelonia
     156: { images: ['p155'] }, //Artichoke
