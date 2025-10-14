@@ -87,7 +87,7 @@ const speciesCatalog = Object.freeze({
   80: { images: ['p053'], wrongAnswers: [17] }, //временный wrongAnswer +
   81: { images: ['p059'], wrongAnswers: [19] }, //временный wrongAnswer +
   82: { images: ['p084'], wrongAnswers: [20] }, //viola. временный wrongAnswer +
-  83: { images: ['p055', 'p228', 'p249'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
+  83: { images: ['p055', 'p228'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
   84: { images: ['p062'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
   85: { images: ['p051', 'p094', 'p214', 'p215'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
     86: { images: ['p071', 'p072'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
@@ -115,7 +115,7 @@ const speciesCatalog = Object.freeze({
     108: { images: ['p172'] }, //Pelargonium
     109: { images: ['p184'] }, //Calibrachoa
     110: { images: ['p187', 'p216', 'p217'] }, //Coleus
-    //111 без изображений
+    111 { images: ['p249'] } //Campanula Rotundifolia
     112: { images: ['p140', 'p141', 'p142'], wrongAnswers: [131] }, //Delphinium+
     113: { images: ['p157'] }, //Brunnera
     114: { images: ['p183'] }, //Betula
