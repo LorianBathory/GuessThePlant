@@ -81,7 +81,7 @@
 | 80 | Каладиум | Caladium | Caladium, Olifantsoor | Caladium bicolor | 1 | p053 | Caladium_MadisonInouye.JPG | Hard |
 | 81 | Хоста | Hosta | Hartlelie, Funkia | Hosta | 1 | p059 | Hosta_BrettSayles.JPG | Medium |
 | 82 | Анютины глазки | Pansy | Viooltje, Driekleurig viooltje | Viola tricolor var. hortensis | 1 | p084 | Viola_DamianApanasowicz.JPG | Easy |
-| 83 | Кампанула | Bellflower | Klokje | Campanula | 3 | p055, p228, p249 | Campanula_EllieBurgin.JPG, campanula.JPG, CampanulaRotundifolia_Mary_StockSnap.JPG | Medium |
+| 83 | Кампанула | Bellflower | Klokje | Campanula | 2 | p055, p228 | Campanula_EllieBurgin.JPG, campanula.JPG | Medium |
 | 84 | Кольраби | Kohlrabi | Koolrabi | Brassica oleracea Gongylodes Group | 1 | p062 | Kohlrabi_IqbalFarooz.JPG | Hard |
 | 85 | Будлея | Butterfly bush | Vlinderstruik | Buddleja davidii | 4 | p051, p094, p214, p215 | Buddleja_GeorgWalter.JPG, Buddleja_TobiasScheuer.JPG, BuddlejaDavidii.JPG, BuddlejaDavidii2.JPG | Medium |
 | 86 | Плюмерия | Frangipani | Frangipani | Plumeria | 2 | p071, p072 | Plumeria.JPG, Plumeria_HartonoSubagio.JPG | Medium (overrides: p072:Hard) |
@@ -109,7 +109,7 @@
 | 108 | Пеларгония (Герань) | Geranium (Pelargonium) | Geranium / Pelargonium | Pelargonium | 1 | p172 | Pelargonium_JuliaFilirovska.JPG | Easy |
 | 109 | Калибрахоа | Calibrachoa / Million bells | Calibrachoa | Calibrachoa | 1 | p184 | Calibrachoa_SergejKarpow.JPG | Medium |
 | 110 | Колеус | Coleus | Siernetel | Coleus | 3 | p187, p216, p217 | Coleus_hartonoubagio.JPG, Coleus_GustavoPeres.JPG, Coleus_Pexels_HartonoSubagio.JPG | Medium |
-| 111 | Колокольчик круглолистный | Harebell | Grasklokje | Campanula Rotundifolia | 0 |  |  | null |
+| 111 | Колокольчик круглолистный | Harebell | Grasklokje | Campanula Rotundifolia | 1 | p249 | CampanulaRotundifolia_Mary_StockSnap.JPG | Medium |
 | 112 | Дельфиниум | Delphinium | Ridderspoor | Delphinium | 3 | p140, p141, p142 | Delphinium_AravindReddyTarugu.JPG, Delphinium_NurcanAytas.JPG, Delphinium_RebeccaNiver.JPG | Medium (overrides: p141:Hard) |
 | 113 | Брунера | Brunnera / Siberian bugloss | Kaukasisch vergeet-mij-nietje | Brunnera | 1 | p157 | Brunnera_HazelSarmiento.JPG | Medium |
 | 114 | Береза | Birch | Berk | Betula | 1 | p183 | Betula_KirilGruev.JPG | Easy |

@@ -38,7 +38,7 @@ const speciesCatalog = Object.freeze({
   31: { images: ['p016', 'p017', 'p018', 'p077', 'p078', 'p224'], wrongAnswers: [41, 69, 46, 5] },
   32: { images: ['p019'], wrongAnswers: [43, 44, 45] },
   33: { images: ['p020', 'p021', 'p122', 'p123'], wrongAnswers: [47, 41, 26] }, //Papaver
-  34: { images: ['p022'], wrongAnswers: [448, 49] },
+  34: { images: ['p022'], wrongAnswers: [48, 49] },
   35: { images: ['p023', 'p118', 'p119', 'p222'], wrongAnswers: [36, 37] }, //Lily
   36: { images: ['p114', 'p115'] }, //Hemerocallis
   //37
@@ -115,7 +115,7 @@ const speciesCatalog = Object.freeze({
     108: { images: ['p172'] }, //Pelargonium
     109: { images: ['p184'] }, //Calibrachoa
     110: { images: ['p187', 'p216', 'p217'] }, //Coleus
-    111 { images: ['p249'] } //Campanula Rotundifolia
+    111: { images: ['p249'] }, //Campanula rotundifolia
     112: { images: ['p140', 'p141', 'p142'], wrongAnswers: [131] }, //Delphinium+
     113: { images: ['p157'] }, //Brunnera
     114: { images: ['p183'] }, //Betula
