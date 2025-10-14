@@ -64,7 +64,7 @@
 | 63 | Кукуруза | Corn | Maïs | Zea mays | 1 | p188 | Corn_EduRaW.JPG | Easy |
 | 64 | Вербена | Verbena | Ijzerhard | Verbena | 3 | p176, p226, p227 | VerbenaStricta_Tomfisk.JPG, VerbenaBonariensis_Pexels_Ganajp.JPG, VerbenaBonariensis_VolkerKaes_Pexels.JPG | Medium |
 | 65 | Незабудка | Forget-me-not | Vergeet-mij-nietje | Myosotis | 0 |  |  | null |
-| 66 | Мята | Mint | Munt | Mentha | 1 | p258 | Mint_iqbalFarooz.JPG | null |
+| 66 | Мята | Mint | Munt | Mentha | 1 | p258 | Mint_iqbalFarooz.JPG | Easy |
 | 67 | Лаватера | Tree mallow | Bekermalva | Lavatera | 0 |  |  | null |
 | 68 | Лаванда | Lavender | Lavendel | Lavandula | 3 | p036, p116, p117 | Lavender_Medium_StuartRobinson.JPG, Lavender_EliasTigiser.JPG, Lavender_OnkelRamirez.JPG | Medium |
 | 69 | Эустома | Lisianthus | Lisianthus, Prairie-gentiaan | Eustoma | 1 | p037 | Eustoma.JPG | Medium |
@@ -165,38 +165,38 @@
 | 164 | Дымянка | Fumitory | Duivenkervel | Fumaria | 1 | p169 | Fumaria_Tugba.JPG | Medium |
 | 165 | Морозник | Hellebore | Nieskruid | Helleborus | 1 | p170 | Helleborus_Aaronburden.JPG | Easy |
 | 166 | Шток-роза | Hollyhock | Stokroos | Alcea | 1 | p175 | Stokrose_NikolettEmmert.JPG | Medium |
-| 167 | Цикорий | Chicory | Wilde Cichorei | Cichorium Intybus | 1 | p266 | CichoriumIntybus_Manfredrichter_pixabay.JPG | null |
-| 168 | Кувшинка | Water Lily | Waterlelie | Nymphaea | 2 | p208, p259 | WaterLily_Amitrai10.JPG, Nymphaeaceae_BobRichards_StockSnap.JPG | null |
-| 169 | Амарант багряный | Red amaranth | Rode amarant | Amaranthus Cruentus | 1 | p230 | AmaranthusCruentus_JuliaFilirovska.JPG | null |
-| 170 | Амарант тёмный (печальный) | Prince's-feather | Amaranthus hypochondriacus | Amaranthus hypochondriacus | 1 | p229 | Amaranth_LevStrelchenko.jpg | null |
-| 171 | Цеанотус (краснокоренник) вдавленный | Santa Barbara ceanothus | Amerikaanse sering | Ceanothus Impressus | 1 | p231 | CeanothusImpressus_SonnySixteen.jpg | null |
-| 172 | Бересклет | Spindle tree | Kardinaalsmuts | Euonymus | 1 | p232 | Euonymus.JPG | null |
-| 173 | Хебе красивая | Showy hebe / Shrubby veronica | Struikveronica | Hebe Speciosa | 1 | p233 | HebeSpeciosa.JPG | null |
-| 174 | Алоэ складчатое | Fan aloe | Waaier-aloë | Kumara Plicatilis | 1 | p234 | KumaraPlicatilis_MargalitToyber_Unsplash.JPG | null |
-| 175 | Левизия котиледон (туполистная) | Siskiyou lewisia | Lewisia | Lewisia Cotyledon | 1 | p235 | LewisiaCotyledon .JPG | null |
-| 176 | Павловния | Paulownia / Princess tree | Anna Paulownaboom | Paulownia | 1 | p236 | Paulownia_SevalTorun.jpg | null |
-| 177 | Фацелия | Phacelia / Scorpionweed | Phacelia | Phacelia | 1 | p237 | Phacelia_MarkusSpiske.JPG | null |
-| 178 | Лавровишня | Cherry laurel | Laurierkers | Prunus Laurocerasus | 4 | p238, p239, p240, p241 | PrunusLaurocerasus_Hans2.jpg, PrunusLaurocerasus_Hans_Pixabay.jpg, PrunusLaurocerasus_LMoonLight.jpg, PrunusLaurocerasus_Marc-R2.jpg | null |
-| 179 | Пираканта алая | Firethorn / Scarlet firethorn | Vuurdoorn | Pyracantha Coccinea | 1 | p242 | PyracanthaСoccinea.JPG | null |
-| 180 | Розмарин | Rosemary | Rozemarijn | Salvia Rosmarinus | 1 | p243 | SalviaRosmarinus.JPG | null |
-| 181 | Одуванчик | Dandelion | Paardenbloem | Taraxacum Officinale | 1 | p244 | TaraxacumOfficinale_Pexels-DawidZawila.JPG | null |
-| 182 | Ветреница/анемона корончатая | Poppy anemone | Tuinanemoon | Anemone Coronaria | 1 | p294 | AnemoneCoronaria_Nature'sBeauty12_StockSnap.JPG | null |
-| 183 | Антуриум | Anthurium / Flamingo flower | Flamingoplant | Anturium | 1 | p263 | Anturium_FabianoCardoso_Pexels.JPG | null |
-| 184 | Вереск | Heather | Struikheide | Calluna | 1 | p265 | Calluna_Mary_StockSnap.JPG | null |
-| 185 | Эшшольция калифорнийская | California poppy | Californische klaproos | Eschscholzia Californica | 1 | p270 | EschscholziaCalifornica_MattBango_StockSnap.JPG | null |
-| 186 | Гелениум осенний | Sneezeweed | Zonnekruid | Helenium Autumnale | 2 | p273, p274 | HeleniumAutumnale_TravelPhotographer_StockSnap.JPG, HeleniumAutumnale2_TravelPhotographer_StockSnap.JPG | null |
-| 187 | Геликония попугайная | Parrot’s flower / Parrot heliconia | Papegaaienbloem | Heliconia Psittacorum | 1 | p275 | HeliconiaPsittacorum_HartonoSubagio_Pexels.JPG | null |
-| 188 | Каланхоэ Блоссфельда | Flaming Katy / Kalanchoe | Flamingoplantje / Kalanchoë | Kalanchoe Blossfeldiana | 2 | p277, p278 | KalanchoeBlossfeldiana_HazelSarmiento.JPG, KalanchoeBlossfeldiana_HazelSarmiento_Hard.JPG | null |
-| 189 | Земляника садовая | Strawberry | Aardbei | Fragaria × ananassa | 1 | p289 | Strawberry_Couleur_Pixabay.JPG | null |
-| 190 | Декабрист | Christmas cactus | Kerstcactus | Schlumbergera Truncata | 1 | p287 | SchlumbergeraTruncata_TravelPhotographer_StockSnap.JPG | null |
-| 191 | Ландыш майский | Lily of the valley | Lelietje-van-dalen | Convallaria Majalis | 1 | p267 | ConvallariaMajalis_Mary_StockSnap.JPG | null |
-| 192 | Гвоздика бородатая (турецкая) | Sweet William | Duizendschoon | Dianthus barbatus | 1 | p269 | DianthusBarbatus_Nature'sBeauty_StockSnap.JPG | null |
-| 193 | Смолёвка халцедоновая | Maltese cross | Brandende liefde | Silene chalcedonica | 1 | p288 | SileneChalcedonica_Nature'sBeauty_StockSnap.JPG | null |
-| 194 | Гелихризум сухоцвет | Strawflower / Golden everlasting | Strobloem | Xerochrysum bracteatum | 1 | p292 | XerochrysumBracteatum_MacroMama_StockSnap.JPG | null |
-| 195 | Львиный зев | Snapdragon | Leeuwebek | Antirrhinum majus | 1 | p262 | AntirrhinumMajus_VintageRS_StockSnap.JPG | null |
-| 196 | Юстиция розовая | Brazilian plume flower | Braziliaanse pluim | Justicia carnea | 1 | p276 | JusticiaCarnea_HartonoSubagio_Pexels.JPG | null |
-| 197 | Аихризон | Aichryson / Houseleek tree | Vetplantje / Aichryson | Aichryson | 1 | p293 | Aichryson.JPG | null |
-| 198 | Шалфей луговой | Meadow sage | Veldsalie | Salvia pratensis | 1 | p286 | SalviaPratensis_BrettSayles_Pexels.JPG | null |
-| 199 | Люпин широколистный | Broadleaf lupine | Lupine | Lupinus Latifolius | 1 | p279 | LupinusLatifolius_Nature'sBeauty_StockSnap.JPG | null |
-| 200 | Кориандр (кинза) | Coriander / Cilantro | Koriander | Coriandrum sativum | 1 | p282 | Coriandrum_RajeshSBalouria_Pexels.JPG | null |
-| 201 | Барвинок малый | Lesser periwinkle | Kleine maagdenpalm | Vinca Minor | 2 | p290, p291 | VincaMinor_ChristyRice_Pexels.JPG, VincaMinor_Kaboompics_Pexels.JPG | null |
+| 167 | Цикорий | Chicory | Wilde Cichorei | Cichorium Intybus | 1 | p266 | CichoriumIntybus_Manfredrichter_pixabay.JPG | Medium |
+| 168 | Кувшинка | Water Lily | Waterlelie | Nymphaea | 2 | p208, p259 | WaterLily_Amitrai10.JPG, Nymphaeaceae_BobRichards_StockSnap.JPG | Easy |
+| 169 | Амарант багряный | Red amaranth | Rode amarant | Amaranthus Cruentus | 1 | p230 | AmaranthusCruentus_JuliaFilirovska.JPG | Medium |
+| 170 | Амарант тёмный (печальный) | Prince's-feather | Amaranthus hypochondriacus | Amaranthus hypochondriacus | 1 | p229 | Amaranth_LevStrelchenko.jpg | Hard |
+| 171 | Цеанотус (краснокоренник) вдавленный | Santa Barbara ceanothus | Amerikaanse sering | Ceanothus Impressus | 1 | p231 | CeanothusImpressus_SonnySixteen.jpg | Hard |
+| 172 | Бересклет | Spindle tree | Kardinaalsmuts | Euonymus | 1 | p232 | Euonymus.JPG | Medium |
+| 173 | Хебе красивая | Showy hebe / Shrubby veronica | Struikveronica | Hebe Speciosa | 1 | p233 | HebeSpeciosa.JPG | Hard |
+| 174 | Алоэ складчатое | Fan aloe | Waaier-aloë | Kumara Plicatilis | 1 | p234 | KumaraPlicatilis_MargalitToyber_Unsplash.JPG | Hard |
+| 175 | Левизия котиледон (туполистная) | Siskiyou lewisia | Lewisia | Lewisia Cotyledon | 1 | p235 | LewisiaCotyledon .JPG | Hard |
+| 176 | Павловния | Paulownia / Princess tree | Anna Paulownaboom | Paulownia | 1 | p236 | Paulownia_SevalTorun.jpg | Medium |
+| 177 | Фацелия | Phacelia / Scorpionweed | Phacelia | Phacelia | 1 | p237 | Phacelia_MarkusSpiske.JPG | Medium |
+| 178 | Лавровишня | Cherry laurel | Laurierkers | Prunus Laurocerasus | 4 | p238, p239, p240, p241 | PrunusLaurocerasus_Hans2.jpg, PrunusLaurocerasus_Hans_Pixabay.jpg, PrunusLaurocerasus_LMoonLight.jpg, PrunusLaurocerasus_Marc-R2.jpg | Medium |
+| 179 | Пираканта алая | Firethorn / Scarlet firethorn | Vuurdoorn | Pyracantha Coccinea | 1 | p242 | PyracanthaСoccinea.JPG | Medium |
+| 180 | Розмарин | Rosemary | Rozemarijn | Salvia Rosmarinus | 1 | p243 | SalviaRosmarinus.JPG | Easy |
+| 181 | Одуванчик | Dandelion | Paardenbloem | Taraxacum Officinale | 1 | p244 | TaraxacumOfficinale_Pexels-DawidZawila.JPG | Easy |
+| 182 | Ветреница/анемона корончатая | Poppy anemone | Tuinanemoon | Anemone Coronaria | 1 | p294 | AnemoneCoronaria_Nature'sBeauty12_StockSnap.JPG | Medium |
+| 183 | Антуриум | Anthurium / Flamingo flower | Flamingoplant | Anturium | 1 | p263 | Anturium_FabianoCardoso_Pexels.JPG | Medium |
+| 184 | Вереск | Heather | Struikheide | Calluna | 1 | p265 | Calluna_Mary_StockSnap.JPG | Medium |
+| 185 | Эшшольция калифорнийская | California poppy | Californische klaproos | Eschscholzia Californica | 1 | p270 | EschscholziaCalifornica_MattBango_StockSnap.JPG | Medium |
+| 186 | Гелениум осенний | Sneezeweed | Zonnekruid | Helenium Autumnale | 2 | p273, p274 | HeleniumAutumnale_TravelPhotographer_StockSnap.JPG, HeleniumAutumnale2_TravelPhotographer_StockSnap.JPG | Medium |
+| 187 | Геликония попугайная | Parrot’s flower / Parrot heliconia | Papegaaienbloem | Heliconia Psittacorum | 1 | p275 | HeliconiaPsittacorum_HartonoSubagio_Pexels.JPG | Hard |
+| 188 | Каланхоэ Блоссфельда | Flaming Katy / Kalanchoe | Flamingoplantje / Kalanchoë | Kalanchoe Blossfeldiana | 2 | p277, p278 | KalanchoeBlossfeldiana_HazelSarmiento.JPG, KalanchoeBlossfeldiana_HazelSarmiento_Hard.JPG | Medium |
+| 189 | Земляника садовая | Strawberry | Aardbei | Fragaria × ananassa | 1 | p289 | Strawberry_Couleur_Pixabay.JPG | Easy |
+| 190 | Декабрист | Christmas cactus | Kerstcactus | Schlumbergera Truncata | 1 | p287 | SchlumbergeraTruncata_TravelPhotographer_StockSnap.JPG | Easy |
+| 191 | Ландыш майский | Lily of the valley | Lelietje-van-dalen | Convallaria Majalis | 1 | p267 | ConvallariaMajalis_Mary_StockSnap.JPG | Medium |
+| 192 | Гвоздика бородатая (турецкая) | Sweet William | Duizendschoon | Dianthus barbatus | 1 | p269 | DianthusBarbatus_Nature'sBeauty_StockSnap.JPG | Medium |
+| 193 | Смолёвка халцедоновая | Maltese cross | Brandende liefde | Silene chalcedonica | 1 | p288 | SileneChalcedonica_Nature'sBeauty_StockSnap.JPG | Hard |
+| 194 | Гелихризум сухоцвет | Strawflower / Golden everlasting | Strobloem | Xerochrysum bracteatum | 1 | p292 | XerochrysumBracteatum_MacroMama_StockSnap.JPG | Medium |
+| 195 | Львиный зев | Snapdragon | Leeuwebek | Antirrhinum majus | 1 | p262 | AntirrhinumMajus_VintageRS_StockSnap.JPG | Easy |
+| 196 | Юстиция розовая | Brazilian plume flower | Braziliaanse pluim | Justicia carnea | 1 | p276 | JusticiaCarnea_HartonoSubagio_Pexels.JPG | Hard |
+| 197 | Аихризон | Aichryson / Houseleek tree | Vetplantje / Aichryson | Aichryson | 1 | p293 | Aichryson.JPG | Hard |
+| 198 | Шалфей луговой | Meadow sage | Veldsalie | Salvia pratensis | 1 | p286 | SalviaPratensis_BrettSayles_Pexels.JPG | Medium |
+| 199 | Люпин широколистный | Broadleaf lupine | Lupine | Lupinus Latifolius | 1 | p279 | LupinusLatifolius_Nature'sBeauty_StockSnap.JPG | Medium |
+| 200 | Кориандр (кинза) | Coriander / Cilantro | Koriander | Coriandrum sativum | 1 | p282 | Coriandrum_RajeshSBalouria_Pexels.JPG | Easy |
+| 201 | Барвинок малый | Lesser periwinkle | Kleine maagdenpalm | Vinca Minor | 2 | p290, p291 | VincaMinor_ChristyRice_Pexels.JPG, VincaMinor_Kaboompics_Pexels.JPG | Medium |

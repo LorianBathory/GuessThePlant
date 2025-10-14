@@ -87,7 +87,7 @@ const speciesCatalog = Object.freeze({
   80: { images: ['p053'], wrongAnswers: [17] }, //временный wrongAnswer +
   81: { images: ['p059'], wrongAnswers: [19] }, //временный wrongAnswer +
   82: { images: ['p084'], wrongAnswers: [20] }, //viola. временный wrongAnswer +
-  83: { images: ['p055', 'p228','], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
+  83: { images: ['p055', 'p228'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
   84: { images: ['p062'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
   85: { images: ['p051', 'p094', 'p214', 'p215'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
     86: { images: ['p071', 'p072'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
