@@ -33,7 +33,7 @@ const plantImageIdsByDifficulty = Object.freeze({
   [difficultyLevels.EASY]: Object.freeze(['p092']),
   [difficultyLevels.MEDIUM]: Object.freeze(['p011', 'p014', 'p021', 'p035', 'p044', 'p050', 'p060', 'p078', 'p082', 'p097', 'p104', 'p133', 'p135']),
   [difficultyLevels.HARD]: Object.freeze(['p15', 'p018', 'p046', 'p047', 'p054', 'p063', 'p064', 'p067', 'p072', 'p073', 'p074', 'p095', 'p096', 'p100', 'p109', 'p110', 'p111', 'p112',
-      'p141'])
+      'p141', 'p278'])
 });
 
 const bouquetImageIdsByDifficulty = Object.freeze({
