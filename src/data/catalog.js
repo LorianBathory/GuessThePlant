@@ -27,7 +27,7 @@ const speciesCatalog = Object.freeze({
   //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
   21: {images: ['p076', 'p128', 'p129', 'p261'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
   22: { images: ['p009', 'p133'], wrongAnswers: [35, 46]  }, //Tulip
-  23: { images: ['p106'], }, wrongAnswers: [5, 21, 31], //gardenia
+  23: { images: ['p106'], wrongAnswers: [5, 21, 31] }, //gardenia
   24: { images: ['p120', 'p121', 'p256'] }, //magnolia
   25: { images: ['p130'],  wrongAnswers: [29, 119] }, //Shasta Daisy, добавить ромашку аптечную в список растений
   26: { images: ['p010', 'p011', 'p100', 'p190'], wrongAnswers: [29, 33, 73, 77] }, //Dahlia. добавить циннию
