@@ -5,6 +5,8 @@ import useSecureImageSource from '../hooks/useSecureImageSource.js';
 const DESKTOP_IMAGE_HEIGHT = 510;
 const DESKTOP_IMAGE_ASPECT_RATIO = 3 / 2;
 const DESKTOP_IMAGE_WIDTH = DESKTOP_IMAGE_HEIGHT * DESKTOP_IMAGE_ASPECT_RATIO;
+const DESKTOP_FEEDBACK_WIDTH = 675;
+const DESKTOP_FEEDBACK_HEIGHT = 510;
 
 function SecurePlantImage({ src, alt, className, style, accentColor = '#C29C27' }) {
   const ReactGlobal = globalThis.React;
@@ -122,15 +124,15 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColo
       viewBox: '0 0 200 200',
       fill: 'none',
       'aria-hidden': 'true'
-      }, [
-        createElement('path', {
-          key: 'outline',
-          d: 'M52 108L86 142L148 68',
-          stroke: themeAccentColor,
-          strokeWidth: 18,
-          strokeLinecap: 'round',
-          strokeLinejoin: 'round'
-        }),
+    }, [
+      createElement('path', {
+        key: 'outline',
+        d: 'M52 108L86 142L148 68',
+        stroke: themeAccentColor,
+        strokeWidth: 18,
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
+      }),
       createElement('path', {
         key: 'check',
         d: 'M52 108L86 142L148 68',
@@ -164,26 +166,53 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColo
       })
     ]);
 
-  const reducedBorderWidth = Math.max(1, (isMobile ? 4 : 8) / 7);
-  const outerPadding = isMobile
-    ? (isCorrect ? '7px' : '24px 12px')
-    : '48px';
+  if (!isMobile) {
+    return createElement('div', {
+      className: 'h-full flex items-center justify-center',
+      style: {
+        width: `${DESKTOP_FEEDBACK_WIDTH}px`,
+        height: `${DESKTOP_FEEDBACK_HEIGHT}px`,
+        margin: '0 auto',
+        backgroundColor: '#163B3A',
+        border: `6px solid ${themeAccentColor}`,
+        boxSizing: 'border-box',
+        padding: '15px'
+      }
+    }, createElement('div', {
+      className: 'flex items-center justify-center',
+      style: {
+        width: '100%',
+        height: '100%',
+        border: `2px solid ${accentColor}`,
+        borderRadius: '0px',
+        boxSizing: 'border-box',
+        backgroundColor: 'transparent',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }
+    }, [
+      icon,
+      createElement('span', { key: 'label', className: 'sr-only' }, srText)
+    ]));
+  }
+
+  const reducedBorderWidth = Math.max(1, 4 / 7);
+  const outerPadding = isCorrect ? '7px' : '24px 12px';
   const frameBorder = isCorrect
     ? `${reducedBorderWidth}px solid ${accentColor}`
-    : (isMobile ? `4px solid ${accentColor}` : `8px solid ${accentColor}`);
-  const frameRadius = isCorrect ? '0px' : (isMobile ? '18px' : '24px');
-  const framePadding = isMobile ? '18px' : '32px';
-  const containerMaxWidth = isMobile
-    ? (isCorrect ? '100%' : '320px')
-    : '420px';
-  const containerHeight = isMobile && isCorrect ? '100%' : 'auto';
+    : `4px solid ${accentColor}`;
+  const frameRadius = isCorrect ? '0px' : '18px';
+  const framePadding = '18px';
+  const containerMaxWidth = isCorrect ? '100%' : '320px';
+  const containerHeight = isCorrect ? '100%' : 'auto';
 
   return createElement('div', {
     className: 'h-full flex items-center justify-center',
     style: {
-      width: isMobile ? '100%' : `${DESKTOP_IMAGE_WIDTH}px`,
+      width: '100%',
       backgroundColor: '#163B3A',
-      border: isMobile ? 'none' : `6px solid ${themeAccentColor}`,
+      border: 'none',
       padding: outerPadding
     }
   }, createElement('div', {
@@ -191,8 +220,8 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColo
     style: {
       width: '100%',
       maxWidth: containerMaxWidth,
-      height: isCorrect ? containerHeight : 'auto',
-      minHeight: isMobile ? '220px' : '260px',
+      height: containerHeight,
+      minHeight: '220px',
       border: frameBorder,
       borderRadius: frameRadius,
       boxSizing: 'border-box',
