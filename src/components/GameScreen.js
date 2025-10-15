@@ -165,12 +165,18 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColo
     ]);
 
   const reducedBorderWidth = Math.max(1, (isMobile ? 4 : 8) / 7);
-  const outerPadding = isCorrect ? '7px' : (isMobile ? '24px 12px' : '48px');
+  const outerPadding = isMobile
+    ? (isCorrect ? '7px' : '24px 12px')
+    : '48px';
   const frameBorder = isCorrect
     ? `${reducedBorderWidth}px solid ${accentColor}`
     : (isMobile ? `4px solid ${accentColor}` : `8px solid ${accentColor}`);
   const frameRadius = isCorrect ? '0px' : (isMobile ? '18px' : '24px');
-  const framePadding = isCorrect ? (isMobile ? '18px' : '32px') : (isMobile ? '18px' : '28px');
+  const framePadding = isMobile ? '18px' : '32px';
+  const containerMaxWidth = isMobile
+    ? (isCorrect ? '100%' : '320px')
+    : '420px';
+  const containerHeight = isMobile && isCorrect ? '100%' : 'auto';
 
   return createElement('div', {
     className: 'h-full flex items-center justify-center',
@@ -184,8 +190,8 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColo
     className: 'flex items-center justify-center',
     style: {
       width: '100%',
-      maxWidth: isCorrect ? '100%' : (isMobile ? '320px' : '420px'),
-      height: isCorrect ? '100%' : 'auto',
+      maxWidth: containerMaxWidth,
+      height: isCorrect ? containerHeight : 'auto',
       minHeight: isMobile ? '220px' : '260px',
       border: frameBorder,
       borderRadius: frameRadius,
