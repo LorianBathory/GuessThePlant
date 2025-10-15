@@ -2,6 +2,10 @@ import GameHeader from './GameHeader.js';
 import { questionTypes } from '../data/questionTypes.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 
+const DESKTOP_IMAGE_HEIGHT = 510;
+const DESKTOP_IMAGE_ASPECT_RATIO = 3 / 2;
+const DESKTOP_IMAGE_WIDTH = DESKTOP_IMAGE_HEIGHT * DESKTOP_IMAGE_ASPECT_RATIO;
+
 function SecurePlantImage({ src, alt, className, style, accentColor = '#C29C27' }) {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -91,8 +95,14 @@ function renderPlantImage(ReactGlobal, plant, isMobile, accentColor) {
     key: 'plant-image',
     src: plant.image,
     alt: `Растение ${plant.id}`,
-    className: 'w-full h-full object-cover',
-    style: { border: isMobile ? 'none' : `6px solid ${accentColor}` },
+    className: 'w-full h-full object-cover block',
+    style: {
+      border: isMobile ? 'none' : `6px solid ${accentColor}`,
+      boxSizing: isMobile ? undefined : 'border-box',
+      aspectRatio: isMobile ? undefined : `${DESKTOP_IMAGE_ASPECT_RATIO}`,
+      display: 'block',
+      margin: isMobile ? undefined : '0 auto'
+    },
     accentColor
   });
 }
@@ -165,7 +175,7 @@ function renderFeedbackPanel(ReactGlobal, type, texts, isMobile, themeAccentColo
   return createElement('div', {
     className: 'h-full flex items-center justify-center',
     style: {
-      width: isMobile ? '100%' : '675px',
+      width: isMobile ? '100%' : `${DESKTOP_IMAGE_WIDTH}px`,
       backgroundColor: '#163B3A',
       border: isMobile ? 'none' : `6px solid ${themeAccentColor}`,
       padding: outerPadding
@@ -215,7 +225,7 @@ export default function GameScreen({
     throw new Error('React global was not found. Make sure the React bundle is loaded before rendering GameScreen.');
   }
 
-  const { createElement } = ReactGlobal;
+  const { createElement, useEffect, useRef } = ReactGlobal;
   const isBouquetQuestion = currentPlant && currentPlant.questionType === questionTypes.BOUQUET;
   const interfaceAccentColor = isBouquetQuestion ? '#C9A9A6' : '#C29C27';
   const interfaceAccentColorTransparent = isBouquetQuestion
@@ -250,6 +260,14 @@ export default function GameScreen({
     totalQuestions,
     normalizedQuestionIndex + (gameState !== 'playing' ? 1 : 0)
   );
+
+  const lastKnownOptionsCountRef = useRef(options.length > 0 ? options.length : 0);
+
+  useEffect(() => {
+    if (options.length > 0) {
+      lastKnownOptionsCountRef.current = options.length;
+    }
+  }, [options.length]);
 
   const content = createElement('div', {
     key: 'main',
@@ -303,35 +321,34 @@ export default function GameScreen({
 )),
         createElement('div', {
           key: 'image-area',
-          className: 'flex justify-center',
+          className: 'flex justify-center items-center',
           style: {
-            height: isMobile ? 'auto' : '450px',
+            height: isMobile ? 'auto' : `${DESKTOP_IMAGE_HEIGHT}px`,
             marginBottom: isMobile ? '12px' : '32px',
             width: '100%'
           }
         }, [
           gameState === 'playing' && currentPlant && createElement('div', {
-            className: 'h-full',
+            className: 'h-full flex justify-center items-center',
             style: {
-              width: isMobile ? '100%' : '675px',
-              height: '100%'
+              width: isMobile ? '100%' : `${DESKTOP_IMAGE_WIDTH}px`,
+              height: '100%',
+              margin: isMobile ? undefined : '0 auto'
             }
           }, renderPlantImage(ReactGlobal, currentPlant, isMobile, interfaceAccentColor)),
           gameState === 'correct' && renderFeedbackPanel(ReactGlobal, 'correct', texts, isMobile, interfaceAccentColor),
           gameState === 'incorrect' && renderFeedbackPanel(ReactGlobal, 'incorrect', texts, isMobile, interfaceAccentColor)
         ]),
-        gameState === 'playing' && options.length > 0 && createElement('div', {
-          key: 'options',
-          className: isMobile ? 'grid grid-cols-1 w-full' : 'grid grid-cols-2 gap-4 max-w-3xl mx-auto',
-          style: {
-            gap: isMobile ? '6px' : undefined,
-            width: '100%'
-          }
-        }, options.map(option => createElement('button', {
-          key: option.id,
-          onClick: () => onAnswer(option.id),
-          className: 'font-semibold transition-all duration-200 hover:opacity-80 hover:scale-105',
-          style: {
+        (() => {
+          const hasOptions = options.length > 0;
+          const baseContainerClass = isMobile
+            ? 'grid grid-cols-1 w-full'
+            : 'grid grid-cols-2 gap-4 max-w-3xl mx-auto';
+          const baseContainerStyle = {
+            width: '100%',
+            ...(isMobile ? { gap: '6px' } : {})
+          };
+          const optionButtonStyle = {
             backgroundColor: '#163B3A',
             border: `4px solid ${interfaceAccentColor}`,
             color: interfaceAccentColor,
@@ -339,8 +356,44 @@ export default function GameScreen({
             fontSize: isMobile ? '20.8px' : '20px',
             padding: isMobile ? '12px 14px' : '16px 24px',
             width: '100%'
+          };
+
+          if (gameState === 'playing' && hasOptions) {
+            return createElement('div', {
+              key: 'options',
+              className: baseContainerClass,
+              style: baseContainerStyle
+            }, options.map(option => createElement('button', {
+              key: option.id,
+              onClick: () => onAnswer(option.id),
+              className: 'font-semibold transition-all duration-200 hover:opacity-80 hover:scale-105',
+              style: optionButtonStyle
+            }, option.label)));
           }
-        }, option.label)))
+
+          if (!isMobile) {
+            const lastKnownCount = lastKnownOptionsCountRef.current;
+            const placeholderCount = lastKnownCount > 0 ? lastKnownCount : 4;
+
+            if (placeholderCount > 0) {
+              return createElement('div', {
+                key: 'options-placeholder',
+                className: baseContainerClass,
+                style: {
+                  ...baseContainerStyle,
+                  visibility: 'hidden',
+                  pointerEvents: 'none'
+                },
+                'aria-hidden': 'true'
+              }, Array.from({ length: placeholderCount }).map((_, index) => createElement('div', {
+                key: `placeholder-${index}`,
+                style: optionButtonStyle
+              })));
+            }
+          }
+
+          return null;
+        })()
       ]),
     ])
   ]);
