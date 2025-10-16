@@ -2,6 +2,7 @@ import { getDifficultyByQuestionId, getDifficultyByImageId } from './difficultie
 import { plantNamesById } from './plantNames.js';
 import { plantImagesById } from './images.js';
 import { questionTypes } from './questionTypes.js';
+import { genusById } from './genus/index.js';
 
 // Дополнительные данные для видов (кроме локализации).
 const speciesCatalog = Object.freeze({
@@ -43,7 +44,7 @@ const speciesCatalog = Object.freeze({
   36: { images: ['p114', 'p115'] }, //Hemerocallis
   //37
   //38
-  39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, надо добавить топинамбур - 135
+  39: {images: ['p134'], wrongAnswers: [40, 100, 121] }, //heliopsis, рядом с родом Helianthus
   40: { images: ['p161', 'p162'] }, //Coreopsis
   41: { images: ['p024', 'p101', 'p218'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
   //42
@@ -104,7 +105,7 @@ const speciesCatalog = Object.freeze({
     97: { images: ['p083', 'p131', 'p132', 'p245', 'p296'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
     98: { images: ['p067', 'p068'], wrongAnswers: [31] }, //Passiflora временный wrongAnswer +
     //99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
-    100: { images: ['p080', 'p199', 'p310'], wrongAnswers: [6, 39, 27] }, //Sunflower + Helianthus
+    100: { genusId: 100 }, //Sunflower + Helianthus
     101: { images: ['p056', 'p099', 'p164'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
     102: { images: ['p177', 'p178'] }, //Aglaonema
     //103 без изображений
@@ -190,37 +191,109 @@ const speciesCatalog = Object.freeze({
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
-export const speciesById = Object.freeze(
-  Object.fromEntries(
-    Object.entries(plantNamesById).map(([id, names]) => {
-      const numericId = Number(id);
-      const catalogEntry = speciesCatalog[numericId] || {};
-      const images = catalogEntry.images
-        ? Object.freeze([...catalogEntry.images])
-        : undefined;
-      const wrongAnswers = catalogEntry.wrongAnswers
-        ? Object.freeze([...catalogEntry.wrongAnswers])
+const NUMERIC_ID_PATTERN = /^\d+$/;
+
+function parseCatalogId(rawId) {
+  const stringId = String(rawId);
+  return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : stringId;
+}
+
+const speciesEntries = new Map();
+
+Object.entries(plantNamesById).forEach(([id, names]) => {
+  const parsedId = parseCatalogId(id);
+  speciesEntries.set(parsedId, { id: parsedId, names });
+});
+
+Object.entries(speciesCatalog).forEach(([id, entry]) => {
+  const parsedId = parseCatalogId(id);
+  const normalizedEntry = entry || {};
+
+  if (normalizedEntry.genusId != null) {
+    const genus = genusById[normalizedEntry.genusId];
+
+    if (!genus || typeof genus !== 'object') {
+      return;
+    }
+
+    const genusEntries = genus.entries && typeof genus.entries === 'object'
+      ? genus.entries
+      : {};
+
+    const baseWrongAnswers = Array.isArray(normalizedEntry.wrongAnswers)
+      ? Object.freeze(normalizedEntry.wrongAnswers.slice())
+      : Array.isArray(genus.wrongAnswers)
+        ? Object.freeze(genus.wrongAnswers.slice())
         : undefined;
 
-      return [
-        numericId,
-        {
-          names,
-          ...(images ? { images } : {}),
-          ...(wrongAnswers ? { wrongAnswers } : {})
-        }
-      ];
-    })
+    Object.entries(genusEntries).forEach(([childId, genusEntry]) => {
+      if (!genusEntry || typeof genusEntry !== 'object') {
+        return;
+      }
+
+      const parsedChildId = parseCatalogId(childId);
+      const existing = speciesEntries.get(parsedChildId) || {};
+      const names = genusEntry.names || existing.names;
+
+      if (!names) {
+        return;
+      }
+
+      const images = Array.isArray(genusEntry.images)
+        ? Object.freeze(genusEntry.images.slice())
+        : existing.images;
+      const wrongAnswers = Array.isArray(genusEntry.wrongAnswers)
+        ? Object.freeze(genusEntry.wrongAnswers.slice())
+        : baseWrongAnswers || existing.wrongAnswers;
+
+      speciesEntries.set(parsedChildId, {
+        ...existing,
+        id: parsedChildId,
+        names,
+        ...(images ? { images } : {}),
+        ...(wrongAnswers ? { wrongAnswers } : {}),
+        genusId: genus.id
+      });
+    });
+
+    return;
+  }
+
+  const existing = speciesEntries.get(parsedId);
+  if (!existing) {
+    return;
+  }
+
+  const images = Array.isArray(normalizedEntry.images)
+    ? Object.freeze(normalizedEntry.images.slice())
+    : existing.images;
+  const wrongAnswers = Array.isArray(normalizedEntry.wrongAnswers)
+    ? Object.freeze(normalizedEntry.wrongAnswers.slice())
+    : existing.wrongAnswers;
+
+  speciesEntries.set(parsedId, {
+    ...existing,
+    ...(images ? { images } : {}),
+    ...(wrongAnswers ? { wrongAnswers } : {})
+  });
+});
+
+export const speciesById = Object.freeze(
+  Object.fromEntries(
+    Array.from(speciesEntries.entries()).map(([id, value]) => [
+      id,
+      Object.freeze(value)
+    ])
   )
 );
 
 // ПРОИЗВОДНЫЕ ПРЕДСТАВЛЕНИЯ (для совместимости с текущей логикой):
 export const choicesById = Object.fromEntries(
-  Object.entries(speciesById).map(([id, v]) => [Number(id), v.names])
+  Object.values(speciesById).map(entry => [entry.id, entry.names])
 );
 
 export const ALL_CHOICE_IDS = Object.freeze(
-  Object.keys(speciesById).map(n => Number(n))
+  Object.values(speciesById).map(entry => entry.id)
 );
 
 // Растения, доступные как ВОПРОСЫ прямо сейчас (есть image):
@@ -229,27 +302,30 @@ export const ALL_CHOICE_IDS = Object.freeze(
 // Если она не задана, применяется общее правило из difficulties.js.
 // questionVariantId остаётся уникальным идентификатором конкретного снимка,
 // при этом поле id всегда соответствует идентификатору растения для ответов.
-export const plants = Object.entries(speciesById)
-  .flatMap(([id, v]) => {
-    const numericId = Number(id);
-    const imageEntries = (v.images || [])
+export const plants = Object.values(speciesById)
+  .flatMap(species => {
+    const imageEntries = (species.images || [])
       .map(imageId => plantImagesById[imageId])
       .filter(imageEntry => imageEntry && typeof imageEntry.src === 'string');
 
     return imageEntries.map((imageEntry, index) => {
       const overrideDifficulty = getDifficultyByImageId(imageEntry.id, questionTypes.PLANT);
+      const baseDifficulty = getDifficultyByQuestionId(species.id, questionTypes.PLANT);
+      const genusDifficulty = species.genusId != null && species.genusId !== species.id
+        ? getDifficultyByQuestionId(species.genusId, questionTypes.PLANT)
+        : null;
 
       return {
-        id: numericId,
-        correctAnswerId: numericId,
+        id: species.id,
+        correctAnswerId: species.id,
         imageId: imageEntry.id,
         image: imageEntry.src,
-        names: v.names,
-        wrongAnswers: v.wrongAnswers,
-        difficulty: overrideDifficulty || getDifficultyByQuestionId(numericId, questionTypes.PLANT),
-        questionVariantId: `${numericId}-${index}`,
+        names: species.names,
+        wrongAnswers: species.wrongAnswers,
+        difficulty: overrideDifficulty || baseDifficulty || genusDifficulty,
+        questionVariantId: `${species.id}-${index}`,
         questionType: questionTypes.PLANT,
-        selectionGroupId: `plant-${numericId}`,
+        selectionGroupId: `plant-${species.id}`,
         questionPromptKey: 'question'
       };
     });
