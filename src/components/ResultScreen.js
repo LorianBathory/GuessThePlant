@@ -212,8 +212,11 @@ function renderRoundComplete({
   const nextRoundNumber = Math.min(currentRoundIndex + 2, totalRounds);
   const roundCompletedText = (texts.roundCompleted || '').replace('{{round}}', roundNumber);
   const startNextRoundText = (texts.startRoundButton || '').replace('{{round}}', nextRoundNumber);
-  const desktopScoreSummary = (texts.roundScoreSummary || 'Вы получили {{score}} баллов за раунд!').replace('{{score}}', score);
-  const desktopNextRoundLabel = texts.nextRoundButton || 'Следующий раунд';
+  const scoreLabel = texts.score || 'Score';
+  const desktopScoreSummaryTemplate = texts.roundScoreSummary || `${scoreLabel}: {{score}}`;
+  const desktopScoreSummary = desktopScoreSummaryTemplate.replace('{{score}}', score);
+  const desktopNextRoundTemplate = texts.nextRoundButton || texts.startRoundButton || 'Start next round';
+  const desktopNextRoundLabel = desktopNextRoundTemplate.replace('{{round}}', nextRoundNumber);
   const mistakesSection = renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage, isMobile });
 
   if (isMobile) {
