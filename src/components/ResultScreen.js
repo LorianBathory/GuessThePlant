@@ -27,7 +27,7 @@ function renderDesktopBackground(ReactGlobal, isMobile) {
   })))));
 }
 
-function renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage }) {
+function renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage, isMobile }) {
   if (!Array.isArray(roundMistakes) || roundMistakes.length === 0) {
     return null;
   }
@@ -36,11 +36,90 @@ function renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage 
   const mistakesTitle = texts.roundMistakesTitle || 'Растения, в которых были ошибки';
   const isSingleMistake = roundMistakes.length === 1;
 
-  const listClassName = `flex flex-col gap-4 w-full ${isSingleMistake ? 'items-center' : 'items-stretch'}`;
+  if (isMobile) {
+    const listClassName = `flex flex-col gap-4 w-full ${isSingleMistake ? 'items-center' : 'items-stretch'}`;
+
+    return createElement('div', {
+      key: 'round-mistakes',
+      className: 'w-full flex flex-col gap-4',
+      style: { color: '#C29C27' }
+    }, [
+      createElement('h2', {
+        key: 'mistakes-title',
+        className: 'text-2xl font-semibold text-center'
+      }, mistakesTitle),
+      createElement('div', {
+        key: 'mistakes-list',
+        className: listClassName
+      }, roundMistakes.map((mistake, index) => {
+        const names = mistake && mistake.names ? mistake.names : {};
+        const label = names[plantLanguage]
+          || names[defaultLang]
+          || Object.values(names)[0]
+          || '';
+
+        return createElement('div', {
+          key: mistake.questionVariantId || mistake.id || `mistake-${index}`,
+          className: 'flex flex-col sm:flex-row items-center justify-center gap-4 w-full p-4 rounded-2xl',
+          style: {
+            backgroundColor: '#0F2A2A',
+            border: '3px solid #C29C27'
+          }
+        }, [
+          createElement('img', {
+            key: 'image',
+            src: mistake.image,
+            alt: label,
+            className: 'object-cover',
+            style: {
+              width: isSingleMistake ? '220px' : '140px',
+              height: isSingleMistake ? '220px' : '140px',
+              borderRadius: '18px',
+              border: '4px solid #C29C27',
+              backgroundColor: '#163B3A'
+            }
+          }),
+          createElement('span', {
+            key: 'label',
+            className: 'text-xl font-semibold text-center sm:text-left',
+            style: {
+              color: '#C29C27',
+              maxWidth: '100%'
+            }
+          }, label)
+        ]);
+      }))
+    ]);
+  }
+
+  const gridColumns = (() => {
+    if (roundMistakes.length <= 2) {
+      return roundMistakes.length || 1;
+    }
+
+    if (roundMistakes.length <= 4) {
+      return 3;
+    }
+
+    return 4;
+  })();
+  const imageSize = isSingleMistake ? 220 : 200;
+
+  const remainder = roundMistakes.length % gridColumns;
+  const requiresBalancing = remainder !== 0 && roundMistakes.length > gridColumns;
+  const leadingPlaceholders = requiresBalancing ? Math.floor((gridColumns - remainder) / 2) : 0;
+  const trailingPlaceholders = requiresBalancing ? Math.ceil((gridColumns - remainder) / 2) : 0;
+  const lastRowStartIndex = requiresBalancing ? roundMistakes.length - remainder : roundMistakes.length;
+
+  const placeholderStyle = {
+    width: `${imageSize}px`,
+    height: `${imageSize + 28}px`,
+    visibility: 'hidden'
+  };
 
   return createElement('div', {
     key: 'round-mistakes',
-    className: 'w-full flex flex-col gap-4',
+    className: 'w-full flex flex-col gap-6',
     style: { color: '#C29C27' }
   }, [
     createElement('h2', {
@@ -48,21 +127,35 @@ function renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage 
       className: 'text-2xl font-semibold text-center'
     }, mistakesTitle),
     createElement('div', {
-      key: 'mistakes-list',
-      className: listClassName
-    }, roundMistakes.map((mistake, index) => {
+      key: 'mistakes-grid',
+      className: 'w-full grid gap-6 justify-items-center',
+      style: {
+        gridTemplateColumns: `repeat(${gridColumns}, minmax(${imageSize}px, ${imageSize}px))`,
+        justifyContent: 'center'
+      }
+    }, roundMistakes.reduce((elements, mistake, index) => {
+      if (requiresBalancing && index === lastRowStartIndex) {
+        for (let fillerIndex = 0; fillerIndex < leadingPlaceholders; fillerIndex += 1) {
+          elements.push(createElement('div', {
+            key: `mistake-placeholder-leading-${fillerIndex}`,
+            style: placeholderStyle,
+            'aria-hidden': 'true'
+          }));
+        }
+      }
+
       const names = mistake && mistake.names ? mistake.names : {};
       const label = names[plantLanguage]
         || names[defaultLang]
         || Object.values(names)[0]
         || '';
 
-      return createElement('div', {
+      elements.push(createElement('div', {
         key: mistake.questionVariantId || mistake.id || `mistake-${index}`,
-        className: 'flex flex-col sm:flex-row items-center justify-center gap-4 w-full p-4 rounded-2xl',
+        className: 'flex flex-col items-center text-center',
         style: {
-          backgroundColor: '#0F2A2A',
-          border: '3px solid #C29C27'
+          maxWidth: `${imageSize}px`,
+          width: '100%'
         }
       }, [
         createElement('img', {
@@ -71,23 +164,35 @@ function renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage 
           alt: label,
           className: 'object-cover',
           style: {
-            width: isSingleMistake ? '220px' : '140px',
-            height: isSingleMistake ? '220px' : '140px',
-            borderRadius: '18px',
-            border: '4px solid #C29C27',
+            width: `${imageSize}px`,
+            height: `${imageSize}px`,
+            borderRadius: '0px',
+            border: '3px solid #C29C27',
             backgroundColor: '#163B3A'
           }
         }),
         createElement('span', {
           key: 'label',
-          className: 'text-xl font-semibold text-center sm:text-left',
+          className: 'text-lg font-semibold leading-snug',
           style: {
             color: '#C29C27',
-            maxWidth: '100%'
+            marginTop: '4px'
           }
         }, label)
-      ]);
-    }))
+      ]));
+
+      if (requiresBalancing && index === roundMistakes.length - 1) {
+        for (let fillerIndex = 0; fillerIndex < trailingPlaceholders; fillerIndex += 1) {
+          elements.push(createElement('div', {
+            key: `mistake-placeholder-trailing-${fillerIndex}`,
+            style: placeholderStyle,
+            'aria-hidden': 'true'
+          }));
+        }
+      }
+
+      return elements;
+    }, []))
   ]);
 }
 
@@ -99,14 +204,43 @@ function renderRoundComplete({
   totalRounds,
   onStartNextRound,
   roundMistakes,
-  plantLanguage
+  plantLanguage,
+  isMobile
 }) {
   const { createElement } = ReactGlobal;
   const roundNumber = currentRoundIndex + 1;
   const nextRoundNumber = Math.min(currentRoundIndex + 2, totalRounds);
   const roundCompletedText = (texts.roundCompleted || '').replace('{{round}}', roundNumber);
   const startNextRoundText = (texts.startRoundButton || '').replace('{{round}}', nextRoundNumber);
-  const mistakesSection = renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage });
+  const desktopScoreSummary = (texts.roundScoreSummary || 'Вы получили {{score}} баллов за раунд!').replace('{{score}}', score);
+  const desktopNextRoundLabel = texts.nextRoundButton || 'Следующий раунд';
+  const mistakesSection = renderRoundMistakes({ ReactGlobal, texts, roundMistakes, plantLanguage, isMobile });
+
+  if (isMobile) {
+    return createElement('div', {
+      key: 'round-result',
+      className: 'p-8 shadow-lg text-center w-full max-w-4xl mx-4 flex flex-col gap-6 items-center',
+      style: { backgroundColor: '#163B3A', border: '6px solid #C29C27' }
+    }, [
+      createElement('h1', {
+        key: 'round-title',
+        className: 'text-3xl font-bold',
+        style: { color: '#C29C27' }
+      }, roundCompletedText || `Round ${roundNumber} completed!`),
+      createElement('p', {
+        key: 'round-score',
+        className: 'text-2xl font-semibold',
+        style: { color: '#C29C27' }
+      }, `${texts.score}: ${score}`),
+      mistakesSection,
+      createElement('button', {
+        key: 'next-round',
+        onClick: onStartNextRound,
+        className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
+        style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
+      }, startNextRoundText || 'Start next round')
+    ].filter(Boolean));
+  }
 
   return createElement('div', {
     key: 'round-result',
@@ -117,19 +251,14 @@ function renderRoundComplete({
       key: 'round-title',
       className: 'text-3xl font-bold',
       style: { color: '#C29C27' }
-    }, roundCompletedText || `Round ${roundNumber} completed!`),
-    createElement('p', {
-      key: 'round-score',
-      className: 'text-2xl font-semibold',
-      style: { color: '#C29C27' }
-    }, `${texts.score}: ${score}`),
-    mistakesSection,
+    }, desktopScoreSummary),
     createElement('button', {
       key: 'next-round',
       onClick: onStartNextRound,
       className: 'px-6 py-3 font-semibold text-white transition-colors hover:opacity-80',
       style: { backgroundColor: '#163B3A', border: '4px solid #C29C27', color: '#C29C27' }
-    }, startNextRoundText || 'Start next round')
+    }, desktopNextRoundLabel),
+    mistakesSection
   ].filter(Boolean));
 }
 
@@ -245,7 +374,8 @@ export default function ResultScreen({
       totalRounds,
       onStartNextRound,
       roundMistakes,
-      plantLanguage
+      plantLanguage,
+      isMobile
     });
   } else {
     content = renderGameComplete({ ReactGlobal, texts, score, onRestart });
