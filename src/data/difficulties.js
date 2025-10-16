@@ -30,10 +30,44 @@ export const questionIdsByDifficulty = Object.freeze({
 });
 
 const plantImageIdsByDifficulty = Object.freeze({
-  [difficultyLevels.EASY]: Object.freeze(['p092']),
-  [difficultyLevels.MEDIUM]: Object.freeze(['p011', 'p014', 'p021', 'p035', 'p044', 'p050', 'p060', 'p078', 'p082', 'p097', 'p104', 'p133', 'p135']),
-  [difficultyLevels.HARD]: Object.freeze(['p15', 'p018', 'p046', 'p047', 'p054', 'p063', 'p064', 'p067', 'p072', 'p073', 'p074', 'p095', 'p096', 'p100', 'p109', 'p110', 'p111', 'p112',
-      'p141', 'p278'])
+  [difficultyLevels.EASY]: Object.freeze(['p73_3']),
+  [difficultyLevels.MEDIUM]: Object.freeze([
+    'p26_2',
+    'p29_2',
+    'p33_2',
+    'p55_3',
+    'p4_2',
+    'p91_2',
+    'p88_1',
+    'p31_5',
+    'p75_2',
+    'p29_4',
+    'p27_3',
+    'p22_2',
+    'p142_1'
+  ]),
+  [difficultyLevels.HARD]: Object.freeze([
+    'p30_1',
+    'p31_3',
+    'p3_2',
+    'p73_2',
+    'p5_3',
+    'p54_2',
+    'p54_3',
+    'p98_1',
+    'p86_2',
+    'p51_2',
+    'p92_1',
+    'p5_4',
+    'p29_3',
+    'p26_3',
+    'p8_3',
+    'p8_4',
+    'p8_5',
+    'p8_6',
+    'p112_2',
+    'p188_2'
+  ])
 });
 
 const bouquetImageIdsByDifficulty = Object.freeze({

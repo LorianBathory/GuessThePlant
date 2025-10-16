@@ -4,11 +4,11 @@ import { plantImagesById } from '../images.js';
 import { speciesById } from '../catalog.js';
 
 const memorizationPlantConfig = Object.freeze([
-  Object.freeze({ id: 3, imageId: 'p003' }),
-  Object.freeze({ id: 4, imageId: 'p004' }),
-  Object.freeze({ id: 5, imageId: 'p005' }),
-  Object.freeze({ id: 6, imageId: 'p006' }),
-  Object.freeze({ id: 14, imageId: 'p057' })
+  Object.freeze({ id: 3, imageId: 'p3_1' }),
+  Object.freeze({ id: 4, imageId: 'p4_1' }),
+  Object.freeze({ id: 5, imageId: 'p5_1' }),
+  Object.freeze({ id: 6, imageId: 'p6_1' }),
+  Object.freeze({ id: 14, imageId: 'p14_1' })
 ]);
 
 export const memorizationPlants = Object.freeze(
