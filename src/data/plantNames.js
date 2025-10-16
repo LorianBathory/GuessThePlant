@@ -98,7 +98,7 @@ export const plantNamesById = Object.freeze({
   97: { ru: "Бархатцы", en: "Marigold", nl: "Afrikaantje", sci: "Tagetes" },
   98: { ru: "Маракуйя", en: "Passion fruit", nl: "Passievrucht, Passiebloemfruit", sci: "Passiflora edulis" },
   99: { ru: "Циссус", en: "Grape ivy", nl: "Klimop", sci: "Cissus rhombifolia" },
-  100: { ru: "Подсолнечник", en: "Sunflower", nl: "Zonnebloem", sci: "Helianthus annuus" },
+  //100: helianthus
   101: { ru: "Космея", en: "Cosmos", nl: "Cosmea", sci: "Cosmos bipinnatus" },
   102: { ru: "Аглаонема", en: "Aglaonema / Chinese evergreen", nl: "Aglaonema", sci: "Aglaonema" },
   103: { ru: "Примула", en: "Primrose", nl: "Sleutelbloem", sci: "Primula" },
@@ -133,7 +133,6 @@ export const plantNamesById = Object.freeze({
   132: { ru: "Фризея", en: "Vriesea", nl: "Vriesea", sci: "Vriesea" },
   133: { ru: "Неорегелия", en: "Neoregelia", nl: "Neoregelia", sci: "Neoregelia" },
   134: { ru: "Эхмея", en: "Aechmea", nl: "Aechmea", sci: "Aechmea" },
-  135: { ru: "Топинамбур", en: "Jerusalem artichoke", nl: "Aardpeer", sci: "Helianthus tuberosus" },
   136: { ru: "Банксия", en: "Banksia", nl: "Banksia", sci: "Banksia" },
   137: { ru: "Бобовник", en: "Golden chain", nl: "Goudenregen", sci: "Laburnum" },
   138: { ru: "Львиный зев", en: "Snapdragon", nl: "Vlambloem / Leeuwenbek", sci: "Antirrhinum" },
