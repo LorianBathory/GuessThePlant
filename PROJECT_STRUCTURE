@@ -23,7 +23,8 @@
 - `data/`
   - `plantNames.js` — Localization table for plant names in Russian, English, and Latin, keyed by catalog ID.【F:src/data/plantNames.js†L1-L81】
   - `images.js` — Canonical list of plant images with unique IDs and helpers to look up image metadata by plant.【F:src/data/images.js†L1-L44】
-  - `catalog.js` — Master catalog that merges localized names, supplemental metadata, and image definitions into quiz-ready entries.【F:src/data/catalog.js†L1-L103】【F:src/data/catalog.js†L105-L141】
+  - `catalog.js` — Master catalog that merges localized names, supplemental metadata, genus entries, and image definitions into quiz-ready entries with difficulty fallbacks.【F:src/data/catalog.js†L1-L205】
+  - `genus/` — Registry of genus datasets. Each module exports a genus descriptor with shared wrong answers and a map of species entries; `index.js` aggregates them for the catalog pipeline.【F:src/data/genus/index.js†L1-L13】【F:src/data/genus/helianthus.js†L1-L29】
   - `difficulties.js` — Defines difficulty tiers and maps both question IDs and specific image IDs to their difficulty level.【F:src/data/difficulties.js†L1-L25】
 - `i18n/`
   - `uiTexts.js` — Provides localized interface strings (Russian/English) and a helper to select language bundles.【F:src/i18n/uiTexts.js†L1-L28】【F:src/i18n/uiTexts.js†L30-L34】
@@ -33,5 +34,5 @@
 ## Application Flow Summary
 1. `index.html` loads the React runtime; `src/index.js` mounts `PlantQuizGame`.
 2. `PlantQuizGame` uses `useGameLogic` to manage quiz rounds and chooses between `GameScreen` (active round) and `ResultScreen` (between rounds or after completion).
-3. `useGameLogic` pulls plant data from `data/catalog.js`, groups questions by difficulty from `data/difficulties.js`, and relies on helpers in `gameConfig.js` and `utils/random.js` for selection, persistence, and responsiveness.
+3. `useGameLogic` pulls plant data from `data/catalog.js`, который разворачивает родовые файлы и применяет наследование сложностей, группирует вопросы по уровням из `data/difficulties.js` и использует хелперы `gameConfig.js` и `utils/random.js` для выборки, хранения и адаптации под устройство.【F:src/data/catalog.js†L1-L205】【F:src/hooks/useGameLogic.js†L1-L207】
 4. UI text is localized via `i18n/uiTexts.js`, while language and viewport preferences persist using storage helpers in `gameConfig.js`.
