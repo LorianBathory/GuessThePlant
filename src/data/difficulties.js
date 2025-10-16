@@ -8,7 +8,7 @@ export const difficultyLevels = Object.freeze({
 
 const plantQuestionIdsByDifficulty = Object.freeze({
   [difficultyLevels.EASY]: Object.freeze([
-    6, 12, 13, 18, 22, 24, 26, 27, 29, 31, 33, 35, 41, 44, 51, 55, 58, 63, 66, 74, 75, 76, 82, 88, 91, 93, 94, 95, 97, 100, 102,
+    6, 12, 13, 18, 22, 24, 26, 27, 29, 31, 33, 35, 41, 44, 51, 55, 58, 63, 66, 70, 74, 75, 76, 82, 88, 91, 93, 94, 95, 97, 100, 102,
     104, 105, 107, 108, 114, 116, 117, 119, 124, 130, 139, 142, 146, 156, 157, 165, 168, 180, 181, 189, 190, 195, 200
   ]),
   [difficultyLevels.MEDIUM]: Object.freeze([

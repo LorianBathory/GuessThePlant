@@ -18,7 +18,7 @@ export const plantNamesById = Object.freeze({
   17: { ru: "Клематис", en: "Clematis", nl: "Bosrank", sci: "Clematis" },
   18: { ru: "Глициния", en: "Wisteria", nl: "Blauwe regen", sci: "Wisteria" },
   19: { ru: "Олеандр", en: "Oleander", nl: "Oleander", sci: "Nerium oleander" },
-  20: { ru: "Целозия", en: "Cock's comb", nl: "Celosia", sci: "Celosia" },
+  20: { ru: "Рябина", en: "Mountain-ash", nl: "Lijsterbes", sci: "Sorbus" },
   21: { ru: "Рододендрон", en: "Rhododendron", nl: "Rododendron, Alpenroos", sci: "Rhododendron" },
   22: { ru: "Тюльпан", en: "Tulip", nl: "Tulp", sci: "Tulipa" },
   23: { ru: "Гардения", en: "Gardenia", nl: "Gardenia", sci: "Gardenia" },

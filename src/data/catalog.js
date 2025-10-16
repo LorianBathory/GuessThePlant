@@ -25,8 +25,8 @@ const speciesCatalog = Object.freeze({
   17: { images: ['p17_1', 'p17_2', 'p17_3'] },
   18: { images: ['p18_1', 'p18_2', 'p18_3', 'p18_4', 'p18_5'] }, //Wisteria
   19: { images: ['p19_1'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
-  //20: { images: ['p22_1'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
-  21: {images: ['p21_1', 'p21_2', 'p21_3', 'p21_4'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
+  20: { images: ['p20_1']}, //Sorbus
+  21: { images: ['p21_1', 'p21_2', 'p21_3', 'p21_4'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
   22: { images: ['p22_1', 'p22_2'], wrongAnswers: [35, 46]  }, //Tulip
   23: { images: ['p23_1'], wrongAnswers: [5, 21, 31] }, //gardenia
   24: { images: ['p24_1', 'p24_2', 'p24_3'] }, //magnolia
@@ -75,7 +75,7 @@ const speciesCatalog = Object.freeze({
     //67
   68: { images: ['p68_1', 'p68_2', 'p68_3'] }, //lavender
   69: { images: ['p69_1'], wrongAnswers: [31, 22] },
-  //70
+  70: { images: ['p70_1']}, //Physalis
   //71
   72: { images: ['p72_1'], wrongAnswers: [11] }, //лопух. wrongAnswers надо заменить
   73: { images: ['p73_1', 'p73_2', 'p73_3', 'p73_4', 'p73_5', 'p73_6'], wrongAnswers: [29] }, //aster, wrongAnswers надо
@@ -91,7 +91,7 @@ const speciesCatalog = Object.freeze({
   83: { genusId: 83 }, //campanula, временный wrongAnswer +
   84: { images: ['p84_1'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
   85: { images: ['p85_1', 'p85_2', 'p85_3', 'p85_4'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
-    86: { images: ['p86_1', 'p86_2'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
+  86: { images: ['p86_1', 'p86_2'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
      //87. Lotus пока не залит.
     88: { images: ['p88_1', 'p88_2', 'p88_3'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
     89: { images: ['p89_1'], wrongAnswers: [25] }, //Santolina временный wrongAnswer +
@@ -102,7 +102,7 @@ const speciesCatalog = Object.freeze({
     94: { images: ['p94_1'], wrongAnswers: [86, 79, 69] }, //Orchid, временный wrongAnswer
     95: { images: ['p95_1', 'p95_2'], wrongAnswers: [62, 44] }, //Banana временный wrongAnswer +
     96: { images: ['p96_1'], wrongAnswers: [29, 93] }, //Zamioculcas временный wrongAnswer +
-    97: { images: ['p97_1', 'p97_2', 'p97_3', 'p97_4', 'p97_5'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
+    97: { images: ['p97_1', 'p97_2', 'p97_3', 'p97_4', 'p97_5', 'p97_6'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
     98: { images: ['p98_1', 'p98_2'], wrongAnswers: [31] }, //Passiflora временный wrongAnswer +
     //99: { images: ['p83_1'], wrongAnswers: [43, 44] }, //временный wrongAnswer
     100: { genusId: 100 }, //Sunflower + Helianthus
@@ -128,11 +128,11 @@ const speciesCatalog = Object.freeze({
     120: { images: ['p120_1', 'p120_2'] }, //Dicentra
     121: { images: ['p121_1', 'p121_2'] }, //Gaillardia
     122: { images: ['p122_1'] }, //Galanthus
-    123: { images: ['p123_1'] }, //Celosia
+    123: { images: ['p123_1', 'p123_2', 'p123_3'] }, //Celosia
     124: { images: ['p124_1'] }, //Opuntia
     125: { images: ['p125_1'] }, //Platycodon
     126: { images: ['p126_1', 'p126_2'] }, //Eucalyptus
-    127: { images: ['p127_1', 'p127_2'] }, //Zinnia
+    127: { images: ['p127_1', 'p127_2', 'p127_3'] }, //Zinnia
     130: { images: ['p130_1', 'p130_2'] }, //Crocus
     131: { images: ['p131_1', 'p131_2'], wrongAnswers: [14, 112] }, //veronica+
     139: { images: ['p139_1'] }, //Star jasmine
@@ -140,12 +140,12 @@ const speciesCatalog = Object.freeze({
     146: { images: ['p146_1', 'p146_2'] }, //Red clover
     150: { genusId: 150 }, //Common sage
   152: { images: ['p152_1', 'p152_2'] }, //Malva
-  153: {images: ['p153_1'], wrongAnswers: [17, 24]}, //Cornus Florida
+  153: {images: ['p153_1', 'p153_2', 'p153_3'], wrongAnswers: [17, 24]}, //Cornus Florida
     155: { images: ['p155_1'] }, //Angelonia
     156: { images: ['p156_1'] }, //Artichoke
     157: { images: ['p157_1'] }, //Jasmine
     158: { images: ['p158_1'] }, //Sanchezia
-    159: { images: ['p159_1'] }, //Ageratum
+    159: { images: ['p159_1', 'p159_2'] }, //Ageratum
     160: { images: ['p160_1'] }, //Aquilegia
     161: { images: ['p161_1'] }, //Aubrieta
     162: { images: ['p162_1'] }, //Catharanthus
