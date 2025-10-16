@@ -17,12 +17,12 @@ const speciesCatalog = Object.freeze({
   //10 - не будет
   //11 - не будет
   12: {images: ['p124'], wrongAnswers: [2, 11]}, //Parsnip
-  13: {images: ['p086', 'p087', 'p088'], wrongAnswers: [3, 11, 129]}, //Allium
+  13: {images: ['p086', 'p087', 'p088', 'p299'], wrongAnswers: [3, 11, 129]}, //Allium
   14: {images: ['p057'], wrongAnswers: [112, 131, 142]}, //camassia
   15: { images: ['p144'], wrongAnswers: [116] }, //globularia
   16: {images: ['p105'], wrongAnswers: [35, 111]}, //Fritillary
   17: { images: ['p007', 'p250', 'p251'] },
-  18: { images: ['p209', 'p210', 'p246'] }, //Wisteria
+  18: { images: ['p209', 'p210', 'p246', 'p297', 'p298'] }, //Wisteria
   19: { images: ['p008'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
   //20: { images: ['p009'], wrongAnswers: [3, 11, 12]}, - Celosia, нужно добавить в растения амарант и астильбу
   21: {images: ['p076', 'p128', 'p129', 'p261'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
@@ -32,11 +32,11 @@ const speciesCatalog = Object.freeze({
   25: { images: ['p130'],  wrongAnswers: [29, 119] }, //Shasta Daisy, добавить ромашку аптечную в список растений
   26: { images: ['p010', 'p011', 'p100', 'p190'], wrongAnswers: [29, 33, 73, 77] }, //Dahlia. добавить циннию
   27: { images: ['p012', 'p103', 'p104', 'p253'], wrongAnswers: [6, 38, 115, 121] }, //Echinacea
-  28: { images: ['p198', 'p220', 'p271', 'p272'] }, //Gomphrena
-  29: { images: ['p013', 'p014', 'p096', 'p097', 'p098'], wrongAnswers: [6, 26, 41, 73] }, //Chrysanthemum
+  28: { images: ['p198', 'p220', 'p271', 'p272', 'p306'] }, //Gomphrena
+  29: { images: ['p013', 'p014', 'p096', 'p097', 'p098', 'p302'], wrongAnswers: [6, 26, 41, 73] }, //Chrysanthemum
   30: { images: ['p015', 'p066'], wrongAnswers: [38, 39, 40, 6, 25, 8] }, //osteospermum
-  31: { images: ['p016', 'p017', 'p018', 'p077', 'p078', 'p224'], wrongAnswers: [41, 69, 46, 5] },
-  32: { images: ['p019'], wrongAnswers: [43, 44, 45] },
+  31: { images: ['p016', 'p017', 'p018', 'p077', 'p078', 'p224', 'p295', 'p317'], wrongAnswers: [41, 69, 46, 5] }, //rosa
+  32: { images: ['p019', 'p307'], wrongAnswers: [43, 44, 45] }, //Guzmania
   33: { images: ['p020', 'p021', 'p122', 'p123'], wrongAnswers: [47, 41, 26] }, //Papaver
   34: { images: ['p022'], wrongAnswers: [48, 49] },
   35: { images: ['p023', 'p118', 'p119', 'p222'], wrongAnswers: [36, 37] }, //Lily
@@ -48,7 +48,7 @@ const speciesCatalog = Object.freeze({
   41: { images: ['p024', 'p101', 'p218'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
   //42
   //43
-  44: { images: ['p152', 'p283'] }, //Pineapple
+  44: { images: ['p152', 'p283', 'p316'] }, //Pineapple
   //45
   46: { images: ['p025', 'p125', 'p126', 'p260', 'p281'], wrongAnswers: [31, 33, 41] }, //Peony
   47: { images: ['p026', 'p027', 'p089', 'p179'], wrongAnswers: [33] }, //anemone
@@ -85,7 +85,7 @@ const speciesCatalog = Object.freeze({
   78: { images: ['p041'], wrongAnswers: [76] },
   79: { images: ['p042', 'p223'], wrongAnswers: [18] },
   80: { images: ['p053'], wrongAnswers: [17] }, //временный wrongAnswer +
-  81: { images: ['p059'], wrongAnswers: [19] }, //временный wrongAnswer +
+  81: { images: ['p059', 'p311'], wrongAnswers: [19] }, //Hosta временный wrongAnswer +
   82: { images: ['p084'], wrongAnswers: [20] }, //viola. временный wrongAnswer +
   83: { images: ['p055', 'p228'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
   84: { images: ['p062'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
@@ -95,26 +95,26 @@ const speciesCatalog = Object.freeze({
     88: { images: ['p060', 'p061', 'p221'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
     89: { images: ['p079'], wrongAnswers: [25] }, //Santolina временный wrongAnswer +
     90: { images: ['p058'], wrongAnswers: [26] }, //Fagus временный wrongAnswer +
-    91: { images: ['p049', 'p050', 'p264'], wrongAnswers: [27] }, //Begonia временный wrongAnswer+
+    91: { images: ['p049', 'p050', 'p264', 'p300'], wrongAnswers: [27] }, //Begonia временный wrongAnswer+
     92: { images: ['p074', 'p075'], wrongAnswers: [28] }, //Ranunculus временный wrongAnswer+
     93: { images: ['p081'], wrongAnswers: [80, 81] }, //Syngonium временный wrongAnswer+
     94: { images: ['p065'], wrongAnswers: [86, 79, 69] }, //Orchid, временный wrongAnswer
     95: { images: ['p048', 'p213'], wrongAnswers: [62, 44] }, //Banana временный wrongAnswer +
     96: { images: ['p085'], wrongAnswers: [29, 93] }, //Zamioculcas временный wrongAnswer +
-    97: { images: ['p083', 'p131', 'p132', 'p245'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
+    97: { images: ['p083', 'p131', 'p132', 'p245', 'p296'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
     98: { images: ['p067', 'p068'], wrongAnswers: [31] }, //Passiflora временный wrongAnswer +
     //99: { images: ['p055'], wrongAnswers: [43, 44] }, //временный wrongAnswer
-    100: { images: ['p080', 'p199'], wrongAnswers: [6, 39, 27] }, //Sunflower +
+    100: { images: ['p080', 'p199', 'p310'], wrongAnswers: [6, 39, 27] }, //Sunflower + Helianthus
     101: { images: ['p056', 'p099', 'p164'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
     102: { images: ['p177', 'p178'] }, //Aglaonema
     //103 без изображений
     104: { images: ['p206'] }, //Scilla
     105: { images: ['p202'] }, //Narcissus
     106: { images: ['p255'] }, //Lupinus
-    107: { images: ['p201', 'p280'] }, //Muscari
+    107: { images: ['p201', 'p280', 'p315'] }, //Muscari
     108: { images: ['p172'] }, //Pelargonium
     109: { images: ['p184'] }, //Calibrachoa
-    110: { images: ['p187', 'p216', 'p217'] }, //Coleus
+    110: { images: ['p187', 'p216', 'p217', 'p303'] }, //Coleus
     111: { images: ['p249'] }, //Campanula rotundifolia
     112: { images: ['p140', 'p141', 'p142'], wrongAnswers: [131] }, //Delphinium+
     113: { images: ['p157'] }, //Brunnera
@@ -130,15 +130,15 @@ const speciesCatalog = Object.freeze({
     123: { images: ['p185'] }, //Celosia
     124: { images: ['p203'] }, //Opuntia
     125: { images: ['p205'] }, //Platycodon
-    126: { images: ['p254'] }, //Eucalyptus
+    126: { images: ['p254', 'p304'] }, //Eucalyptus
     127: { images: ['p211', 'p247'] }, //Zinnia
     130: { images: ['p167', 'p268'] }, //Crocus
     131: { images: ['p143', 'p207'], wrongAnswers: [14, 112] }, //veronica+
     139: { images: ['p174'] }, //Star jasmine
-    142: { images: ['p135', 'p136', 'p137', 'p138', 'p139'], wrongAnswers: [14] }, //Hyacinthus+
+    142: { images: ['p135', 'p136', 'p137', 'p138', 'p139', 'p312'], wrongAnswers: [14] }, //Hyacinthus+
     146: { images: ['p160', 'p225'] }, //Red clover
     150: { images: ['p284', 'p285'] }, //Common sage
-  152: { images: ['p257'] }, //Malva
+  152: { images: ['p257', 'p314'] }, //Malva
   153: {images: ['p163'], wrongAnswers: [17, 24]}, //Cornus Florida
     155: { images: ['p153'] }, //Angelonia
     156: { images: ['p155'] }, //Artichoke
@@ -148,7 +148,7 @@ const speciesCatalog = Object.freeze({
     160: { images: ['p154'] }, //Aquilegia
     161: { images: ['p156'] }, //Aubrieta
     162: { images: ['p159'] }, //Catharanthus
-    163: { images: ['p168'] }, //Fittonia
+    163: { images: ['p168', 'p305'] }, //Fittonia
     164: { images: ['p169'] }, //Fumaria
     165: { images: ['p170'] }, //Helleborus
     166: { images: ['p175'] }, //Hollyhock
@@ -156,9 +156,9 @@ const speciesCatalog = Object.freeze({
     168: { images: ['p208', 'p259'] }, //Water Lily
     169: { images: ['p230'] }, //Red amaranth
     170: { images: ['p229'] }, //Prince's-feather
-    171: { images: ['p231'] }, //Ceanothus impressus
+    171: { images: ['p231', 'p301'] }, //Ceanothus impressus
     172: { images: ['p232'] }, //Euonymus
-    173: { images: ['p233'] }, //Hebe speciosa
+    173: { images: ['p233', 'p308'] }, //Hebe speciosa
     174: { images: ['p234'] }, //Fan aloe
     175: { images: ['p235'] }, //Lewisia cotyledon
     176: { images: ['p236'] }, //Paulownia / Princess tree
@@ -171,7 +171,7 @@ const speciesCatalog = Object.freeze({
     183: { images: ['p263'] }, //Anthurium
     184: { images: ['p265'] }, //Calluna
     185: { images: ['p270'] }, //Eschscholzia californica
-    186: { images: ['p273', 'p274'] }, //Helenium autumnale
+    186: { images: ['p273', 'p274', 'p309'] }, //Helenium autumnale
     187: { images: ['p275'] }, //Heliconia psittacorum
     188: { images: ['p277', 'p278'] }, //Kalanchoe blossfeldiana
     189: { images: ['p289'] }, //Strawberry
