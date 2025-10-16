@@ -288,7 +288,30 @@ export const plantImages = Object.freeze([
   { id: 'p291', src: 'images/VincaMinor_Kaboompics_Pexels.JPG' },
   { id: 'p292', src: 'images/XerochrysumBracteatum_MacroMama_StockSnap.JPG' },
   { id: 'p293', src: 'images/Aichryson.JPG' },
-  { id: 'p294', src: "images/AnemoneCoronaria_Nature'sBeauty12_StockSnap.JPG" }
+  { id: 'p294', src: "images/AnemoneCoronaria_Nature'sBeauty12_StockSnap.JPG" },
+  { id: 'p295', src: 'images/RosaCanina_Mary_StockSnap.JPG' },
+  { id: 'p296', src: 'images/Tagetes_VintageRS2StockSnap.JPG' },
+  { id: 'p297', src: 'images/Wisteria_joshOgden_Unsplash.JPG' },
+  { id: 'p298', src: 'images/Wisteria_KellyIshmael_StockSnap.JPG' },
+  { id: 'p299', src: 'images/AlliumSchoenoprasum_FOCAStock_StockSnap.JPG' },
+  { id: 'p300', src: 'images/Begonia_DomJ_Pexels.JPG' },
+  { id: 'p301', src: 'images/Ceanothus2_SonnySixteen_Pexels.JPG' },
+  { id: 'p302', src: 'images/ChrysanthemumMorifolium_Adavulcu_Pexels.JPG' },
+  { id: 'p303', src: "images/Coleus_Nature'sBeauty_StockSnap.JPG" },
+  { id: 'p304', src: 'images/EucalyptusPulverulenta_anandasandra_pixabay.JPG' },
+  { id: 'p305', src: 'images/Fittonia_KaiyaInouye_Pexels.JPG' },
+  { id: 'p306', src: 'images/GomphrenaGlobosa_KarenF_Pexels.JPG' },
+  { id: 'p307', src: 'images/GuzmaniaLingulata.JPG' },
+  { id: 'p308', src: 'images/HebeAndersonii_SonnySixteen_Pexels.JPG' },
+  { id: 'p309', src: "images/HeleniumAutumnale_Nature'sBeauty_StockSnap.JPG" },
+  { id: 'p310', src: "images/HelianthusAnnuus_Nature'sBeauty_StockSnap.JPG" },
+  { id: 'p311', src: 'images/Hosta_FreeNatureStock_StockSnap.JPG' },
+  { id: 'p312', src: 'images/Hyacinthus_KellyIshmael_StockSnap.JPG' },
+  { id: 'p313', src: 'images/LycianthesRantonnetii_ElizabethLiebenberg.JPG' },
+  { id: 'p314', src: 'images/MalvaSylvestris_Mary_StockSnap.JPG' },
+  { id: 'p315', src: 'images/Muscari_Iriser_Pexels.JPG' },
+  { id: 'p316', src: 'images/Pineapple_anandasandra_pixabay.JPG' },
+  { id: 'p317', src: 'images/Rosa_MohanNannapaneni.JPG' }
     // { id: 'p140', src: '' }
     //{ id: '', src: '' }
 ]);
