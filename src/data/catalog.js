@@ -24,7 +24,7 @@ const speciesCatalog = Object.freeze({
   16: {images: ['p16_1'], wrongAnswers: [35, 111]}, //Fritillary
   17: { images: ['p17_1', 'p17_2', 'p17_3'] },
   18: { images: ['p18_1', 'p18_2', 'p18_3', 'p18_4', 'p18_5'] }, //Wisteria
-  19: { images: ['p19_1'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
+  19: { images: ['p19_1', 'p19_2'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
   20: { images: ['p20_1']}, //Sorbus
   21: { images: ['p21_1', 'p21_2', 'p21_3', 'p21_4'], wrongAnswers: [5, 19] }, //Rhododendron. добавить вишню для вариантов ответа
   22: { images: ['p22_1', 'p22_2'], wrongAnswers: [35, 46]  }, //Tulip
@@ -42,8 +42,8 @@ const speciesCatalog = Object.freeze({
   34: { images: ['p34_1'], wrongAnswers: [48, 49] },
   35: { images: ['p35_1', 'p35_2', 'p35_3', 'p35_4'], wrongAnswers: [36, 37] }, //Lily
   36: { images: ['p36_1', 'p36_2'] }, //Hemerocallis
-  //37
-  //38
+  //37 не будет
+  //38 не будет
   39: {images: ['p39_1'], wrongAnswers: [40, 100, 121] }, //heliopsis, рядом с родом Helianthus
   40: { images: ['p40_1', 'p40_2'] }, //Coreopsis
   41: { genusId: 41 }, //Dianthus - ждет добавления агростеммы
@@ -120,7 +120,7 @@ const speciesCatalog = Object.freeze({
     112: { images: ['p112_1', 'p112_2', 'p112_3'], wrongAnswers: [131] }, //Delphinium+
     113: { images: ['p113_1'] }, //Brunnera
     114: { images: ['p114_1'] }, //Betula
-    //115 без изображений
+    115: { images: ['p115_1', 'p115_2', 'p115_3'] },
     116: { genusId: 116 }, //cornflower
     //117: в род Centaurea (knapweeds)
     118: { images: ['p118_1', 'p118_2', 'p118_3', 'p118_4'] }, //Hardy geranium
