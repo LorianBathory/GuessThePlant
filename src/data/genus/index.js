@@ -1,6 +1,28 @@
+import { alliumGenus } from './allium.js';
+import { amaranthusGenus } from './amaranthus.js';
+import { anemoneGenus } from './anemone.js';
+import { campanulaGenus } from './campanula.js';
+import { centaureaGenus } from './centaurea.js';
+import { dianthusGenus } from './dianthus.js';
+import { hebeGenus } from './hebe.js';
 import { helianthusGenus } from './helianthus.js';
+import { lupinusGenus } from './lupinus.js';
+import { rosaGenus } from './rosa.js';
+import { salviaGenus } from './salvia.js';
 
-const genusList = Object.freeze([helianthusGenus]);
+const genusList = Object.freeze([
+  alliumGenus,
+  amaranthusGenus,
+  anemoneGenus,
+  campanulaGenus,
+  centaureaGenus,
+  dianthusGenus,
+  hebeGenus,
+  helianthusGenus,
+  lupinusGenus,
+  rosaGenus,
+  salviaGenus
+]);
 
 export const genusById = Object.freeze(
   Object.fromEntries(genusList.map(genus => [genus.id, genus]))
