@@ -18,7 +18,7 @@ const speciesCatalog = Object.freeze({
   //10 - не будет
   //11 - не будет
   12: {images: ['p12_1'], wrongAnswers: [2, 11]}, //Parsnip
-  13: {images: ['p13_1', 'p13_2', 'p13_3', 'p13_4'], wrongAnswers: [3, 11, 129]}, //Allium
+  13: { genusId: 13 }, //Allium
   14: {images: ['p14_1'], wrongAnswers: [112, 131, 142]}, //camassia
   15: { images: ['p15_1'], wrongAnswers: [116] }, //globularia
   16: {images: ['p16_1'], wrongAnswers: [35, 111]}, //Fritillary
@@ -36,7 +36,7 @@ const speciesCatalog = Object.freeze({
   28: { images: ['p28_1', 'p28_2', 'p28_3', 'p28_4', 'p28_5'] }, //Gomphrena
   29: { images: ['p29_1', 'p29_2', 'p29_3', 'p29_4', 'p29_5', 'p29_6'], wrongAnswers: [6, 26, 41, 73] }, //Chrysanthemum
   30: { images: ['p30_1', 'p30_2'], wrongAnswers: [38, 39, 40, 6, 25, 8] }, //osteospermum
-  31: { images: ['p31_1', 'p31_2', 'p31_3', 'p31_4', 'p31_5', 'p31_6', 'p31_7', 'p31_8'], wrongAnswers: [41, 69, 46, 5] }, //rosa
+  31: { genusId: 31 }, //rosa
   32: { images: ['p32_1', 'p32_2'], wrongAnswers: [43, 44, 45] }, //Guzmania
   33: { images: ['p33_1', 'p33_2', 'p33_3', 'p33_4'], wrongAnswers: [47, 41, 26] }, //Papaver
   34: { images: ['p34_1'], wrongAnswers: [48, 49] },
@@ -46,13 +46,13 @@ const speciesCatalog = Object.freeze({
   //38
   39: {images: ['p39_1'], wrongAnswers: [40, 100, 121] }, //heliopsis, рядом с родом Helianthus
   40: { images: ['p40_1', 'p40_2'] }, //Coreopsis
-  41: { images: ['p41_1', 'p41_2', 'p41_3'], wrongAnswers: [39, 40, 97] }, //Dianthus - ждет добавления агростеммы
+  41: { genusId: 41 }, //Dianthus - ждет добавления агростеммы
   //42
   //43
   44: { images: ['p44_1', 'p44_2', 'p44_3'] }, //Pineapple
   //45
   46: { images: ['p46_1', 'p46_2', 'p46_3', 'p46_4', 'p46_5'], wrongAnswers: [31, 33, 41] }, //Peony
-  47: { images: ['p47_1', 'p47_2', 'p47_3', 'p47_4'], wrongAnswers: [33] }, //anemone
+  47: { genusId: 47 }, //anemone
   //48
   //49
   50: { images: ['p50_1', 'p50_2'], wrongAnswers: [18, 34, 56, 57, 79] },
@@ -63,7 +63,7 @@ const speciesCatalog = Object.freeze({
   55: { images: ['p55_1', 'p55_2', 'p55_3'], wrongAnswers: [67] }, //Hibiscus
   //56
   //57
-  58: { images: ['p58_1'], wrongAnswers: [4] }, //Dog-rose, wrongAnswers надо
+  //58: в род Rosa
   59: { images: ['p59_1', 'p59_2', 'p59_3'] }, //Hawthorn
   //60
   //61
@@ -88,7 +88,7 @@ const speciesCatalog = Object.freeze({
   80: { images: ['p80_1'], wrongAnswers: [17] }, //временный wrongAnswer +
   81: { images: ['p81_1', 'p81_2'], wrongAnswers: [19] }, //Hosta временный wrongAnswer +
   82: { images: ['p82_1'], wrongAnswers: [20] }, //viola. временный wrongAnswer +
-  83: { images: ['p83_1', 'p83_2'], wrongAnswers: [21] }, //campanula, временный wrongAnswer +
+  83: { genusId: 83 }, //campanula, временный wrongAnswer +
   84: { images: ['p84_1'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
   85: { images: ['p85_1', 'p85_2', 'p85_3', 'p85_4'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
     86: { images: ['p86_1', 'p86_2'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
@@ -111,18 +111,18 @@ const speciesCatalog = Object.freeze({
     //103 без изображений
     104: { images: ['p104_1'] }, //Scilla
     105: { images: ['p105_1'] }, //Narcissus
-    106: { images: ['p106_1'] }, //Lupinus
+    106: { genusId: 106 }, //Lupinus
     107: { images: ['p107_1', 'p107_2', 'p107_3'] }, //Muscari
     108: { images: ['p108_1'] }, //Pelargonium
     109: { images: ['p109_1'] }, //Calibrachoa
     110: { images: ['p110_1', 'p110_2', 'p110_3', 'p110_4'] }, //Coleus
-    111: { images: ['p111_1'] }, //Campanula rotundifolia
+    //111: в род Campanula
     112: { images: ['p112_1', 'p112_2', 'p112_3'], wrongAnswers: [131] }, //Delphinium+
     113: { images: ['p113_1'] }, //Brunnera
     114: { images: ['p114_1'] }, //Betula
     //115 без изображений
-    116: { images: ['p116_1'] }, //cornflower
-    117: { images: ['p117_1'] }, //Centaurea (knapweeds)
+    116: { genusId: 116 }, //cornflower
+    //117: в род Centaurea (knapweeds)
     118: { images: ['p118_1', 'p118_2', 'p118_3', 'p118_4'] }, //Hardy geranium
     119: { images: ['p119_1', 'p119_2'] }, //Bellis
     120: { images: ['p120_1', 'p120_2'] }, //Dicentra
@@ -138,7 +138,7 @@ const speciesCatalog = Object.freeze({
     139: { images: ['p139_1'] }, //Star jasmine
     142: { images: ['p142_1', 'p142_2', 'p142_3', 'p142_4', 'p142_5', 'p142_6'], wrongAnswers: [14] }, //Hyacinthus+
     146: { images: ['p146_1', 'p146_2'] }, //Red clover
-    150: { images: ['p150_1', 'p150_2'] }, //Common sage
+    150: { genusId: 150 }, //Common sage
   152: { images: ['p152_1', 'p152_2'] }, //Malva
   153: {images: ['p153_1'], wrongAnswers: [17, 24]}, //Cornus Florida
     155: { images: ['p155_1'] }, //Angelonia
@@ -155,11 +155,11 @@ const speciesCatalog = Object.freeze({
     166: { images: ['p166_1'] }, //Hollyhock
     167: { images: ['p167_1'] }, //Chicory
     168: { images: ['p168_1', 'p168_2'] }, //Water Lily
-    169: { images: ['p169_1'] }, //Red amaranth
-    170: { images: ['p170_1'] }, //Prince's-feather
+    169: { genusId: 169 }, //Red amaranth
+    //170: в род Amaranthus
     171: { images: ['p171_1', 'p171_2'] }, //Ceanothus impressus
     172: { images: ['p172_1'] }, //Euonymus
-    173: { images: ['p173_1', 'p173_2'] }, //Hebe speciosa
+    173: { genusId: 173 }, //Hebe speciosa
     174: { images: ['p174_1'] }, //Fan aloe
     175: { images: ['p175_1'] }, //Lewisia cotyledon
     176: { images: ['p176_1'] }, //Paulownia / Princess tree
@@ -168,7 +168,7 @@ const speciesCatalog = Object.freeze({
     179: { images: ['p179_1'] }, //Pyracantha coccinea
     180: { images: ['p180_1'] }, //Rosemary
     181: { images: ['p181_1'] }, //Dandelion
-    182: { images: ['p182_1'] }, //Anemone coronaria
+    //182: в род Anemone
     183: { images: ['p183_1'] }, //Anthurium
     184: { images: ['p184_1'] }, //Calluna
     185: { images: ['p185_1'] }, //Eschscholzia californica
@@ -178,14 +178,14 @@ const speciesCatalog = Object.freeze({
     189: { images: ['p189_1'] }, //Strawberry
     190: { images: ['p190_1'] }, //Schlumbergera truncata
     191: { images: ['p191_1'] }, //Convallaria majalis
-    192: { images: ['p192_1'] }, //Dianthus barbatus
+    //192: в род Dianthus
     193: { images: ['p193_1'] }, //Silene chalcedonica
     194: { images: ['p194_1'] }, //Xerochrysum bracteatum
     195: { images: ['p195_1'] }, //Antirrhinum majus
     196: { images: ['p196_1'] }, //Justicia carnea
     197: { images: ['p197_1'] }, //Aichryson
-    198: { images: ['p198_1'] }, //Salvia pratensis
-    199: { images: ['p199_1'] }, //Lupinus latifolius
+    //198: в род Salvia pratensis
+    //199: в род Lupinus latifolius
     200: { images: ['p200_1'] }, //Coriandrum sativum
     201: { images: ['p201_1', 'p201_2'] }, //Vinca minor
 });
