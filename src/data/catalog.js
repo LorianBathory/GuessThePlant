@@ -61,9 +61,9 @@ const speciesCatalog = Object.freeze({
   53: { images: ['p53_1'], wrongAnswers: [13, 15, 116] }, //scabious
   54: { images: ['p54_1', 'p54_2', 'p54_3'], wrongAnswers: [64, 65, 66] }, //lantana
   55: { images: ['p55_1', 'p55_2', 'p55_3'], wrongAnswers: [67] }, //Hibiscus
-  //56
-  //57
-  //58: в род Rosa
+  56: { images: ['p56_1', 'p56_2', 'p56_3'], wrongAnswers: [18, 57, 137] }, //Robinia
+  //57 Paulownia
+  //58: FREE
   59: { images: ['p59_1', 'p59_2', 'p59_3'] }, //Hawthorn
   //60
   //61
