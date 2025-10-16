@@ -6,7 +6,7 @@ const helianthusEntries = Object.freeze({
       nl: 'Zonnebloem',
       sci: 'Helianthus'
     }),
-    images: Object.freeze(['p080'])
+    images: Object.freeze(['p100_1'])
   }),
   '100_1': Object.freeze({
     names: Object.freeze({
@@ -15,7 +15,7 @@ const helianthusEntries = Object.freeze({
       nl: 'Zonnebloem',
       sci: 'Helianthus annuus'
     }),
-    images: Object.freeze(['p310'])
+    images: Object.freeze(['p100_1_1'])
   }),
   '100_2': Object.freeze({
     names: Object.freeze({
@@ -24,7 +24,7 @@ const helianthusEntries = Object.freeze({
       nl: 'Aardpeer',
       sci: 'Helianthus tuberosus'
     }),
-    images: Object.freeze(['p199'])
+    images: Object.freeze(['p100_2_1'])
   })
 });
 
