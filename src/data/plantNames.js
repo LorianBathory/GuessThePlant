@@ -56,7 +56,7 @@ export const plantNamesById = Object.freeze({
   55: { ru: "Гибискус", en: "Hibiscus", nl: "Hibiscus, Roos van Sharon", sci: "Hibiscus" },
   56: { ru: "Робиния (лжеакация)", en: "Black locust", nl: "Witte (valse) acacia", sci: "Robinia pseudoacacia" },
   57: { ru: "Павловния", en: "Princess Tree", nl: "Paulownia, Keizersboom", sci: "Paulownia" },
-  //58: rosa
+  58: {ru: "Плющ", en: "Common ivy", nl: "Klimop", sci: "Hedera Helix"},
   59: { ru: "Боярышник", en: "Hawthorn", nl: "Meidoorn", sci: "Crataegus" },
   60: { ru: "Драгонфрут", en: "Dragon Fruit", nl: "Pitahaya, Drakenfruit", sci: "Hylocereus" },
   61: { ru: "Шеффлера", en: "Schefflera", nl: "Vingersboom", sci: "Schefflera" },
