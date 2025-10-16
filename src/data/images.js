@@ -311,7 +311,8 @@ export const plantImages = Object.freeze([
   { id: 'p314', src: 'images/MalvaSylvestris_Mary_StockSnap.JPG' },
   { id: 'p315', src: 'images/Muscari_Iriser_Pexels.JPG' },
   { id: 'p316', src: 'images/Pineapple_anandasandra_pixabay.JPG' },
-  { id: 'p317', src: 'images/Rosa_MohanNannapaneni.JPG' }
+  { id: 'p317', src: 'images/Rosa_MohanNannapaneni.JPG' },
+  { id: 'p318', src: 'images/EchinaceaWhite_TravelPhotographer_StockSnap.JPG' }
     // { id: 'p140', src: '' }
     //{ id: '', src: '' }
 ]);
