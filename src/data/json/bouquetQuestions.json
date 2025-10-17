@@ -1,0 +1,24 @@
+[
+  {
+    "id": "b1",
+    "imageId": "bq001",
+    "image": "images/bouquets/bq001.jpg",
+    "correctPlantId": 112,
+    "wrongAnswerIds": [
+      29,
+      22,
+      126
+    ]
+  },
+  {
+    "id": "b2",
+    "imageId": "bq002",
+    "image": "images/bouquets/bq002.jpg",
+    "correctPlantId": 32,
+    "wrongAnswerIds": [
+      6,
+      69,
+      31
+    ]
+  }
+]

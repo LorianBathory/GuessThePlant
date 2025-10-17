@@ -4,7 +4,10 @@
   "description": "Guess The Plant quiz application",
   "type": "module",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "export:data": "node scripts/exportDataBundle.mjs",
+    "validate:data": "node scripts/validateDataBundle.mjs",
+    "serve": "node tools/localStaticServer.mjs"
   },
   "keywords": [
     "quiz",
@@ -14,7 +17,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "ajv": "^8.17.1",
     "@eslint/js": "^9.13.0",
+    "ajv": "^6.12.6",
     "eslint": "^9.13.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.1.0",

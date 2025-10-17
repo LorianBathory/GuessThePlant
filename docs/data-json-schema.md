@@ -71,3 +71,8 @@ Created from `plantParametersRaw` and enriched with family data.
 - `genusId` on a species record must point to an object exported from `src/data/genus/index.js`.
 - Bouquet question `correctPlantId` values must exist in `plantNamesById`, ensuring `names` is always hydrated during normalization.【F:src/data/catalog.js†L239-L292】【F:src/data/catalogBouquets.js†L5-L42】
 
+
+## Tooling
+
+- Run `npm run export:data` to regenerate `src/data/json/plantData.json` from the authoritative JS modules.【F:scripts/exportDataBundle.mjs†L1-L95】
+- Run `npm run validate:data` to ensure the exported JSON matches `src/data/schema/plant.schema.json`. The validator uses Ajv (draft-07) and will fail when paths or references drift from the schema.【F:scripts/validateDataBundle.mjs†L1-L46】【F:src/data/schema/plant.schema.json†L1-L188】
