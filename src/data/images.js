@@ -223,8 +223,16 @@ export const plantImages = Object.freeze([
   { id: 'p102_2', src: 'images/Aglaonema_Gochrisgoxyz.JPG' },
   { id: 'p104_1', src: 'images/Scilla_Grigoriy.JPG' },
   { id: 'p105_1', src: 'images/Narcissus_Grigoriy.JPG' },
-  { id: 'p106_1', src: 'images/LupinusPolyphyllus_TravelPhotographer_StockSnap.JPG' },
-  { id: 'p106_1_1', src: 'images/LupinusPolyphyllus_TravelPhotographer_StockSnap.JPG' },
+    { id: 'p106_1_1', src: 'images/LupinusPolyphyllus_TravelPhotographer_StockSnap.JPG' },
+    { id: 'p106_1_2', src: 'images/LupinusPolyphyllus_EfremEfre.JPG' },
+    { id: 'p106_1_3', src: 'images/LupinusPolyphyllus_YuliaZiablova.JPG' },
+
+    { id: 'p106_2_1', src: 'images/LupinusLatifolius_Nature\'sBeauty_StockSnap.JPG' },
+
+    { id: 'p106_3_1', src: 'images/LupinusRivularis_Pixabay.JPG' },
+
+    { id: 'p106_4_1', src: 'images/LupinusPilosus_Moshehar_Pixabay.JPG' },
+
   { id: 'p107_1', src: 'images/Muscari_RomanBiernacki3.JPG' },
   { id: 'p107_2', src: 'images/MuscariArmeniacum_MarinaPershina_StockSnap.JPG' },
   { id: 'p107_3', src: 'images/Muscari_Iriser_Pexels.JPG' },
@@ -345,7 +353,6 @@ export const plantImages = Object.freeze([
   { id: 'p196_1', src: 'images/JusticiaCarnea_HartonoSubagio_Pexels.JPG' },
   { id: 'p197_1', src: 'images/Aichryson.JPG' },
   { id: 'p150_2_1', src: 'images/SalviaPratensis_BrettSayles_Pexels.JPG' },
-  { id: 'p106_2_1', src: 'images/LupinusLatifolius_Nature\'sBeauty_StockSnap.JPG' },
   { id: 'p200_1', src: 'images/Coriandrum_RajeshSBalouria_Pexels.JPG' },
   { id: 'p201_1', src: 'images/VincaMinor_ChristyRice_Pexels.JPG' },
   { id: 'p201_2', src: 'images/VincaMinor_Kaboompics_Pexels.JPG' },
