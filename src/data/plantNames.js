@@ -30,6 +30,7 @@ export const plantNamesById = Object.freeze({
   29: { ru: "Хризантема", en: "Chrysanthemum", nl: "Chrysant", sci: "Chrysanthemum" },
   30: { ru: "Остеоспермум", en: "African Daisy", nl: "Kaaps ganzenbloempje", sci: "Osteospermum" },
   //31: rosa
+  //'31_1': rosa
   32: { ru: "Гузмания", en: "Scarlet Star", nl: "Guzmania", sci: "Guzmania lingulata" },
   33: { ru: "Мак", en: "Poppy", nl: "Klaproos, Papaver", sci: "Papaver" },
   34: { ru: "Похутукава", en: "Pohutukawa", nl: "Nieuw-Zeelandse kerstboom", sci: "Metrosideros excelsa" },
@@ -105,17 +106,18 @@ export const plantNamesById = Object.freeze({
   104: { ru: "Сцилла", en: "Scilla / Squill", nl: "Sterhyacint", sci: "Scilla" },
   105: { ru: "Нарцисс", en: "Daffodil", nl: "Narcis", sci: "Narcissus" },
   //106: lupinus
+  //'106_1': lupinus
   107: { ru: "Мускари", en: "Grape hyacinth", nl: "Blauwe druifjes", sci: "Muscari" },
   108: { ru: "Пеларгония (Герань)", en: "Geranium (Pelargonium)", nl: "Geranium / Pelargonium", sci: "Pelargonium" },
   109: { ru: "Калибрахоа", en: "Calibrachoa / Million bells", nl: "Calibrachoa", sci: "Calibrachoa" },
   110: { ru: "Колеус", en: "Coleus", nl: "Siernetel", sci: "Coleus" },
-  //111: campanula
+  //'83_1': campanula
   112: { ru: "Дельфиниум", en: "Delphinium", nl: "Ridderspoor", sci: "Delphinium" },
   113: { ru: "Брунера", en: "Brunnera / Siberian bugloss", nl: "Kaukasisch vergeet-mij-nietje", sci: "Brunnera" },
   114: { ru: "Береза", en: "Birch", nl: "Berk", sci: "Betula" },
   115: { ru: "Рудбекия", en: "Rudbeckia / Black-eyed Susan", nl: "Zonnehoed", sci: "Rudbeckia" },
   //116: centaurea
-  //117: centaurea
+  //'116_1': centaurea
   118: { ru: "Журавельник (Герань)", en: "Hardy Geranium / Crane's-bill", nl: "Ooievaarsbek", sci: "Geranium" },
   119: { ru: "Маргаритка", en: "English daisy", nl: "Tuinmadeliefje", sci: "Bellis perennis" },
   120: { ru: "Дицентра", en: "Bleeding heart", nl: "Gebroken hartje", sci: "Lamprocapnos (old: Dicentra)" },
@@ -127,7 +129,7 @@ export const plantNamesById = Object.freeze({
   126: { ru: "Эвкалипт", en: "Eucalyptus", nl: "Eucalyptus", sci: "Eucalyptus" },
   127: { ru: "Цинния", en: "Zinnia", nl: "Zinnia", sci: "Zinnia" },
   128: { ru: "Карпобротус съедобный", en: "Pigface / Hottentot fig", nl: "Carpobrotus", sci: "Carpobrotus edulis" },
-  //129: allium
+  //'13_1': allium
   130: { ru: "Крокус", en: "Crocus", nl: "Krokus", sci: "Crocus" },
   131: { ru: "Вероника австрийская", en: "Veronica austriaca", nl: "Brede ereprijs", sci: "Veronica austriaca" },
   132: { ru: "Фризея", en: "Vriesea", nl: "Vriesea", sci: "Vriesea" },
@@ -148,6 +150,7 @@ export const plantNamesById = Object.freeze({
   148: { ru: "Фатсия", en: "Fatsia", nl: "Fatsia", sci: "Fatsia" },
   149: { ru: "Пахира", en: "Pachira", nl: "Pachira", sci: "Pachira" },
   //150: salvia
+  //'150_1': salvia
   151: { ru: "Плектрантус", en: "Plectranthus", nl: "Plectranthus", sci: "Plectranthus" },
   152: { ru: "Мальва", en: "Common mallow", nl: "Kaasjeskruid", sci: "Malva" },
   153: { ru: "Кизил", en: "Flowering Dogwood", nl: "Oostamerikaanse kornoelje", sci: "Cornus Florida" },
@@ -167,7 +170,8 @@ export const plantNamesById = Object.freeze({
   167: { ru: "Цикорий", en: "Chicory", nl: "Wilde Cichorei", sci: "Cichorium Intybus" },
   168: { ru: "Кувшинка", en: "Water Lily", nl: "Waterlelie", sci: "Nymphaea" },
   //169: amaranthus
-  //170: amaranthus
+  //'169_1': amaranthus
+  //'169_2': amaranthus
   171: { ru: "Цеанотус (краснокоренник) вдавленный", en: "Santa Barbara ceanothus", nl: "Amerikaanse sering", sci: "Ceanothus Impressus" },
   172: { ru: "Бересклет", en: "Spindle tree", nl: "Kardinaalsmuts", sci: "Euonymus" },
   //173: hebe
@@ -179,7 +183,7 @@ export const plantNamesById = Object.freeze({
   179: { ru: "Пираканта алая", en: "Firethorn / Scarlet firethorn", nl: "Vuurdoorn", sci: "Pyracantha Coccinea" },
   180: { ru: "Розмарин", en: "Rosemary", nl: "Rozemarijn", sci: "Salvia Rosmarinus" },
   181: { ru: "Одуванчик", en: "Dandelion", nl: "Paardenbloem", sci: "Taraxacum Officinale" },
-  //182: anemone
+  //'47_1': anemone
   183: { ru: "Антуриум", en: "Anthurium / Flamingo flower", nl: "Flamingoplant", sci: "Anturium" },
   184: { ru: "Вереск", en: "Heather", nl: "Struikheide", sci: "Calluna" },
   185: { ru: "Эшшольция калифорнийская", en: "California poppy", nl: "Californische klaproos", sci: "Eschscholzia Californica" },
@@ -189,14 +193,14 @@ export const plantNamesById = Object.freeze({
   189: { ru: "Земляника садовая", en: "Strawberry", nl: "Aardbei", sci: "Fragaria × ananassa" },
   190: { ru: "Декабрист", en: "Christmas cactus", nl: "Kerstcactus", sci: "Schlumbergera Truncata" },
   191: { ru: "Ландыш майский", en: "Lily of the valley", nl: "Lelietje-van-dalen", sci: "Convallaria Majalis" },
-  //192: dianthus
+  //'41_1': dianthus
   193: { ru: "Смолёвка халцедоновая", en: "Maltese cross", nl: "Brandende liefde", sci: "Silene chalcedonica" },
   194: { ru: "Гелихризум сухоцвет", en: "Strawflower / Golden everlasting", nl: "Strobloem", sci: "Xerochrysum bracteatum" },
   195: { ru: "Львиный зев", en: "Snapdragon", nl: "Leeuwebek", sci: "Antirrhinum majus" },
   196: { ru: "Юстиция розовая", en: "Brazilian plume flower", nl: "Braziliaanse pluim", sci: "Justicia carnea" },
   197: { ru: "Аихризон", en: "Aichryson / Houseleek tree", nl: "Vetplantje / Aichryson", sci: "Aichryson" },
-  //198: salvia
-  //199: lupinus
+  //'150_2': salvia
+  //'106_2': lupinus
   200: { ru: "Кориандр (кинза)", en: "Coriander / Cilantro", nl: "Koriander", sci: "Coriandrum sativum" },
   201: { ru: "Барвинок малый", en: "Lesser periwinkle", nl: "Kleine maagdenpalm", sci: "Vinca Minor" }
 });

@@ -41,6 +41,7 @@ const plantParametersRaw = Object.freeze({
   8: Object.freeze({ scientificName: 'Gazania', lifeCycle: 'perennial' }), //в умеренном климате — как однолетник
   12: Object.freeze({ scientificName: 'Pastinaca sativa', lifeCycle: 'biennial' }),
   13: Object.freeze({ scientificName: 'Allium', lifeCycle: 'perennial' }),
+  '13_1': Object.freeze({ scientificName: 'Allium ursinum', lifeCycle: 'perennial' }),
   14: Object.freeze({
     scientificName: 'Camassia',
     lifeCycle: 'perennial',
@@ -64,6 +65,7 @@ const plantParametersRaw = Object.freeze({
   29: Object.freeze({ scientificName: 'Chrysanthemum', lifeCycle: 'perennial' }),
   30: Object.freeze({ scientificName: 'Osteospermum', lifeCycle: 'perennial' }), //в умеренном климате — как однолетник
   31: Object.freeze({ scientificName: 'Rosa' }),
+  '31_1': Object.freeze({ scientificName: 'Rosa canina', lifeCycle: 'perennial' }),
   32: Object.freeze({ scientificName: 'Guzmania lingulata', lifeCycle: 'perennial' }),
   33: Object.freeze({ scientificName: 'Papaver' }),
   34: Object.freeze({ scientificName: 'Metrosideros excelsa' }),
@@ -72,9 +74,11 @@ const plantParametersRaw = Object.freeze({
   39: Object.freeze({ scientificName: 'Heliopsis helianthoides', lifeCycle: 'perennial' }),
   40: Object.freeze({ scientificName: 'Coreopsis' }),
   41: Object.freeze({ scientificName: 'Dianthus' }),
+  '41_1': Object.freeze({ scientificName: 'Dianthus barbatus', lifeCycle: 'biennial' }),
   44: Object.freeze({ scientificName: 'Ananas comosus', lifeCycle: 'perennial' }),
   46: Object.freeze({ scientificName: 'Paeonia', lifeCycle: 'perennial' }),
   47: Object.freeze({ scientificName: 'Anemone', lifeCycle: 'perennial' }),
+  '47_1': Object.freeze({ scientificName: 'Anemone coronaria', lifeCycle: 'perennial' }),
   50: Object.freeze({ scientificName: 'Jacaranda mimosifolia' }),
   51: Object.freeze({ scientificName: 'Punica granatum' }),
   52: Object.freeze({ scientificName: 'Pittosporum tobira' }),
@@ -100,6 +104,7 @@ const plantParametersRaw = Object.freeze({
   81: Object.freeze({ scientificName: 'Hosta', lifeCycle: 'perennial' }),
   82: Object.freeze({ scientificName: 'Viola tricolor var. hortensis', lifeCycle: 'biennial' }), //в культуре чаще однолетник
   83: Object.freeze({ scientificName: 'Campanula', lifeCycle: 'perennial' }), //есть двулетние и однолетние виды
+  '83_1': Object.freeze({ scientificName: 'Campanula rotundifolia', lifeCycle: 'perennial' }),
   84: Object.freeze({ scientificName: 'Brassica oleracea Gongylodes Group', lifeCycle: 'biennial' }),
   85: Object.freeze({ scientificName: 'Buddleja davidii' }),
   86: Object.freeze({ scientificName: 'Plumeria' }),
@@ -119,6 +124,9 @@ const plantParametersRaw = Object.freeze({
   102: Object.freeze({ scientificName: 'Aglaonema', lifeCycle: 'perennial' }),
   104: Object.freeze({ scientificName: 'Scilla', lifeCycle: 'perennial' }),
   105: Object.freeze({ scientificName: 'Narcissus', lifeCycle: 'perennial' }),
+  106: Object.freeze({ scientificName: 'Lupinus', lifeCycle: 'perennial' }),
+  '106_1': Object.freeze({ scientificName: 'Lupinus polyphyllus', lifeCycle: 'perennial' }),
+  '106_2': Object.freeze({ scientificName: 'Lupinus latifolius', lifeCycle: 'perennial' }),
   107: Object.freeze({ scientificName: 'Muscari', lifeCycle: 'perennial' }),
   108: Object.freeze({ scientificName: 'Pelargonium', lifeCycle: 'perennial' }), //в культуре часто как однолетник
   109: Object.freeze({ scientificName: 'Calibrachoa', lifeCycle: 'perennial' }), //в культуре как однолетник
@@ -126,8 +134,8 @@ const plantParametersRaw = Object.freeze({
   112: Object.freeze({ scientificName: 'Delphinium', lifeCycle: 'perennial' }),
   113: Object.freeze({ scientificName: 'Brunnera', lifeCycle: 'perennial' }),
   114: Object.freeze({ scientificName: 'Betula' }),
-  116: Object.freeze({ scientificName: 'Centaurea cyanus', lifeCycle: 'annual' }),
-  117: Object.freeze({ scientificName: 'Centaurea', lifeCycle: 'perennial' }), //есть однолетние виды
+  116: Object.freeze({ scientificName: 'Centaurea', lifeCycle: 'perennial' }), //есть однолетние виды
+  '116_1': Object.freeze({ scientificName: 'Centaurea cyanus', lifeCycle: 'annual' }),
   118: Object.freeze({ scientificName: 'Geranium', lifeCycle: 'perennial' }),
   119: Object.freeze({ scientificName: 'Bellis perennis', lifeCycle: 'perennial' }),
   120: Object.freeze({ scientificName: 'Lamprocapnos', lifeCycle: 'perennial' }),
@@ -142,6 +150,9 @@ const plantParametersRaw = Object.freeze({
   139: Object.freeze({ scientificName: 'Trachelospermum jasminoides', lifeCycle: 'perennial' }),
   142: Object.freeze({ scientificName: 'Hyacinthus', lifeCycle: 'perennial' }),
   146: Object.freeze({ scientificName: 'Trifolium pratense', lifeCycle: 'perennial' }),
+  150: Object.freeze({ scientificName: 'Salvia', lifeCycle: 'perennial' }),
+  '150_1': Object.freeze({ scientificName: 'Salvia officinalis', lifeCycle: 'perennial' }),
+  '150_2': Object.freeze({ scientificName: 'Salvia pratensis', lifeCycle: 'perennial' }),
   153: Object.freeze({ scientificName: 'Cornus Florida' }),
   155: Object.freeze({ scientificName: 'Angelonia', lifeCycle: 'perennial' }), //в культуре как однолетник
   156: Object.freeze({ scientificName: 'Cynara cardunculus', lifeCycle: 'perennial' }),
@@ -154,19 +165,22 @@ const plantParametersRaw = Object.freeze({
   163: Object.freeze({ scientificName: 'Fittonia', lifeCycle: 'perennial' }),
   164: Object.freeze({ scientificName: 'Fumaria', lifeCycle: 'annual' }),
   165: Object.freeze({ scientificName: 'Helleborus', lifeCycle: 'perennial' }),
-  166: Object.freeze({ scientificName: 'Alcea', lifeCycle: 'biennial' }) //иногда короткоживущий многолетник
+  166: Object.freeze({ scientificName: 'Alcea', lifeCycle: 'biennial' }), //иногда короткоживущий многолетник
+  169: Object.freeze({ scientificName: 'Amaranthus', lifeCycle: 'annual' }),
+  '169_1': Object.freeze({ scientificName: 'Amaranthus cruentus', lifeCycle: 'annual' }),
+  '169_2': Object.freeze({ scientificName: 'Amaranthus hypochondriacus', lifeCycle: 'annual' })
 });
 
 const plantFamiliesRaw = Object.freeze({
   'Acanthaceae': Object.freeze([158, 163]),
-  'Amaranthaceae': Object.freeze([28, 123]),
-  'Amaryllidaceae': Object.freeze([3, 13, 105, 122]),
+  'Amaranthaceae': Object.freeze([28, 123, 169, '169_1', '169_2']),
+  'Amaryllidaceae': Object.freeze([3, 13, '13_1', 105, 122]),
   'Apiaceae': Object.freeze([2, 12]),
   'Apocynaceae': Object.freeze([19, 86, 139, 162]),
   'Araceae': Object.freeze([80, 93, 96, 102]),
   'Asparagaceae': Object.freeze([14, 81, 104, 107, 142]),
   'Asphodelaceae': Object.freeze([36]),
-  'Asteraceae': Object.freeze([1, 6, 8, 25, 26, 27, 29, 30, 39, 40, 72, 73, 89, 97, 100, 101, 116, 117, 119, 121, 127, 156, 159]),
+  'Asteraceae': Object.freeze([1, 6, 8, 25, 26, 27, 29, 30, 39, 40, 72, 73, 89, 97, 100, 101, 116, '116_1', 119, 121, 127, 156, 159]),
   'Begoniaceae': Object.freeze([91]),
   'Betulaceae': Object.freeze([114]),
   'Bignoniaceae': Object.freeze([50]),
@@ -174,18 +188,18 @@ const plantFamiliesRaw = Object.freeze({
   'Brassicaceae': Object.freeze([84, 161]),
   'Bromeliaceae': Object.freeze([32, 44]),
   'Cactaceae': Object.freeze([124]),
-  'Campanulaceae': Object.freeze([83, 125]),
+  'Campanulaceae': Object.freeze([83, '83_1', 125]),
   'Caprifoliaceae': Object.freeze([53]),
-  'Caryophyllaceae': Object.freeze([41]),
+  'Caryophyllaceae': Object.freeze([41, '41_1']),
   'Cornaceae': Object.freeze([153]),
   'Ericaceae': Object.freeze([21]),
-  'Fabaceae': Object.freeze([18, 146]),
+  'Fabaceae': Object.freeze([18, 106, '106_1', '106_2', 146]),
   'Fagaceae': Object.freeze([90]),
   'Gentianaceae': Object.freeze([69]),
   'Geraniaceae': Object.freeze([108, 118]),
   'Hydrangeaceae': Object.freeze([88]),
   'Iridaceae': Object.freeze([130]),
-  'Lamiaceae': Object.freeze([68, 110]),
+  'Lamiaceae': Object.freeze([68, 110, 150, '150_1', '150_2']),
   'Liliaceae': Object.freeze([16, 22, 35]),
   'Lythraceae': Object.freeze([51]),
   'Magnoliaceae': Object.freeze([24]),
@@ -203,8 +217,8 @@ const plantFamiliesRaw = Object.freeze({
   'Plumbaginaceae': Object.freeze([79]),
   'Poaceae': Object.freeze([63]),
   'Polemoniaceae': Object.freeze([74]),
-  'Ranunculaceae': Object.freeze([17, 47, 92, 112, 160, 165]),
-  'Rosaceae': Object.freeze([31, 58, 59, 62]),
+  'Ranunculaceae': Object.freeze([17, 47, '47_1', 92, 112, 160, 165]),
+  'Rosaceae': Object.freeze([31, '31_1', 58, 59, 62]),
   'Rubiaceae': Object.freeze([23]),
   'Scrophulariaceae': Object.freeze([85]),
   'Solanaceae': Object.freeze([76, 78, 109]),
@@ -213,19 +227,34 @@ const plantFamiliesRaw = Object.freeze({
   'Violaceae': Object.freeze([82])
 });
 
+const NUMERIC_ID_PATTERN = /^\d+$/;
+
+function normalizePlantId(rawId) {
+  const stringId = String(rawId);
+  return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : stringId;
+}
+
 const plantFamilyById = Object.freeze(Object.fromEntries(
   Object.entries(plantFamiliesRaw).flatMap(([family, ids]) =>
-    ids.map((id) => [id, family])
+    ids.map((id) => {
+      const normalizedId = normalizePlantId(id);
+      return [normalizedId, family];
+    })
   )
 ));
 
 export const plantFamilies = plantFamiliesRaw;
 
 export const plantParametersById = Object.freeze(Object.fromEntries(
-  Object.entries(plantParametersRaw).map(([id, params]) => [
-    Number(id),
-    Object.freeze({ ...params, family: plantFamilyById[id] || null })
-  ])
+  Object.entries(plantParametersRaw).map(([id, params]) => {
+    const normalizedId = normalizePlantId(id);
+    const family = plantFamilyById[normalizedId] || plantFamilyById[id] || null;
+
+    return [
+      normalizedId,
+      Object.freeze({ ...params, family })
+    ];
+  })
 ));
 
 export function getPlantParameters(id) {

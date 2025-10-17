@@ -6,18 +6,17 @@ const campanulaEntries = Object.freeze({
       nl: 'Klokje',
       sci: 'Campanula'
     }),
-    images: Object.freeze(['p83_1', 'p83_2']),
-    wrongAnswers: Object.freeze([21, 111])
+    images: Object.freeze(['p83_1', 'p83_2'])
   }),
-  111: Object.freeze({
+  '83_1': Object.freeze({
     names: Object.freeze({
       ru: 'Колокольчик круглолистный',
       en: 'Harebell',
       nl: 'Grasklokje',
       sci: 'Campanula rotundifolia'
     }),
-    images: Object.freeze(['p111_1']),
-    wrongAnswers: Object.freeze([21, 83])
+    images: Object.freeze(['p83_1_1']),
+    wrongAnswers: Object.freeze([21])
   })
 });
 

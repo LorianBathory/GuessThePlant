@@ -6,17 +6,16 @@ const alliumEntries = Object.freeze({
       nl: 'Reuzenlook',
       sci: 'Allium'
     }),
-    images: Object.freeze(['p13_1', 'p13_2', 'p13_3', 'p13_4']),
-    wrongAnswers: Object.freeze([3, 11, 129])
+    images: Object.freeze(['p13_1', 'p13_2', 'p13_3', 'p13_4'])
   }),
-  129: Object.freeze({
+  '13_1': Object.freeze({
     names: Object.freeze({
       ru: 'Черемша',
       en: 'Ramsons',
       nl: 'Daslook',
       sci: 'Allium ursinum'
     }),
-    wrongAnswers: Object.freeze([3, 11, 13])
+    wrongAnswers: Object.freeze([3, 11])
   })
 });
 

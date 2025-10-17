@@ -6,18 +6,17 @@ const anemoneEntries = Object.freeze({
       nl: 'Anemoon',
       sci: 'Anemone'
     }),
-    images: Object.freeze(['p47_1', 'p47_2', 'p47_3', 'p47_4']),
-    wrongAnswers: Object.freeze([33, 182])
+    images: Object.freeze(['p47_1', 'p47_2', 'p47_3', 'p47_4'])
   }),
-  182: Object.freeze({
+  '47_1': Object.freeze({
     names: Object.freeze({
       ru: 'Ветреница/анемона корончатая',
       en: 'Poppy anemone',
       nl: 'Tuinanemoon',
-      sci: 'Anemone Coronaria'
+      sci: 'Anemone coronaria'
     }),
-    images: Object.freeze(['p182_1']),
-    wrongAnswers: Object.freeze([33, 47])
+    images: Object.freeze(['p47_1_1']),
+    wrongAnswers: Object.freeze([33])
   })
 });
 
