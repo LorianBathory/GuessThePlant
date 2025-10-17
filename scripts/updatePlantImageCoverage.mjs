@@ -4,8 +4,6 @@ import { fileURLToPath } from 'node:url';
 
 import { speciesById } from '../src/data/catalog.js';
 import { plantImagesById } from '../src/data/images.js';
-import { getDifficultyByQuestionId, getDifficultyByImageId } from '../src/data/difficulties.js';
-import { questionTypes } from '../src/data/questionTypes.js';
 
 const collator = new Intl.Collator('ru', { numeric: true, sensitivity: 'base' });
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -25,12 +23,12 @@ const sortedEntries = Object.values(speciesById)
   .sort((a, b) => collator.compare(String(a.id), String(b.id)));
 
 const header = [
-  '| id растения | Название (ru) | Название (en) | Название (nl) | Название (sci) | Количество фото | ID фотографий | Названия изображений | Сложность |',
-  '| --- | --- | --- | --- | --- | --- | --- | --- | --- |'
+  '| id растения | Название (ru) | Название (en) | Название (nl) | Название (sci) | Количество фото | ID фотографий | Названия изображений |',
+  '| --- | --- | --- | --- | --- | --- | --- | --- |'
 ];
 
 const rows = sortedEntries.map(species => {
-  const { id, names = {}, images = [], genusId } = species;
+  const { id, names = {}, images = [] } = species;
   const ruName = escapeCell(names.ru ?? '');
   const enName = escapeCell(names.en ?? '');
   const nlName = escapeCell(names.nl ?? '');
@@ -48,34 +46,9 @@ const rows = sortedEntries.map(species => {
       .join(', ')
   );
 
-  const baseDifficulty = getDifficultyByQuestionId(id, questionTypes.PLANT);
-  const genusDifficulty = genusId != null && genusId !== id
-    ? getDifficultyByQuestionId(genusId, questionTypes.PLANT)
-    : null;
-  const difficultyValue = baseDifficulty ?? genusDifficulty ?? null;
-
-  const difficultyOverrides = imageIds
-    .map(imageId => {
-      const override = getDifficultyByImageId(imageId, questionTypes.PLANT);
-
-      if (!override || override === difficultyValue) {
-        return null;
-      }
-
-      return `${imageId}:${override}`;
-    })
-    .filter(Boolean);
-
-  let difficultyCell = difficultyValue ?? 'null';
-
-  if (difficultyOverrides.length > 0) {
-    const overridesText = difficultyOverrides.join(', ');
-    difficultyCell = `${difficultyCell} (overrides: ${overridesText})`;
-  }
-
   const imageCount = imageIds.length;
 
-  return `| ${escapeCell(id)} | ${ruName} | ${enName} | ${nlName} | ${sciName} | ${imageCount} | ${imageIdCell} | ${imageNameCell} | ${escapeCell(difficultyCell)} |`;
+  return `| ${escapeCell(id)} | ${ruName} | ${enName} | ${nlName} | ${sciName} | ${imageCount} | ${imageIdCell} | ${imageNameCell} |`;
 });
 
 const output = header.concat(rows).join('\n');
