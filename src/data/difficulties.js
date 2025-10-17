@@ -1,116 +1,17 @@
-import { questionTypes } from './questionTypes.js';
+import {
+  difficultyLevels,
+  questionIdsByDifficulty,
+  imageIdsByDifficulty,
+  imageDifficultyOverrides,
+  getDifficultyByQuestionId,
+  getDifficultyByImageId
+} from '../game/dataLoader.js';
 
-export const difficultyLevels = Object.freeze({
-  EASY: 'Easy',
-  MEDIUM: 'Medium',
-  HARD: 'Hard'
-});
-
-const plantQuestionIdsByDifficulty = Object.freeze({
-  [difficultyLevels.EASY]: Object.freeze([
-    6, 12, 13, 18, 22, 24, 26, 27, 29, 31, 33, 35, 41, 44, 51, 55, 58, 63, 66, 70, 74, 75, 76, 82, 88, 91, 93, 94, 95, 97, 100, 102,
-    104, 105, 107, 108, 114, 116, 117, 119, 124, 130, 139, 142, 146, 156, 157, 165, 168, 181, 189, 190, 195, 200, 206, 207, 214, 218,
-    223, 224, 235
-  ]),
-  [difficultyLevels.MEDIUM]: Object.freeze([
-    2, 3, 5, 8, 15, 16, 17, 19, 21, 23, 25, 26, 30, 36, 39, 40, 46, 47, 54, 56, 59, 62, 64, 68, 69, 72, 73, 81, 83, 85, 86, 90, 92,
-    96, 98, 101, 109, 110, '83_1', 112, 113, 118, 120, 121, 122, 123, 125, 127, 131, 153, 159, 160, 163, 164, 166, 167, 169, 172, 176,
-    177, 178, 179, '47_1', 183, 184, 185, 186, 188, 191, '41_1', 194, '150_2', '106_2', 201, 202, 203, 204, 205, 208, 210, 211, 212, 215,
-    216, 217, 219, 220, 221, 222, 225, 226, 228, 230, 231, 232, 234, 236
-  ]),
-  [difficultyLevels.HARD]: Object.freeze([
-    1, 4, 14, 28, 32, 34, 50, 52, 53, 77, 78, 79, 80, 84, 89, 155, 158, 161, 162, '169_2', 171, 173, 174, 175, 187, 193, 196, 197, 209,
-    213, 227, 229, 233, 237
-  ])
-});
-const bouquetQuestionIdsByDifficulty = Object.freeze({
-  [difficultyLevels.MEDIUM]: Object.freeze(['b1', 'b2'])
-});
-
-export const questionIdsByDifficulty = Object.freeze({
-  [questionTypes.PLANT]: plantQuestionIdsByDifficulty,
-  [questionTypes.BOUQUET]: bouquetQuestionIdsByDifficulty
-});
-
-const plantImageIdsByDifficulty = Object.freeze({
-  [difficultyLevels.EASY]: Object.freeze(['p73_3']),
-  [difficultyLevels.MEDIUM]: Object.freeze([
-    'p26_2',
-    'p29_2',
-    'p33_2',
-    'p55_3',
-    'p4_2',
-    'p91_2',
-    'p88_1',
-    'p31_5',
-    'p75_2',
-    'p29_4',
-    'p27_3',
-    'p22_2',
-    'p142_1'
-  ]),
-  [difficultyLevels.HARD]: Object.freeze([
-    'p30_1',
-    'p31_3',
-    'p3_2',
-    'p73_2',
-    'p5_3',
-    'p54_2',
-    'p54_3',
-    'p98_1',
-    'p86_2',
-    'p51_2',
-    'p92_1',
-    'p5_4',
-    'p29_3',
-    'p26_3',
-    'p8_3',
-    'p8_4',
-    'p8_5',
-    'p8_6',
-    'p112_2',
-    'p188_2'
-  ])
-});
-
-const bouquetImageIdsByDifficulty = Object.freeze({
-  [difficultyLevels.MEDIUM]: Object.freeze(['bq001', 'bq002'])
-});
-
-export const imageIdsByDifficulty = Object.freeze({
-  [questionTypes.PLANT]: plantImageIdsByDifficulty,
-  [questionTypes.BOUQUET]: bouquetImageIdsByDifficulty
-});
-
-function buildDifficultyLookup(source) {
-  return Object.freeze(
-    Object.fromEntries(
-      Object.entries(source).flatMap(([questionType, difficultyMap]) =>
-        Object.entries(difficultyMap).flatMap(([difficulty, ids]) =>
-          ids.map(id => [`${questionType}::${id}`, difficulty])
-        )
-      )
-    )
-  );
-}
-
-const questionDifficultyLookup = buildDifficultyLookup(questionIdsByDifficulty);
-const imageDifficultyLookup = buildDifficultyLookup(imageIdsByDifficulty);
-
-export const imageDifficultyOverrides = imageDifficultyLookup;
-
-export function getDifficultyByQuestionId(questionId, questionType = questionTypes.PLANT) {
-  if (questionId == null) {
-    return null;
-  }
-
-  return questionDifficultyLookup[`${questionType}::${questionId}`] || null;
-}
-
-export function getDifficultyByImageId(imageId, questionType = questionTypes.PLANT) {
-  if (typeof imageId !== 'string') {
-    return null;
-  }
-
-  return imageDifficultyLookup[`${questionType}::${imageId}`] || null;
-}
+export {
+  difficultyLevels,
+  questionIdsByDifficulty,
+  imageIdsByDifficulty,
+  imageDifficultyOverrides,
+  getDifficultyByQuestionId,
+  getDifficultyByImageId
+};

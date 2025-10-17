@@ -369,8 +369,4 @@ export const plantImages = Object.freeze([
     // { id: 'p112_1', src: '' }
     //{ id: '', src: '' }
 
-]);
-
-export const plantImagesById = Object.freeze(
-  Object.fromEntries(plantImages.map(image => [image.id, image]))
-);
+export { plantImages, plantImagesById };
