@@ -28,6 +28,26 @@ const salviaEntries = Object.freeze({
     }),
     images: Object.freeze(['p150_2_1'])
     //wrongAnswers: Object.freeze([?, ?])
+  }),
+  '150_3': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Salvia farinacea'
+    }),
+    images: Object.freeze(['p150_3_1'])
+    //wrongAnswers: Object.freeze([?, ?])
+  }),
+  '150_4': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Salvia rosmarinus'
+    }),
+    images: Object.freeze(['p150_4_1'])
+    //wrongAnswers: Object.freeze([?, ?])
   })
 });
 
