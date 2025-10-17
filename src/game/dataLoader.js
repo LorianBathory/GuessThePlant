@@ -6,7 +6,7 @@ async function loadJsonModule(relativePath) {
       const module = await import(relativePath, { with: { type: 'json' } });
       return module.default;
     } catch (withError) {
-      if (withError?.code !== 'ERR_IMPORT_ASSERTION_TYPE_UNSUPPORTED') {
+      if (!withError || !['ERR_IMPORT_ASSERTION_TYPE_UNSUPPORTED', 'ERR_IMPORT_ATTRIBUTE_UNSUPPORTED'].includes(withError.code)) {
         throw withError;
       }
 
