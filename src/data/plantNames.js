@@ -35,7 +35,7 @@ export const plantNamesById = Object.freeze({
   33: { ru: "Мак", en: "Poppy", nl: "Klaproos, Papaver", sci: "Papaver" },
   34: { ru: "Похутукава", en: "Pohutukawa", nl: "Nieuw-Zeelandse kerstboom", sci: "Metrosideros excelsa" },
   35: { ru: "Лилия", en: "Lily", nl: "Lelie", sci: "Lilium" },
-  36: { ru: "Лилейник", en: "Daylilies", nl: "Daglelie", sci: "Hemerocallis" },
+  //36: hemerocallis
   37: { ru: "Амариллис", en: "Amaryllis", nl: "Amaryllis", sci: "Amaryllis" },
   38: { ru: "Ромашка", en: "Mayweed", nl: "Reukeloze kamille", sci: "Tripleurospermum" },
   39: { ru: "Гелиопсис", en: "False Sunflower", nl: "Zonneoog", sci: "Heliopsis helianthoides" },
@@ -119,7 +119,7 @@ export const plantNamesById = Object.freeze({
   //116: centaurea
   //'116_1': centaurea
   118: { ru: "Журавельник (Герань)", en: "Hardy Geranium / Crane's-bill", nl: "Ooievaarsbek", sci: "Geranium" },
-  119: { ru: "Маргаритка", en: "English daisy", nl: "Tuinmadeliefje", sci: "Bellis perennis" },
+  //119: bellis
   120: { ru: "Дицентра", en: "Bleeding heart", nl: "Gebroken hartje", sci: "Lamprocapnos (old: Dicentra)" },
   121: { ru: "Гайлардия", en: "Gaillardia / Blanket flower", nl: "Kokardebloem", sci: "Gaillardia" },
   122: { ru: "Галантус", en: "Snowdrop", nl: "Sneeuwklokje", sci: "Galanthus" },
@@ -131,7 +131,7 @@ export const plantNamesById = Object.freeze({
   128: { ru: "Карпобротус съедобный", en: "Pigface / Hottentot fig", nl: "Carpobrotus", sci: "Carpobrotus edulis" },
   //'13_1': allium
   130: { ru: "Крокус", en: "Crocus", nl: "Krokus", sci: "Crocus" },
-  131: { ru: "Вероника австрийская", en: "Veronica austriaca", nl: "Brede ereprijs", sci: "Veronica austriaca" },
+  //131: veronica
   132: { ru: "Фризея", en: "Vriesea", nl: "Vriesea", sci: "Vriesea" },
   133: { ru: "Неорегелия", en: "Neoregelia", nl: "Neoregelia", sci: "Neoregelia" },
   134: { ru: "Эхмея", en: "Aechmea", nl: "Aechmea", sci: "Aechmea" },
