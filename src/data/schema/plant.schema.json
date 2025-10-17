@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guess-the-plant/schema/plant.schema.json",
+  "title": "Guess The Plant data bundle",
+  "description": "Shared schema for validating core data structures described in docs/data-json-schema.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "plantNames",
+    "species",
+    "plantImages",
+    "plantParameters",
+    "plantFamilies",
+    "bouquetQuestions"
+  ],
+  "properties": {
+    "plantNames": {
+      "description": "Map of plant IDs to localized names.",
+      "$ref": "#/$defs/PlantNameMap"
+    },
+    "species": {
+      "description": "Normalized species catalog derived from plantNames and genus metadata.",
+      "$ref": "#/$defs/SpeciesMap"
+    },
+    "plantImages": {
+      "description": "List of available plant image descriptors.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/PlantImage" }
+    },
+    "plantParameters": {
+      "description": "Map of plant IDs to lifecycle and horticultural parameters.",
+      "$ref": "#/$defs/PlantParameterMap"
+    },
+    "plantFamilies": {
+      "description": "Map of botanical family names to plant IDs.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/PlantIdArray"
+      }
+    },
+    "bouquetQuestions": {
+      "description": "Bouquet-specific quiz questions.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/BouquetQuestion" }
+    },
+    "genus": {
+      "description": "Optional list of genus definitions exported separately in the code base.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/GenusRecord" }
+    },
+    "plantQuestions": {
+      "description": "Optional array mirroring the runtime `plants` quiz entries.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/PlantQuizQuestion" }
+    }
+  },
+  "$defs": {
+    "PlantId": {
+      "title": "Plant identifier",
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string", "pattern": "^\\d+(?:_\\d+)*$" }
+      ]
+    },
+    "ImageId": {
+      "title": "Image identifier",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_]+$"
+    },
+    "LocalizedName": {
+      "type": "object",
+      "required": ["ru", "en", "nl", "sci"],
+      "additionalProperties": false,
+      "properties": {
+        "ru": { "type": "string", "minLength": 1 },
+        "en": { "type": "string", "minLength": 1 },
+        "nl": { "type": "string", "minLength": 1 },
+        "sci": { "type": "string", "minLength": 1 }
+      }
+    },
+    "PlantNameMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/PlantIdString" },
+      "additionalProperties": { "$ref": "#/$defs/LocalizedName" }
+    },
+    "PlantIdString": {
+      "type": "string",
+      "pattern": "^\\d+(?:_\\d+)*$"
+    },
+    "SpeciesEntry": {
+      "type": "object",
+      "required": ["id", "names"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/PlantId" },
+        "names": { "$ref": "#/$defs/LocalizedName" },
+        "images": { "$ref": "#/$defs/ImageIdArray" },
+        "wrongAnswers": { "$ref": "#/$defs/PlantIdArray" },
+        "genusId": { "$ref": "#/$defs/PlantId" }
+      }
+    },
+    "SpeciesMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/PlantIdString" },
+      "additionalProperties": { "$ref": "#/$defs/SpeciesEntry" }
+    },
+    "ImageIdArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ImageId" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "PlantIdArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/PlantId" },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "PlantImage": {
+      "type": "object",
+      "required": ["id", "src"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/ImageId" },
+        "src": { "type": "string", "pattern": "^images/" }
+      }
+    },
+    "ToxicityEntry": {
+      "type": "object",
+      "required": ["level", "tag"],
+      "additionalProperties": false,
+      "properties": {
+        "level": { "type": "integer", "minimum": 0 },
+        "tag": { "type": "string", "minLength": 1 }
+      }
+    },
+    "PlantParameters": {
+      "type": "object",
+      "required": ["scientificName"],
+      "additionalProperties": false,
+      "properties": {
+        "scientificName": { "type": "string", "minLength": 1 },
+        "lifeCycle": { "type": "string", "minLength": 1 },
+        "additionalInfo": { "type": "string", "minLength": 1 },
+        "toxicity": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ToxicityEntry" },
+          "minItems": 1
+        },
+        "hardinessZone": { "type": "string", "minLength": 1 },
+        "light": { "type": "string", "minLength": 1 },
+        "family": { "type": ["string", "null"], "minLength": 1 }
+      }
+    },
+    "PlantParameterMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/PlantIdString" },
+      "additionalProperties": { "$ref": "#/$defs/PlantParameters" }
+    },
+    "GenusEntry": {
+      "type": "object",
+      "required": ["names"],
+      "additionalProperties": false,
+      "properties": {
+        "names": { "$ref": "#/$defs/LocalizedName" },
+        "images": { "$ref": "#/$defs/ImageIdArray" },
+        "wrongAnswers": { "$ref": "#/$defs/PlantIdArray" }
+      }
+    },
+    "GenusRecord": {
+      "type": "object",
+      "required": ["id", "slug", "entries"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/PlantId" },
+        "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "entries": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/PlantIdString" },
+          "additionalProperties": { "$ref": "#/$defs/GenusEntry" }
+        },
+        "wrongAnswers": { "$ref": "#/$defs/PlantIdArray" }
+      }
+    },
+    "BouquetQuestion": {
+      "type": "object",
+      "required": [
+        "id",
+        "correctAnswerId",
+        "imageId",
+        "image",
+        "names",
+        "wrongAnswers",
+        "difficulty",
+        "questionVariantId",
+        "questionType",
+        "selectionGroupId",
+        "questionPromptKey"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/PlantId" },
+        "correctAnswerId": { "$ref": "#/$defs/PlantId" },
+        "imageId": { "$ref": "#/$defs/ImageId" },
+        "image": { "type": "string", "pattern": "^images/" },
+        "names": { "$ref": "#/$defs/LocalizedName" },
+        "wrongAnswers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/PlantId" },
+          "maxItems": 3,
+          "uniqueItems": true
+        },
+        "difficulty": { "type": ["string", "null"], "minLength": 1 },
+        "questionVariantId": { "type": "string", "minLength": 1 },
+        "questionType": { "type": "string", "enum": ["bouquet"] },
+        "selectionGroupId": { "type": "string", "pattern": "^bouquet-" },
+        "questionPromptKey": { "type": "string", "minLength": 1 }
+      }
+    },
+    "PlantQuizQuestion": {
+      "type": "object",
+      "required": [
+        "id",
+        "correctAnswerId",
+        "imageId",
+        "image",
+        "names",
+        "questionVariantId",
+        "questionType",
+        "selectionGroupId",
+        "questionPromptKey"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/PlantId" },
+        "correctAnswerId": { "$ref": "#/$defs/PlantId" },
+        "imageId": { "$ref": "#/$defs/ImageId" },
+        "image": { "type": "string", "pattern": "^images/" },
+        "names": { "$ref": "#/$defs/LocalizedName" },
+        "wrongAnswers": { "$ref": "#/$defs/PlantIdArray" },
+        "difficulty": { "type": "string", "minLength": 1 },
+        "questionVariantId": { "type": "string", "minLength": 1 },
+        "questionType": { "type": "string", "enum": ["plant"] },
+        "selectionGroupId": { "type": "string", "pattern": "^plant-" },
+        "questionPromptKey": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
