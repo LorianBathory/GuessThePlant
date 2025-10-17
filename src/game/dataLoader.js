@@ -2,8 +2,17 @@ async function loadJsonModule(relativePath) {
   const isNode = typeof globalThis.process !== 'undefined' && globalThis.process?.versions?.node;
 
   if (isNode) {
-    const module = await import(relativePath, { with: { type: 'json' } });
-    return module.default;
+    try {
+      const module = await import(relativePath, { with: { type: 'json' } });
+      return module.default;
+    } catch (withError) {
+      if (withError?.code !== 'ERR_IMPORT_ASSERTION_TYPE_UNSUPPORTED') {
+        throw withError;
+      }
+
+      const module = await import(relativePath, { assert: { type: 'json' } });
+      return module.default;
+    }
   }
 
   try {
