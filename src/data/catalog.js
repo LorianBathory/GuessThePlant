@@ -41,7 +41,7 @@ const speciesCatalog = Object.freeze({
   33: { images: ['p33_1', 'p33_2', 'p33_3', 'p33_4'], wrongAnswers: [47, 41, 26] }, //Papaver
   34: { images: ['p34_1'], wrongAnswers: [48, 49] },
   35: { images: ['p35_1', 'p35_2', 'p35_3', 'p35_4'], wrongAnswers: [36, 37] }, //Lily
-  36: { images: ['p36_1', 'p36_2'] }, //Hemerocallis
+    36: { genusId: 36 }, //Hemerocallis
   //37 не будет
   //38 не будет
   39: {images: ['p39_1'], wrongAnswers: [40, 100, 121] }, //heliopsis, рядом с родом Helianthus
@@ -124,7 +124,7 @@ const speciesCatalog = Object.freeze({
     116: { genusId: 116 }, //cornflower
     //'116_1': в род Centaurea (василёк синий)
     118: { images: ['p118_1', 'p118_2', 'p118_3', 'p118_4'] }, //Hardy geranium
-    119: { images: ['p119_1', 'p119_2'] }, //Bellis
+    119: { genusId: 119 }, //Bellis
     120: { images: ['p120_1', 'p120_2'] }, //Dicentra
     121: { images: ['p121_1', 'p121_2'] }, //Gaillardia
     122: { images: ['p122_1'] }, //Galanthus
@@ -134,7 +134,7 @@ const speciesCatalog = Object.freeze({
     126: { images: ['p126_1', 'p126_2'] }, //Eucalyptus
     127: { images: ['p127_1', 'p127_2', 'p127_3'] }, //Zinnia
     130: { images: ['p130_1', 'p130_2'] }, //Crocus
-    131: { images: ['p131_1', 'p131_2'], wrongAnswers: [14, 112] }, //veronica+
+    131: { genusId: 131 }, //veronica+
     139: { images: ['p139_1'] }, //Star jasmine
     142: { images: ['p142_1', 'p142_2', 'p142_3', 'p142_4', 'p142_5', 'p142_6', 'p142_7'], wrongAnswers: [14] }, //Hyacinthus+
     146: { images: ['p146_1', 'p146_2'] }, //Red clover
