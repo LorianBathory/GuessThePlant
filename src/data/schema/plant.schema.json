@@ -11,7 +11,8 @@
     "plantImages",
     "plantParameters",
     "plantFamilies",
-    "bouquetQuestions"
+    "bouquetQuestions",
+    "difficulties"
   ],
   "properties": {
     "plantNames": {
@@ -50,6 +51,10 @@
       "items": {
         "$ref": "#/definitions/BouquetQuestion"
       }
+    },
+    "difficulties": {
+      "description": "Difficulty metadata shared between plant and bouquet questions.",
+      "$ref": "#/definitions/DifficultiesConfig"
     },
     "genus": {
       "description": "Optional list of genus definitions exported separately in the code base.",
@@ -175,6 +180,105 @@
       },
       "minItems": 0,
       "uniqueItems": true
+    },
+    "QuestionVariantId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "QuestionVariantIdArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/QuestionVariantId"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "DifficultyLevels": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Z_]+$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "DifficultyBucketMap": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/PlantIdArray"
+      }
+    },
+    "BouquetDifficultyBucketMap": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/QuestionVariantIdArray"
+      }
+    },
+    "ImageDifficultyBucketMap": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/ImageIdArray"
+      }
+    },
+    "QuestionDifficultyBuckets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "plant": {
+          "$ref": "#/definitions/DifficultyBucketMap"
+        },
+        "bouquet": {
+          "$ref": "#/definitions/BouquetDifficultyBucketMap"
+        }
+      }
+    },
+    "ImageDifficultyBuckets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "plant": {
+          "$ref": "#/definitions/ImageDifficultyBucketMap"
+        },
+        "bouquet": {
+          "$ref": "#/definitions/ImageDifficultyBucketMap"
+        }
+      }
+    },
+    "DifficultiesConfig": {
+      "type": "object",
+      "required": [
+        "difficultyLevels",
+        "questionIdsByDifficulty",
+        "imageIdsByDifficulty"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "difficultyLevels": {
+          "$ref": "#/definitions/DifficultyLevels"
+        },
+        "questionIdsByDifficulty": {
+          "$ref": "#/definitions/QuestionDifficultyBuckets"
+        },
+        "imageIdsByDifficulty": {
+          "$ref": "#/definitions/ImageDifficultyBuckets"
+        }
+      }
     },
     "PlantImage": {
       "type": "object",

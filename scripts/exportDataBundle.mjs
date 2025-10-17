@@ -10,6 +10,11 @@ import { plantImages } from '../src/data/images.js';
 import { plantParametersById, plantFamilies } from '../src/data/plantParameters.js';
 import { bouquetQuestions } from '../src/data/catalogBouquets.js';
 import { allGenusEntries } from '../src/data/genus/index.js';
+import {
+  difficultyLevels as rawDifficultyLevels,
+  questionIdsByDifficulty as rawQuestionIdsByDifficulty,
+  imageIdsByDifficulty as rawImageIdsByDifficulty
+} from '../src/data/difficulties.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,6 +59,72 @@ function compareBouquetEntries(a, b) {
   return a.questionVariantId.localeCompare(b.questionVariantId, 'en');
 }
 
+function compareStrings(a, b) {
+  return String(a).localeCompare(String(b), 'en');
+}
+
+function compareByOrder(a, b, order) {
+  const indexA = order.indexOf(a);
+  const indexB = order.indexOf(b);
+
+  if (indexA === -1 && indexB === -1) {
+    return compareStrings(a, b);
+  }
+
+  if (indexA === -1) {
+    return 1;
+  }
+
+  if (indexB === -1) {
+    return -1;
+  }
+
+  return indexA - indexB;
+}
+
+const DIFFICULTY_LEVEL_ORDER = ['EASY', 'MEDIUM', 'HARD'];
+const DIFFICULTY_NAME_ORDER = ['Easy', 'Medium', 'Hard'];
+const QUESTION_TYPE_ORDER = ['plant', 'bouquet'];
+
+function sortDifficultyLevels(levels = {}) {
+  return Object.fromEntries(
+    Object.entries(levels)
+      .sort(([levelA], [levelB]) => compareByOrder(levelA, levelB, DIFFICULTY_LEVEL_ORDER))
+  );
+}
+
+function sortDifficultyBuckets(buckets = {}, compareFn = compareStrings) {
+  return Object.fromEntries(
+    Object.entries(buckets)
+      .sort(([difficultyA], [difficultyB]) => compareByOrder(difficultyA, difficultyB, DIFFICULTY_NAME_ORDER))
+      .map(([difficulty, ids]) => [
+        difficulty,
+        Array.isArray(ids) ? [...ids].sort(compareFn) : []
+      ])
+  );
+}
+
+function sortDifficultyByType(entries = {}, comparators = {}) {
+  return Object.fromEntries(
+    Object.entries(entries)
+      .sort(([typeA], [typeB]) => compareByOrder(typeA, typeB, QUESTION_TYPE_ORDER))
+      .map(([type, buckets]) => [
+        type,
+        sortDifficultyBuckets(buckets || {}, comparators[type] || compareStrings)
+      ])
+  );
+}
+
+function buildSortedDifficulties() {
+  return {
+    difficultyLevels: sortDifficultyLevels(rawDifficultyLevels || {}),
+    questionIdsByDifficulty: sortDifficultyByType(rawQuestionIdsByDifficulty || {}, {
+      plant: comparePlantIds
+    }),
+    imageIdsByDifficulty: sortDifficultyByType(rawImageIdsByDifficulty || {})
+  };
+}
+
 async function main() {
   await fs.mkdir(outputDir, { recursive: true });
 
@@ -86,6 +157,7 @@ async function main() {
   const sortedBouquets = [...bouquetQuestions].sort(compareBouquetEntries);
   const sortedGenus = [...allGenusEntries].sort((a, b) => comparePlantIds(a.id, b.id));
   const sortedPlantQuestions = [...plantQuizEntries].sort(compareQuestionEntries);
+  const sortedDifficulties = buildSortedDifficulties();
 
   const bundle = {
     plantNames: sortedPlantNames,
@@ -94,6 +166,7 @@ async function main() {
     plantParameters: sortedPlantParameters,
     plantFamilies: sortedPlantFamilies,
     bouquetQuestions: sortedBouquets,
+    difficulties: sortedDifficulties,
     genus: sortedGenus,
     plantQuestions: sortedPlantQuestions
   };
