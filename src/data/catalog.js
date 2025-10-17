@@ -1,4 +1,4 @@
-import { getDifficultyByQuestionId, getDifficultyByImageId } from './difficulties.js';
+import { getDifficultyByQuestionId, getDifficultyByImageId, difficultyLevels } from './difficulties.js';
 import { plantNamesById } from './plantNames.js';
 import { plantImagesById } from './images.js';
 import { questionTypes } from './questionTypes.js';
@@ -188,6 +188,42 @@ const speciesCatalog = Object.freeze({
     //'106_2': в род Lupinus latifolius
     200: { images: ['p200_1'] }, //Coriandrum sativum
     201: { images: ['p201_1', 'p201_2'] }, //Vinca minor
+    202: { images: ['p202_1'] }, //Pulsatilla
+    203: { images: ['p203_1'] }, //Catalpa
+    204: { images: ['p204_1'] }, //Cassava
+    205: { images: ['p205_1'] }, //Sedum
+    206: { images: ['p206_1'] }, //Spathiphyllum
+    207: { images: ['p207_1'] }, //Alyssum
+    208: { images: ['p208_1'] }, //Helianthemum
+    209: { images: ['p209_1'] }, //Strobilanthes
+    210: { images: ['p210_1'] }, //Valeriana
+    211: { images: ['p211_1'] }, //Viburnum
+    212: { images: ['p212_1'] }, //Grape vine
+    213: { images: ['p213_1'] }, //Whitfieldia
+    214: { images: ['p214_1'] }, //Dill
+    215: { images: ['p215_1'] }, //Bauhinia
+    216: { images: ['p216_1'] }, //Berberis
+    217: { images: ['p217_1'] }, //Crocosmia
+    218: { images: ['p218_1'] }, //Pumpkin
+    219: { images: ['p219_1'] }, //Cyclamen
+    220: { images: ['p220_1'] }, //Duranta
+    221: { images: ['p221_1'] }, //Eranthis
+    222: { images: ['p222_1'] }, //Ficaria
+    223: { images: ['p223_1'] }, //Fuchsia
+    224: { images: ['p224_1'] }, //Hedera helix
+    225: { images: ['p225_1'] }, //Ipomoea
+    226: { images: ['p226_1'] }, //Jatropha
+    227: { images: ['p227_1'] }, //Kopsia
+    228: { images: ['p228_1'] }, //Laurus nobilis
+    229: { images: ['p229_1'] }, //Illicium anisatum
+    230: { images: ['p230_1'] }, //Lycoris radiata
+    231: { images: ['p231_1'] }, //Monarda didyma
+    232: { images: ['p232_1'] }, //Nuphar lutea
+    233: { images: ['p233_1'] }, //Pachystachys
+    234: { images: ['p234_1'] }, //Ilex aquifolium
+    235: { images: ['p235_1'] }, //Oxalis triangularis
+    236: { images: ['p236_1'] }, //Parthenocissus quinquefolia
+    237: { images: ['p237_1'] } //Petrea volubilis
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
@@ -315,6 +351,9 @@ export const plants = Object.values(speciesById)
         ? getDifficultyByQuestionId(species.genusId, questionTypes.PLANT)
         : null;
 
+      // Если для вида ещё не задана сложность вручную, используем среднюю по умолчанию.
+      const difficulty = overrideDifficulty || baseDifficulty || genusDifficulty || difficultyLevels.MEDIUM;
+
       return {
         id: species.id,
         correctAnswerId: species.id,
@@ -322,7 +361,7 @@ export const plants = Object.values(speciesById)
         image: imageEntry.src,
         names: species.names,
         wrongAnswers: species.wrongAnswers,
-        difficulty: overrideDifficulty || baseDifficulty || genusDifficulty,
+        difficulty,
         questionVariantId: `${species.id}-${index}`,
         questionType: questionTypes.PLANT,
         selectionGroupId: `plant-${species.id}`,
