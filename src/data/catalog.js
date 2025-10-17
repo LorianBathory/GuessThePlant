@@ -136,6 +136,7 @@ const speciesCatalog = Object.freeze({
     130: { images: ['p130_1', 'p130_2'] }, //Crocus
     131: { images: ['p131_1', 'p131_2'], wrongAnswers: [14, 112] }, //veronica+
     139: { images: ['p139_1'] }, //Star jasmine
+    140: { images: ['p140_1'] }, //Lonicera tatarica
     142: { images: ['p142_1', 'p142_2', 'p142_3', 'p142_4', 'p142_5', 'p142_6', 'p142_7'], wrongAnswers: [14] }, //Hyacinthus+
     146: { images: ['p146_1', 'p146_2'] }, //Red clover
     150: { genusId: 150 }, //Common sage

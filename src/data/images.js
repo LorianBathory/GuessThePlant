@@ -255,6 +255,7 @@ export const plantImages = Object.freeze([
   { id: 'p131_1', src: 'images/VeronicaAustriaca_TatyanaAleksandrovna.JPG' },
   { id: 'p131_2', src: 'images/Veronica_DiegoFabra.JPG' },
   { id: 'p139_1', src: 'images/StarJasmine_EnginAkyurt.JPG' },
+    { id: 'p140_1', src: 'LoniceraTatarica_Daejeung_Pexels.JPG' },
   { id: 'p142_1', src: 'images/Hyacinth_Medium_AsimAlnamat.JPG' },
   { id: 'p142_2', src: 'images/Hyacinth_NataliyaVaitkevich.JPG' },
   { id: 'p142_3', src: 'images/Hyacinth_RomanBiernacki.JPG' },

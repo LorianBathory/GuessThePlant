@@ -139,7 +139,7 @@ export const plantNamesById = Object.freeze({
   137: { ru: "Бобовник", en: "Golden chain", nl: "Goudenregen", sci: "Laburnum" },
   138: { ru: "Львиный зев", en: "Snapdragon", nl: "Vlambloem / Leeuwenbek", sci: "Antirrhinum" },
   139: { ru: "Звездчатый жасмин", en: "Star jasmine", nl: "Sterjasmijn", sci: "Trachelospermum jasminoides" },
-  140: { ru: "Жимолость", en: "Honeysuckle", nl: "Kamperfoelie", sci: "Lonicera" },
+  140: { ru: "Жимолость татарская", en: "Tatarian honeysuckle", nl: "Tartaarse kamperfoelie", sci: "Lonicera tatarica" },
   141: { ru: "Софора японская", en: "Japanese pagoda tree", nl: "Honingboom", sci: "Sophora japonica" },
   142: { ru: "Гиацинт", en: "Hyacinth", nl: "Hyacint", sci: "Hyacinthus" },
   143: { ru: "Амарант", en: "Amaranth", nl: "Amarant", sci: "Amaranthus" },
