@@ -177,7 +177,7 @@ export const plantImages = Object.freeze([
   { id: 'p82_1', src: 'images/Viola_DamianApanasowicz.JPG' },
   { id: 'p83_1_1', src: 'images/CampanulaRotundifolia_Mary_StockSnap.JPG' },
   { id: 'p83_2_1', src: 'images/CampanulaPortenschlagiana_EllieBurgin.JPG' },
-  { id: 'p83_2_2', src: 'images/CampanulaPortenschlagiana.JPG' },
+  { id: 'p83_3_1', src: 'images/CampanulaPoscharskyanana.JPG' },
   { id: 'p84_1', src: 'images/Kohlrabi_IqbalFarooz.JPG' },
   { id: 'p85_1', src: 'images/Buddleja_GeorgWalter.JPG' },
   { id: 'p85_2', src: 'images/Buddleja_TobiasScheuer.JPG' },

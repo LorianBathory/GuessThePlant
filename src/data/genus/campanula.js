@@ -26,7 +26,17 @@ const campanulaEntries = Object.freeze({
             nl: 'Klokjesbloem',
             sci: 'Campanula Portenschlagiana'
         }),
-        images: Object.freeze(['p83_2_1', 'p83_2_2']),
+        images: Object.freeze(['p83_2_1']),
+        wrongAnswers: Object.freeze([21])
+    }),
+    '83_3': Object.freeze({
+        names: Object.freeze({
+            ru: 'Колокольчик Пожарского',
+            en: 'Serbian bellflower',
+            nl: 'Kruipklokje',
+            sci: 'Campanula poscharskyana'
+        }),
+        images: Object.freeze(['p83_3_1']),
         wrongAnswers: Object.freeze([21])
     })
 });
