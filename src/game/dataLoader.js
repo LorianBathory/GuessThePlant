@@ -35,6 +35,14 @@ const genusJson = await loadJsonModule('../data/json/genus.json');
 const plantImagesJson = await loadJsonModule('../data/json/plantImages.json');
 const bouquetQuestionsJson = await loadJsonModule('../data/json/bouquetQuestions.json');
 const difficultiesJson = await loadJsonModule('../data/json/difficulties.json');
+export const dataBundle = Object.freeze({
+  plantNames: plantNamesJson,
+  speciesCatalog: speciesCatalogJson,
+  genus: genusJson,
+  plantImages: plantImagesJson,
+  bouquetQuestions: bouquetQuestionsJson,
+  difficulties: difficultiesJson
+});
 import { questionTypes } from '../data/questionTypes.js';
 
 const NUMERIC_ID_PATTERN = /^\d+$/;
@@ -348,12 +356,12 @@ function buildPlantNames(data) {
 }
 
 function buildGameData({
-  plantNames = plantNamesJson,
-  speciesCatalog = speciesCatalogJson,
-  genusEntries = genusJson,
-  plantImages = plantImagesJson,
-  bouquetQuestions = bouquetQuestionsJson,
-  difficulties = difficultiesJson
+  plantNames = dataBundle.plantNames,
+  speciesCatalog = dataBundle.speciesCatalog,
+  genusEntries = dataBundle.genus,
+  plantImages = dataBundle.plantImages,
+  bouquetQuestions = dataBundle.bouquetQuestions,
+  difficulties = dataBundle.difficulties
 } = {}) {
   const plantNamesById = buildPlantNames(plantNames);
   const genusData = buildGenusData(genusEntries);
@@ -431,12 +439,12 @@ export function getDifficultyByImageId(imageId, questionType = questionTypes.PLA
 
 export function buildGameDataForTesting(overrides = {}) {
   return buildGameData({
-    plantNames: plantNamesJson,
-    speciesCatalog: speciesCatalogJson,
-    genusEntries: genusJson,
-    plantImages: plantImagesJson,
-    bouquetQuestions: bouquetQuestionsJson,
-    difficulties: difficultiesJson,
+    plantNames: dataBundle.plantNames,
+    speciesCatalog: dataBundle.speciesCatalog,
+    genusEntries: dataBundle.genus,
+    plantImages: dataBundle.plantImages,
+    bouquetQuestions: dataBundle.bouquetQuestions,
+    difficulties: dataBundle.difficulties,
     ...overrides
   });
 }
