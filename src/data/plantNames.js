@@ -119,7 +119,7 @@ export const plantNamesById = Object.freeze({
   //116: centaurea
   //'116_1': centaurea
   118: { ru: "Журавельник (Герань)", en: "Hardy Geranium / Crane's-bill", nl: "Ooievaarsbek", sci: "Geranium" },
-  //119: bellis
+  119: { ru: 'Маргаритка', en: 'English daisy', nl: 'Tuinmadeliefje', sci: 'Bellis perennis' },
   120: { ru: "Дицентра", en: "Bleeding heart", nl: "Gebroken hartje", sci: "Lamprocapnos (old: Dicentra)" },
   121: { ru: "Гайлардия", en: "Gaillardia / Blanket flower", nl: "Kokardebloem", sci: "Gaillardia" },
   122: { ru: "Галантус", en: "Snowdrop", nl: "Sneeuwklokje", sci: "Galanthus" },
@@ -142,7 +142,6 @@ export const plantNamesById = Object.freeze({
   140: { ru: "Жимолость татарская", en: "Tatarian honeysuckle", nl: "Tartaarse kamperfoelie", sci: "Lonicera tatarica" },
   141: { ru: "Софора японская", en: "Japanese pagoda tree", nl: "Honingboom", sci: "Sophora japonica" },
   142: { ru: "Гиацинт", en: "Hyacinth", nl: "Hyacint", sci: "Hyacinthus" },
-  143: { ru: "Амарант", en: "Amaranth", nl: "Amarant", sci: "Amaranthus" },
   144: { ru: "Астильба", en: "Astilbe", nl: "Astilbe", sci: "Astilbe" },
   145: { ru: "Агростемма", en: "Corncockle", nl: "Bolderik", sci: "Agrostemma" },
   146: { ru: "Клевер", en: "Red Clover", nl: "Rode klaver", sci: "Trifolium pratense" },
@@ -181,7 +180,6 @@ export const plantNamesById = Object.freeze({
   177: { ru: "Фацелия", en: "Phacelia / Scorpionweed", nl: "Phacelia", sci: "Phacelia" },
   178: { ru: "Лавровишня", en: "Cherry laurel", nl: "Laurierkers", sci: "Prunus Laurocerasus" },
   179: { ru: "Пираканта алая", en: "Firethorn / Scarlet firethorn", nl: "Vuurdoorn", sci: "Pyracantha Coccinea" },
-  180: { ru: "Розмарин", en: "Rosemary", nl: "Rozemarijn", sci: "Salvia Rosmarinus" },
   181: { ru: "Одуванчик", en: "Dandelion", nl: "Paardenbloem", sci: "Taraxacum Officinale" },
   //'47_1': anemone
   183: { ru: "Антуриум", en: "Anthurium / Flamingo flower", nl: "Flamingoplant", sci: "Anturium" },

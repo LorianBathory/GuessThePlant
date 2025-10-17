@@ -1,7 +1,6 @@
 import { alliumGenus } from './allium.js';
 import { amaranthusGenus } from './amaranthus.js';
 import { anemoneGenus } from './anemone.js';
-import { bellisGenus } from './bellis.js';
 import { campanulaGenus } from './campanula.js';
 import { centaureaGenus } from './centaurea.js';
 import { dianthusGenus } from './dianthus.js';
@@ -17,7 +16,6 @@ const genusList = Object.freeze([
   alliumGenus,
   amaranthusGenus,
   anemoneGenus,
-  bellisGenus,
   campanulaGenus,
   centaureaGenus,
   dianthusGenus,

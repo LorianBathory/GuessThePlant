@@ -124,7 +124,7 @@ const speciesCatalog = Object.freeze({
     116: { genusId: 116 }, //cornflower
     //'116_1': в род Centaurea (василёк синий)
     118: { images: ['p118_1', 'p118_2', 'p118_3', 'p118_4'] }, //Hardy geranium
-    119: { genusId: 119 }, //Bellis
+    119: { images: ['p119_0_1', 'p119_0_2', 'p119_0_3'] }, //Bellis
     120: { images: ['p120_1', 'p120_2'] }, //Dicentra
     121: { images: ['p121_1', 'p121_2'] }, //Gaillardia
     122: { images: ['p122_1'] }, //Galanthus
@@ -167,7 +167,6 @@ const speciesCatalog = Object.freeze({
     177: { images: ['p177_1'] }, //Phacelia
     178: { images: ['p178_1', 'p178_2', 'p178_3', 'p178_4'] }, //Cherry laurel
     179: { images: ['p179_1'] }, //Pyracantha coccinea
-    180: { images: ['p180_1'] }, //Rosemary
     181: { images: ['p181_1'] }, //Dandelion
     //'47_1': в род Anemone (Anemone coronaria)
     183: { images: ['p183_1'] }, //Anthurium

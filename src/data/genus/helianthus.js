@@ -6,6 +6,7 @@ const helianthusEntries = Object.freeze({
       nl: 'Zonnebloem',
       sci: 'Helianthus'
     }),
+    images: Object.freeze(['p100_0_1'])
   }),
   '100_1': Object.freeze({
     names: Object.freeze({

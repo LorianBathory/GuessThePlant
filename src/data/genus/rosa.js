@@ -26,6 +26,47 @@ const rosaEntries = Object.freeze({
     }),
     images: Object.freeze(['p31_1_1']),
     wrongAnswers: Object.freeze([4])
+  }),
+  '31_2': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Rosa rugosa'
+    }),
+    images: Object.freeze(['p31_6'])
+  }),
+  '31_3': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Rosa damascena'
+    })
+  }),
+  '31_4': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Rosa multiflora'
+    })
+  }),
+  '31_5': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Rosa moyesii'
+    })
+  }),
+  '31_6': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Rosa glauca'
+    })
   })
 });
 
