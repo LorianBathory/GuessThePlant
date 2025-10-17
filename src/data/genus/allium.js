@@ -16,6 +16,15 @@ const alliumEntries = Object.freeze({
       sci: 'Allium ursinum'
     }),
     wrongAnswers: Object.freeze([3, 11])
+  }),
+  '13_2': Object.freeze({
+    names: Object.freeze({
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: 'Allium tuberosum'
+    }),
+    images: Object.freeze(['p13_5'])
   })
 });
 

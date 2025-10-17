@@ -6,7 +6,7 @@ const hebeEntries = Object.freeze({
       nl: 'Hebe (struikveronica)',
       sci: 'Hebe'
     }),
-      wrongAnswers: Object.freeze([123, 143, 172])
+      wrongAnswers: Object.freeze([123, 169, 172])
   }),
     '173_1': Object.freeze({
         names: Object.freeze({
