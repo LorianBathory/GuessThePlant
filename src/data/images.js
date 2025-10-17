@@ -226,13 +226,9 @@ export const plantImages = Object.freeze([
     { id: 'p106_1_1', src: 'images/LupinusPolyphyllus_TravelPhotographer_StockSnap.JPG' },
     { id: 'p106_1_2', src: 'images/LupinusPolyphyllus_EfremEfre.JPG' },
     { id: 'p106_1_3', src: 'images/LupinusPolyphyllus_YuliaZiablova.JPG' },
-
     { id: 'p106_2_1', src: 'images/LupinusLatifolius_Nature\'sBeauty_StockSnap.JPG' },
-
     { id: 'p106_3_1', src: 'images/LupinusRivularis_Pixabay.JPG' },
-
     { id: 'p106_4_1', src: 'images/LupinusPilosus_Moshehar_Pixabay.JPG' },
-
   { id: 'p107_1', src: 'images/Muscari_RomanBiernacki3.JPG' },
   { id: 'p107_2', src: 'images/MuscariArmeniacum_MarinaPershina_StockSnap.JPG' },
   { id: 'p107_3', src: 'images/Muscari_Iriser_Pexels.JPG' },
@@ -256,8 +252,8 @@ export const plantImages = Object.freeze([
   { id: 'p118_2', src: 'images/Geranium_Pixabay2.JPG' },
   { id: 'p118_3', src: 'images/Geranium_ord6.JPG' },
   { id: 'p118_4', src: 'images/Geranium_pixabay.JPG' },
-  { id: 'p119_1', src: 'images/Bellis_Pixabay.JPG' },
-  { id: 'p119_2', src: 'images/Bellis_QL.JPG' },
+  { id: 'p119_0_1', src: 'images/Bellis_Pixabay.JPG' },
+  { id: 'p119_0_2', src: 'images/Bellis_QL.JPG' },
   { id: 'p120_1', src: 'images/Dicentra_ChrisF.JPG' },
   { id: 'p120_2', src: 'images/Dicentra_Nature\'sBeauty_StockSnap_JNWPZHC0TY.JPG' },
   { id: 'p121_1', src: 'images/Gaillardia_elineSun.JPG' },

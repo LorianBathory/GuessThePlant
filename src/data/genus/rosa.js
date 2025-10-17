@@ -22,7 +22,7 @@ const rosaEntries = Object.freeze({
       ru: 'Шиповник',
       en: 'Dog-rose',
       nl: 'Roos',
-      sci: 'Rosa'
+      sci: 'Rosa canina'
     }),
     images: Object.freeze(['p31_1_1']),
     wrongAnswers: Object.freeze([4])

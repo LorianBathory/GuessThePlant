@@ -6,7 +6,7 @@ const bellisEntries = Object.freeze({
       nl: 'Tuinmadeliefje',
       sci: 'Bellis perennis'
     }),
-    images: Object.freeze(['p119_1', 'p119_2'])
+    images: Object.freeze(['p119_0_1', 'p119_0_2'])
   })
 });
 
