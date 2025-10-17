@@ -1,23 +1,23 @@
 const centaureaEntries = Object.freeze({
   116: Object.freeze({
     names: Object.freeze({
-      ru: 'Василек',
-      en: 'Cornflower (esp. C. cyanus)',
-      nl: 'Korenbloem',
-      sci: 'Centaurea cyanus'
-    }),
-    images: Object.freeze(['p116_1']),
-    wrongAnswers: Object.freeze([117])
-  }),
-  117: Object.freeze({
-    names: Object.freeze({
-      ru: 'Василек',
+      ru: 'Василёк',
       en: 'Knapweeds',
       nl: 'Knoopkruid',
       sci: 'Centaurea'
     }),
-    images: Object.freeze(['p117_1']),
-    wrongAnswers: Object.freeze([116])
+    images: Object.freeze(['p116_1'])
+    //wrongAnswers: Object.freeze([?, ?])
+  }),
+  '116_1': Object.freeze({
+    names: Object.freeze({
+      ru: 'Василёк синий',
+      en: 'Cornflower',
+      nl: 'Korenbloem',
+      sci: 'Centaurea cyanus'
+    }),
+    images: Object.freeze(['p116_1_1'])
+    //wrongAnswers: Object.freeze([?, ?])
   })
 });
 

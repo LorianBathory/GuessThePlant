@@ -21,7 +21,7 @@ const speciesCatalog = Object.freeze({
   13: { genusId: 13 }, //Allium
   14: {images: ['p14_1'], wrongAnswers: [112, 131, 142]}, //camassia
   15: { images: ['p15_1'], wrongAnswers: [116] }, //globularia
-  16: {images: ['p16_1'], wrongAnswers: [35, 111]}, //Fritillary
+  16: {images: ['p16_1'], wrongAnswers: [35, '83_1']}, //Fritillary
   17: { images: ['p17_1', 'p17_2', 'p17_3'] },
   18: { images: ['p18_1', 'p18_2', 'p18_3', 'p18_4', 'p18_5'] }, //Wisteria
   19: { images: ['p19_1'],  wrongAnswers: [5, 21, 49]}, //Oleander. осталось добавить адениус
@@ -116,13 +116,13 @@ const speciesCatalog = Object.freeze({
     108: { images: ['p108_1'] }, //Pelargonium
     109: { images: ['p109_1'] }, //Calibrachoa
     110: { images: ['p110_1', 'p110_2', 'p110_3', 'p110_4'] }, //Coleus
-    //111: в род Campanula
+    //'83_1': в род Campanula
     112: { images: ['p112_1', 'p112_2', 'p112_3'], wrongAnswers: [131] }, //Delphinium+
     113: { images: ['p113_1'] }, //Brunnera
     114: { images: ['p114_1'] }, //Betula
     //115 без изображений
     116: { genusId: 116 }, //cornflower
-    //117: в род Centaurea (knapweeds)
+    //'116_1': в род Centaurea (василёк синий)
     118: { images: ['p118_1', 'p118_2', 'p118_3', 'p118_4'] }, //Hardy geranium
     119: { images: ['p119_1', 'p119_2'] }, //Bellis
     120: { images: ['p120_1', 'p120_2'] }, //Dicentra
@@ -156,7 +156,7 @@ const speciesCatalog = Object.freeze({
     167: { images: ['p167_1'] }, //Chicory
     168: { images: ['p168_1', 'p168_2'] }, //Water Lily
     169: { genusId: 169 }, //Red amaranth
-    //170: в род Amaranthus
+    //'169_1': в род Amaranthus (Amaranthus cruentus)
     171: { images: ['p171_1', 'p171_2'] }, //Ceanothus impressus
     172: { images: ['p172_1'] }, //Euonymus
     173: { genusId: 173 }, //Hebe speciosa
@@ -168,7 +168,7 @@ const speciesCatalog = Object.freeze({
     179: { images: ['p179_1'] }, //Pyracantha coccinea
     180: { images: ['p180_1'] }, //Rosemary
     181: { images: ['p181_1'] }, //Dandelion
-    //182: в род Anemone
+    //'47_1': в род Anemone (Anemone coronaria)
     183: { images: ['p183_1'] }, //Anthurium
     184: { images: ['p184_1'] }, //Calluna
     185: { images: ['p185_1'] }, //Eschscholzia californica
@@ -178,14 +178,14 @@ const speciesCatalog = Object.freeze({
     189: { images: ['p189_1'] }, //Strawberry
     190: { images: ['p190_1'] }, //Schlumbergera truncata
     191: { images: ['p191_1'] }, //Convallaria majalis
-    //192: в род Dianthus
+    //'41_1': в род Dianthus (Dianthus barbatus)
     193: { images: ['p193_1'] }, //Silene chalcedonica
     194: { images: ['p194_1'] }, //Xerochrysum bracteatum
     195: { images: ['p195_1'] }, //Antirrhinum majus
     196: { images: ['p196_1'] }, //Justicia carnea
     197: { images: ['p197_1'] }, //Aichryson
-    //198: в род Salvia pratensis
-    //199: в род Lupinus latifolius
+    //'150_2': в род Salvia pratensis
+    //'106_2': в род Lupinus latifolius
     200: { images: ['p200_1'] }, //Coriandrum sativum
     201: { images: ['p201_1', 'p201_2'] }, //Vinca minor
 });

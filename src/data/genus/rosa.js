@@ -15,18 +15,17 @@ const rosaEntries = Object.freeze({
       'p31_6',
       'p31_7',
       'p31_8'
-    ]),
-    wrongAnswers: Object.freeze([41, 69, 46, 5, 58])
+    ])
   }),
-  58: Object.freeze({
+  '31_1': Object.freeze({
     names: Object.freeze({
       ru: 'Шиповник',
       en: 'Dog-rose',
       nl: 'Roos',
       sci: 'Rosa'
     }),
-    images: Object.freeze(['p58_1']),
-    wrongAnswers: Object.freeze([4, 31])
+    images: Object.freeze(['p31_1_1']),
+    wrongAnswers: Object.freeze([4])
   })
 });
 

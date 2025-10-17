@@ -6,18 +6,17 @@ const dianthusEntries = Object.freeze({
       nl: 'Anjer',
       sci: 'Dianthus'
     }),
-    images: Object.freeze(['p41_1', 'p41_2', 'p41_3']),
-    wrongAnswers: Object.freeze([39, 40, 97, 192])
+    images: Object.freeze(['p41_1', 'p41_2', 'p41_3'])
   }),
-  192: Object.freeze({
+  '41_1': Object.freeze({
     names: Object.freeze({
       ru: 'Гвоздика бородатая (турецкая)',
       en: 'Sweet William',
       nl: 'Duizendschoon',
       sci: 'Dianthus barbatus'
     }),
-    images: Object.freeze(['p192_1']),
-    wrongAnswers: Object.freeze([41, 39, 40])
+    images: Object.freeze(['p41_1_1']),
+    wrongAnswers: Object.freeze([39, 40])
   })
 });
 
