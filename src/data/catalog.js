@@ -188,6 +188,42 @@ const speciesCatalog = Object.freeze({
     //'106_2': в род Lupinus latifolius
     200: { images: ['p200_1'] }, //Coriandrum sativum
     201: { images: ['p201_1', 'p201_2'] }, //Vinca minor
+    202: { images: ['p202_1'], wrongAnswers: [47, 112, 142] }, //Pulsatilla
+    203: { images: ['p203_1'], wrongAnswers: [56, 59, 176] }, //Catalpa
+    204: { images: ['p204_1'], wrongAnswers: [63, 200, 214] }, //Cassava
+    205: { images: ['p205_1'], wrongAnswers: [147, 165, 201] }, //Sedum
+    206: { images: ['p206_1'], wrongAnswers: [93, 108, 235] }, //Spathiphyllum
+    207: { images: ['p207_1'], wrongAnswers: [64, 85, 152] }, //Alyssum
+    208: { images: ['p208_1'], wrongAnswers: [29, 73, 121] }, //Helianthemum
+    209: { images: ['p209_1'], wrongAnswers: [110, 158, 233] }, //Strobilanthes
+    210: { images: ['p210_1'], wrongAnswers: [92, 118, 181] }, //Valeriana
+    211: { images: ['p211_1'], wrongAnswers: [59, 153, 178] }, //Viburnum
+    212: { images: ['p212_1'], wrongAnswers: [31, 99, 178] }, //Grape vine
+    213: { images: ['p213_1'], wrongAnswers: [196, 209, 233] }, //Whitfieldia
+    214: { images: ['p214_1'], wrongAnswers: [63, 200, 218] }, //Dill
+    215: { images: ['p215_1'], wrongAnswers: [55, 85, 188] }, //Bauhinia
+    216: { images: ['p216_1'], wrongAnswers: [59, 140, 179] }, //Berberis
+    217: { images: ['p217_1'], wrongAnswers: [55, 73, 121] }, //Crocosmia
+    218: { images: ['p218_1'], wrongAnswers: [62, 63, 214] }, //Pumpkin
+    219: { images: ['p219_1'], wrongAnswers: [107, 118, 191] }, //Cyclamen
+    220: { images: ['p220_1'], wrongAnswers: [55, 79, 188] }, //Duranta
+    221: { images: ['p221_1'], wrongAnswers: [105, 122, 142] }, //Eranthis
+    222: { images: ['p222_1'], wrongAnswers: [73, 92, 221] }, //Ficaria
+    223: { images: ['p223_1'], wrongAnswers: [55, 86, 110] }, //Fuchsia
+    224: { images: ['p224_1'], wrongAnswers: [61, 99, 178] }, //Hedera helix
+    225: { images: ['p225_1'], wrongAnswers: [76, 78, 220] }, //Ipomoea
+    226: { images: ['p226_1'], wrongAnswers: [188, 209, 233] }, //Jatropha
+    227: { images: ['p227_1'], wrongAnswers: [85, 110, 215] }, //Kopsia
+    228: { images: ['p228_1'], wrongAnswers: [57, 178, 211] }, //Laurus nobilis
+    229: { images: ['p229_1'], wrongAnswers: [56, 216, 228] }, //Illicium anisatum
+    230: { images: ['p230_1'], wrongAnswers: [104, 107, 142] }, //Lycoris radiata
+    231: { images: ['p231_1'], wrongAnswers: [73, 177, 186] }, //Monarda didyma
+    232: { images: ['p232_1'], wrongAnswers: [105, 122, 168] }, //Nuphar lutea
+    233: { images: ['p233_1'], wrongAnswers: [110, 209, 226] }, //Pachystachys
+    234: { images: ['p234_1'], wrongAnswers: [140, 178, 216] }, //Ilex aquifolium
+    235: { images: ['p235_1'], wrongAnswers: [68, 221, 222] }, //Oxalis triangularis
+    236: { images: ['p236_1'], wrongAnswers: [99, 212, 224] }, //Parthenocissus quinquefolia
+    237: { images: ['p237_1'], wrongAnswers: [85, 215, 220] } //Petrea volubilis
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
