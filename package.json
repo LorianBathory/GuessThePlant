@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint .",
-    "test": "node scripts/verifyGameData.js"
+    "export:data": "node tools/export-data-to-json.mjs"
   },
   "keywords": [
     "quiz",
@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "ajv": "^8.17.1",
     "@eslint/js": "^9.13.0",
     "eslint": "^9.13.0",
     "eslint-plugin-react": "^7.37.2",
