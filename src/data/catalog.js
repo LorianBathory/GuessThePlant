@@ -83,7 +83,7 @@ const speciesCatalog = Object.freeze({
   75: { images: ['p75_1', 'p75_2'] },
   76: { images: ['p76_1', 'p76_2'] }, //petunia
   77: { images: ['p77_1'], wrongAnswers: [58, 48, 57] },
-  78: { images: ['p78_1'], wrongAnswers: [76] },
+  78: { images: ['p78_1', 'p78_2'], wrongAnswers: [76] },
   79: { images: ['p79_1', 'p79_2'], wrongAnswers: [18] },
   80: { images: ['p80_1'], wrongAnswers: [17] }, //временный wrongAnswer +
   81: { images: ['p81_1', 'p81_2'], wrongAnswers: [19] }, //Hosta временный wrongAnswer +
@@ -93,7 +93,7 @@ const speciesCatalog = Object.freeze({
   85: { images: ['p85_1', 'p85_2', 'p85_3', 'p85_4'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
   86: { images: ['p86_1', 'p86_2'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
      //87. Lotus пока не залит.
-    88: { images: ['p88_1', 'p88_2', 'p88_3'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
+    88: { images: ['p88_1', 'p88_2', 'p88_3', 'p88_4'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
     89: { images: ['p89_1'], wrongAnswers: [25] }, //Santolina временный wrongAnswer +
     90: { images: ['p90_1'], wrongAnswers: [26] }, //Fagus временный wrongAnswer +
     91: { images: ['p91_1', 'p91_2', 'p91_3', 'p91_4'], wrongAnswers: [27] }, //Begonia временный wrongAnswer+
@@ -136,7 +136,7 @@ const speciesCatalog = Object.freeze({
     130: { images: ['p130_1', 'p130_2'] }, //Crocus
     131: { images: ['p131_1', 'p131_2'], wrongAnswers: [14, 112] }, //veronica+
     139: { images: ['p139_1'] }, //Star jasmine
-    142: { images: ['p142_1', 'p142_2', 'p142_3', 'p142_4', 'p142_5', 'p142_6'], wrongAnswers: [14] }, //Hyacinthus+
+    142: { images: ['p142_1', 'p142_2', 'p142_3', 'p142_4', 'p142_5', 'p142_6', 'p142_7'], wrongAnswers: [14] }, //Hyacinthus+
     146: { images: ['p146_1', 'p146_2'] }, //Red clover
     150: { genusId: 150 }, //Common sage
   152: { images: ['p152_1', 'p152_2'] }, //Malva

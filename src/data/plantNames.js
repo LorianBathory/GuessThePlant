@@ -77,7 +77,7 @@ export const plantNamesById = Object.freeze({
   75: { ru: "Сирень", en: "Lilac", nl: "Sering", sci: "Syringa" },
   76: { ru: "Петуния", en: "Petunia", nl: "Petunia", sci: "Petunia" },
   77: { ru: "Родомирт", en: "Rose Myrtle", nl: "Rhodomyrtus", sci: "Rhodomyrtus" },
-  78: { ru: "Картофельное дерево", en: "Potato Tree", nl: "Nachtschade", sci: "Solanum" },
+  78: { ru: "Картофельное дерево", en: "Potato Tree", nl: "Nachtschade", sci: "Lycianthes (Solanum) rantonnetii" },
   79: { ru: "Свинчатка", en: "Leadwort", nl: "Loodkruid", sci: "Plumbago" },
   80: { ru: "Каладиум", en: "Caladium", nl: "Caladium, Olifantsoor", sci: "Caladium bicolor" },
   81: { ru: "Хоста", en: "Hosta", nl: "Hartlelie, Funkia", sci: "Hosta" },
