@@ -1,12 +1,13 @@
 const campanulaEntries = Object.freeze({
   83: Object.freeze({
     names: Object.freeze({
-      ru: 'Кампанула',
-      en: 'Bellflower',
-      nl: 'Klokje',
-      sci: 'Campanula'
+        //предполагается, что мы никогда не покажем вопрос с этим растением (только с дочерними элементами). Поэтому его имя заменено на "?",
+        // чтобы увидеть ошибку, если оно будет показано
+      ru: '?',
+      en: '?',
+      nl: '?',
+      sci: '?'
     }),
-    images: Object.freeze(['p83_1', 'p83_2'])
   }),
   '83_1': Object.freeze({
     names: Object.freeze({
@@ -17,7 +18,17 @@ const campanulaEntries = Object.freeze({
     }),
     images: Object.freeze(['p83_1_1']),
     wrongAnswers: Object.freeze([21])
-  })
+  }),
+    '83_2': Object.freeze({
+        names: Object.freeze({
+            ru: 'Колокольчик Портеншлага',
+            en: 'Dalmatian bellflower',
+            nl: 'Klokjesbloem',
+            sci: 'Campanula Portenschlagiana'
+        }),
+        images: Object.freeze(['p83_2_1', 'p83_2_2']),
+        wrongAnswers: Object.freeze([21])
+    })
 });
 
 export const campanulaGenus = Object.freeze({
