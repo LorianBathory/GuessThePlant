@@ -213,7 +213,7 @@ export const plantImages = Object.freeze([
     {id: '97_6', src: 'images/TagetesTenuifolia_Nennieinszweidrei_Pixabay.JPG' },
   { id: 'p98_1', src: 'images/Passiflora_Hard_AliefBaldwin.JPG' },
   { id: 'p98_2', src: 'images/Passiflora_HartonoSubagio.JPG' },
-  { id: 'p100_1', src: 'images/Sunflower_Easy.jpg' },
+  { id: 'p100_0_1', src: 'images/Helianthus_Easy.jpg' },
   { id: 'p100_1_1', src: 'images/HelianthusAnnuus_Nature\'sBeauty_StockSnap.JPG' },
   { id: 'p100_2_1', src: 'images/Helianthus_Hard_ShiwaYachachin.JPG' },
   { id: 'p101_1', src: 'images/Cosmo_WutthichaiCharoenburi.JPG' },
