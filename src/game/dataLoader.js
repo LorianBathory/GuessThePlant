@@ -1,9 +1,40 @@
-import plantNamesJson from '../data/json/plantNames.json' with { type: 'json' };
-import speciesCatalogJson from '../data/json/speciesCatalog.json' with { type: 'json' };
-import genusJson from '../data/json/genus.json' with { type: 'json' };
-import plantImagesJson from '../data/json/plantImages.json' with { type: 'json' };
-import bouquetQuestionsJson from '../data/json/bouquetQuestions.json' with { type: 'json' };
-import difficultiesJson from '../data/json/difficulties.json' with { type: 'json' };
+async function loadJsonModule(relativePath) {
+  const isNode = typeof globalThis.process !== 'undefined' && globalThis.process?.versions?.node;
+
+  if (isNode) {
+    const module = await import(relativePath, { with: { type: 'json' } });
+    return module.default;
+  }
+
+  try {
+    const module = await import(relativePath, { assert: { type: 'json' } });
+    return module.default;
+  } catch (assertError) {
+    try {
+      const module = await import(relativePath, { with: { type: 'json' } });
+      return module.default;
+    } catch {
+      if (typeof fetch === 'function') {
+        const response = await fetch(new URL(relativePath, import.meta.url));
+
+        if (!response.ok) {
+          throw new Error(`Failed to load JSON at ${relativePath}: ${response.status} ${response.statusText}`);
+        }
+
+        return response.json();
+      }
+
+      throw assertError;
+    }
+  }
+}
+
+const plantNamesJson = await loadJsonModule('../data/json/plantNames.json');
+const speciesCatalogJson = await loadJsonModule('../data/json/speciesCatalog.json');
+const genusJson = await loadJsonModule('../data/json/genus.json');
+const plantImagesJson = await loadJsonModule('../data/json/plantImages.json');
+const bouquetQuestionsJson = await loadJsonModule('../data/json/bouquetQuestions.json');
+const difficultiesJson = await loadJsonModule('../data/json/difficulties.json');
 import { questionTypes } from '../data/questionTypes.js';
 
 const NUMERIC_ID_PATTERN = /^\d+$/;
