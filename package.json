@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "export:data": "node scripts/exportDataBundle.mjs",
-    "validate:data": "node scripts/validateDataBundle.mjs"
+    "validate:data": "node scripts/validateDataBundle.mjs",
+    "serve": "node tools/localStaticServer.mjs"
   },
   "keywords": [
     "quiz",

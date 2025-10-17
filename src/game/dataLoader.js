@@ -1,25 +1,60 @@
+function extractPlantData(module) {
+  if (module && typeof module === 'object') {
+    if ('default' in module) {
+      return module.default;
+    }
+
+    if ('plantData' in module) {
+      return module.plantData;
+    }
+  }
+
+  return module;
+}
+
 async function loadPlantDataBundle() {
   const relativePath = '../data/json/plantData.json';
+  let lastError;
 
   try {
     const module = await import(relativePath, { assert: { type: 'json' } });
-    return module.default;
+    return extractPlantData(module);
   } catch (assertError) {
+    lastError = assertError;
+
     try {
       const module = await import(relativePath, { with: { type: 'json' } });
-      return module.default;
-    } catch {
+      return extractPlantData(module);
+    } catch (withError) {
+      lastError = withError;
+
       if (typeof fetch === 'function') {
-        const response = await fetch(new URL('./../data/json/plantData.json', import.meta.url));
+        try {
+          const response = await fetch(new URL('./../data/json/plantData.json', import.meta.url));
 
-        if (!response.ok) {
-          throw new Error(`Failed to load JSON at ${relativePath}: ${response.status} ${response.statusText}`);
+          if (!response.ok) {
+            throw new Error(`Failed to load JSON at ${relativePath}: ${response.status} ${response.statusText}`);
+          }
+
+          const json = await response.json();
+          return json;
+        } catch (fetchError) {
+          lastError = fetchError;
         }
-
-        return response.json();
       }
 
-      throw assertError;
+      const normalizedError = lastError instanceof Error ? lastError : new Error(String(lastError));
+
+      if (import.meta.url.startsWith('file:')) {
+        throw new Error(
+          'Не удалось загрузить plantData.json напрямую из файловой системы. '
+          + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
+          + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.',
+          { cause: normalizedError }
+        );
+      }
+
+      throw normalizedError;
     }
   }
 }
