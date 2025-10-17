@@ -48,13 +48,13 @@ const speciesCatalog = Object.freeze({
   40: { images: ['p40_1', 'p40_2'] }, //Coreopsis
   41: { genusId: 41 }, //Dianthus - ждет добавления агростеммы
   //42
-  //43
+  43: { images: ['p43_1'] }, //Sansevieria
   44: { images: ['p44_1', 'p44_2', 'p44_3'] }, //Pineapple
-  //45
+  45: { images: ['p45_1', 'p45_2', 'p45_3'] }, //Yucca
   46: { images: ['p46_1', 'p46_2', 'p46_3', 'p46_4', 'p46_5'], wrongAnswers: [31, 33, 41] }, //Peony
   47: { genusId: 47 }, //anemone
-  //48
-  //49
+  48: { images: ['p48_1', 'p48_2'] }, //Callistemon
+  49: { images: ['p49_1'] }, //Myrtus
   50: { images: ['p50_1', 'p50_2'], wrongAnswers: [18, 34, 56, 57, 79] },
   51: { images: ['p51_1', 'p51_2'], wrongAnswers: [58, 59, 5] },
   52: { images: ['p52_1'], wrongAnswers: [61] }, //Japanese pittosporum
@@ -65,14 +65,14 @@ const speciesCatalog = Object.freeze({
   //57 Paulownia
   //58: FREE
   59: { images: ['p59_1', 'p59_2', 'p59_3'] }, //Hawthorn
-  //60
-  //61
+  60: { images: ['p60_1'] }, //Dragon fruit
+  61: { images: ['p61_1', 'p61_2'] }, //Schefflera
   62: {images: ['p62_1', 'p62_2', 'p62_3'], wrongAnswers: [2] }, //apple, wrongAnswers надо
   63: { images: ['p63_1'] }, //Corn
   64: { images: ['p64_1', 'p64_2', 'p64_3'] }, //Verbena
-    //65
+    65: { images: ['p65_1'] }, //Myosotis
     66: { images: ['p66_1'] }, //Mint
-    //67
+    67: { images: ['p67_1'] }, //Lavatera
   68: { images: ['p68_1', 'p68_2', 'p68_3'] }, //lavender
   69: { images: ['p69_1'], wrongAnswers: [31, 22] },
   70: { images: ['p70_1']}, //Physalis
