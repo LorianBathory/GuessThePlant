@@ -4,7 +4,8 @@
   "description": "Guess The Plant quiz application",
   "type": "module",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "node scripts/verifyGameData.js"
   },
   "keywords": [
     "quiz",
