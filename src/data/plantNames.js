@@ -40,13 +40,13 @@ export const plantNamesById = Object.freeze({
   38: { ru: "Ромашка", en: "Mayweed", nl: "Reukeloze kamille", sci: "Tripleurospermum" },
   39: { ru: "Гелиопсис", en: "False Sunflower", nl: "Zonneoog", sci: "Heliopsis helianthoides" },
   40: { ru: "Кореопсис", en: "Tickseed", nl: "Meisjesogen", sci: "Coreopsis" },
-  //41: dianthus
+  //genusId: 41 dianthus
   // заменить 42: { ru: "Флокс шиловидный", en: "Moss phlox", nl: "Kruipende vlambloem", sci: "Phlox subulata" },
   43: { ru: "Сансевиерия", en: "Sansevieria", nl: "Vrouwentong", sci: "Sansevieria" },
   44: { ru: "Ананас", en: "Pineapple", nl: "Ananas", sci: "Ananas comosus" },
   45: { ru: "Юкка", en: "Yucca", nl: "Yucca, Palmboom", sci: "Yucca" },
   46: { ru: "Пион", en: "Peony", nl: "Pioen", sci: "Paeonia" },
-  //47: anemone
+  //{ genusId: 47 }, anemone
   48: { ru: "Каллистемон", en: "Bottlebrushes", nl: "Schoonsteenveger", sci: "Callistemon" },
   49: { ru: "Мирт", en: "Myrtle", nl: "Mirte", sci: "Myrtus" },
   50: { ru: "Жакаранда", en: "Blue jacaranda", nl: "Jacaranda", sci: "Jacaranda mimosifolia" },
