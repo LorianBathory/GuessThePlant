@@ -1,8 +1,7 @@
 //запрещено добавлять изображения из папки images/bouquets/
 export const plantImages = Object.freeze([
-    { id: 'p0_11', src: 'images/Anemone_Medium_CatalinM.JPG' },
-    { id: 'p0_12', src: 'images/Anemone_Medium_NikoD.JPG' },
-    { id: 'p0_13', src: 'images/Anemone_Medium_Catalin M.JPG' },
+    { id: 'p0_11', src: 'images/Eriocapitella_Medium_CatalinM.JPG' },
+    { id: 'p0_12', src: 'images/Eriocapitella_Medium_NikoD.JPG' },
   { id: 'p1_1', src: 'images/BeachDaisy.JPG' },
   { id: 'p2_1', src: 'images/DaucusCarota2.JPG' },
   { id: 'p3_1', src: 'images/Agapanthus.JPG' },
