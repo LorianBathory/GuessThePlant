@@ -1,5 +1,5 @@
 //запрещено добавлять изображения из папки images/bouquets/
-export const plantImages = Object.freeze([
+const plantImages = Object.freeze([
   { id: '97_6', src: 'images/TagetesTenuifolia_Nennieinszweidrei_Pixabay.JPG' },
   { id: 'p0_1', src: 'images/MoonCarrot.JPG' },
   { id: 'p0_11', src: 'images/Eriocapitella_Medium_CatalinM.JPG' },
@@ -365,8 +365,16 @@ export const plantImages = Object.freeze([
   { id: 'p97_4', src: 'images/Tagetes_DavisArenas.JPG' },
   { id: 'p97_5', src: 'images/Tagetes_VintageRS2StockSnap.JPG' },
   { id: 'p98_1', src: 'images/Passiflora_Hard_AliefBaldwin.JPG' },
-  { id: 'p98_2', src: 'images/Passiflora_HartonoSubagio.JPG' }
-    // { id: 'p112_1', src: '' }
-    //{ id: '', src: '' }
+  { id: 'p98_2', src: 'images/Passiflora_HartonoSubagio.JPG' },
+  // { id: 'p112_1', src: '' }
+  // { id: '', src: '' }
+]);
+
+const plantImagesById = Object.freeze(
+  plantImages.reduce((acc, image) => {
+    acc[image.id] = image;
+    return acc;
+  }, Object.create(null))
+);
 
 export { plantImages, plantImagesById };

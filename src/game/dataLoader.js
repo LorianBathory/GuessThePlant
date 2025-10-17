@@ -1,10 +1,5 @@
-async function loadJsonModule(relativePath) {
-  const isNode = typeof globalThis.process !== 'undefined' && globalThis.process?.versions?.node;
-
-  if (isNode) {
-    const module = await import(relativePath, { with: { type: 'json' } });
-    return module.default;
-  }
+async function loadPlantDataBundle() {
+  const relativePath = '../data/json/plantData.json';
 
   try {
     const module = await import(relativePath, { assert: { type: 'json' } });
@@ -15,7 +10,7 @@ async function loadJsonModule(relativePath) {
       return module.default;
     } catch {
       if (typeof fetch === 'function') {
-        const response = await fetch(new URL(relativePath, import.meta.url));
+        const response = await fetch(new URL('./../data/json/plantData.json', import.meta.url));
 
         if (!response.ok) {
           throw new Error(`Failed to load JSON at ${relativePath}: ${response.status} ${response.statusText}`);
@@ -29,19 +24,17 @@ async function loadJsonModule(relativePath) {
   }
 }
 
-const plantNamesJson = await loadJsonModule('../data/json/plantNames.json');
-const speciesCatalogJson = await loadJsonModule('../data/json/speciesCatalog.json');
-const genusJson = await loadJsonModule('../data/json/genus.json');
-const plantImagesJson = await loadJsonModule('../data/json/plantImages.json');
-const bouquetQuestionsJson = await loadJsonModule('../data/json/bouquetQuestions.json');
-const difficultiesJson = await loadJsonModule('../data/json/difficulties.json');
+const plantDataJson = Object.freeze(await loadPlantDataBundle());
+
 export const dataBundle = Object.freeze({
-  plantNames: plantNamesJson,
-  speciesCatalog: speciesCatalogJson,
-  genus: genusJson,
-  plantImages: plantImagesJson,
-  bouquetQuestions: bouquetQuestionsJson,
-  difficulties: difficultiesJson
+  plantNames: plantDataJson.plantNames,
+  species: plantDataJson.species,
+  genus: plantDataJson.genus,
+  plantImages: plantDataJson.plantImages,
+  plantParameters: plantDataJson.plantParameters,
+  plantFamilies: plantDataJson.plantFamilies,
+  bouquetQuestions: plantDataJson.bouquetQuestions,
+  difficulties: plantDataJson.difficulties
 });
 import { questionTypes } from '../data/questionTypes.js';
 
@@ -99,18 +92,55 @@ function buildGenusData(genusEntries) {
   };
 }
 
-function buildSpeciesData({ plantNamesById, speciesCatalog, genusById }) {
-  const speciesEntries = new Map();
+function buildSpeciesData({ plantNamesById, speciesCatalog, genusById, speciesEntries }) {
+  if (speciesEntries && typeof speciesEntries === 'object') {
+    const normalizedEntries = Object.entries(speciesEntries).map(([id, entry]) => {
+      if (!entry || typeof entry !== 'object') {
+        return null;
+      }
+
+      const parsedId = parseCatalogId(entry.id ?? id);
+      const baseNames = plantNamesById[parsedId] || freezeObject(entry.names || {});
+      const images = Array.isArray(entry.images) ? freezeArray(entry.images) : undefined;
+      const wrongAnswers = Array.isArray(entry.wrongAnswers) ? freezeArray(entry.wrongAnswers) : undefined;
+      const genusId = entry.genusId != null ? parseCatalogId(entry.genusId) : undefined;
+
+      return [
+        parsedId,
+        Object.freeze({
+          id: parsedId,
+          names: baseNames,
+          ...(images ? { images } : {}),
+          ...(wrongAnswers ? { wrongAnswers } : {}),
+          ...(genusId != null ? { genusId } : {})
+        })
+      ];
+    }).filter(Boolean);
+
+    const speciesById = Object.freeze(Object.fromEntries(normalizedEntries));
+    const choicesById = Object.fromEntries(
+      Object.values(speciesById).map(entry => [entry.id, entry.names])
+    );
+
+    const allChoiceIds = Object.freeze(Object.values(speciesById).map(entry => entry.id));
+
+    if (Object.keys(speciesById).length > 0) {
+      return { speciesById, choicesById, allChoiceIds };
+    }
+  }
+
+  const speciesEntriesMap = new Map();
+  const catalogEntries = speciesCatalog && typeof speciesCatalog === 'object' ? speciesCatalog : {};
 
   Object.entries(plantNamesById).forEach(([id, names]) => {
     const parsedId = parseCatalogId(id);
-    speciesEntries.set(parsedId, {
+    speciesEntriesMap.set(parsedId, {
       id: parsedId,
       names
     });
   });
 
-  Object.entries(speciesCatalog).forEach(([id, entry]) => {
+  Object.entries(catalogEntries).forEach(([id, entry]) => {
     const parsedId = parseCatalogId(id);
     const normalizedEntry = entry && typeof entry === 'object' ? entry : {};
 
@@ -137,7 +167,7 @@ function buildSpeciesData({ plantNamesById, speciesCatalog, genusById }) {
         }
 
         const parsedChildId = parseCatalogId(childId);
-        const existing = speciesEntries.get(parsedChildId) || {};
+        const existing = speciesEntriesMap.get(parsedChildId) || {};
         const names = genusEntry.names || existing.names;
 
         if (!names) {
@@ -151,7 +181,7 @@ function buildSpeciesData({ plantNamesById, speciesCatalog, genusById }) {
           ? freezeArray(genusEntry.wrongAnswers)
           : baseWrongAnswers || existing.wrongAnswers;
 
-        speciesEntries.set(parsedChildId, {
+        speciesEntriesMap.set(parsedChildId, {
           ...existing,
           id: parsedChildId,
           names,
@@ -164,7 +194,7 @@ function buildSpeciesData({ plantNamesById, speciesCatalog, genusById }) {
       return;
     }
 
-    const existing = speciesEntries.get(parsedId);
+    const existing = speciesEntriesMap.get(parsedId);
     if (!existing) {
       return;
     }
@@ -176,7 +206,7 @@ function buildSpeciesData({ plantNamesById, speciesCatalog, genusById }) {
       ? freezeArray(normalizedEntry.wrongAnswers)
       : existing.wrongAnswers;
 
-    speciesEntries.set(parsedId, {
+    speciesEntriesMap.set(parsedId, {
       ...existing,
       ...(images ? { images } : {}),
       ...(wrongAnswers ? { wrongAnswers } : {})
@@ -185,7 +215,7 @@ function buildSpeciesData({ plantNamesById, speciesCatalog, genusById }) {
 
   const speciesById = Object.freeze(
     Object.fromEntries(
-      Array.from(speciesEntries.entries()).map(([key, value]) => [
+      Array.from(speciesEntriesMap.entries()).map(([key, value]) => [
         key,
         Object.freeze({
           ...value,
@@ -357,18 +387,20 @@ function buildPlantNames(data) {
 
 function buildGameData({
   plantNames = dataBundle.plantNames,
-  speciesCatalog = dataBundle.speciesCatalog,
+  speciesCatalog = undefined,
   genusEntries = dataBundle.genus,
   plantImages = dataBundle.plantImages,
   bouquetQuestions = dataBundle.bouquetQuestions,
-  difficulties = dataBundle.difficulties
+  difficulties = dataBundle.difficulties,
+  speciesEntries = dataBundle.species
 } = {}) {
   const plantNamesById = buildPlantNames(plantNames);
   const genusData = buildGenusData(genusEntries);
   const speciesData = buildSpeciesData({
     plantNamesById,
     speciesCatalog,
-    genusById: genusData.genusById
+    genusById: genusData.genusById,
+    speciesEntries
   });
   const difficultyData = buildDifficultyMaps(difficulties);
   const imagesData = buildPlantImages(plantImages);
@@ -440,11 +472,11 @@ export function getDifficultyByImageId(imageId, questionType = questionTypes.PLA
 export function buildGameDataForTesting(overrides = {}) {
   return buildGameData({
     plantNames: dataBundle.plantNames,
-    speciesCatalog: dataBundle.speciesCatalog,
     genusEntries: dataBundle.genus,
     plantImages: dataBundle.plantImages,
     bouquetQuestions: dataBundle.bouquetQuestions,
     difficulties: dataBundle.difficulties,
+    speciesEntries: dataBundle.species,
     ...overrides
   });
 }
