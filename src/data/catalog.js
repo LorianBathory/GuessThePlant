@@ -1,4 +1,4 @@
-import { getDifficultyByQuestionId, getDifficultyByImageId } from './difficulties.js';
+import { getDifficultyByQuestionId, getDifficultyByImageId, difficultyLevels } from './difficulties.js';
 import { plantNamesById } from './plantNames.js';
 import { plantImagesById } from './images.js';
 import { questionTypes } from './questionTypes.js';
@@ -40,7 +40,7 @@ const speciesCatalog = Object.freeze({
   32: { images: ['p32_1', 'p32_2'], wrongAnswers: [43, 44, 45] }, //Guzmania
   33: { images: ['p33_1', 'p33_2', 'p33_3', 'p33_4'], wrongAnswers: [47, 41, 26] }, //Papaver
   34: { images: ['p34_1'], wrongAnswers: [48, 49] },
-  35: { images: ['p35_1', 'p35_2', 'p35_3', 'p35_4'], wrongAnswers: [36, 37] }, //Lily
+  35: { images: ['p35_1', 'p35_2', 'p35_3', 'p35_4', 'p35_5'], wrongAnswers: [36, 37] }, //Lily
     36: { genusId: 36 }, //Hemerocallis
   //37 не будет
   //38 не будет
@@ -79,7 +79,7 @@ const speciesCatalog = Object.freeze({
   //71
   72: { images: ['p72_1'], wrongAnswers: [11] }, //лопух. wrongAnswers надо заменить
   73: { images: ['p73_1', 'p73_2', 'p73_3', 'p73_4', 'p73_5', 'p73_6'], wrongAnswers: [29] }, //aster, wrongAnswers надо
-  74: { images: ['p74_1'], wrongAnswers: [41, 54] }, //phlox, wrongAnswers надо дополнить
+  74: { images: ['p74_1', 'p74_2'], wrongAnswers: [41, 54] }, //phlox, wrongAnswers надо дополнить
   75: { images: ['p75_1', 'p75_2'] },
   76: { images: ['p76_1', 'p76_2'] }, //petunia
   77: { images: ['p77_1'], wrongAnswers: [58, 48, 57] },
@@ -92,14 +92,14 @@ const speciesCatalog = Object.freeze({
   84: { images: ['p84_1'], wrongAnswers: [22] }, //Kohlrabi, временный wrongAnswer +
   85: { images: ['p85_1', 'p85_2', 'p85_3', 'p85_4'], wrongAnswers: [23] }, //Buddleja, временный wrongAnswer +
   86: { images: ['p86_1', 'p86_2'], wrongAnswers: [24] }, //Plumeria временный wrongAnswer +
-     //87. Lotus пока не залит.
+    87: { images: ['p87_1'] }, //Lotus
     88: { images: ['p88_1', 'p88_2', 'p88_3', 'p88_4'], wrongAnswers: [10] }, //Hydrangea, нужно добавить еще wrongAnswer, но 10 нельзя убирать +
     89: { images: ['p89_1'], wrongAnswers: [25] }, //Santolina временный wrongAnswer +
     90: { images: ['p90_1'], wrongAnswers: [26] }, //Fagus временный wrongAnswer +
     91: { images: ['p91_1', 'p91_2', 'p91_3', 'p91_4'], wrongAnswers: [27] }, //Begonia временный wrongAnswer+
     92: { images: ['p92_1', 'p92_2'], wrongAnswers: [28] }, //Ranunculus временный wrongAnswer+
     93: { images: ['p93_1'], wrongAnswers: [80, 81] }, //Syngonium временный wrongAnswer+
-    94: { images: ['p94_1'], wrongAnswers: [86, 79, 69] }, //Orchid, временный wrongAnswer
+    94: { images: ['p94_1', 'p94_2', 'p94_3'], wrongAnswers: [86, 79, 69] }, //Orchid, временный wrongAnswer
     95: { images: ['p95_1', 'p95_2'], wrongAnswers: [62, 44] }, //Banana временный wrongAnswer +
     96: { images: ['p96_1'], wrongAnswers: [29, 93] }, //Zamioculcas временный wrongAnswer +
     97: { images: ['p97_1', 'p97_2', 'p97_3', 'p97_4', 'p97_5', 'p97_6'], wrongAnswers: [30, 95] }, //Tagetes временный wrongAnswer +
@@ -108,7 +108,7 @@ const speciesCatalog = Object.freeze({
     100: { genusId: 100 }, //Sunflower + Helianthus
     101: { images: ['p101_1', 'p101_2', 'p101_3'], wrongAnswers: [16, 50] }, //Cosmos временный wrongAnswer +
     102: { images: ['p102_1', 'p102_2'] }, //Aglaonema
-    //103 без изображений
+    103: { images: ['p103_1'] }, //Primula denticulata
     104: { images: ['p104_1'] }, //Scilla
     105: { images: ['p105_1'] }, //Narcissus
     106: { genusId: 106 }, //Lupinus
@@ -143,7 +143,7 @@ const speciesCatalog = Object.freeze({
   152: { images: ['p152_1', 'p152_2'] }, //Malva
   153: {images: ['p153_1', 'p153_2', 'p153_3'], wrongAnswers: [17, 24]}, //Cornus Florida
     155: { images: ['p155_1'] }, //Angelonia
-    156: { images: ['p156_1'] }, //Artichoke
+    156: { images: ['p156_1', 'p156_2'] }, //Artichoke
     157: { images: ['p157_1'] }, //Jasmine
     158: { images: ['p158_1'] }, //Sanchezia
     159: { images: ['p159_1', 'p159_2'] }, //Ageratum
@@ -188,6 +188,42 @@ const speciesCatalog = Object.freeze({
     //'106_2': в род Lupinus latifolius
     200: { images: ['p200_1'] }, //Coriandrum sativum
     201: { images: ['p201_1', 'p201_2'] }, //Vinca minor
+    202: { images: ['p202_1'] }, //Pulsatilla
+    203: { images: ['p203_1'] }, //Catalpa
+    204: { images: ['p204_1'] }, //Cassava
+    205: { images: ['p205_1'] }, //Sedum
+    206: { images: ['p206_1'] }, //Spathiphyllum
+    207: { images: ['p207_1'] }, //Alyssum
+    208: { images: ['p208_1'] }, //Helianthemum
+    209: { images: ['p209_1'] }, //Strobilanthes
+    210: { images: ['p210_1'] }, //Valeriana
+    211: { images: ['p211_1'] }, //Viburnum
+    212: { images: ['p212_1'] }, //Grape vine
+    213: { images: ['p213_1'] }, //Whitfieldia
+    214: { images: ['p214_1'] }, //Dill
+    215: { images: ['p215_1'] }, //Bauhinia
+    216: { images: ['p216_1'] }, //Berberis
+    217: { images: ['p217_1'] }, //Crocosmia
+    218: { images: ['p218_1'] }, //Pumpkin
+    219: { images: ['p219_1'] }, //Cyclamen
+    220: { images: ['p220_1'] }, //Duranta
+    221: { images: ['p221_1'] }, //Eranthis
+    222: { images: ['p222_1'] }, //Ficaria
+    223: { images: ['p223_1'] }, //Fuchsia
+    224: { images: ['p224_1'] }, //Hedera helix
+    225: { images: ['p225_1'] }, //Ipomoea
+    226: { images: ['p226_1'] }, //Jatropha
+    227: { images: ['p227_1'] }, //Kopsia
+    228: { images: ['p228_1'] }, //Laurus nobilis
+    229: { images: ['p229_1'] }, //Illicium anisatum
+    230: { images: ['p230_1'] }, //Lycoris radiata
+    231: { images: ['p231_1'] }, //Monarda didyma
+    232: { images: ['p232_1'] }, //Nuphar lutea
+    233: { images: ['p233_1', 'p233_2'] }, //Pachystachys
+    234: { images: ['p234_1', 'p234_2'] }, //Ilex aquifolium
+    235: { images: ['p235_1'] }, //Oxalis triangularis
+    236: { images: ['p236_1'] }, //Parthenocissus quinquefolia
+    237: { images: ['p237_1'] } //Petrea volubilis
 });
 
 // ЕДИНЫЙ ИСТОЧНИК ДАННЫХ: все таксоны в одном месте.
@@ -315,6 +351,9 @@ export const plants = Object.values(speciesById)
         ? getDifficultyByQuestionId(species.genusId, questionTypes.PLANT)
         : null;
 
+      // Если для вида ещё не задана сложность вручную, используем среднюю по умолчанию.
+      const difficulty = overrideDifficulty || baseDifficulty || genusDifficulty || difficultyLevels.MEDIUM;
+
       return {
         id: species.id,
         correctAnswerId: species.id,
@@ -322,7 +361,7 @@ export const plants = Object.values(speciesById)
         image: imageEntry.src,
         names: species.names,
         wrongAnswers: species.wrongAnswers,
-        difficulty: overrideDifficulty || baseDifficulty || genusDifficulty,
+        difficulty,
         questionVariantId: `${species.id}-${index}`,
         questionType: questionTypes.PLANT,
         selectionGroupId: `plant-${species.id}`,

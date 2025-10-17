@@ -308,6 +308,7 @@ export const plantImages = Object.freeze([
   { id: 'p73_5', src: 'images/Aster_Grigoriy.JPG' },
   { id: 'p73_6', src: 'images/Aster_Pexels-kolkatarchobiwala-20143236.JPG' },
   { id: 'p74_1', src: 'images/Phlox_Qnula.JPG' },
+  { id: 'p74_2', src: 'images/PhloxDrummondii_AmolNakve.JPG' },
   { id: 'p75_1', src: 'images/Syringa_JuliaFilirovska.JPG' },
   { id: 'p75_2', src: 'images/Syringa_Medium_Mehmet.JPG' },
   { id: 'p76_1', src: 'images/Petunia_Easy_Mahmoud Yahyaoui.JPG' },
@@ -338,6 +339,7 @@ export const plantImages = Object.freeze([
   { id: 'p85_4', src: 'images/BuddlejaDavidii2.JPG' },
   { id: 'p86_1', src: 'images/Plumeria.JPG' },
   { id: 'p86_2', src: 'images/Plumeria_HartonoSubagio.JPG' },
+  { id: 'p87_1', src: 'images/NelumboNucifera_HieuHoang.JPG' },
   { id: 'p88_1', src: 'images/Hydrangea.JPG' },
   { id: 'p88_2', src: 'images/Hydrangea_Easy.JPG' },
   { id: 'p88_3', src: 'images/Hydrangea_MohanNannapaneni.JPG' },
@@ -352,6 +354,8 @@ export const plantImages = Object.freeze([
   { id: 'p92_2', src: 'images/Ranunculus_MartaDzedyshko.JPG' },
   { id: 'p93_1', src: 'images/Syngonium_MyicahelTamburini.JPG' },
   { id: 'p94_1', src: 'images/Orchid_AliefBaldwin.JPG' },
+  { id: 'p94_2', src: 'images/Phalaenopsis.JPG' },
+  { id: 'p94_3', src: 'images/DendrobiumJenkinsii.JPG' },
   { id: 'p95_1', src: 'images/Banana_AliefBaldwin.JPG' },
   { id: 'p95_2', src: 'images/Banana_Pexels_RobbiF.JPG' },
   { id: 'p96_1', src: 'images/ZZplant_HartonoSubagio.JPG' },
@@ -364,6 +368,7 @@ export const plantImages = Object.freeze([
   { id: 'p98_2', src: 'images/Passiflora_HartonoSubagio.JPG' }
     // { id: 'p112_1', src: '' }
     //{ id: '', src: '' }
+
 ]);
 
 export const plantImagesById = Object.freeze(
