@@ -1,6 +1,6 @@
 # JSON Migration Tooling Review
 
-This document records the current state of the JSON migration tooling, checks that were run, and follow-up work required before the application can rely on JSON as the primary data source.
+This document records the current state of the JSON migration tooling, checks that were run, and follow-up work required before the application can rely on JSON as the primary data source. The tooling lives on the dedicated `json` integration branch while we keep the production `main` branch on the original JS data path, so all commands and paths below assume you are working from that branch.
 
 ## Delivered tooling
 
