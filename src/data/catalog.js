@@ -60,7 +60,7 @@ const speciesCatalog = Object.freeze({
   52: { images: ['p52_1'], wrongAnswers: [61] }, //Japanese pittosporum
   53: { images: ['p53_1'], wrongAnswers: [13, 15, 116] }, //scabious
   54: { images: ['p54_1', 'p54_2', 'p54_3'], wrongAnswers: [64, 65, 66] }, //lantana
-  55: { images: ['p55_1', 'p55_2', 'p55_3'], wrongAnswers: [67] }, //Hibiscus
+  55: { images: ['p55_1', 'p55_2', 'p55_3', 'p55_4'], wrongAnswers: [67] }, //Hibiscus
   56: { images: ['p56_1', 'p56_2', 'p56_3'], wrongAnswers: [18, 57, 137] }, //Robinia
   //57 Paulownia
   //58: FREE
@@ -180,7 +180,7 @@ const speciesCatalog = Object.freeze({
     191: { images: ['p191_1'] }, //Convallaria majalis
     //'41_1': в род Dianthus (Dianthus barbatus)
     193: { images: ['p193_1'] }, //Silene chalcedonica
-    194: { images: ['p194_1'] }, //Xerochrysum bracteatum
+    194: { images: ['p194_1', 'p194_2'] }, //Xerochrysum bracteatum
     195: { images: ['p195_1'] }, //Antirrhinum majus
     196: { images: ['p196_1'] }, //Justicia carnea
     197: { images: ['p197_1'] }, //Aichryson
