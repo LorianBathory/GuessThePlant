@@ -1,4 +1,4 @@
-import { choicesById, ALL_CHOICE_IDS } from '../data/catalog.js';
+import { choicesById, ALL_CHOICE_IDS } from '../game/dataLoader.js';
 import { memorizationPlants } from '../data/memorization/memorizationCatalog.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';

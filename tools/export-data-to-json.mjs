@@ -204,22 +204,26 @@ function validateDifficulties(difficulties, speciesIdSet, exportedQuestions, pla
 
 async function main() {
   const [
-    { speciesById, plants },
-    { bouquetQuestions },
+    {
+      speciesById,
+      plants,
+      bouquetQuestions,
+      plantImages,
+      plantImagesById,
+      difficultyLevels,
+      questionIdsByDifficulty,
+      imageIdsByDifficulty,
+      imageDifficultyOverrides
+    },
     { allQuestions },
-    { plantImages, plantImagesById },
     { plantParametersById, plantFamilies },
     { parameterTagLabels },
-    { difficultyLevels, questionIdsByDifficulty, imageIdsByDifficulty, imageDifficultyOverrides },
     { questionTypes }
   ] = await Promise.all([
-    importModule('src/data/catalog.js'),
-    importModule('src/data/catalogBouquets.js'),
+    importModule('src/game/dataLoader.js'),
     importModule('src/data/questions.js'),
-    importModule('src/data/images.js'),
     importModule('src/data/plantParameters.js'),
     importModule('src/data/parameterTags.js'),
-    importModule('src/data/difficulties.js'),
     importModule('src/data/questionTypes.js')
   ]);
 

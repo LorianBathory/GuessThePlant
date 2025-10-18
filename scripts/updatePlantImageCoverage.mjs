@@ -2,12 +2,12 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { speciesById } from '../src/data/catalog.js';
-import { plantImagesById } from '../src/data/images.js';
 import {
+  speciesById,
+  plantImagesById,
   getDifficultyByImageId,
   getDifficultyByQuestionId
-} from '../src/data/difficulties.js';
+} from '../src/game/dataLoader.js';
 
 const collator = new Intl.Collator('ru', { numeric: true, sensitivity: 'base' });
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
