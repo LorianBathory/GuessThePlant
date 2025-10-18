@@ -385,25 +385,51 @@ function buildPlants({ speciesById, plantImagesById, difficultyLookups }) {
 function buildBouquetQuestions({ bouquetDefinitions, plantNamesById, difficultyLookups }) {
   return Object.freeze(
     bouquetDefinitions.map(entry => {
-      const wrongAnswers = Array.isArray(entry.wrongAnswerIds)
-        ? freezeArray(entry.wrongAnswerIds.slice(0, 3))
-        : Object.freeze([]);
+      const normalizedEntry = entry && typeof entry === 'object' ? entry : {};
+      const hasPreNormalizedFields = 'correctAnswerId' in normalizedEntry || 'names' in normalizedEntry;
 
-      const difficultyOverride = difficultyLookups.getImageDifficulty(entry.imageId, questionTypes.BOUQUET);
-      const fallbackDifficulty = difficultyLookups.getQuestionDifficulty(entry.id, questionTypes.BOUQUET);
+      const baseCorrectPlantId = hasPreNormalizedFields
+        ? normalizedEntry.correctAnswerId ?? normalizedEntry.correctPlantId ?? normalizedEntry.id
+        : normalizedEntry.correctPlantId;
+      const correctPlantId = baseCorrectPlantId != null ? parseCatalogId(baseCorrectPlantId) : undefined;
+
+      const imageId = normalizedEntry.imageId;
+      const wrongAnswers = Array.isArray(normalizedEntry.wrongAnswers)
+        ? freezeArray(normalizedEntry.wrongAnswers.slice(0, 3))
+        : Array.isArray(normalizedEntry.wrongAnswerIds)
+          ? freezeArray(normalizedEntry.wrongAnswerIds.slice(0, 3))
+          : Object.freeze([]);
+
+      const difficultyOverride = imageId != null
+        ? difficultyLookups.getImageDifficulty(imageId, questionTypes.BOUQUET)
+        : null;
+      const fallbackDifficulty = correctPlantId != null
+        ? difficultyLookups.getQuestionDifficulty(correctPlantId, questionTypes.BOUQUET)
+        : null;
+
+      const names = hasPreNormalizedFields && normalizedEntry.names
+        ? freezeObject(normalizedEntry.names)
+        : correctPlantId != null
+          ? plantNamesById[correctPlantId]
+          : undefined;
+
+      const questionVariantId = normalizedEntry.questionVariantId ?? normalizedEntry.id ?? correctPlantId;
+      const selectionGroupId = normalizedEntry.selectionGroupId ?? (questionVariantId != null
+        ? `bouquet-${questionVariantId}`
+        : undefined);
 
       return Object.freeze({
-        id: entry.correctPlantId,
-        correctAnswerId: entry.correctPlantId,
-        imageId: entry.imageId,
-        image: entry.image,
-        names: plantNamesById[entry.correctPlantId],
+        id: normalizedEntry.id ?? correctPlantId,
+        correctAnswerId: correctPlantId,
+        imageId,
+        image: normalizedEntry.image,
+        names,
         wrongAnswers,
-        difficulty: difficultyOverride || fallbackDifficulty || null,
-        questionVariantId: entry.id,
-        questionType: questionTypes.BOUQUET,
-        selectionGroupId: `bouquet-${entry.id}`,
-        questionPromptKey: 'bouquetQuestion'
+        difficulty: normalizedEntry.difficulty ?? difficultyOverride ?? fallbackDifficulty ?? null,
+        questionVariantId,
+        questionType: normalizedEntry.questionType ?? questionTypes.BOUQUET,
+        selectionGroupId,
+        questionPromptKey: normalizedEntry.questionPromptKey ?? 'bouquetQuestion'
       });
     })
   );
