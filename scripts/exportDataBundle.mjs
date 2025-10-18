@@ -4,17 +4,18 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { plantNamesById } from '../src/data/plantNames.js';
-import { speciesById, plants as plantQuizEntries } from '../src/data/catalog.js';
-import { plantImages } from '../src/data/images.js';
-import { plantParametersById, plantFamilies } from '../src/data/plantParameters.js';
-import { bouquetQuestions } from '../src/data/catalogBouquets.js';
-import { allGenusEntries } from '../src/data/genus/index.js';
 import {
+  plantNamesById,
+  speciesById,
+  plants as plantQuizEntries,
+  plantImages,
+  bouquetQuestions,
+  allGenusEntries,
   difficultyLevels as rawDifficultyLevels,
   questionIdsByDifficulty as rawQuestionIdsByDifficulty,
   imageIdsByDifficulty as rawImageIdsByDifficulty
-} from '../src/data/difficulties.js';
+} from '../src/game/dataLoader.js';
+import { plantParametersById, plantFamilies } from '../src/data/plantParameters.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
