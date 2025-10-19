@@ -3,28 +3,33 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { basename } from 'node:path';
 
 const CSV_HEADER = [
-  'id ',
+  'id',
   '(ru)',
   '(en)',
   '(nl)',
   '(sci)',
   'images',
-  'ID ??????????',
-  '???????? ???????????',
-  '?????????',
+  'ID изображений',
+  'Названия файлов',
+  'Сложность',
+  'Переопределения сложности',
   'Family'
 ];
 
 const HEADER_ALIASES = new Map([
+  ['id ', 'id'],
   ['id', 'id'],
   ['(ru)', 'ru'],
   ['(en)', 'en'],
   ['(nl)', 'nl'],
   ['(sci)', 'sci'],
   ['images', 'imageCount'],
-  ['id ??????????', 'imageIds'],
-  ['???????? ???????????', 'imageFiles'],
-  ['?????????', 'difficulty'],
+  ['id изображений', 'imageIds'],
+  ['названия файлов', 'imageFiles'],
+  ['сложность', 'difficulty'],
+  ['difficulty overrides', 'difficultyOverrides'],
+  ['переопределения сложности', 'difficultyOverrides'],
+  ['difficultyoverrides', 'difficultyOverrides'],
   ['family', 'family']
 ]);
 
@@ -34,8 +39,33 @@ const DIFFICULTY_LEVELS = {
   HARD: 'Hard'
 };
 
+function stripWrappingQuotes(value) {
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  let trimmed = String(value).trim();
+
+  const startsWithQuote = (text) => text.startsWith('"') || text.startsWith("'");
+  const endsWithQuote = (text) => text.endsWith('"') || text.endsWith("'");
+
+  while (trimmed.length > 1 && startsWithQuote(trimmed) && endsWithQuote(trimmed)) {
+    trimmed = trimmed.slice(1, -1).trim();
+  }
+
+  if (startsWithQuote(trimmed)) {
+    trimmed = trimmed.slice(1).trim();
+  }
+
+  if (endsWithQuote(trimmed)) {
+    trimmed = trimmed.slice(0, -1).trim();
+  }
+
+  return trimmed;
+}
+
 function normalizeId(id) {
-  return String(id).trim();
+  return stripWrappingQuotes(id);
 }
 
 function isNumericId(id) {
@@ -115,53 +145,51 @@ function parseCsv(text) {
   return rows.filter((r) => r.some((cell) => cell.trim() !== ''));
 }
 
-function parseDifficultyCell(cell) {
-  const raw = cell.trim();
-  if (!raw || raw.toLowerCase() === 'null') {
-    return { base: null, overrides: new Map() };
-  }
+function parseOverrides(rawOverrides) {
   const overrides = new Map();
-  let base = raw;
-  const overrideMatch = raw.match(/^(.*?)(?:\s*\(overrides:\s*(.+)\))$/i);
-  if (overrideMatch) {
-    base = overrideMatch[1].trim();
-    const overridesPart = overrideMatch[2].trim().replace(/\)$/u, '');
-    const segments = overridesPart.split(',');
-    for (const segment of segments) {
-      const parts = segment.split(':').map((piece) => piece.trim());
-      const imageIdPart = parts[0];
-      const difficultyPart = parts[1];
-      if (imageIdPart && difficultyPart) {
-        overrides.set(imageIdPart, difficultyPart);
-      }
+  if (!rawOverrides) {
+    return overrides;
+  }
+  const segments = rawOverrides.split(',');
+  for (const segment of segments) {
+    const [imageIdPart, difficultyPart] = segment.split(':').map((piece) => stripWrappingQuotes(piece));
+    if (imageIdPart && difficultyPart) {
+      overrides.set(imageIdPart, difficultyPart);
     }
   }
-  if (base && base.toLowerCase() === 'null') {
-    base = null;
+  return overrides;
+}
+
+function parseDifficultyCell(baseCell, overridesCell = '') {
+  const rawBase = stripWrappingQuotes(baseCell);
+  const overridesSource = stripWrappingQuotes(overridesCell);
+  if (!overridesSource) {
+    const legacyMatch = rawBase.match(/^(.*?)(?:\s*\(overrides:\s*(.+)\))$/i);
+    if (legacyMatch) {
+      const base = legacyMatch[1].trim();
+      const overrides = parseOverrides(legacyMatch[2]);
+      return { base: base && base.toLowerCase() !== 'null' ? base : null, overrides };
+    }
   }
+
+  const base = rawBase && rawBase.toLowerCase() !== 'null' ? rawBase : null;
+  const overrides = parseOverrides(overridesSource);
   return { base, overrides };
 }
 
-function formatDifficulty(base, overrides) {
+function formatBaseDifficulty(base) {
+  return base || '';
+}
+
+function formatDifficultyOverrides(overrides) {
   const entries = Array.from(overrides.entries());
-  if (!base) {
-    if (entries.length === 0) {
-      return 'null';
-    }
-    const formatted = entries
-      .sort(([idA], [idB]) => comparePlantIds(idA, idB))
-      .map(([imageId, difficulty]) => `${imageId}:${difficulty}`)
-      .join(', ');
-    return `null (overrides: ${formatted})`;
-  }
   if (entries.length === 0) {
-    return base;
+    return '';
   }
-  const formattedOverrides = entries
+  return entries
     .sort(([idA], [idB]) => comparePlantIds(idA, idB))
     .map(([imageId, difficulty]) => `${imageId}:${difficulty}`)
     .join(', ');
-  return `${base} (overrides: ${formattedOverrides})`;
 }
 
 function ensureArray(value) {
@@ -237,7 +265,8 @@ async function convertJsonToCsv(inputPath, outputPath) {
       String(questionEntries.length),
       questionEntries.map((entry) => entry.imageId).filter(Boolean).join(', '),
       questionEntries.map((entry) => entry.imageFile).filter(Boolean).join(', '),
-      formatDifficulty(baseDifficulty, overrides),
+      formatBaseDifficulty(baseDifficulty),
+      formatDifficultyOverrides(overrides),
       family || ''
     ];
 
@@ -268,7 +297,10 @@ function parseCsvRows(rows) {
 
 function extractList(cell) {
   if (!cell) return [];
-  return cell.split(',').map((item) => item.trim()).filter(Boolean);
+  return cell
+    .split(',')
+    .map((item) => stripWrappingQuotes(item))
+    .filter((item) => item !== '');
 }
 
 function parseCsvData(rows) {
@@ -293,7 +325,10 @@ function parseCsvData(rows) {
     const nl = record.nl || '';
     const sci = record.sci || '';
     const family = record.family || '';
-    const { base, overrides } = parseDifficultyCell(record.difficulty || '');
+    const { base, overrides } = parseDifficultyCell(
+      record.difficulty || '',
+      record.difficultyOverrides || ''
+    );
 
     plantNames[plantId] = { ru, en, nl, sci };
 
@@ -315,8 +350,8 @@ function parseCsvData(rows) {
       baseDifficultyById.set(plantId, base);
     }
 
-    const imageIds = extractList(record.imageIds || record['ID ??????????'] || '');
-    const imageFiles = extractList(record.imageFiles || record['???????? ???????????'] || '');
+    const imageIds = extractList(record.imageIds || '');
+    const imageFiles = extractList(record.imageFiles || '');
 
     if (imageFiles.length > 0 && imageIds.length !== imageFiles.length) {
       throw new Error(`Количество imageId и файлов не совпадает (строка ${record.__line}).`);
