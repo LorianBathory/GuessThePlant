@@ -23,6 +23,7 @@ const CSV_HEADER = [
   'images',
   'ID изображений',
   'Названия файлов',
+  'wrongAnswers',
   'Сложность',
   'Переопределения сложности',
   'Family'
@@ -75,6 +76,10 @@ sortedEntries.forEach(species => {
     })
     .sort((a, b) => a.imageId.localeCompare(b.imageId, 'en'));
 
+  const wrongAnswers = Array.isArray(species.wrongAnswers)
+    ? species.wrongAnswers.map(answerId => String(answerId))
+    : [];
+
   const formattedOverrides = imageEntries
     .filter(entry => entry.override && (baseDifficulty === '' || entry.override !== baseDifficulty))
     .map(entry => `${entry.imageId}:${entry.override}`)
@@ -89,6 +94,7 @@ sortedEntries.forEach(species => {
     String(imageEntries.length),
     imageEntries.map(entry => entry.imageId).filter(Boolean).join(', '),
     imageEntries.map(entry => entry.fileName).filter(Boolean).join(', '),
+    wrongAnswers.join(', '),
     baseDifficulty,
     formattedOverrides,
     getFamily(species)

@@ -11,6 +11,7 @@ const CSV_HEADER = [
   'images',
   'ID изображений',
   'Названия файлов',
+  'wrongAnswers',
   'Сложность',
   'Переопределения сложности',
   'Family'
@@ -26,6 +27,7 @@ const HEADER_ALIASES = new Map([
   ['images', 'imageCount'],
   ['id изображений', 'imageIds'],
   ['названия файлов', 'imageFiles'],
+  ['wronganswers', 'wrongAnswers'],
   ['сложность', 'difficulty'],
   ['difficulty overrides', 'difficultyOverrides'],
   ['переопределения сложности', 'difficultyOverrides'],
@@ -66,6 +68,14 @@ function stripWrappingQuotes(value) {
 
 function normalizeId(id) {
   return stripWrappingQuotes(id);
+}
+
+function normalizeWrongAnswerId(id) {
+  const normalized = normalizeId(id);
+  if (!normalized) {
+    return null;
+  }
+  return isNumericId(normalized) ? Number(normalized) : normalized;
 }
 
 function isNumericId(id) {
@@ -207,6 +217,7 @@ async function convertJsonToCsv(inputPath, outputPath) {
   const plantData = JSON.parse(jsonText);
 
   const namesById = plantData.plantNames || {};
+  const speciesById = plantData.species || {};
   const parametersById = plantData.plantParameters || {};
   const questions = ensureArray(plantData.plantQuestions).filter((entry) => entry?.questionType === 'plant');
   const difficultySource = plantData.difficulties || {};
@@ -236,6 +247,8 @@ async function convertJsonToCsv(inputPath, outputPath) {
     const params = parametersById[plantId] || {};
     const scientificName = params.scientificName || names.sci || '';
     const family = params.family || '';
+    const speciesEntry = speciesById[plantId] || {};
+    const wrongAnswers = Array.isArray(speciesEntry.wrongAnswers) ? speciesEntry.wrongAnswers : [];
 
     const questionEntries = (questionsByPlantId.get(plantId) || []).map((entry) => ({
       imageId: normalizeId(entry.imageId || ''),
@@ -265,6 +278,7 @@ async function convertJsonToCsv(inputPath, outputPath) {
       String(questionEntries.length),
       questionEntries.map((entry) => entry.imageId).filter(Boolean).join(', '),
       questionEntries.map((entry) => entry.imageFile).filter(Boolean).join(', '),
+      wrongAnswers.map((answerId) => normalizeId(answerId)).filter(Boolean).join(', '),
       formatBaseDifficulty(baseDifficulty),
       formatDifficultyOverrides(overrides),
       family || ''
@@ -350,6 +364,11 @@ function parseCsvData(rows) {
       baseDifficultyById.set(plantId, base);
     }
 
+    const wrongAnswersRaw = extractList(record.wrongAnswers || '');
+    const wrongAnswers = wrongAnswersRaw
+      .map((value) => normalizeWrongAnswerId(value))
+      .filter((value) => value !== null);
+
     const imageIds = extractList(record.imageIds || '');
     const imageFiles = extractList(record.imageFiles || '');
 
@@ -361,7 +380,7 @@ function parseCsvData(rows) {
       id: isNumericId(plantId) ? Number(plantId) : plantId,
       names: { ru, en, nl, sci },
       images: imageIds,
-      wrongAnswers: []
+      ...(wrongAnswers.length > 0 ? { wrongAnswers } : {})
     };
 
     imageIds.forEach((imageId, index) => {
@@ -374,13 +393,14 @@ function parseCsvData(rows) {
       if (difficulty) {
         imageDifficultyById.set(imageId, difficulty);
       }
+      const questionWrongAnswers = wrongAnswers.length > 0 ? wrongAnswers : [];
       plantQuestions.push({
         id: isNumericId(plantId) ? Number(plantId) : plantId,
         correctAnswerId: isNumericId(plantId) ? Number(plantId) : plantId,
         imageId,
         image: imageFile ? (imageFile.startsWith('images/') ? imageFile : `images/${imageFile}`) : '',
         names: { ru, en, nl, sci },
-        wrongAnswers: [],
+        ...(questionWrongAnswers.length > 0 ? { wrongAnswers: questionWrongAnswers.slice() } : {}),
         difficulty: difficulty || null,
         questionVariantId: `${plantId}-${variantIndex}`,
         questionType: 'plant',
