@@ -245,7 +245,7 @@ async function convertJsonToCsv(inputPath, outputPath) {
   for (const plantId of plantIds) {
     const names = namesById[plantId] || {};
     const params = parametersById[plantId] || {};
-    const scientificName = params.scientificName || names.sci || '';
+    const scientificName = names.sci || params.scientificName || '';
     const family = params.family || '';
     const speciesEntry = speciesById[plantId] || {};
     const wrongAnswers = Array.isArray(speciesEntry.wrongAnswers) ? speciesEntry.wrongAnswers : [];
