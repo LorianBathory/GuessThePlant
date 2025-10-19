@@ -4,7 +4,7 @@
 - `index.html` — HTML entry point that loads React and Tailwind from CDNs and mounts the quiz application into the `#root` element.【F:index.html†L1-L27】
 - `package.json` — Declares project metadata and development tooling scripts (currently ESLint).【F:package.json†L1-L20】
 - `eslint.config.js` — Configures ESLint rules for the project (see file for detailed setup).【F:eslint.config.js†L1-L68】
-- `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/json/plantImages.json†L1-L40】
+- `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/json/plantData.json†L7562-L7706】
 
 ## Source Directory (`src/`)
 - `index.js` — Bootstraps the React application by rendering `<PlantQuizGame />` into the DOM root.【F:src/index.js†L1-L5】
@@ -21,7 +21,7 @@
   - `useEndlessMode.js` — Перемешивает весь каталог вопросов, начисляет +1/−2 балла и завершает сессию по исчерпанию вопросов либо при отрицательном счёте.【F:src/hooks/useEndlessMode.js†L1-L123】
   - `useSecureImageSource.js` — Fetches plant images as Blob URLs, кэширует и освобождает их по мере использования, скрывая оригинальные имена файлов от игроков.【F:src/hooks/useSecureImageSource.js†L1-L84】【F:src/hooks/useSecureImageSource.js†L86-L120】
 - `data/`
-  - `json/` — Каноничные источники данных: `plantNames.json`, `plantImages.json`, `speciesCatalog.json`, `genus.json`, агрегированный пакет `plantData.json`, а также таблицы `difficulties.json` и `bouquetQuestions.json` для букетов.【F:src/data/json/plantData.json†L1-L200】
+- `json/` — Каноничное хранилище данных: единый пакет `plantData.json`, включающий локализованные названия, изображения, роды, виды, вопросы и таблицы сложности.【F:src/data/json/plantData.json†L1-L200】【F:src/data/json/plantData.json†L7562-L7706】 Для букетных заданий дополнительно хранится исходный файл `bouquetQuestions.json`, поскольку вспомогательные конвертеры пока не поддерживают эту категорию вопросов.
   - `plantParameters.js` / `parameterTags.js` — Содержат дополнительные параметры растений и расшифровки тегов, которые дополняют JSON-данные в момент загрузки.【F:src/data/plantParameters.js†L1-L244】【F:src/data/parameterTags.js†L1-L82】
   - `questionTypes.js` / `questions.js` — Перечисление типов вопросов и преднастроенные подборки (например, букетные задания) поверх каталогизированных данных.【F:src/data/questionTypes.js†L1-L25】【F:src/data/questions.js†L1-L118】
 - `game/`

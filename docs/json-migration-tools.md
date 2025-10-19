@@ -5,7 +5,7 @@ This document records the current state of the JSON migration tooling, checks th
 ## Delivered tooling
 
 - **`scripts/exportDataBundle.mjs`** bundles all runtime data (localized names, species catalog, images, plant parameters, families, bouquet questions, genus definitions and generated plant questions) into `src/data/json/plantData.json`. The exporter sorts records to provide deterministic diffs and exposes a single entrypoint that mirrors the existing in-memory structures.【F:scripts/exportDataBundle.mjs†L1-L95】
-- **`scripts/validateDataBundle.mjs`** validates the generated bundle against `src/data/schema/plant.schema.json` using Ajv. Validation is strict enough to catch data regressions (for example, a missing `images/` prefix in `src/data/json/plantImages.json` blocked the first validation run).【F:scripts/validateDataBundle.mjs†L1-L46】【F:src/data/json/plantImages.json†L1-L40】
+- **`scripts/validateDataBundle.mjs`** validates the generated bundle against `src/data/schema/plant.schema.json` using Ajv. Validation is strict enough to catch data regressions (for example, отсутствие префикса `images/` в разделе `plantImages` внутри `plantData.json` блокировало первый прогон).【F:scripts/validateDataBundle.mjs†L1-L46】【F:src/data/json/plantData.json†L7562-L7706】
 - **`package.json`** now exposes `npm run export:data` and `npm run validate:data` so the dataset can be regenerated and checked locally or in CI.【F:package.json†L6-L22】
 - **`src/data/json/plantData.json`** is the canonical JSON export produced by the new script. It matches the `plant.schema.json` expectations and can be used for downstream tooling or future runtime loaders.【F:src/data/json/plantData.json†L1-L20】【F:src/data/schema/plant.schema.json†L1-L188】
 

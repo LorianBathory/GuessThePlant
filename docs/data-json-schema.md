@@ -5,12 +5,12 @@ This document summarizes the JSON-like structures that power Guess The Plant's d
 ## Identifier formats
 
 - **Plant IDs** come from `plantNamesById` and related catalogs. They are either integers or strings that start with digits and may include underscore-delimited numeric suffixes (e.g., `83_1`). The helper `parseCatalogId` inside the loader normalizes numeric-looking values to numbers, leaving composite IDs как строки.【F:src/game/dataLoader.js†L96-L112】
-- **Image IDs** for plants are alphanumeric strings such as `p13_1` or `97_6`. Bouquet-specific images use IDs like `bq001`. All plant image paths start with `images/`, while bouquet assets live under `images/bouquets/`.【F:src/data/json/plantImages.json†L1-L40】【F:src/data/json/plantData.json†L7562-L7706】
+- **Image IDs** for plants are alphanumeric strings such as `p13_1` or `97_6`. Bouquet-specific images use IDs like `bq001`. All plant image paths start with `images/`, while bouquet assets live under `images/bouquets/`.【F:src/data/json/plantData.json†L7562-L7706】
 
 ## Core entities
 
 ### Localized plant name (`plantNamesById`)
-- **Location:** Раздел `plantNames` в `src/data/json/plantData.json` (или в источнике `plantNames.json` перед сборкой бандла).
+- **Location:** Раздел `plantNames` в `src/data/json/plantData.json`.
 - **Shape:** Объект, сопоставляющий каждому идентификатору растения структуру локализаций.
 - **Required fields:** `ru`, `en`, `nl`, `sci` (строки с локализованным и научным названием).【F:src/data/json/plantData.json†L1-L120】
 - **Optional fields:** None.
@@ -56,7 +56,7 @@ Created from `plantParametersRaw` and enriched with family data.
 ### Plant image entry (`plantImages` / `plantImagesById`)
 - **Shape:** Each entry has `id` (string) and `src` (relative image path starting with `images/`).
 - **Required fields:** `id`, `src`.
-- **Optional fields:** None. The helper `plantImagesById` materializes an ID→entry map for lookups.【F:src/data/json/plantImages.json†L1-L40】【F:src/game/dataLoader.js†L256-L275】
+- **Optional fields:** None. The helper `plantImagesById` materializes an ID→entry map for lookups.【F:src/data/json/plantData.json†L7562-L7706】【F:src/game/dataLoader.js†L256-L275】
 
 ### Bouquet question entry (`bouquetQuestions`)
 - **Source:** Раздел `bouquetQuestions` в `plantData.json` (формируется экспортными скриптами из JSON-источников).
