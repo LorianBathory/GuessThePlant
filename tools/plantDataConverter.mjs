@@ -39,8 +39,33 @@ const DIFFICULTY_LEVELS = {
   HARD: 'Hard'
 };
 
+function stripWrappingQuotes(value) {
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  let trimmed = String(value).trim();
+
+  const startsWithQuote = (text) => text.startsWith('"') || text.startsWith("'");
+  const endsWithQuote = (text) => text.endsWith('"') || text.endsWith("'");
+
+  while (trimmed.length > 1 && startsWithQuote(trimmed) && endsWithQuote(trimmed)) {
+    trimmed = trimmed.slice(1, -1).trim();
+  }
+
+  if (startsWithQuote(trimmed)) {
+    trimmed = trimmed.slice(1).trim();
+  }
+
+  if (endsWithQuote(trimmed)) {
+    trimmed = trimmed.slice(0, -1).trim();
+  }
+
+  return trimmed;
+}
+
 function normalizeId(id) {
-  return String(id).trim();
+  return stripWrappingQuotes(id);
 }
 
 function isNumericId(id) {
@@ -127,7 +152,7 @@ function parseOverrides(rawOverrides) {
   }
   const segments = rawOverrides.split(',');
   for (const segment of segments) {
-    const [imageIdPart, difficultyPart] = segment.split(':').map((piece) => piece.trim());
+    const [imageIdPart, difficultyPart] = segment.split(':').map((piece) => stripWrappingQuotes(piece));
     if (imageIdPart && difficultyPart) {
       overrides.set(imageIdPart, difficultyPart);
     }
@@ -136,8 +161,9 @@ function parseOverrides(rawOverrides) {
 }
 
 function parseDifficultyCell(baseCell, overridesCell = '') {
-  const rawBase = baseCell.trim();
-  if (!overridesCell.trim()) {
+  const rawBase = stripWrappingQuotes(baseCell);
+  const overridesSource = stripWrappingQuotes(overridesCell);
+  if (!overridesSource) {
     const legacyMatch = rawBase.match(/^(.*?)(?:\s*\(overrides:\s*(.+)\))$/i);
     if (legacyMatch) {
       const base = legacyMatch[1].trim();
@@ -147,7 +173,7 @@ function parseDifficultyCell(baseCell, overridesCell = '') {
   }
 
   const base = rawBase && rawBase.toLowerCase() !== 'null' ? rawBase : null;
-  const overrides = parseOverrides(overridesCell.trim());
+  const overrides = parseOverrides(overridesSource);
   return { base, overrides };
 }
 
@@ -271,7 +297,10 @@ function parseCsvRows(rows) {
 
 function extractList(cell) {
   if (!cell) return [];
-  return cell.split(',').map((item) => item.trim()).filter(Boolean);
+  return cell
+    .split(',')
+    .map((item) => stripWrappingQuotes(item))
+    .filter((item) => item !== '');
 }
 
 function parseCsvData(rows) {
