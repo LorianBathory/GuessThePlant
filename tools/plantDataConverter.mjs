@@ -389,22 +389,26 @@ function parseCsvData(rows) {
 
     const imageFiles = extractList(record.imageFiles || '');
     const manualImageIds = extractList(record.imageIds || '');
+    const normalizedManualImageIds = manualImageIds
+      .map((manualId) => normalizeId(manualId))
+      .filter((manualId) => manualId);
 
-    if (imageFiles.length > 0 && manualImageIds.length > 0 && manualImageIds.length !== imageFiles.length) {
+    if (imageFiles.length > 0 && normalizedManualImageIds.length > 0 && normalizedManualImageIds.length !== imageFiles.length) {
       throw new Error(`Количество imageId и файлов не совпадает (строка ${record.__line}).`);
     }
 
     const autoImageIds = imageFiles.map((_, index) => generateImageId(plantId, index));
+    const finalImageIds = autoImageIds.length > 0 ? autoImageIds : normalizedManualImageIds;
 
     const legacyImageIdMap = new Map();
-    manualImageIds.forEach((manualId, index) => {
-      const normalizedManualId = normalizeId(manualId);
-      if (!normalizedManualId) return;
-      const autoId = autoImageIds[index];
-      if (normalizedManualId !== autoId) {
-        legacyImageIdMap.set(normalizedManualId, autoId);
-      }
-    });
+    if (autoImageIds.length > 0) {
+      normalizedManualImageIds.forEach((normalizedManualId, index) => {
+        const autoId = autoImageIds[index];
+        if (normalizedManualId && autoId && normalizedManualId !== autoId) {
+          legacyImageIdMap.set(normalizedManualId, autoId);
+        }
+      });
+    }
 
     const normalizedOverrides = new Map();
     overrides.forEach((difficulty, imageId) => {
@@ -416,11 +420,11 @@ function parseCsvData(rows) {
     species[plantId] = {
       id: isNumericId(plantId) ? Number(plantId) : plantId,
       names: { ru, en, nl, sci },
-      images: autoImageIds,
+      images: finalImageIds,
       ...(wrongAnswers.length > 0 ? { wrongAnswers } : {})
     };
 
-    autoImageIds.forEach((imageId, index) => {
+    finalImageIds.forEach((imageId, index) => {
       const imageFile = imageFiles[index] || '';
       if (imageFile) {
         plantImages.set(imageId, { id: imageId, src: imageFile.startsWith('images/') ? imageFile : `images/${imageFile}` });
