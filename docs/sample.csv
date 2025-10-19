@@ -1,0 +1,7 @@
+id,(ru),(en),(nl),(sci),images,ID изображений,Названия файлов,wrongAnswers,Сложность,Переопределения сложности,Family
+1,Пляжная маргаритка,Beach Daisy,Zeegoudsbloem,Asteriscus maritimus,1,p1_1,BeachDaisy.JPG,"7, 8, 9",Hard,,Asteraceae
+2,Морковник приморский,Sea Carrot,"Peen, Wilde peen",Daucus carota,1,p2_1,DaucusCarota2.JPG,"10, 11, 12",Medium,,Apiaceae
+3,Агапантус,Agapanthus,Afrikaanse lelie,Agapanthus africanus,2,"p3_1, p3_2","Agapanthus.JPG, Agapanthus_Hard_HartonoSubagio.JPG","13, 14, 15, 16, 142",Medium,"p3_2:Hard",Amaryllidaceae
+4,Бугенвиллия,Bougainvillea,Bouganville,Bougainvillea spectabilis,2,"p4_1, p4_2","bougainvillea.JPG, Bougainvillea_Medium_HartonoSubagio.JPG","17, 18, 19",,"p4_1:Easy, p4_2:Medium",Nyctaginaceae
+5,Камелия,Camellia,Japanse roos,Camellia japonica,5,"p5_1, p5_2, p5_3, p5_4, p5_5","Camellia.JPG, Camellia_SonnySixteen.JPG, Camellia_Hard_KaramAlani.JPG, Camellia_Hard_PedroOliveira.JPG, CamelliaSasanqua_SonnySixteen.JPG","20, 21, 22, 23",Medium,"p5_3:Hard, p5_4:Hard",Theaceae
+6,Гербера,Gerbera,Gerbera,Gerbera jamesonii,1,p6_1,Gerbera.JPG,"24, 25, 26",Easy,,Asteraceae

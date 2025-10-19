@@ -1,7 +1,10 @@
-import { getDifficultyByQuestionId, getDifficultyByImageId } from '../difficulties.js';
+import {
+  getDifficultyByQuestionId,
+  getDifficultyByImageId,
+  plantImagesById,
+  speciesById
+} from '../../game/dataLoader.js';
 import { questionTypes } from '../questionTypes.js';
-import { plantImagesById } from '../images.js';
-import { speciesById } from '../catalog.js';
 
 const memorizationPlantConfig = Object.freeze([
   Object.freeze({ id: 3, imageId: 'p3_1' }),

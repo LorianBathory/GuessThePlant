@@ -4,7 +4,7 @@
 - `index.html` — HTML entry point that loads React and Tailwind from CDNs and mounts the quiz application into the `#root` element.【F:index.html†L1-L27】
 - `package.json` — Declares project metadata and development tooling scripts (currently ESLint).【F:package.json†L1-L20】
 - `eslint.config.js` — Configures ESLint rules for the project (see file for detailed setup).【F:eslint.config.js†L1-L68】
-- `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/catalog.js†L6-L103】
+- `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/json/plantImages.json†L1-L40】
 
 ## Source Directory (`src/`)
 - `index.js` — Bootstraps the React application by rendering `<PlantQuizGame />` into the DOM root.【F:src/index.js†L1-L5】
@@ -21,12 +21,11 @@
   - `useEndlessMode.js` — Перемешивает весь каталог вопросов, начисляет +1/−2 балла и завершает сессию по исчерпанию вопросов либо при отрицательном счёте.【F:src/hooks/useEndlessMode.js†L1-L123】
   - `useSecureImageSource.js` — Fetches plant images as Blob URLs, кэширует и освобождает их по мере использования, скрывая оригинальные имена файлов от игроков.【F:src/hooks/useSecureImageSource.js†L1-L84】【F:src/hooks/useSecureImageSource.js†L86-L120】
 - `data/`
-  - `plantNames.js` — Localization table for plant names in Russian, English, and Latin, keyed by catalog ID.【F:src/data/plantNames.js†L1-L81】
-  - `images.js` — Canonical list of plant images with unique IDs and helpers to look up image metadata by plant.【F:src/data/images.js†L1-L44】
-  - `catalog.js` — Master catalog that merges localized names, supplemental metadata, genus entries, and image definitions into quiz-ready entries with difficulty fallbacks.【F:src/data/catalog.js†L1-L205】
-  - `genus/` — Registry of genus datasets. Each module exports a genus descriptor with shared wrong answers and a map of species entries; `index.js` aggregates them for the catalog pipeline. Родовые файлы придерживаются иерархии идентификаторов (`100`, `'100_1'`, …), а изображения называют по тому же шаблону (`p100_1`, `p100_1_1`), чтобы автоматически связать снимки с нужным уровнем таксона.【F:src/data/genus/index.js†L1-L13】【F:src/data/genus/helianthus.js†L1-L29】【F:src/data/images.js†L190-L209】
-    - При сборке каталога `catalog.js` подставляет неправильные ответы в три шага: берёт массив вида из `entries`, затем fallback из `speciesCatalog`, и лишь после этого — базовый набор из объекта рода. Благодаря этому верхнеуровневую запись рода в `entries` не нужно вручную дополнять своим `wrongAnswers` — она унаследует их автоматически.【F:src/data/catalog.js†L214-L257】【F:src/data/genus/anemone.js†L1-L27】
-  - `difficulties.js` — Defines difficulty tiers and maps both question IDs and specific image IDs to their difficulty level.【F:src/data/difficulties.js†L1-L25】
+  - `json/` — Каноничные источники данных: `plantNames.json`, `plantImages.json`, `speciesCatalog.json`, `genus.json`, агрегированный пакет `plantData.json`, а также таблицы `difficulties.json` и `bouquetQuestions.json` для букетов.【F:src/data/json/plantData.json†L1-L200】
+  - `plantParameters.js` / `parameterTags.js` — Содержат дополнительные параметры растений и расшифровки тегов, которые дополняют JSON-данные в момент загрузки.【F:src/data/plantParameters.js†L1-L244】【F:src/data/parameterTags.js†L1-L82】
+  - `questionTypes.js` / `questions.js` — Перечисление типов вопросов и преднастроенные подборки (например, букетные задания) поверх каталогизированных данных.【F:src/data/questionTypes.js†L1-L25】【F:src/data/questions.js†L1-L118】
+- `game/`
+  - `dataLoader.js` — Асинхронно подгружает `plantData.json`, нормализует роды и виды, строит кэшированные индексы (виды по идентификатору, списки вопросов, уровни сложности) и предоставляет API вроде `getDifficultyByQuestionId`. Все компоненты и скрипты теперь используют эти экспортированные структуры вместо отдельных модулей в `src/data/`.【F:src/game/dataLoader.js†L16-L198】【F:src/game/dataLoader.js†L480-L531】
 - `i18n/`
   - `uiTexts.js` — Provides localized interface strings (Russian/English) and a helper to select language bundles.【F:src/i18n/uiTexts.js†L1-L28】【F:src/i18n/uiTexts.js†L30-L34】
 - `utils/`
@@ -35,5 +34,5 @@
 ## Application Flow Summary
 1. `index.html` loads the React runtime; `src/index.js` mounts `PlantQuizGame`.
 2. `PlantQuizGame` uses `useGameLogic` to manage quiz rounds and chooses between `GameScreen` (active round) and `ResultScreen` (between rounds or after completion).
-3. `useGameLogic` pulls plant data from `data/catalog.js`, который разворачивает родовые файлы и применяет наследование сложностей, группирует вопросы по уровням из `data/difficulties.js` и использует хелперы `gameConfig.js` и `utils/random.js` для выборки, хранения и адаптации под устройство.【F:src/data/catalog.js†L1-L205】【F:src/hooks/useGameLogic.js†L1-L207】
+3. `useGameLogic` получает структуры (`choicesById`, `ALL_CHOICE_IDS`) из `game/dataLoader.js`, который уже разворачивает родовые данные, наследует сложность и собирает списки вопросов. Хук использует эти данные совместно с `gameConfig.js` и `utils/random.js` для выборки, хранения и адаптации под устройство.【F:src/game/dataLoader.js†L480-L531】【F:src/hooks/useGameLogic.js†L1-L207】
 4. UI text is localized via `i18n/uiTexts.js`, while language and viewport preferences persist using storage helpers in `gameConfig.js`.

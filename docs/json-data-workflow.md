@@ -19,6 +19,7 @@ npm run lint
 
 Скрипт `npm test` вызывает [`scripts/verifyGameData.js`](../scripts/verifyGameData.js), который проверяет корректность загрузки JSON и построение структур.
 
-## Экспорт из старых модулей
+## Пересборка пакета данных
 
-Для повторного экспорта актуальных данных из существующих JS-модулей используется вспомогательный скрипт [`scripts/exportGameData.js`](../scripts/exportGameData.js). Он перезаписывает JSON-файлы на основе текущих JS-источников. Запустите его, если нужно синхронизировать JSON с устаревшими модулями перед миграцией.
+- [`scripts/exportGameData.js`](../scripts/exportGameData.js) перечитывает существующие JSON-файлы каталога и приводит их к единому форматированию (включая `plantNames.json`, `plantImages.json`, `genus.json`, `speciesCatalog.json`, `bouquetQuestions.json`, `difficulties.json`).
+- [`scripts/exportDataBundle.mjs`](../scripts/exportDataBundle.mjs) собирает агрегированный `plantData.json` из текущего состояния каталога и дополнительных параметров.

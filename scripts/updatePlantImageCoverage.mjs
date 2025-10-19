@@ -1,97 +1,106 @@
 import { promises as fs } from 'node:fs';
-import path from 'node:path';
+import path, { basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { speciesById } from '../src/data/catalog.js';
-import { plantImagesById } from '../src/data/images.js';
 import {
+  speciesById,
+  plantImagesById,
   getDifficultyByImageId,
-  getDifficultyByQuestionId
-} from '../src/data/difficulties.js';
+  getDifficultyByQuestionId,
+  dataBundle
+} from '../src/game/dataLoader.js';
 
 const collator = new Intl.Collator('ru', { numeric: true, sensitivity: 'base' });
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const outputPath = path.join(projectRoot, 'docs', 'plant-image-coverage.md');
+const outputPath = path.join(projectRoot, 'docs', 'plant-image-coverage.csv');
 
-function escapeCell(value) {
-  if (value == null) {
+const CSV_HEADER = [
+  'id',
+  '(ru)',
+  '(en)',
+  '(nl)',
+  '(sci)',
+  'images',
+  'ID изображений',
+  'Названия файлов',
+  'wrongAnswers',
+  'Сложность',
+  'Переопределения сложности',
+  'Family'
+];
+
+function csvEscape(value) {
+  const stringValue = value == null ? '' : String(value);
+  if (stringValue === '') {
     return '';
   }
 
-  const stringValue = String(value);
-  return stringValue.replace(/\r?\n|\r/g, ' ').replace(/\|/g, '\\|');
+  return /[",\n]/.test(stringValue)
+    ? `"${stringValue.replace(/"/g, '""')}"`
+    : stringValue;
 }
 
-function formatDifficulty(species, imageIds) {
-  const baseDifficulty = getDifficultyByQuestionId(species.id);
-  const genusDifficulty = species.genusId != null && species.genusId !== species.id
-    ? getDifficultyByQuestionId(species.genusId)
-    : null;
-  const effectiveDifficulty = baseDifficulty || genusDifficulty || null;
+function stringifyCsvRow(values) {
+  return values.map(csvEscape).join(',');
+}
 
-  const overrides = imageIds
-    .map(imageId => {
-      const overrideDifficulty = getDifficultyByImageId(imageId);
-      if (!overrideDifficulty || overrideDifficulty === effectiveDifficulty) {
-        return null;
-      }
+function getScientificName(species) {
+  const idKey = String(species.id);
+  return species.names?.sci
+    || dataBundle.plantParameters?.[idKey]?.scientificName
+    || '';
+}
 
-      return `${imageId}:${overrideDifficulty}`;
-    })
-    .filter(Boolean);
-
-  const detailParts = [];
-
-  if (!baseDifficulty && genusDifficulty) {
-    detailParts.push(`from genus ${species.genusId}`);
-  }
-
-  if (overrides.length > 0) {
-    detailParts.push(`overrides: ${overrides.join(', ')}`);
-  }
-
-  const difficultyLabel = effectiveDifficulty ?? 'null';
-  if (detailParts.length === 0) {
-    return difficultyLabel;
-  }
-
-  return `${difficultyLabel} (${detailParts.join('; ')})`;
+function getFamily(species) {
+  const idKey = String(species.id);
+  return dataBundle.plantParameters?.[idKey]?.family || '';
 }
 
 const sortedEntries = Object.values(speciesById)
   .slice()
   .sort((a, b) => collator.compare(String(a.id), String(b.id)));
 
-const header = [
-  '| id растения | Название (ru) | Название (en) | Название (nl) | Название (sci) | Количество фото | ID фотографий | Названия изображений | Сложность |',
-  '| --- | --- | --- | --- | --- | --- | --- | --- | --- |'
-];
+const rows = [CSV_HEADER.join(',')];
 
-const rows = sortedEntries.map(species => {
-  const { id, names = {}, images = [] } = species;
-  const ruName = escapeCell(names.ru ?? '');
-  const enName = escapeCell(names.en ?? '');
-  const nlName = escapeCell(names.nl ?? '');
-  const sciName = escapeCell(names.sci ?? '');
+sortedEntries.forEach(species => {
+  const names = species.names || {};
+  const baseDifficulty = getDifficultyByQuestionId(species.id) || '';
+  const imageIds = Array.isArray(species.images) ? species.images.slice() : [];
 
-  const imageIds = Array.isArray(images) ? images : [];
   const imageEntries = imageIds
-    .map(imageId => plantImagesById[imageId])
-    .filter(imageEntry => imageEntry && typeof imageEntry.src === 'string');
+    .map(imageId => {
+      const imageEntry = plantImagesById[imageId];
+      const fileName = imageEntry?.src ? basename(imageEntry.src) : '';
+      const override = getDifficultyByImageId(imageId) || '';
+      return { imageId, fileName, override };
+    })
+    .sort((a, b) => a.imageId.localeCompare(b.imageId, 'en'));
 
-  const imageIdCell = escapeCell(imageIds.join(', '));
-  const imageNameCell = escapeCell(
-    imageEntries
-      .map(imageEntry => imageEntry.src.split('/').pop() ?? imageEntry.src)
-      .join(', ')
-  );
+  const wrongAnswers = Array.isArray(species.wrongAnswers)
+    ? species.wrongAnswers.map(answerId => String(answerId))
+    : [];
 
-  const imageCount = imageIds.length;
-  const difficultyCell = escapeCell(formatDifficulty(species, imageIds));
+  const formattedOverrides = imageEntries
+    .filter(entry => entry.override && (baseDifficulty === '' || entry.override !== baseDifficulty))
+    .map(entry => `${entry.imageId}:${entry.override}`)
+    .join(', ');
 
-  return `| ${escapeCell(id)} | ${ruName} | ${enName} | ${nlName} | ${sciName} | ${imageCount} | ${imageIdCell} | ${imageNameCell} | ${difficultyCell} |`;
+  const row = [
+    species.id,
+    names.ru || '',
+    names.en || '',
+    names.nl || '',
+    getScientificName(species),
+    String(imageEntries.length),
+    imageEntries.map(entry => entry.imageId).filter(Boolean).join(', '),
+    imageEntries.map(entry => entry.fileName).filter(Boolean).join(', '),
+    wrongAnswers.join(', '),
+    baseDifficulty,
+    formattedOverrides,
+    getFamily(species)
+  ];
+
+  rows.push(stringifyCsvRow(row));
 });
 
-const output = header.concat(rows).join('\n');
-
-await fs.writeFile(outputPath, `${output}\n`);
+await fs.writeFile(outputPath, `${rows.join('\n')}\n`);

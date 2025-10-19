@@ -1,7 +1,7 @@
 import { allQuestions } from './data/questions.js';
 import { questionTypes } from './data/questionTypes.js';
 import { shuffleArray } from './utils/random.js';
-import { difficultyLevels } from './data/difficulties.js';
+import { difficultyLevels } from './game/dataLoader.js';
 import { DataLoadingError, StorageError } from './utils/errorHandling.js';
 
 export const PLANT_LANGUAGES = ['ru', 'en', 'nl', 'sci'];
