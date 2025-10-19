@@ -95,6 +95,24 @@ function comparePlantIds(a, b) {
   return aNorm.localeCompare(bNorm, 'en');
 }
 
+function hasVariantSuffix(plantId) {
+  return plantId.includes('_');
+}
+
+function buildImageIdPrefix(plantId) {
+  const normalizedId = normalizeId(plantId);
+  if (!normalizedId) {
+    throw new Error('Невозможно сгенерировать imageId без plantId.');
+  }
+  const suffix = hasVariantSuffix(normalizedId) ? normalizedId : `${normalizedId}_0`;
+  return `p${suffix}`;
+}
+
+function generateImageId(plantId, index) {
+  const prefix = buildImageIdPrefix(plantId);
+  return `${prefix}_${index + 1}`;
+}
+
 function csvEscape(value) {
   const str = value === null || value === undefined ? '' : String(value);
   if (str === '') {
@@ -369,27 +387,50 @@ function parseCsvData(rows) {
       .map((value) => normalizeWrongAnswerId(value))
       .filter((value) => value !== null);
 
-    const imageIds = extractList(record.imageIds || '');
     const imageFiles = extractList(record.imageFiles || '');
+    const manualImageIds = extractList(record.imageIds || '');
+    const normalizedManualImageIds = manualImageIds
+      .map((manualId) => normalizeId(manualId))
+      .filter((manualId) => manualId);
 
-    if (imageFiles.length > 0 && imageIds.length !== imageFiles.length) {
+    if (imageFiles.length > 0 && normalizedManualImageIds.length > 0 && normalizedManualImageIds.length !== imageFiles.length) {
       throw new Error(`Количество imageId и файлов не совпадает (строка ${record.__line}).`);
     }
+
+    const autoImageIds = imageFiles.map((_, index) => generateImageId(plantId, index));
+    const finalImageIds = autoImageIds.length > 0 ? autoImageIds : normalizedManualImageIds;
+
+    const legacyImageIdMap = new Map();
+    if (autoImageIds.length > 0) {
+      normalizedManualImageIds.forEach((normalizedManualId, index) => {
+        const autoId = autoImageIds[index];
+        if (normalizedManualId && autoId && normalizedManualId !== autoId) {
+          legacyImageIdMap.set(normalizedManualId, autoId);
+        }
+      });
+    }
+
+    const normalizedOverrides = new Map();
+    overrides.forEach((difficulty, imageId) => {
+      const normalizedId = normalizeId(imageId);
+      const autoId = legacyImageIdMap.get(normalizedId) || normalizedId;
+      normalizedOverrides.set(autoId, difficulty);
+    });
 
     species[plantId] = {
       id: isNumericId(plantId) ? Number(plantId) : plantId,
       names: { ru, en, nl, sci },
-      images: imageIds,
+      images: finalImageIds,
       ...(wrongAnswers.length > 0 ? { wrongAnswers } : {})
     };
 
-    imageIds.forEach((imageId, index) => {
+    finalImageIds.forEach((imageId, index) => {
       const imageFile = imageFiles[index] || '';
       if (imageFile) {
         plantImages.set(imageId, { id: imageId, src: imageFile.startsWith('images/') ? imageFile : `images/${imageFile}` });
       }
       const variantIndex = index;
-      const difficulty = overrides.get(imageId) || base || null;
+      const difficulty = normalizedOverrides.get(imageId) || base || null;
       if (difficulty) {
         imageDifficultyById.set(imageId, difficulty);
       }
