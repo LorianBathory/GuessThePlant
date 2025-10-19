@@ -82,17 +82,73 @@ function isNumericId(id) {
   return /^\d+$/.test(id);
 }
 
-function comparePlantIds(a, b) {
-  const aNorm = normalizeId(a);
-  const bNorm = normalizeId(b);
-  const aIsNum = isNumericId(aNorm);
-  const bIsNum = isNumericId(bNorm);
-  if (aIsNum && bIsNum) {
-    return Number(aNorm) - Number(bNorm);
+function parsePlantId(id) {
+  const normalized = normalizeId(id);
+  const [head, ...rawSuffixParts] = normalized.split('_');
+  const hasNumericHead = isNumericId(head);
+  const suffixParts = rawSuffixParts.map((part) => ({
+    type: isNumericId(part) ? 'number' : 'string',
+    value: isNumericId(part) ? Number(part) : part
+  }));
+
+  return {
+    normalized,
+    head,
+    hasNumericHead,
+    numericHead: hasNumericHead ? Number(head) : null,
+    suffixParts
+  };
+}
+
+function compareSuffixParts(aParts, bParts) {
+  const maxLength = Math.max(aParts.length, bParts.length);
+  for (let index = 0; index < maxLength; index += 1) {
+    const aPart = aParts[index];
+    const bPart = bParts[index];
+
+    if (!aPart) {
+      return -1;
+    }
+    if (!bPart) {
+      return 1;
+    }
+
+    if (aPart.type === bPart.type) {
+      if (aPart.value < bPart.value) return -1;
+      if (aPart.value > bPart.value) return 1;
+    } else if (aPart.type === 'number') {
+      return -1;
+    } else if (bPart.type === 'number') {
+      return 1;
+    }
   }
-  if (aIsNum) return -1;
-  if (bIsNum) return 1;
-  return aNorm.localeCompare(bNorm, 'en');
+  return 0;
+}
+
+function comparePlantIds(a, b) {
+  const aParsed = parsePlantId(a);
+  const bParsed = parsePlantId(b);
+
+  if (aParsed.hasNumericHead && bParsed.hasNumericHead) {
+    if (aParsed.numericHead !== bParsed.numericHead) {
+      return aParsed.numericHead - bParsed.numericHead;
+    }
+    if (aParsed.suffixParts.length === 0 && bParsed.suffixParts.length === 0) {
+      return 0;
+    }
+    if (aParsed.suffixParts.length === 0) {
+      return -1;
+    }
+    if (bParsed.suffixParts.length === 0) {
+      return 1;
+    }
+    return compareSuffixParts(aParsed.suffixParts, bParsed.suffixParts);
+  }
+
+  if (aParsed.hasNumericHead) return -1;
+  if (bParsed.hasNumericHead) return 1;
+
+  return aParsed.normalized.localeCompare(bParsed.normalized, 'en');
 }
 
 function hasVariantSuffix(plantId) {
