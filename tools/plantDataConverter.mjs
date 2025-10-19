@@ -25,13 +25,9 @@ const HEADER_ALIASES = new Map([
   ['(sci)', 'sci'],
   ['images', 'imageCount'],
   ['id изображений', 'imageIds'],
-  ['id ??????????', 'imageIds'],
   ['названия файлов', 'imageFiles'],
-  ['???????? ???????????', 'imageFiles'],
   ['сложность', 'difficulty'],
-  ['?????????', 'difficulty'],
   ['difficulty overrides', 'difficultyOverrides'],
-  ['????????? overrides', 'difficultyOverrides'],
   ['переопределения сложности', 'difficultyOverrides'],
   ['difficultyoverrides', 'difficultyOverrides'],
   ['family', 'family']
@@ -325,8 +321,8 @@ function parseCsvData(rows) {
       baseDifficultyById.set(plantId, base);
     }
 
-    const imageIds = extractList(record.imageIds || record['ID ??????????'] || '');
-    const imageFiles = extractList(record.imageFiles || record['???????? ???????????'] || '');
+    const imageIds = extractList(record.imageIds || '');
+    const imageFiles = extractList(record.imageFiles || '');
 
     if (imageFiles.length > 0 && imageIds.length !== imageFiles.length) {
       throw new Error(`Количество imageId и файлов не совпадает (строка ${record.__line}).`);
