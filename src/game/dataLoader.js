@@ -1,36 +1,41 @@
-function extractPlantData(module) {
+import { questionTypes } from '../data/questionTypes.js';
+
+function extractJsonModuleData(module, fallbackKey) {
   if (module && typeof module === 'object') {
     if ('default' in module) {
       return module.default;
     }
 
-    if ('plantData' in module) {
-      return module.plantData;
+    if (fallbackKey && (fallbackKey in module)) {
+      return module[fallbackKey];
     }
   }
 
   return module;
 }
 
-async function loadPlantDataBundle() {
-  const relativePath = '../data/json/plantData.json';
+async function loadJsonModule(relativePath, {
+  fallbackKey = null,
+  fallbackValue,
+  fileSystemHint
+} = {}) {
   let lastError;
 
   try {
     const module = await import(relativePath, { assert: { type: 'json' } });
-    return extractPlantData(module);
+    return extractJsonModuleData(module, fallbackKey);
   } catch (assertError) {
     lastError = assertError;
 
     try {
       const module = await import(relativePath, { with: { type: 'json' } });
-      return extractPlantData(module);
+      return extractJsonModuleData(module, fallbackKey);
     } catch (withError) {
       lastError = withError;
 
       if (typeof fetch === 'function') {
         try {
-          const response = await fetch(new URL('./../data/json/plantData.json', import.meta.url));
+          const response = await fetch(new URL(relativePath.replace(/^\.\//, ''), import.meta.url));
 
           if (!response.ok) {
             throw new Error(`Failed to load JSON at ${relativePath}: ${response.status} ${response.statusText}`);
@@ -43,15 +48,14 @@ async function loadPlantDataBundle() {
         }
       }
 
+      if (fallbackValue !== undefined) {
+        return fallbackValue;
+      }
+
       const normalizedError = lastError instanceof Error ? lastError : new Error(String(lastError));
 
-      if (import.meta.url.startsWith('file:')) {
-        throw new Error(
-          'Не удалось загрузить plantData.json напрямую из файловой системы. '
-          + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
-          + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.',
-          { cause: normalizedError }
-        );
+      if (fileSystemHint && import.meta.url.startsWith('file:')) {
+        throw new Error(fileSystemHint, { cause: normalizedError });
       }
 
       throw normalizedError;
@@ -59,7 +63,31 @@ async function loadPlantDataBundle() {
   }
 }
 
-const plantDataJson = Object.freeze(await loadPlantDataBundle());
+const plantDataJson = Object.freeze(await loadJsonModule('../data/json/plantData.json', {
+  fallbackKey: 'plantData',
+  fileSystemHint: (
+    'Не удалось загрузить plantData.json напрямую из файловой системы. '
+    + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
+    + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.'
+  )
+}));
+
+const bouquetQuestionDefinitions = Object.freeze(await loadJsonModule('../data/json/bouquetQuestions.json', {
+  fallbackValue: [],
+  fallbackKey: 'bouquetQuestions'
+}));
+
+function freezeQuestionDefinitions(definitions) {
+  if (!Array.isArray(definitions)) {
+    return Object.freeze([]);
+  }
+
+  return Object.freeze(definitions.map(entry => (
+    entry && typeof entry === 'object'
+      ? Object.freeze({ ...entry })
+      : entry
+  )));
+}
 
 export const dataBundle = Object.freeze({
   plantNames: plantDataJson.plantNames,
@@ -68,10 +96,11 @@ export const dataBundle = Object.freeze({
   plantImages: plantDataJson.plantImages,
   plantParameters: plantDataJson.plantParameters,
   plantFamilies: plantDataJson.plantFamilies,
-  bouquetQuestions: plantDataJson.bouquetQuestions,
-  difficulties: plantDataJson.difficulties
+  difficulties: plantDataJson.difficulties,
+  questionDefinitionsByType: Object.freeze({
+    [questionTypes.BOUQUET]: freezeQuestionDefinitions(bouquetQuestionDefinitions)
+  })
 });
-import { questionTypes } from '../data/questionTypes.js';
 
 const NUMERIC_ID_PATTERN = /^\d+$/;
 
@@ -425,7 +454,11 @@ function buildBouquetQuestions({ bouquetDefinitions, plantNamesById, difficultyL
         image: normalizedEntry.image,
         names,
         wrongAnswers,
-        difficulty: normalizedEntry.difficulty ?? difficultyOverride ?? fallbackDifficulty ?? null,
+        difficulty: normalizedEntry.difficulty
+          ?? difficultyOverride
+          ?? fallbackDifficulty
+          ?? difficultyLookups.defaultDifficulty
+          ?? null,
         questionVariantId,
         questionType: normalizedEntry.questionType ?? questionTypes.BOUQUET,
         selectionGroupId,
@@ -451,9 +484,9 @@ function buildGameData({
   speciesCatalog = undefined,
   genusEntries = dataBundle.genus,
   plantImages = dataBundle.plantImages,
-  bouquetQuestions = dataBundle.bouquetQuestions,
   difficulties = dataBundle.difficulties,
-  speciesEntries = dataBundle.species
+  speciesEntries = dataBundle.species,
+  questionDefinitionsByType = dataBundle.questionDefinitionsByType
 } = {}) {
   const plantNamesById = buildPlantNames(plantNames);
   const genusData = buildGenusData(genusEntries);
@@ -470,10 +503,19 @@ function buildGameData({
     plantImagesById: imagesData.plantImagesById,
     difficultyLookups: difficultyData
   });
+  const normalizedQuestionDefinitions = (
+    questionDefinitionsByType && typeof questionDefinitionsByType === 'object'
+      ? questionDefinitionsByType
+      : {}
+  );
   const bouquetSet = buildBouquetQuestions({
-    bouquetDefinitions: bouquetQuestions,
+    bouquetDefinitions: normalizedQuestionDefinitions[questionTypes.BOUQUET],
     plantNamesById,
     difficultyLookups: difficultyData
+  });
+  const questionSetsByType = Object.freeze({
+    [questionTypes.PLANT]: plants,
+    [questionTypes.BOUQUET]: bouquetSet
   });
 
   return Object.freeze({
@@ -484,6 +526,8 @@ function buildGameData({
     ...speciesData,
     plants,
     bouquetQuestions: bouquetSet,
+    questionSetsByType,
+    questionDefinitionsByType: Object.freeze({ ...normalizedQuestionDefinitions }),
     difficultyLevels: difficultyData.difficultyLevels,
     questionIdsByDifficulty: difficultyData.questionIdsByDifficulty,
     imageIdsByDifficulty: difficultyData.imageIdsByDifficulty,
@@ -509,6 +553,8 @@ export const {
   allChoiceIds,
   plants,
   bouquetQuestions,
+  questionSetsByType,
+  questionDefinitionsByType,
   difficultyLevels,
   questionIdsByDifficulty,
   imageIdsByDifficulty,
@@ -531,13 +577,28 @@ export function getDifficultyByImageId(imageId, questionType = questionTypes.PLA
 }
 
 export function buildGameDataForTesting(overrides = {}) {
+  const {
+    bouquetQuestions: legacyBouquetOverride,
+    questionDefinitionsByType: questionDefinitionsOverride,
+    ...remainingOverrides
+  } = overrides || {};
+
+  let questionDefinitionsByTypeOverride = questionDefinitionsOverride;
+
+  if (!questionDefinitionsByTypeOverride && legacyBouquetOverride !== undefined) {
+    questionDefinitionsByTypeOverride = {
+      ...dataBundle.questionDefinitionsByType,
+      [questionTypes.BOUQUET]: legacyBouquetOverride
+    };
+  }
+
   return buildGameData({
     plantNames: dataBundle.plantNames,
     genusEntries: dataBundle.genus,
     plantImages: dataBundle.plantImages,
-    bouquetQuestions: dataBundle.bouquetQuestions,
     difficulties: dataBundle.difficulties,
     speciesEntries: dataBundle.species,
-    ...overrides
+    questionDefinitionsByType: questionDefinitionsByTypeOverride,
+    ...remainingOverrides
   });
 }
