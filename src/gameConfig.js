@@ -41,7 +41,7 @@ export const ROUNDS = Object.freeze([
 
 export const TOTAL_ROUNDS = ROUNDS.length;
 
-export const BOUQUET_QUESTIONS_TARGET = 2;
+export const BOUQUET_QUESTIONS_TARGET = 1;
 export const BOUQUET_PER_ROUND_LIMIT = 1;
 
 const usedQuestionGroupIdsAcrossGame = new Set();
@@ -218,21 +218,54 @@ function collectAvailableQuestionGroupsByDifficulty() {
     const normalizedType = question.questionType || questionTypes.PLANT;
 
     if (!groups.has(difficulty)) {
-      groups.set(difficulty, {
-        plant: new Set(),
-        bouquet: new Set()
-      });
+      groups.set(difficulty, new Map());
     }
 
     const entry = groups.get(difficulty);
-    if (normalizedType === questionTypes.BOUQUET) {
-      entry.bouquet.add(groupId);
-    } else {
-      entry.plant.add(groupId);
+    if (!entry.has(normalizedType)) {
+      entry.set(normalizedType, new Set());
     }
+
+    entry.get(normalizedType).add(groupId);
   });
 
   return groups;
+}
+
+function getAvailableGroupIds(entry, questionType, usedGroupIds) {
+  if (!(entry instanceof Map)) {
+    return [];
+  }
+
+  const bucket = entry.get(questionType);
+  if (!(bucket instanceof Set)) {
+    return [];
+  }
+
+  return Array.from(bucket).filter(groupId => !usedGroupIds.has(groupId));
+}
+
+function getAvailableGroupIdsExcluding(entry, excludedTypes, usedGroupIds) {
+  if (!(entry instanceof Map)) {
+    return [];
+  }
+
+  const excluded = new Set(excludedTypes);
+  const available = [];
+
+  for (const [type, bucket] of entry.entries()) {
+    if (excluded.has(type) || !(bucket instanceof Set)) {
+      continue;
+    }
+
+    for (const groupId of bucket) {
+      if (!usedGroupIds.has(groupId)) {
+        available.push(groupId);
+      }
+    }
+  }
+
+  return available;
 }
 
 function canAssembleClassicGameFrom(groupsByDifficulty) {
@@ -259,12 +292,16 @@ function canAssembleClassicGameFrom(groupsByDifficulty) {
     const difficulty = roundConfig.difficulty;
     const difficultyEntry = difficulty ? groupsByDifficulty.get(difficulty) : null;
 
-    const availablePlantGroups = difficultyEntry
-      ? Array.from(difficultyEntry.plant).filter(groupId => !usedGroupIds.has(groupId))
-      : [];
-    const availableBouquetGroups = difficultyEntry
-      ? Array.from(difficultyEntry.bouquet).filter(groupId => !usedGroupIds.has(groupId))
-      : [];
+    const availableBouquetGroups = getAvailableGroupIds(
+      difficultyEntry,
+      questionTypes.BOUQUET,
+      usedGroupIds
+    );
+    const availablePlantGroups = getAvailableGroupIdsExcluding(
+      difficultyEntry,
+      [questionTypes.BOUQUET],
+      usedGroupIds
+    );
 
     const allowedBouquetQuestions = Math.min(
       BOUQUET_PER_ROUND_LIMIT,
@@ -421,19 +458,27 @@ export function getQuestionsForRound(roundConfig, selectionOptions = {}) {
     return [];
   }
 
-  const bouquetGroups = [];
-  const plantGroups = [];
+  const groupsByType = new Map();
 
   for (const [groupId, groupEntry] of variantsByGroupId.entries()) {
     const normalizedType = groupEntry && groupEntry.type
       ? groupEntry.type
       : questionTypes.PLANT;
-    if (normalizedType === questionTypes.BOUQUET) {
-      bouquetGroups.push([groupId, groupEntry.variants]);
-    } else {
-      plantGroups.push([groupId, groupEntry.variants]);
+
+    if (!groupsByType.has(normalizedType)) {
+      groupsByType.set(normalizedType, []);
     }
+
+    groupsByType.get(normalizedType).push([groupId, groupEntry.variants]);
   }
+
+  const bouquetGroups = groupsByType.get(questionTypes.BOUQUET) || [];
+  const plantGroups = [
+    ...(groupsByType.get(questionTypes.PLANT) || []),
+    ...Array.from(groupsByType.entries())
+      .filter(([type]) => type !== questionTypes.PLANT && type !== questionTypes.BOUQUET)
+      .flatMap(([, groups]) => groups)
+  ];
 
   const allowedBouquetQuestions = Math.min(
     bouquetPerRoundLimit,

@@ -11,7 +11,6 @@
     "plantImages",
     "plantParameters",
     "plantFamilies",
-    "bouquetQuestions",
     "difficulties"
   ],
   "properties": {
@@ -43,13 +42,6 @@
       },
       "additionalProperties": {
         "$ref": "#/definitions/PlantIdArray"
-      }
-    },
-    "bouquetQuestions": {
-      "description": "Bouquet-specific quiz questions.",
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/BouquetQuestion"
       }
     },
     "difficulties": {
@@ -412,74 +404,6 @@
         },
         "wrongAnswers": {
           "$ref": "#/definitions/PlantIdArray"
-        }
-      }
-    },
-    "BouquetQuestion": {
-      "type": "object",
-      "required": [
-        "id",
-        "correctAnswerId",
-        "imageId",
-        "image",
-        "names",
-        "wrongAnswers",
-        "difficulty",
-        "questionVariantId",
-        "questionType",
-        "selectionGroupId",
-        "questionPromptKey"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "id": {
-          "$ref": "#/definitions/PlantId"
-        },
-        "correctAnswerId": {
-          "$ref": "#/definitions/PlantId"
-        },
-        "imageId": {
-          "$ref": "#/definitions/ImageId"
-        },
-        "image": {
-          "type": "string",
-          "pattern": "^images/"
-        },
-        "names": {
-          "$ref": "#/definitions/LocalizedName"
-        },
-        "wrongAnswers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PlantId"
-          },
-          "maxItems": 3,
-          "uniqueItems": true
-        },
-        "difficulty": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "minLength": 1
-        },
-        "questionVariantId": {
-          "type": "string",
-          "minLength": 1
-        },
-        "questionType": {
-          "type": "string",
-          "enum": [
-            "bouquet"
-          ]
-        },
-        "selectionGroupId": {
-          "type": "string",
-          "pattern": "^bouquet-"
-        },
-        "questionPromptKey": {
-          "type": "string",
-          "minLength": 1
         }
       }
     },
