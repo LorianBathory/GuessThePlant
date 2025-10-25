@@ -181,10 +181,14 @@ def update_content_xml(content_text: str, rows: List[List[str]]) -> bytes:
 def write_ods(ods_path: Path, new_content: bytes) -> None:
     with zipfile.ZipFile(ods_path) as archive:
         members = {name: archive.read(name) for name in archive.namelist() if name != "content.xml"}
-    temp_fd, temp_path = tempfile.mkstemp(suffix=".ods", prefix="links_sync_")
+    temp_dir = ods_path.parent
+    temp_fd, temp_path = tempfile.mkstemp(
+        suffix=".ods", prefix="links_sync_", dir=str(temp_dir)
+    )
     os.close(temp_fd)
+    temp_path_obj = Path(temp_path)
     try:
-        with zipfile.ZipFile(temp_path, "w") as archive:
+        with zipfile.ZipFile(temp_path_obj, "w") as archive:
             mimetype_data = members.get("mimetype")
             if mimetype_data is not None:
                 archive.writestr("mimetype", mimetype_data, compress_type=zipfile.ZIP_STORED)
@@ -193,10 +197,11 @@ def write_ods(ods_path: Path, new_content: bytes) -> None:
                     continue
                 archive.writestr(name, data, compress_type=zipfile.ZIP_DEFLATED)
             archive.writestr("content.xml", new_content, compress_type=zipfile.ZIP_DEFLATED)
-        Path(temp_path).replace(ods_path)
+        temp_path_obj.replace(ods_path)
+        temp_path_obj = None
     finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
+        if temp_path_obj is not None and temp_path_obj.exists():
+            temp_path_obj.unlink()
 
 
 def run_link_scripts(links_dir: Path, ods_path: Path) -> None:
