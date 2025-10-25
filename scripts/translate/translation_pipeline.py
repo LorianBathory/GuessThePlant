@@ -3,8 +3,10 @@
 """Unified pipeline for plant name enrichment.
 
 This helper runs the existing translation/enrichment scripts sequentially so that
-`plants.csv` (or a compatible dataset) receives the same updates as when each
-script is invoked manually.
+`PlantData.csv` (or a compatible dataset) receives the same updates as when each
+script is invoked manually. It also understands `.ods` spreadsheets: they are
+converted to a temporary CSV for processing and then updated in-place once all
+stages succeed (a `.ods.bak` backup is created automatically).
 
 Stages (in order):
 1. `map_plants_ru.py`  – fill Russian names via iNaturalist.
@@ -20,12 +22,24 @@ parameters to the underlying scripts.
 from __future__ import annotations
 
 import argparse
+import csv
+import shutil
 import subprocess
 import sys
+import tempfile
+import zipfile
 from pathlib import Path
-from typing import List
+from typing import Iterable, List, Sequence
+from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = ROOT.parent.parent
+DEFAULT_PLANTS_PATH = PROJECT_ROOT / "PlantData.csv"
+ODS_NS = {
+    "office": "urn:oasis:names:tc:opendocument:xmlns:office:1.0",
+    "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
+    "text": "urn:oasis:names:tc:opendocument:xmlns:text:1.0",
+}
 
 
 class StageError(RuntimeError):
@@ -41,6 +55,130 @@ def build_python_cmd(script: Path, *extra: str) -> List[str]:
     return [sys.executable, str(script), *extra]
 
 
+def load_ods_rows(ods_path: Path) -> List[List[str]]:
+    """Extract rows from the first sheet of an ODS workbook."""
+
+    with zipfile.ZipFile(ods_path, "r") as zf:
+        try:
+            content = zf.read("content.xml")
+        except KeyError as exc:  # pragma: no cover - defensive branch
+            raise StageError(f"{ods_path} is missing content.xml") from exc
+
+    root = ET.fromstring(content)
+    table = root.find(".//table:table", ODS_NS)
+    if table is None:  # pragma: no cover - unexpected structure
+        raise StageError(f"{ods_path} does not contain a spreadsheet table")
+
+    rows: List[List[str]] = []
+    def iter_table_rows() -> Iterable[ET.Element]:
+        for header in table.findall("table:table-header-rows", ODS_NS):
+            for row in header.findall("table:table-row", ODS_NS):
+                yield row
+        for row in table.findall("table:table-row", ODS_NS):
+            yield row
+
+    for row in iter_table_rows():
+        repeat = int(row.attrib.get(f"{{{ODS_NS['table']}}}number-rows-repeated", "1"))
+        values: List[str] = []
+
+        for cell in row:
+            if cell.tag == f"{{{ODS_NS['table']}}}table-cell":
+                text_parts = [
+                    "".join(p.itertext())
+                    for p in cell.findall("text:p", ODS_NS)
+                ]
+                value = "\n".join(part for part in text_parts if part)
+                repeat_cols = int(
+                    cell.attrib.get(
+                        f"{{{ODS_NS['table']}}}number-columns-repeated", "1"
+                    )
+                )
+                values.extend([value] * repeat_cols)
+            elif cell.tag == f"{{{ODS_NS['table']}}}covered-table-cell":
+                repeat_cols = int(
+                    cell.attrib.get(
+                        f"{{{ODS_NS['table']}}}number-columns-repeated", "1"
+                    )
+                )
+                values.extend([""] * repeat_cols)
+
+        if not values:
+            values = [""]
+
+        for _ in range(repeat):
+            rows.append(values.copy())
+
+    return rows
+
+
+def write_csv(path: Path, rows: Sequence[Sequence[str]]) -> None:
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.writer(fh)
+        for row in rows:
+            writer.writerow(list(row))
+
+
+def read_csv(path: Path) -> List[List[str]]:
+    with path.open("r", encoding="utf-8", newline="") as fh:
+        reader = csv.reader(fh)
+        return [list(row) for row in reader]
+
+
+def replace_ods_content(ods_path: Path, rows: Sequence[Sequence[str]]) -> None:
+    """Update the first sheet of an ODS file with the provided rows."""
+
+    with zipfile.ZipFile(ods_path, "r") as zin:
+        infos = zin.infolist()
+        payload = {info.filename: zin.read(info.filename) for info in infos}
+
+    content_xml = payload.get("content.xml")
+    if content_xml is None:  # pragma: no cover - defensive branch
+        raise StageError(f"{ods_path} is missing content.xml")
+
+    root = ET.fromstring(content_xml)
+    table = root.find(".//table:table", ODS_NS)
+    if table is None:  # pragma: no cover - defensive branch
+        raise StageError(f"{ods_path} does not contain a spreadsheet table")
+
+    # Remove existing table rows
+    for header in list(table.findall("table:table-header-rows", ODS_NS)):
+        table.remove(header)
+    for row_el in list(table.findall("table:table-row", ODS_NS)):
+        table.remove(row_el)
+
+    max_cols = max((len(r) for r in rows), default=0)
+
+    for row in rows:
+        row_el = ET.Element(f"{{{ODS_NS['table']}}}table-row")
+        padded = list(row) + [""] * (max_cols - len(row))
+        for value in padded:
+            cell_el = ET.Element(
+                f"{{{ODS_NS['table']}}}table-cell",
+                {f"{{{ODS_NS['office']}}}value-type": "string"},
+            )
+            text_el = ET.SubElement(cell_el, f"{{{ODS_NS['text']}}}p")
+            if value:
+                text_el.text = value
+            row_el.append(cell_el)
+        table.append(row_el)
+
+    new_content = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+
+    with zipfile.ZipFile(ods_path, "w") as zout:
+        for info in infos:
+            data = new_content if info.filename == "content.xml" else payload[info.filename]
+            new_info = zipfile.ZipInfo(info.filename)
+            new_info.date_time = info.date_time
+            new_info.compress_type = info.compress_type
+            new_info.create_system = info.create_system
+            new_info.flag_bits = info.flag_bits
+            new_info.external_attr = info.external_attr
+            new_info.internal_attr = info.internal_attr
+            new_info.comment = info.comment
+            new_info.extra = info.extra
+            zout.writestr(new_info, data)
+
+
 def run_stage(name: str, cmd: List[str]) -> None:
     print(f"\n=== {name} ===")
     print(" ".join(cmd))
@@ -51,17 +189,23 @@ def run_stage(name: str, cmd: List[str]) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run the translation/enrichment pipeline on plants.csv"
+        description="Run the translation/enrichment pipeline on PlantData.csv",
     )
     parser.add_argument(
         "plants_csv",
+        nargs="?",
         type=Path,
-        help="Path to plants.csv (will be modified in place unless scripts use --output)",
+        default=DEFAULT_PLANTS_PATH,
+        help=(
+            "Path to the main plants table. Defaults to PlantData.csv at the project "
+            "root and will be modified in place unless scripts use --output"
+        ),
     )
     parser.add_argument(
         "--dutch-csv",
         type=Path,
-        help="Path to dutch_names.csv (required unless --skip-dutch-csv)",
+        default=ROOT / "dutch_names.csv",
+        help="Path to dutch_names.csv (defaults to bundled dutch_names.csv)",
     )
     parser.add_argument(
         "--nakt-xlsx",
@@ -141,7 +285,27 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    ensure_exists(args.plants_csv, "plants.csv")
+    ensure_exists(args.plants_csv, "plants file")
+
+    plants_csv = args.plants_csv
+    temp_dir: tempfile.TemporaryDirectory[str] | None = None
+    backup_path: Path | None = None
+
+    if plants_csv.suffix.lower() == ".ods":
+        print(
+            f"Detected ODS spreadsheet: {plants_csv}. Converting to a temporary CSV for processing..."
+        )
+        temp_dir = tempfile.TemporaryDirectory()
+        temp_csv = Path(temp_dir.name) / "plants.csv"
+        rows = load_ods_rows(plants_csv)
+        write_csv(temp_csv, rows)
+        plants_csv = temp_csv
+        backup_path = args.plants_csv.with_suffix(args.plants_csv.suffix + ".bak")
+        if backup_path.exists():
+            raise StageError(
+                f"Backup file already exists: {backup_path}. "
+                "Please remove or rename it before running the pipeline."
+            )
 
     try:
         if not args.skip_inat:
@@ -151,7 +315,7 @@ def main() -> None:
                 "iNaturalist (Russian names)",
                 build_python_cmd(
                     script,
-                    str(args.plants_csv),
+                    str(plants_csv),
                     "--delay",
                     str(max(args.inat_delay, 0.0)),
                 ),
@@ -162,7 +326,7 @@ def main() -> None:
             ensure_exists(script, "plantarium_fill_ru.py")
             cmd = build_python_cmd(
                 script,
-                str(args.plants_csv),
+                str(plants_csv),
                 "--passes",
                 str(max(1, args.plantarium_passes)),
                 "--sleep",
@@ -177,7 +341,7 @@ def main() -> None:
             ensure_exists(script, "wikidata_fill_en.py")
             cmd = build_python_cmd(
                 script,
-                str(args.plants_csv),
+                str(plants_csv),
                 "--batch",
                 str(max(1, args.wikidata_batch)),
                 "--passes",
@@ -190,16 +354,19 @@ def main() -> None:
             run_stage("Wikidata (English names)", cmd)
 
         if not args.skip_dutch_csv:
-            if not args.dutch_csv:
-                raise StageError("--dutch-csv is required unless --skip-dutch-csv is set")
             ensure_exists(args.dutch_csv, "dutch_names.csv")
+            if args.dutch_csv.suffix.lower() == ".ods":
+                raise StageError(
+                    f"{args.dutch_csv} looks like an ODS spreadsheet. "
+                    "Export it to CSV (e.g. dutch_names.csv) or pass --skip-dutch-csv."
+                )
             script = ROOT / "nl_names.py"
             ensure_exists(script, "nl_names.py")
             run_stage(
                 "Dutch CSV names",
                 build_python_cmd(
                     script,
-                    str(args.plants_csv),
+                    str(plants_csv),
                     str(args.dutch_csv),
                 ),
             )
@@ -212,7 +379,7 @@ def main() -> None:
                 "Naktuinbouw Excel names",
                 build_python_cmd(
                     script,
-                    str(args.plants_csv),
+                    str(plants_csv),
                     str(args.nakt_xlsx),
                 ),
             )
@@ -220,6 +387,19 @@ def main() -> None:
     except (StageError, FileNotFoundError) as exc:
         print(f"\nPipeline aborted: {exc}", file=sys.stderr)
         sys.exit(1)
+
+    else:
+        if args.plants_csv.suffix.lower() == ".ods":
+            assert backup_path is not None
+            shutil.copy2(args.plants_csv, backup_path)
+            updated_rows = read_csv(plants_csv)
+            replace_ods_content(args.plants_csv, updated_rows)
+            print(
+                f"\nUpdated {args.plants_csv} using pipeline results (backup saved to {backup_path})."
+            )
+    finally:
+        if temp_dir is not None:
+            temp_dir.cleanup()
 
     print("\nPipeline completed successfully.")
 
