@@ -61,7 +61,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--dutch-csv",
         type=Path,
-        help="Path to dutch_names.csv (required unless --skip-dutch-csv)",
+        default=ROOT / "dutch_names.csv",
+        help="Path to dutch_names.csv (defaults to bundled dutch_names.csv)",
     )
     parser.add_argument(
         "--nakt-xlsx",
@@ -190,9 +191,12 @@ def main() -> None:
             run_stage("Wikidata (English names)", cmd)
 
         if not args.skip_dutch_csv:
-            if not args.dutch_csv:
-                raise StageError("--dutch-csv is required unless --skip-dutch-csv is set")
             ensure_exists(args.dutch_csv, "dutch_names.csv")
+            if args.dutch_csv.suffix.lower() == ".ods":
+                raise StageError(
+                    f"{args.dutch_csv} looks like an ODS spreadsheet. "
+                    "Export it to CSV (e.g. dutch_names.csv) or pass --skip-dutch-csv."
+                )
             script = ROOT / "nl_names.py"
             ensure_exists(script, "nl_names.py")
             run_stage(
