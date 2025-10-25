@@ -243,6 +243,12 @@ def main(argv: Sequence[str] | None = None) -> None:
     new_content = update_content_xml(original_content_text, updated_rows)
     write_ods(args.links_ods, new_content)
     print(f"links.ods updated with {len(new_entries)} new entries.")
+    if new_entries:
+        formatted_new = []
+        for csv_row_index, plant_name in new_entries:
+            label = plant_name if plant_name else "<empty>"
+            formatted_new.append(f"{csv_row_index}: {label}")
+        print("Added entries (CSV row: name): " + "; ".join(formatted_new))
     if removed_names:
         print(
             "Removed entries not present in PlantData.csv: "
