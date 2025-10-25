@@ -3,7 +3,7 @@
 """Unified pipeline for plant name enrichment.
 
 This helper runs the existing translation/enrichment scripts sequentially so that
-`plants.csv` (or a compatible dataset) receives the same updates as when each
+`PlantData.csv` (or a compatible dataset) receives the same updates as when each
 script is invoked manually. It also understands `.ods` spreadsheets: they are
 converted to a temporary CSV for processing and then updated in-place once all
 stages succeed (a `.ods.bak` backup is created automatically).
@@ -33,6 +33,8 @@ from typing import Iterable, List, Sequence
 from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = ROOT.parent.parent
+DEFAULT_PLANTS_PATH = PROJECT_ROOT / "PlantData.csv"
 ODS_NS = {
     "office": "urn:oasis:names:tc:opendocument:xmlns:office:1.0",
     "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
@@ -187,12 +189,17 @@ def run_stage(name: str, cmd: List[str]) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run the translation/enrichment pipeline on plants.csv"
+        description="Run the translation/enrichment pipeline on PlantData.csv",
     )
     parser.add_argument(
         "plants_csv",
+        nargs="?",
         type=Path,
-        help="Path to plants.csv (will be modified in place unless scripts use --output)",
+        default=DEFAULT_PLANTS_PATH,
+        help=(
+            "Path to the main plants table. Defaults to PlantData.csv at the project "
+            "root and will be modified in place unless scripts use --output"
+        ),
     )
     parser.add_argument(
         "--dutch-csv",
