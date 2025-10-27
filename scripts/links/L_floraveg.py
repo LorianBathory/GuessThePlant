@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import argparse
 import time
-import re
 from urllib.parse import quote
 
 import ezodf
@@ -29,6 +28,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException, TimeoutException
+
+from name_utils import latin_binomial_key
 
 FLO_BASE = "https://floraveg.eu"
 FLO_LIST_TPL = FLO_BASE + "/taxon/list?q={query}"
@@ -49,16 +50,32 @@ FLO_WAIT_SEC = 5.0
 CSE_WAIT_SEC = 12.0
 
 
-def latin_binomial_key(text: str) -> str:
-    """Return 'genus species' key from a text in lower-case (used only for floraveg)."""
-    if not text:
-        return ""
-    text = re.sub(r"\([^)]*\)", " ", text)
-    text = text.replace("×", "x").replace("✕", "x")
-    tokens = re.findall(r"[A-Za-z]+", text.lower())
-    skip = {"subsp", "ssp", "var", "f", "forma", "subvar", "cv", "cultivar", "x"}
-    core = [t for t in tokens if t not in skip]
-    return " ".join(core[:2]) if len(core) >= 2 else ""
+def floraveg_candidate_queries(plant_name: str, binomial_key: str | None = None) -> list[str]:
+    """Return list of candidate queries/slug segments to try for floraveg."""
+    candidates: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: str | None):
+        value = (value or "").strip()
+        if value and value not in seen:
+            seen.add(value)
+            candidates.append(value)
+
+    add(plant_name)
+
+    hybrid_ascii = (plant_name or "").replace("×", "x").replace("✕", "x")
+    if hybrid_ascii != plant_name:
+        add(hybrid_ascii)
+
+    key = binomial_key if binomial_key is not None else latin_binomial_key(plant_name)
+    if key:
+        parts = key.split()
+        if len(parts) >= 2:
+            genus, species = parts[0], parts[1]
+            add(f"{genus.capitalize()} {species}")
+        add(key)
+
+    return candidates
 
 
 def floraveg_candidate_queries(plant_name: str, binomial_key: str | None = None) -> list[str]:
