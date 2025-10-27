@@ -84,7 +84,8 @@ AlliumAngulosum_DominikRh_Pixabay.JPG","3, 11",Easy,,Amaryllidaceae
 61,Шеффлера,Schefflera,Vingersboom,Schefflera,2,,"Schefflera_sarangib_Pixabay.JPG, Shefflera_zoosnow_pixabay.JPG",,,,
 62,Яблоня,Apple,"Appel, Appelboom",Malus,3,,"Apple_Grigoriy.JPG, Apple_KirilGruev.JPG, Apple_Mary_StockSnap.JPG",2,Medium,,Rosaceae
 63,Кукуруза,Corn,Maïs,Zea mays,1,,"Corn_EduRaW.JPG, Zea_WhiskerFlowers_Pixabay.JPG",,Easy,,Poaceae
-64,Вербена,Verbena,Ijzerhard,Verbena,3,,"VerbenaStricta_Tomfisk.JPG, VerbenaBonariensis_Pexels_Ganajp.JPG, VerbenaBonariensis_VolkerKaes_Pexels.JPG",,Medium,,Verbenaceae
+64_0,Вербена,Verbena,Ijzerhard,Verbena,3,,"VerbenaStricta_Tomfisk.JPG, VerbenaBonariensis_Pexels_Ganajp.JPG, VerbenaBonariensis_VolkerKaes_Pexels.JPG",,Medium,,Verbenaceae
+64_1,Вербена буэнос-айресская,purpletop vervain,Stijf ijzerhard,Verbena bonariensis ,,,,,,,Verbenaceae
 65,Незабудка,Forget-me-not,Vergeet-mij-nietje,Myosotis,1,,Myosotis_RitaE_Pixabay.JPG,,,,Boraginaceae
 66_0,Мята,Mint,Munt,Mentha,1,,Mint_iqbalFarooz.JPG,,Easy,,Lamiaceae
 66_1,Мята душистая,Apple Mint ,Witte munt,Mentha suaveolens,,,,,,,Lamiaceae
@@ -152,7 +153,8 @@ AlliumAngulosum_DominikRh_Pixabay.JPG","3, 11",Easy,,Amaryllidaceae
 112,Дельфиниум,Delphinium,Ridderspoor,Delphinium,3,,"Delphinium_AravindReddyTarugu.JPG, Delphinium_NurcanAytas.JPG, Delphinium_RebeccaNiver.JPG",131,Medium,p112_2:Hard,Ranunculaceae
 113,Брунера,Brunnera / Siberian bugloss,Kaukasisch vergeet-mij-nietje,Brunnera,1,,Brunnera_HazelSarmiento.JPG,,Medium,,Boraginaceae
 114,Береза,Birch,Berk,Betula,1,,Betula_KirilGruev.JPG,,Easy,,Betulaceae
-115,Рудбекия,Rudbeckia / Black-eyed Susan,Zonnehoed,Rudbeckia,3,,"Rudbeckia_CorwinMelvin.JPG, Rudbekia_JamesLee.JPG, Rudbekia_MaxO.JPG",,,,Asteraceae
+115_0,Рудбекия,Rudbeckia / Black-eyed Susan,Zonnehoed,Rudbeckia,3,,"Rudbeckia_CorwinMelvin.JPG, Rudbekia_JamesLee.JPG, Rudbekia_MaxO.JPG",,,,Asteraceae
+115_1,Рудбекия блестящая,orange coneflower,,Rudbeckia fulgida,,,,,,,Asteraceae
 116,Василёк,Knapweeds,Knoopkruid,Centaurea,1,,CentaureaKnapweeds_Hard_SiegfriedPoepperl.JPG,,Easy,,Asteraceae
 116_1,Василёк синий,Cornflower,Korenbloem,Centaurea cyanus,1,,Cornflower_ElizabethOlson.JPG,,,,Asteraceae
 117,Астранция,Masterwort,Sterrenscherm,Astrantia,,,AstrantiaMajor_TravelPhotographer2_StockSnap_KINMIFZQVX.JPG,,,,Apiaceae
@@ -160,6 +162,7 @@ AlliumAngulosum_DominikRh_Pixabay.JPG","3, 11",Easy,,Amaryllidaceae
 118_1,Герань великолепная,Purple cranesbill ,Ooievaarsbek ,Geranium magnificum ,,,GeraniumMagnificum_Kapa65_Pixabay.JPG,,,,
 118_2,Герань тёмно-бурая,Mourning widow ,Donkere ooievaarsbek,Geranium phaeum ,,,,,,,Geraniaceae
 118_3,Герань кембриджская,Geranium cantabrigiense ,Geranium cantabrigiense ,Geranium × cantabrigiense ,,,,,,,
+118_4,Герань крупнокорневищная,cranesbill | hardy geranium,Rotsooievaarsbek,Geranium macrorrhizum,,,,,,,Geraniaceae
 119,Маргаритка,English daisy,Tuinmadeliefje,Bellis perennis,3,,"Bellis_Pixabay.JPG, Bellis_QL.JPG, Bellis_BobRichards_StockSnap.JPG",,Easy,,Asteraceae
 120,Дицентра,Bleeding heart,Gebroken hartje,Lamprocapnos spectabilis (old: Dicentra),2,,"Dicentra_ChrisF.JPG, Dicentra_Nature'sBeauty_StockSnap_JNWPZHC0TY.JPG",,Medium,,Papaveraceae
 121,Гайлардия,Gaillardia / Blanket flower,Kokardebloem,Gaillardia,2,,"Gaillardia_elineSun.JPG, GaillardiaPulchella_Raybilcliff_Pexel.JPG",,Medium,,Asteraceae
@@ -190,7 +193,8 @@ Crocus_E1St0rm_Pixabay.JPG",,Easy,,Iridaceae
 141,Софора японская,Japanese pagoda tree,Honingboom,Sophora japonica,0,,,,,,Fabaceae
 142,Гиацинт,Hyacinth,Hyacint,Hyacinthus,7,,"Hyacinth_Medium_AsimAlnamat.JPG, Hyacinth_NataliyaVaitkevich.JPG, Hyacinth_RomanBiernacki.JPG, Hyacinth_fox.JPG, Hyacinthus_NataliaSevruk.JPG, Hyacinthus_KellyIshmael_StockSnap.JPG, Hyacinthus_Pezibear_Pixabay.JPG",14,Easy,p142_1:Medium,Asparagaceae
 143,Каштан посевной,Sweet chestnut ,Tamme kastanje,Castanea sativa,,,CastaneaSativa_E1St0rm_Pixabay.JPG,,,,Fagaceae
-144,Астильба,Astilbe,Astilbe,Astilbe,0,,Astilbe_Akuptsova_Pixabay.JPG,,,,Saxifragaceae
+144_0,Астильба,Astilbe,Astilbe,Astilbe,0,,Astilbe_Akuptsova_Pixabay.JPG,,,,Saxifragaceae
+144_1,Астильба Арендса,,,Astilbe arendsii  ,,,,,,,
 145,Агростемма,Corncockle,Bolderik,Agrostemma,0,,,,,,Caryophyllaceae
 146_0,Клевер,Clover,Klaver ,Trifolium ,,,,,,,Fabaceae
 146_1,Клевер луговой,Red Clover,Rode klaver,Trifolium pratense,2,,"Clover_YanaKuyan.JPG, TrifoliumPratense.JPG",,Easy,,Fabaceae
@@ -262,7 +266,8 @@ CatharanthusRoseus_AvneetSingh_Pexels.JPG","23, 139",Hard,,Apocynaceae
 202,Прострел,Pasque flower,Wildemanskruid,Pulsatilla,1,,"PulsatillaGrandis_Susannp4_Pixabay.JPG, Pulsatilla-Nennieinszweidrei_Pixabay.jpg",,Medium,,Ranunculaceae
 203,Катальпа,Catalpa,Trompetboom,Catalpa,1,,Catalpa_Trumpet_Pixabay.JPG,,Medium,,Bignoniaceae
 204,Маниок,Cassava,Cassave,Cassava,1,,Cassava_DuyLeDuc_Pexels.JPG,,Medium,,
-205,Очиток,Stonecrop (Sedum),Vetkruid (Sedum),Sedum,1,,SedumRupestre_AleksandraKhoroshykh_Unsplash.JPG,,Medium,,Crassulaceae
+205_0,Очиток,Stonecrop (Sedum),Vetkruid (Sedum),Sedum,1,,SedumRupestre_AleksandraKhoroshykh_Unsplash.JPG,,Medium,,Crassulaceae
+205_1,Очитник видный,Sedum spectabile,Roze hemelsleutel,Sedum spectabile ,,,,,,,
 206,Спатифиллум,Peace lily,Lepelplant,Spathiphyllum,1,,Spathiphyllum_AliefBaldwin_Pexels.JPG,,Easy,,
 207,Алиссум (бурачок),Alyssum,Schildzaad,Alyssum,1,,Alyssum_Diana_Pexels.JPG,,Easy,,Brassicaceae
 208,Гелиантемум (солнечник),Sunrose (rock rose),Zonneroosje,Helianthemum,1,,HelianthemumNummularium_Nennieinszweidrei_Pixabay.JPG,,Medium,,Cistaceae
@@ -302,7 +307,9 @@ CatharanthusRoseus_AvneetSingh_Pexels.JPG","23, 139",Hard,,Apocynaceae
 240,Вьюнок,Bindweed,Winde,Convolvulus,,,Convolvulus_BARBARA808_Pixabay.JPG,,,,Convolvulaceae
 241,Кизильник горизонтальный,Rockspray cotoneaster ,Vlakke dwergmispel,Cotoneaster horizontalis,,,CotoneasterHorizontalis.JPG,,,,Rosaceae
 242,Краспедия,Craspedia ,Gele ballen,Craspedia,,,Craspedia_Rollstein_Pixabay.JPG,,,,
-243,Эхинопсис острогранный,Easter-lily cactus ,Paasleliecactus ,Echinopsis oxygona,,,EchinopsisOxygona_BARBARA808_Pixabay.JPG,,,,
+243_0,Мордовник,globethistle | Lesser Hedgehog Tenrec,Kogeldistel (G),Echinops,,,,,,,Asteraceae
+243_1,Эхинопсис острогранный,Easter-lily cactus ,Paasleliecactus ,Echinopsis oxygona,,,EchinopsisOxygona_BARBARA808_Pixabay.JPG,,,,
+243_2,Мордовник обыкновенный,Southern Globe Thistle,Zuid-Europese kogeldistel,Echinops ritro  ,,,,,,,Asteraceae
 244,Кермек (лимониум) древесный,Limonium Arboreum,Limonium Arboreum,Limonium arboreum,,,LimoniumArboreum_WhiskerFlowers_Pixabay.JPG,,,,
 245,Лобелия пурпурная,Cardinal flower ,Kardinaalslobelia / Scharlaken lobelia,Lobelia cardinalis,,,LobeliaCardinalis_BobRichards_StockSnap.JPG,,,,
 246,Сцевола приятная,Fan flower ,Elfenwaaier / Waaierbloem,Scaevola aemula,,,ScaevolaAemula-WhiskerFlowers_Pixabay.JPG,,,,
@@ -313,13 +320,14 @@ CatharanthusRoseus_AvneetSingh_Pexels.JPG","23, 139",Hard,,Apocynaceae
 403,Борщевик,Hogweed,Berenklauw,Heracleum,0,,,,,,Apiaceae
 404,Дудник лесной,Wild Parsley,Gewone engelwortel,Angelica sylvestris,0,,,,,,Apiaceae
 405,Амариллис,Amaryllis,Amaryllis,Amaryllis,0,,,,,,
-406,Фотиния,Photinia (Red Robin),Glansmispel,Photinia ,,,,,,,Rosaceae
+406_0,Фотиния,Photinia (Red Robin),Glansmispel,Photinia ,,,,,,,Rosaceae
+406_1,Фотиния Фразера,Red Tip Photinia ,Glansmispel ,Photinia fraseri,,,,,,,
 407,Лимнантес Дугласа,Poached egg plant ,Moerasbloem ,Limnanthes douglasii,,,,,,,Limnanthaceae
 408,Посконник коноплёвый,Hemp-agrimony,Koninginnekruid,Eupatorium cannabinum,,,,,,,Asteraceae
 409,Бурачник лекарственный,Common borage,"Bernagie / 
 Komkommerkruid",Borago officinalis,,,,,,,Boraginaceae
 410,Настурция,Garden Nasturtium ,Oost-Indische kers,Tropaeolum majus,,,,,,,Tropaeolaceae
-411,411,411,411,,,,,,,,
+411,Осока Морроу,Carex morrowii,Japanse zegge,Carex morrowii,,,,,,,
 412,Гелиотроп древовидный,Garden heliotrope,Heliotroop / Vanilleplant ,Heliotropium arborescens ,,,,,,,
 413,Нигелла / Чернушка дамасская,Devil-in-the-bush / Love-in-a-Mist ,Juffertje-in-het-groen,Nigella damascena,,,,,,,Ranunculaceae
 414,Льнянка,Toadflax,Vlasleeuwenbek ,Linaria,,,,,,,Plantaginaceae
@@ -339,5 +347,24 @@ Komkommerkruid",Borago officinalis,,,,,,,Boraginaceae
 423_2,Тимьян ползучий,Breckland thyme ,Kleine tijm,Thymus serpyllum,,,,,,,Lamiaceae
 424,Иссоп лекарственный,Hyssop,Hyssop,Hyssopus officinalis,,,,,,,Lamiaceae
 425,Душица / Орегано,Oregano,Wilde marjolein,Origanum vulgare ,,,,,,,Lamiaceae
-426,Форзиция средняя,,,Forsythia x intermedia ,,,,,,,
-427,Листоколосник чёрный,,,Phyllostachys Nigra ,,,,,,,
+426,Форзиция средняя,Border forsythia ,Chinees klokje,Forsythia x intermedia ,,,,,,,Oleaceae
+427,Черный листоколосник (бамбук),Black bamboo,Zwarte lakbamboe,Phyllostachys Nigra ,,,,,,,
+428,Фаргезия рыжая,Fargesia rufa,Bamboe (Fargesia rufa),Fargesia rufa,,,,,,,
+429,Гаура Линдхеймера,White gaura ,Prachtkaars ,Gaura (Oenothera) lindheimeri ,,,,,,,
+430,Мыльнянка базиликолистная,Rock soapwort,Muurzeepkruid,Saponaria ocymoides ,,,,,,,Caryophyllaceae
+431,Пион молочноцветковый,Chinese peony,Chinese pioen ,Paeonia lactiflora,,,,,,,
+432,Пампасная трава,Uruguayan pampas grass,Pampagras,Cortaderia selloana ,,,,,,,Poaceae
+433,Дынная груша,Pepino,Meloenpeer,Solanum muricatum  ,,,,,,,
+434,Населла тончайшая,Stipa tenuissima,Fijn vedergras,Stipa tenuissima  ,,,,,,,
+434_0,Овсяница,Fescue,Zwenkgras ,Festuca,,,,,,,Poaceae
+434_1,Овсяница Готье,Festuca gautieri,Berenvel,Festuca gautieri ,,,,,,,
+434_2,Овсяница - род,Festuca glauca,Blauw schapengras,Festuca glauca ,,,,,,,Poaceae
+435_0,Ирис,Iris,Lis / Iris,Iris,,,,,,,Iridaceae
+435_1,Ирис германский,Bearded iris,Blauwe lis,Iris germanica  ,,,,,,,Iridaceae
+436,Манжетка мягкая,Lady's Mantle,Fraaie vrouwenmantel,Alchemilla mollis ,,,,,,,Rosaceae
+437,Перистощетинник лисохвостный,Chinese fountain grass,Breed lampenpoetsersgras,Pennisetum alopecuroides ,,,,,,,
+438,Змеевик родственный,Persicaria affinis,Kruipduizendknoop,Persicaria affinis ,,,,,,,Polygonaceae
+439,Армерия приморская,Sea thrift,Engels gras,Armeria maritima,,,,,,,Poaceae
+440,Многоколосник,Giant hyssop,Dropplant  ,Agastache  ,,,,,,,Plumbaginaceae
+,,,,,,,,,,,Lamiaceae
+,,,,,,,,,,,Cyperaceae
