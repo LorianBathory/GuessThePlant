@@ -78,6 +78,34 @@ def floraveg_candidate_queries(plant_name: str, binomial_key: str | None = None)
     return candidates
 
 
+def floraveg_candidate_queries(plant_name: str, binomial_key: str | None = None) -> list[str]:
+    """Return list of candidate queries/slug segments to try for floraveg."""
+    candidates: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: str | None):
+        value = (value or "").strip()
+        if value and value not in seen:
+            seen.add(value)
+            candidates.append(value)
+
+    add(plant_name)
+
+    hybrid_ascii = (plant_name or "").replace("×", "x").replace("✕", "x")
+    if hybrid_ascii != plant_name:
+        add(hybrid_ascii)
+
+    key = binomial_key if binomial_key is not None else latin_binomial_key(plant_name)
+    if key:
+        parts = key.split()
+        if len(parts) >= 2:
+            genus, species = parts[0], parts[1]
+            add(f"{genus.capitalize()} {species}")
+        add(key)
+
+    return candidates
+
+
 def create_driver(browser="chrome", headless=True):
     """Create Selenium WebDriver (chrome|firefox)."""
     if browser.lower() == "chrome":
