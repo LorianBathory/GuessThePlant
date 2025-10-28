@@ -1,4 +1,5 @@
 import {
+  dataBundle,
   getDifficultyByQuestionId,
   getDifficultyByImageId,
   plantImagesById,
@@ -6,13 +7,58 @@ import {
 } from '../../game/dataLoader.js';
 import { questionTypes } from '../questionTypes.js';
 
-const memorizationPlantConfig = Object.freeze([
-  Object.freeze({ id: 3, imageId: 'p3_1' }),
-  Object.freeze({ id: 4, imageId: 'p4_1' }),
-  Object.freeze({ id: 5, imageId: 'p5_1' }),
-  Object.freeze({ id: 6, imageId: 'p6_1' }),
-  Object.freeze({ id: 14, imageId: 'p14_1' })
-]);
+const NUMERIC_ID_PATTERN = /^\d+$/;
+
+function normalizePlantId(rawId) {
+  if (rawId == null) {
+    return null;
+  }
+
+  if (typeof rawId === 'number') {
+    return rawId;
+  }
+
+  if (typeof rawId === 'string' && NUMERIC_ID_PATTERN.test(rawId)) {
+    return Number(rawId);
+  }
+
+  return rawId;
+}
+
+function normalizeImageId(rawImageId) {
+  if (rawImageId == null) {
+    return null;
+  }
+
+  if (typeof rawImageId === 'string') {
+    return rawImageId;
+  }
+
+  return String(rawImageId);
+}
+
+const rawMemorizationEntries = dataBundle.memorization && Array.isArray(dataBundle.memorization.plants)
+  ? dataBundle.memorization.plants
+  : [];
+
+const memorizationPlantConfig = Object.freeze(
+  rawMemorizationEntries
+    .map(entry => {
+      if (!entry || typeof entry !== 'object') {
+        return null;
+      }
+
+      const id = normalizePlantId(entry.id ?? entry.plantId ?? entry.correctAnswerId);
+      const imageId = normalizeImageId(entry.imageId);
+
+      if (id == null || !imageId) {
+        return null;
+      }
+
+      return Object.freeze({ id, imageId });
+    })
+    .filter(Boolean)
+);
 
 export const memorizationPlants = Object.freeze(
   memorizationPlantConfig
