@@ -265,7 +265,7 @@ export default function ProgressApp() {
         title: 'Вопросы про букеты',
         value: String(bouquetCount),
         details: bouquetCount > 0
-          ? 'Готовые сценарии подборов букетов.'
+          ? null
           : 'Еще предстоит добавить вопросы.'
       },
       {

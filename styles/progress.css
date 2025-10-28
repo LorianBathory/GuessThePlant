@@ -3,7 +3,7 @@ body.progress-body {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  background: radial-gradient(circle at top right, rgba(26, 95, 91, 0.8), rgba(2, 44, 34, 0.95) 60%, #011b16 100%);
+  background-color: #042f2e;
   color: #ecfdf5;
 }
 
@@ -47,12 +47,9 @@ body.progress-body {
 }
 
 .metric-card {
-  background: rgba(6, 95, 70, 0.35);
+  background-color: rgba(6, 95, 70, 0.35);
   border: 1px solid rgba(16, 185, 129, 0.25);
-  border-radius: 18px;
   padding: 1.5rem;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 16px 32px rgba(1, 27, 22, 0.35);
 }
 
 .metric-card dt {
@@ -79,20 +76,18 @@ body.progress-body {
 .metric-progress-track {
   margin-top: 1rem;
   height: 8px;
-  background: rgba(12, 83, 74, 0.6);
-  border-radius: 999px;
+  background-color: rgba(12, 83, 74, 0.6);
   overflow: hidden;
 }
 
 .metric-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #facc15, #f97316);
-  border-radius: inherit;
+  background-color: #f97316;
   transition: width 220ms ease-in-out;
 }
 
 .highlight-card {
-  background: rgba(24, 122, 101, 0.3);
+  background-color: rgba(24, 122, 101, 0.3);
   border: 1px solid rgba(250, 204, 21, 0.35);
 }
 
@@ -100,12 +95,10 @@ body.progress-body {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: 1.2fr 1fr;
-  background: rgba(4, 47, 46, 0.7);
+  background-color: rgba(4, 47, 46, 0.7);
   border: 1px solid rgba(45, 212, 191, 0.25);
-  border-radius: 24px;
   padding: 1.75rem;
   align-items: center;
-  box-shadow: 0 20px 40px rgba(1, 27, 22, 0.45);
 }
 
 .random-plant-info h2 {
@@ -130,32 +123,28 @@ body.progress-body {
 
 .progress-button {
   padding: 0.6rem 1.4rem;
-  border-radius: 999px;
-  border: none;
-  background: linear-gradient(135deg, #fbbf24, #f97316);
+  border: 1px solid transparent;
+  background-color: #f97316;
   color: #042f2e;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 150ms ease, box-shadow 150ms ease;
-  box-shadow: 0 10px 20px rgba(251, 191, 36, 0.25);
+  transition: background-color 150ms ease;
 }
 
 .progress-button:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(251, 191, 36, 0.35);
+  background-color: #fb923c;
 }
 
 .progress-button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(253, 230, 138, 0.65);
+  border-color: rgba(253, 230, 138, 0.65);
 }
 
 .progress-button-secondary {
   background: transparent;
   border: 1px solid rgba(253, 230, 138, 0.65);
   color: rgba(253, 230, 138, 0.95);
-  box-shadow: none;
 }
 
 .progress-button-secondary:hover {
@@ -164,9 +153,8 @@ body.progress-body {
 
 .random-plant-figure {
   position: relative;
-  border-radius: 20px;
   overflow: hidden;
-  background: rgba(6, 95, 70, 0.35);
+  background-color: rgba(6, 95, 70, 0.35);
   min-height: 280px;
 }
 
@@ -194,10 +182,8 @@ body.progress-body {
   right: 1rem;
   bottom: 1rem;
   padding: 0.75rem 1rem;
-  background: linear-gradient(180deg, rgba(2, 44, 34, 0.05), rgba(2, 44, 34, 0.82));
-  border-radius: 12px;
+  background-color: rgba(2, 44, 34, 0.82);
   color: #fefce8;
-  box-shadow: 0 12px 24px rgba(1, 27, 22, 0.4);
 }
 
 .random-plant-caption strong {
