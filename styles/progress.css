@@ -1,0 +1,230 @@
+body.progress-body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background: radial-gradient(circle at top right, rgba(26, 95, 91, 0.8), rgba(2, 44, 34, 0.95) 60%, #011b16 100%);
+  color: #ecfdf5;
+}
+
+.progress-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.progress-content {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  gap: 2.5rem;
+}
+
+.progress-header {
+  text-align: center;
+}
+
+.progress-heading {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fefce8;
+}
+
+.progress-subtitle {
+  margin: 0.5rem auto 0;
+  max-width: 720px;
+  color: rgba(236, 253, 245, 0.75);
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.metrics-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.metric-card {
+  background: rgba(6, 95, 70, 0.35);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 18px;
+  padding: 1.5rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 16px 32px rgba(1, 27, 22, 0.35);
+}
+
+.metric-card dt {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(209, 250, 229, 0.8);
+  margin-bottom: 0.75rem;
+}
+
+.metric-card .metric-value {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 700;
+  color: #fef08a;
+  margin: 0;
+}
+
+.metric-card .metric-details {
+  margin: 0.5rem 0 0;
+  color: rgba(236, 253, 245, 0.7);
+  font-size: 0.95rem;
+}
+
+.metric-progress-track {
+  margin-top: 1rem;
+  height: 8px;
+  background: rgba(12, 83, 74, 0.6);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.metric-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #facc15, #f97316);
+  border-radius: inherit;
+  transition: width 220ms ease-in-out;
+}
+
+.highlight-card {
+  background: rgba(24, 122, 101, 0.3);
+  border: 1px solid rgba(250, 204, 21, 0.35);
+}
+
+.random-plant-card {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1.2fr 1fr;
+  background: rgba(4, 47, 46, 0.7);
+  border: 1px solid rgba(45, 212, 191, 0.25);
+  border-radius: 24px;
+  padding: 1.75rem;
+  align-items: center;
+  box-shadow: 0 20px 40px rgba(1, 27, 22, 0.45);
+}
+
+.random-plant-info h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: #fefce8;
+}
+
+.random-plant-info p {
+  margin: 0.35rem 0;
+  color: rgba(226, 252, 239, 0.8);
+  font-size: 1rem;
+}
+
+.random-plant-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.progress-button {
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  color: #042f2e;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+  box-shadow: 0 10px 20px rgba(251, 191, 36, 0.25);
+}
+
+.progress-button:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(251, 191, 36, 0.35);
+}
+
+.progress-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(253, 230, 138, 0.65);
+}
+
+.progress-button-secondary {
+  background: transparent;
+  border: 1px solid rgba(253, 230, 138, 0.65);
+  color: rgba(253, 230, 138, 0.95);
+  box-shadow: none;
+}
+
+.progress-button-secondary:hover {
+  background: rgba(253, 230, 138, 0.15);
+}
+
+.random-plant-figure {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(6, 95, 70, 0.35);
+  min-height: 280px;
+}
+
+.random-plant-figure img,
+.random-plant-figure .placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.random-plant-figure .placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(236, 253, 245, 0.7);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.random-plant-caption {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(180deg, rgba(2, 44, 34, 0.05), rgba(2, 44, 34, 0.82));
+  border-radius: 12px;
+  color: #fefce8;
+  box-shadow: 0 12px 24px rgba(1, 27, 22, 0.4);
+}
+
+.random-plant-caption strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.random-plant-caption span {
+  display: block;
+  font-size: 0.9rem;
+  color: rgba(236, 253, 245, 0.75);
+}
+
+@media (max-width: 960px) {
+  .random-plant-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .progress-wrapper {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .random-plant-card {
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+}
