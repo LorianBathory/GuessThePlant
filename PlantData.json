@@ -102,12 +102,6 @@
       "nl": "Bosrank",
       "sci": "Clematis"
     },
-    "18": {
-      "ru": "Глициния",
-      "en": "Wisteria",
-      "nl": "Blauwe regen",
-      "sci": "Wisteria"
-    },
     "19": {
       "ru": "Олеандр",
       "en": "Oleander",
@@ -346,7 +340,7 @@
       "ru": "Катарантус розовый",
       "en": "Madagascar Periwinkle",
       "nl": "Roze maagdenpalm",
-      "sci": "Catharanthus Roseus"
+      "sci": "Catharanthus Roseus (syn. Vinca rosea)"
     },
     "59": {
       "ru": "Боярышник",
@@ -516,12 +510,6 @@
       "nl": "Lotus",
       "sci": "Nelumbo nucifera"
     },
-    "88": {
-      "ru": "Гортензия",
-      "en": "Hydrangea",
-      "nl": "Hortensia",
-      "sci": "Hydrangea macrophylla"
-    },
     "89": {
       "ru": "Сантолина",
       "en": "Cotton lavender",
@@ -637,9 +625,9 @@
       "sci": "Muscari"
     },
     "108": {
-      "ru": "Пеларгония (Герань)",
-      "en": "Geranium (Pelargonium)",
-      "nl": "Geranium / Pelargonium",
+      "ru": "Пеларгония",
+      "en": "Pelargonium",
+      "nl": "Pelargonium",
       "sci": "Pelargonium"
     },
     "109": {
@@ -695,12 +683,6 @@
       "en": "Masterwort",
       "nl": "Sterrenscherm | Zeeuws knoopje",
       "sci": "Astrantia"
-    },
-    "118": {
-      "ru": "Журавельник (Герань)",
-      "en": "Hardy Geranium / Crane's-bill",
-      "nl": "Ooievaarsbek",
-      "sci": "Geranium"
     },
     "119": {
       "ru": "Маргаритка",
@@ -825,7 +807,7 @@
     "139": {
       "ru": "Звездчатый жасмин",
       "en": "Star jasmine",
-      "nl": "Sterjasmijn",
+      "nl": "Toscaanse jasmijn / Sterjasmijn",
       "sci": "Trachelospermum jasminoides"
     },
     "140": {
@@ -960,12 +942,6 @@
       "nl": "Duivenkervel",
       "sci": "Fumaria"
     },
-    "165": {
-      "ru": "Морозник",
-      "en": "Hellebore",
-      "nl": "Nieskruid",
-      "sci": "Helleborus"
-    },
     "166": {
       "ru": "Шток-роза",
       "en": "Hollyhock",
@@ -1054,7 +1030,7 @@
       "ru": "Вереск",
       "en": "Heather",
       "nl": "Struikheide",
-      "sci": "Calluna"
+      "sci": "Calluna vulgaris"
     },
     "185": {
       "ru": "Эшшольция калифорнийская",
@@ -1446,6 +1422,12 @@
       "nl": "Amaryllis",
       "sci": "Amaryllis"
     },
+    "406": {
+      "ru": "Фотиния",
+      "en": "Photinia (Red Robin)",
+      "nl": "Glansmispel",
+      "sci": "Photinia"
+    },
     "13_1": {
       "ru": "Черемша",
       "en": "Ramsons",
@@ -1469,6 +1451,30 @@
       "en": "Anemone clematis",
       "nl": "Bergbosrank",
       "sci": "Clematis montana"
+    },
+    "18_0": {
+      "ru": "Глициния",
+      "en": "Wisteria",
+      "nl": "Blauwe regen",
+      "sci": "Wisteria"
+    },
+    "18_1": {
+      "ru": "Глициния китайская",
+      "en": "Chinese wisteria",
+      "nl": "Chinese blauweregen",
+      "sci": "Wisteria sinensis"
+    },
+    "18_2": {
+      "ru": "Глициния кустарниковая",
+      "en": "American wisteria",
+      "nl": "Blauweregen",
+      "sci": "Wisteria frutescens"
+    },
+    "27_1": {
+      "ru": "Эхинацея пурпурная",
+      "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+      "nl": "Rode zonnehoed",
+      "sci": "Echinacea purpurea"
     },
     "31_1": {
       "ru": "Шиповник собачий",
@@ -1578,6 +1584,24 @@
       "nl": "Kruipklokje",
       "sci": "Campanula poscharskyana"
     },
+    "88_0": {
+      "ru": "Гортензия",
+      "en": "Hydrangea",
+      "nl": "Hortensia",
+      "sci": "Hydrangea"
+    },
+    "88_1": {
+      "ru": "Гортензия крупнолистная",
+      "en": "Bigleaf Hydrangea",
+      "nl": "Hortensia (macrophylla)",
+      "sci": "Hydrangea macrophylla"
+    },
+    "88_2": {
+      "ru": "Гортензия древовидная",
+      "en": "Smooth hydrangea",
+      "nl": "Boomhortensia | Sneeuwbalhortensia | Wilde hortensia",
+      "sci": "Hydrangea arborescens"
+    },
     "100_1": {
       "ru": "Подсолнечник однолетний",
       "en": "Common Sunflower",
@@ -1619,6 +1643,18 @@
       "en": "Cornflower",
       "nl": "Korenbloem",
       "sci": "Centaurea cyanus"
+    },
+    "118_2": {
+      "ru": "Журавельник (Герань)",
+      "en": "Hardy Geranium / Crane's-bill",
+      "nl": "Ooievaarsbek",
+      "sci": "Geranium"
+    },
+    "118_1": {
+      "ru": "Герань великолепная",
+      "en": "Purple cranesbill",
+      "nl": "Ooievaarsbek",
+      "sci": "Geranium magnificum"
     },
     "131_1": {
       "ru": "Вероника австрийская",
@@ -1697,6 +1733,18 @@
       "en": "redosier dogwood",
       "nl": "Canadese kornoelje",
       "sci": "Cornus sericea"
+    },
+    "165_0": {
+      "ru": "Морозник",
+      "en": "Hellebore",
+      "nl": "Nieskruid",
+      "sci": "Helleborus"
+    },
+    "165_1": {
+      "ru": "Морозник восточный",
+      "en": "lenten-rose",
+      "nl": "Oosters nieskruid",
+      "sci": "Helleborus orientalis"
     },
     "169_0": {
       "ru": "Амарант",
@@ -2030,22 +2078,6 @@
         "p17_0_3"
       ]
     },
-    "18": {
-      "id": 18,
-      "names": {
-        "ru": "Глициния",
-        "en": "Wisteria",
-        "nl": "Blauwe regen",
-        "sci": "Wisteria"
-      },
-      "images": [
-        "p18_0_1",
-        "p18_0_2",
-        "p18_0_3",
-        "p18_0_4",
-        "p18_0_5"
-      ]
-    },
     "19": {
       "id": 19,
       "names": {
@@ -2189,10 +2221,7 @@
         "sci": "Echinacea"
       },
       "images": [
-        "p27_0_1",
-        "p27_0_2",
-        "p27_0_3",
-        "p27_0_4"
+        "p27_0_1"
       ],
       "wrongAnswers": [
         6,
@@ -2698,7 +2727,7 @@
         "ru": "Катарантус розовый",
         "en": "Madagascar Periwinkle",
         "nl": "Roze maagdenpalm",
-        "sci": "Catharanthus Roseus"
+        "sci": "Catharanthus Roseus (syn. Vinca rosea)"
       },
       "images": [
         "p58_0_1"
@@ -3111,24 +3140,6 @@
         "p87_0_1"
       ]
     },
-    "88": {
-      "id": 88,
-      "names": {
-        "ru": "Гортензия",
-        "en": "Hydrangea",
-        "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
-      },
-      "images": [
-        "p88_0_1",
-        "p88_0_2",
-        "p88_0_3",
-        "p88_0_4"
-      ],
-      "wrongAnswers": [
-        10
-      ]
-    },
     "89": {
       "id": 89,
       "names": {
@@ -3423,9 +3434,9 @@
     "108": {
       "id": 108,
       "names": {
-        "ru": "Пеларгония (Герань)",
-        "en": "Geranium (Pelargonium)",
-        "nl": "Geranium / Pelargonium",
+        "ru": "Пеларгония",
+        "en": "Pelargonium",
+        "nl": "Pelargonium",
         "sci": "Pelargonium"
       },
       "images": [
@@ -3548,21 +3559,6 @@
       },
       "images": [
         "p117_0_1"
-      ]
-    },
-    "118": {
-      "id": 118,
-      "names": {
-        "ru": "Журавельник (Герань)",
-        "en": "Hardy Geranium / Crane's-bill",
-        "nl": "Ooievaarsbek",
-        "sci": "Geranium"
-      },
-      "images": [
-        "p118_0_1",
-        "p118_0_2",
-        "p118_0_3",
-        "p118_0_4"
       ]
     },
     "119": {
@@ -3812,7 +3808,7 @@
       "names": {
         "ru": "Звездчатый жасмин",
         "en": "Star jasmine",
-        "nl": "Sterjasmijn",
+        "nl": "Toscaanse jasmijn / Sterjasmijn",
         "sci": "Trachelospermum jasminoides"
       },
       "images": [
@@ -4089,19 +4085,6 @@
         "p164_0_1"
       ]
     },
-    "165": {
-      "id": 165,
-      "names": {
-        "ru": "Морозник",
-        "en": "Hellebore",
-        "nl": "Nieskruid",
-        "sci": "Helleborus"
-      },
-      "images": [
-        "p165_0_1",
-        "p165_0_2"
-      ]
-    },
     "166": {
       "id": 166,
       "names": {
@@ -4282,7 +4265,7 @@
         "ru": "Вереск",
         "en": "Heather",
         "nl": "Struikheide",
-        "sci": "Calluna"
+        "sci": "Calluna vulgaris"
       },
       "images": [
         "p184_0_1"
@@ -5067,6 +5050,16 @@
       },
       "images": []
     },
+    "406": {
+      "id": 406,
+      "names": {
+        "ru": "Фотиния",
+        "en": "Photinia (Red Robin)",
+        "nl": "Glansmispel",
+        "sci": "Photinia"
+      },
+      "images": []
+    },
     "13_1": {
       "id": "13_1",
       "names": {
@@ -5119,6 +5112,59 @@
       },
       "images": [
         "p17_1_1"
+      ]
+    },
+    "18_0": {
+      "id": "18_0",
+      "names": {
+        "ru": "Глициния",
+        "en": "Wisteria",
+        "nl": "Blauwe regen",
+        "sci": "Wisteria"
+      },
+      "images": [
+        "p18_0_1",
+        "p18_0_2",
+        "p18_0_3"
+      ]
+    },
+    "18_1": {
+      "id": "18_1",
+      "names": {
+        "ru": "Глициния китайская",
+        "en": "Chinese wisteria",
+        "nl": "Chinese blauweregen",
+        "sci": "Wisteria sinensis"
+      },
+      "images": [
+        "p18_1_1"
+      ]
+    },
+    "18_2": {
+      "id": "18_2",
+      "names": {
+        "ru": "Глициния кустарниковая",
+        "en": "American wisteria",
+        "nl": "Blauweregen",
+        "sci": "Wisteria frutescens"
+      },
+      "images": [
+        "p18_2_1"
+      ]
+    },
+    "27_1": {
+      "id": "27_1",
+      "names": {
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
+      },
+      "images": [
+        "p27_1_1",
+        "p27_1_2",
+        "p27_1_3",
+        "p27_1_4"
       ]
     },
     "31_1": {
@@ -5384,6 +5430,44 @@
         21
       ]
     },
+    "88_0": {
+      "id": "88_0",
+      "names": {
+        "ru": "Гортензия",
+        "en": "Hydrangea",
+        "nl": "Hortensia",
+        "sci": "Hydrangea"
+      },
+      "images": [
+        "p88_0_1",
+        "p88_0_2",
+        "p88_0_3",
+        "p88_0_4"
+      ],
+      "wrongAnswers": [
+        10
+      ]
+    },
+    "88_1": {
+      "id": "88_1",
+      "names": {
+        "ru": "Гортензия крупнолистная",
+        "en": "Bigleaf Hydrangea",
+        "nl": "Hortensia (macrophylla)",
+        "sci": "Hydrangea macrophylla"
+      },
+      "images": []
+    },
+    "88_2": {
+      "id": "88_2",
+      "names": {
+        "ru": "Гортензия древовидная",
+        "en": "Smooth hydrangea",
+        "nl": "Boomhortensia | Sneeuwbalhortensia | Wilde hortensia",
+        "sci": "Hydrangea arborescens"
+      },
+      "images": []
+    },
     "100_1": {
       "id": "100_1",
       "names": {
@@ -5478,6 +5562,32 @@
       },
       "images": [
         "p116_1_1"
+      ]
+    },
+    "118_2": {
+      "id": "118_2",
+      "names": {
+        "ru": "Журавельник (Герань)",
+        "en": "Hardy Geranium / Crane's-bill",
+        "nl": "Ooievaarsbek",
+        "sci": "Geranium"
+      },
+      "images": [
+        "p118_2_1",
+        "p118_2_2",
+        "p118_2_3"
+      ]
+    },
+    "118_1": {
+      "id": "118_1",
+      "names": {
+        "ru": "Герань великолепная",
+        "en": "Purple cranesbill",
+        "nl": "Ooievaarsbek",
+        "sci": "Geranium magnificum"
+      },
+      "images": [
+        "p118_1_1"
       ]
     },
     "131_1": {
@@ -5646,6 +5756,29 @@
       "images": [
         "p153_1_1"
       ]
+    },
+    "165_0": {
+      "id": "165_0",
+      "names": {
+        "ru": "Морозник",
+        "en": "Hellebore",
+        "nl": "Nieskruid",
+        "sci": "Helleborus"
+      },
+      "images": [
+        "p165_0_1",
+        "p165_0_2"
+      ]
+    },
+    "165_1": {
+      "id": "165_1",
+      "names": {
+        "ru": "Морозник восточный",
+        "en": "lenten-rose",
+        "nl": "Oosters nieskruid",
+        "sci": "Helleborus orientalis"
+      },
+      "images": []
     },
     "169_0": {
       "id": "169_0",
@@ -5923,19 +6056,19 @@
       "src": "images/AstrantiaMajor_TravelPhotographer2_StockSnap_KINMIFZQVX.JPG"
     },
     {
-      "id": "p118_0_1",
+      "id": "p118_1_1",
+      "src": "images/GeraniumMagnificum_Kapa65_Pixabay.JPG"
+    },
+    {
+      "id": "p118_2_1",
       "src": "images/Geranium_Hard_TinaNord.JPG"
     },
     {
-      "id": "p118_0_2",
-      "src": "images/Geranium_Pixabay2.JPG"
-    },
-    {
-      "id": "p118_0_3",
+      "id": "p118_2_2",
       "src": "images/Geranium_ord6.JPG"
     },
     {
-      "id": "p118_0_4",
+      "id": "p118_2_3",
       "src": "images/Geranium_pixabay.JPG"
     },
     {
@@ -6400,15 +6533,15 @@
     },
     {
       "id": "p18_0_3",
-      "src": "images/Wisteria_EvieFjord_Unsplash.JPG"
-    },
-    {
-      "id": "p18_0_4",
       "src": "images/Wisteria_joshOgden_Unsplash.JPG"
     },
     {
-      "id": "p18_0_5",
-      "src": "images/Wisteria_KellyIshmael_StockSnap.JPG"
+      "id": "p18_1_1",
+      "src": "images/WisteriaSinensis_EvieFjord_Unsplash.JPG"
+    },
+    {
+      "id": "p18_2_1",
+      "src": "images/WisteriaFrutescens_KellyIshmael_StockSnap.JPG"
     },
     {
       "id": "p181_0_1",
@@ -6788,19 +6921,23 @@
     },
     {
       "id": "p27_0_1",
+      "src": "images/Echinacea_TravelPhotographer_StockSnap.JPG"
+    },
+    {
+      "id": "p27_1_1",
       "src": "images/Echinacea_AlexasFotos.JPG"
     },
     {
-      "id": "p27_0_2",
+      "id": "p27_1_2",
       "src": "images/Echinacea_ForhadHossain.JPG"
     },
     {
-      "id": "p27_0_3",
+      "id": "p27_1_3",
       "src": "images/Echinacea_Medium_RomanBiernacki.JPG"
     },
     {
-      "id": "p27_0_4",
-      "src": "images/Echinacea_TravelPhotographer_StockSnap.JPG"
+      "id": "p27_1_4",
+      "src": "images/EchinaceaWhite_TravelPhotographer_StockSnap.JPG"
     },
     {
       "id": "p28_0_1",
@@ -7626,10 +7763,6 @@
       "scientificName": "Clematis",
       "family": "Ranunculaceae"
     },
-    "18": {
-      "scientificName": "Wisteria",
-      "family": "Fabaceae"
-    },
     "19": {
       "scientificName": "Nerium oleander",
       "family": "Apocynaceae"
@@ -7783,7 +7916,7 @@
       "family": "Paulowniaceae"
     },
     "58": {
-      "scientificName": "Catharanthus Roseus"
+      "scientificName": "Catharanthus Roseus (syn. Vinca rosea)"
     },
     "59": {
       "scientificName": "Crataegus",
@@ -7893,10 +8026,6 @@
     },
     "87": {
       "scientificName": "Nelumbo nucifera"
-    },
-    "88": {
-      "scientificName": "Hydrangea macrophylla",
-      "family": "Hydrangeaceae"
     },
     "89": {
       "scientificName": "Santolina chamaecyparissus",
@@ -8011,10 +8140,6 @@
     "117": {
       "scientificName": "Astrantia",
       "family": "Apiaceae"
-    },
-    "118": {
-      "scientificName": "Geranium",
-      "family": "Geraniaceae"
     },
     "119": {
       "scientificName": "Bellis perennis",
@@ -8179,10 +8304,6 @@
       "scientificName": "Fumaria",
       "family": "Papaveraceae"
     },
-    "165": {
-      "scientificName": "Helleborus",
-      "family": "Ranunculaceae"
-    },
     "166": {
       "scientificName": "Alcea",
       "family": "Malvaceae"
@@ -8235,7 +8356,7 @@
       "scientificName": "Anturium"
     },
     "184": {
-      "scientificName": "Calluna",
+      "scientificName": "Calluna vulgaris",
       "family": "Ericaceae"
     },
     "185": {
@@ -8469,6 +8590,10 @@
     "405": {
       "scientificName": "Amaryllis"
     },
+    "406": {
+      "scientificName": "Photinia",
+      "family": "Rosaceae"
+    },
     "13_1": {
       "scientificName": "Allium ursinum",
       "family": "Amaryllidaceae"
@@ -8483,6 +8608,21 @@
     "17_1": {
       "scientificName": "Clematis montana",
       "family": "Ranunculaceae"
+    },
+    "18_0": {
+      "scientificName": "Wisteria",
+      "family": "Fabaceae"
+    },
+    "18_1": {
+      "scientificName": "Wisteria sinensis",
+      "family": "Fabaceae"
+    },
+    "18_2": {
+      "scientificName": "Wisteria frutescens"
+    },
+    "27_1": {
+      "scientificName": "Echinacea purpurea",
+      "family": "Asteraceae"
     },
     "31_1": {
       "scientificName": "Rosa canina",
@@ -8553,6 +8693,17 @@
       "scientificName": "Campanula poscharskyana",
       "family": "Campanulaceae"
     },
+    "88_0": {
+      "scientificName": "Hydrangea",
+      "family": "Hydrangeaceae"
+    },
+    "88_1": {
+      "scientificName": "Hydrangea macrophylla",
+      "family": "Hydrangeaceae"
+    },
+    "88_2": {
+      "scientificName": "Hydrangea arborescens"
+    },
     "100_1": {
       "scientificName": "Helianthus annuus",
       "family": "Asteraceae"
@@ -8579,6 +8730,13 @@
     "116_1": {
       "scientificName": "Centaurea cyanus",
       "family": "Asteraceae"
+    },
+    "118_2": {
+      "scientificName": "Geranium",
+      "family": "Geraniaceae"
+    },
+    "118_1": {
+      "scientificName": "Geranium magnificum"
     },
     "131_1": {
       "scientificName": "Veronica austriaca",
@@ -8630,6 +8788,14 @@
       "scientificName": "Cornus sericea",
       "family": "Cornaceae"
     },
+    "165_0": {
+      "scientificName": "Helleborus",
+      "family": "Ranunculaceae"
+    },
+    "165_1": {
+      "scientificName": "Helleborus orientalis",
+      "family": "Ranunculaceae"
+    },
     "169_0": {
       "scientificName": "Amaranthus",
       "family": "Amaranthaceae"
@@ -8667,6 +8833,7 @@
       "25",
       "26",
       "27",
+      "27_1",
       "29",
       "30",
       "38",
@@ -8739,7 +8906,8 @@
       "62",
       "178",
       "179",
-      "241"
+      "241",
+      "406"
     ],
     "Asparagaceae": [
       "14",
@@ -8775,13 +8943,15 @@
       "92",
       "112",
       "160",
-      "165",
+      "165_0",
+      "165_1",
       "202",
       "221",
       "222"
     ],
     "Fabaceae": [
-      "18",
+      "18_0",
+      "18_1",
       "56",
       "106",
       "106_1",
@@ -8935,7 +9105,8 @@
       "85"
     ],
     "Hydrangeaceae": [
-      "88"
+      "88_0",
+      "88_1"
     ],
     "Begoniaceae": [
       "91"
@@ -8955,7 +9126,7 @@
     ],
     "Geraniaceae": [
       "108",
-      "118"
+      "118_2"
     ],
     "Betulaceae": [
       "114"
@@ -9823,8 +9994,8 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 18,
-      "correctAnswerId": 18,
+      "id": "18_0",
+      "correctAnswerId": "18_0",
       "imageId": "p18_0_1",
       "image": "images/Wisteria_MyNguyen.JPG",
       "names": {
@@ -9834,14 +10005,14 @@
         "sci": "Wisteria"
       },
       "difficulty": "Easy",
-      "questionVariantId": "18-0",
+      "questionVariantId": "18_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-18",
+      "selectionGroupId": "plant-18_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 18,
-      "correctAnswerId": 18,
+      "id": "18_0",
+      "correctAnswerId": "18_0",
       "imageId": "p18_0_2",
       "image": "images/Wysteria_AnnieSpratt.JPG",
       "names": {
@@ -9851,32 +10022,15 @@
         "sci": "Wisteria"
       },
       "difficulty": "Easy",
-      "questionVariantId": "18-1",
+      "questionVariantId": "18_0-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-18",
+      "selectionGroupId": "plant-18_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 18,
-      "correctAnswerId": 18,
+      "id": "18_0",
+      "correctAnswerId": "18_0",
       "imageId": "p18_0_3",
-      "image": "images/Wisteria_EvieFjord_Unsplash.JPG",
-      "names": {
-        "ru": "Глициния",
-        "en": "Wisteria",
-        "nl": "Blauwe regen",
-        "sci": "Wisteria"
-      },
-      "difficulty": "Easy",
-      "questionVariantId": "18-2",
-      "questionType": "plant",
-      "selectionGroupId": "plant-18",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 18,
-      "correctAnswerId": 18,
-      "imageId": "p18_0_4",
       "image": "images/Wisteria_joshOgden_Unsplash.JPG",
       "names": {
         "ru": "Глициния",
@@ -9885,26 +10039,43 @@
         "sci": "Wisteria"
       },
       "difficulty": "Easy",
-      "questionVariantId": "18-3",
+      "questionVariantId": "18_0-2",
       "questionType": "plant",
-      "selectionGroupId": "plant-18",
+      "selectionGroupId": "plant-18_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 18,
-      "correctAnswerId": 18,
-      "imageId": "p18_0_5",
-      "image": "images/Wisteria_KellyIshmael_StockSnap.JPG",
+      "id": "18_1",
+      "correctAnswerId": "18_1",
+      "imageId": "p18_1_1",
+      "image": "images/WisteriaSinensis_EvieFjord_Unsplash.JPG",
       "names": {
-        "ru": "Глициния",
-        "en": "Wisteria",
-        "nl": "Blauwe regen",
-        "sci": "Wisteria"
+        "ru": "Глициния китайская",
+        "en": "Chinese wisteria",
+        "nl": "Chinese blauweregen",
+        "sci": "Wisteria sinensis"
       },
-      "difficulty": "Easy",
-      "questionVariantId": "18-4",
+      "difficulty": null,
+      "questionVariantId": "18_1-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-18",
+      "selectionGroupId": "plant-18_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "18_2",
+      "correctAnswerId": "18_2",
+      "imageId": "p18_2_1",
+      "image": "images/WisteriaFrutescens_KellyIshmael_StockSnap.JPG",
+      "names": {
+        "ru": "Глициния кустарниковая",
+        "en": "American wisteria",
+        "nl": "Blauweregen",
+        "sci": "Wisteria frutescens"
+      },
+      "difficulty": null,
+      "questionVariantId": "18_2-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-18_2",
       "questionPromptKey": "question"
     },
     {
@@ -10284,7 +10455,7 @@
       "id": 27,
       "correctAnswerId": 27,
       "imageId": "p27_0_1",
-      "image": "images/Echinacea_AlexasFotos.JPG",
+      "image": "images/Echinacea_TravelPhotographer_StockSnap.JPG",
       "names": {
         "ru": "Эхинацея",
         "en": "Coneflower",
@@ -10304,72 +10475,71 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 27,
-      "correctAnswerId": 27,
-      "imageId": "p27_0_2",
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_1",
+      "image": "images/Echinacea_AlexasFotos.JPG",
+      "names": {
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
+      },
+      "difficulty": null,
+      "questionVariantId": "27_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-27_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_2",
       "image": "images/Echinacea_ForhadHossain.JPG",
       "names": {
-        "ru": "Эхинацея",
-        "en": "Coneflower",
-        "nl": "Zonnehoed",
-        "sci": "Echinacea"
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
       },
-      "wrongAnswers": [
-        6,
-        38,
-        115,
-        121
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "27-1",
+      "difficulty": null,
+      "questionVariantId": "27_1-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-27",
+      "selectionGroupId": "plant-27_1",
       "questionPromptKey": "question"
     },
     {
-      "id": 27,
-      "correctAnswerId": 27,
-      "imageId": "p27_0_3",
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_3",
       "image": "images/Echinacea_Medium_RomanBiernacki.JPG",
       "names": {
-        "ru": "Эхинацея",
-        "en": "Coneflower",
-        "nl": "Zonnehoed",
-        "sci": "Echinacea"
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
       },
-      "wrongAnswers": [
-        6,
-        38,
-        115,
-        121
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "27-2",
+      "difficulty": null,
+      "questionVariantId": "27_1-2",
       "questionType": "plant",
-      "selectionGroupId": "plant-27",
+      "selectionGroupId": "plant-27_1",
       "questionPromptKey": "question"
     },
     {
-      "id": 27,
-      "correctAnswerId": 27,
-      "imageId": "p27_0_4",
-      "image": "images/Echinacea_TravelPhotographer_StockSnap.JPG",
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_4",
+      "image": "images/EchinaceaWhite_TravelPhotographer_StockSnap.JPG",
       "names": {
-        "ru": "Эхинацея",
-        "en": "Coneflower",
-        "nl": "Zonnehoed",
-        "sci": "Echinacea"
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
       },
-      "wrongAnswers": [
-        6,
-        38,
-        115,
-        121
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "27-3",
+      "difficulty": null,
+      "questionVariantId": "27_1-3",
       "questionType": "plant",
-      "selectionGroupId": "plant-27",
+      "selectionGroupId": "plant-27_1",
       "questionPromptKey": "question"
     },
     {
@@ -12080,7 +12250,7 @@
         "ru": "Катарантус розовый",
         "en": "Madagascar Periwinkle",
         "nl": "Roze maagdenpalm",
-        "sci": "Catharanthus Roseus"
+        "sci": "Catharanthus Roseus (syn. Vinca rosea)"
       },
       "difficulty": "Hard",
       "questionVariantId": "58-0",
@@ -13216,83 +13386,83 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 88,
-      "correctAnswerId": 88,
+      "id": "88_0",
+      "correctAnswerId": "88_0",
       "imageId": "p88_0_1",
       "image": "images/Hydrangea.JPG",
       "names": {
         "ru": "Гортензия",
         "en": "Hydrangea",
         "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
+        "sci": "Hydrangea"
       },
       "wrongAnswers": [
         10
       ],
       "difficulty": "Easy",
-      "questionVariantId": "88-0",
+      "questionVariantId": "88_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-88",
+      "selectionGroupId": "plant-88_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 88,
-      "correctAnswerId": 88,
+      "id": "88_0",
+      "correctAnswerId": "88_0",
       "imageId": "p88_0_2",
       "image": "images/Hydrangea_Easy.JPG",
       "names": {
         "ru": "Гортензия",
         "en": "Hydrangea",
         "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
+        "sci": "Hydrangea"
       },
       "wrongAnswers": [
         10
       ],
       "difficulty": "Easy",
-      "questionVariantId": "88-1",
+      "questionVariantId": "88_0-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-88",
+      "selectionGroupId": "plant-88_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 88,
-      "correctAnswerId": 88,
+      "id": "88_0",
+      "correctAnswerId": "88_0",
       "imageId": "p88_0_3",
       "image": "images/Hydrangea_MohanNannapaneni.JPG",
       "names": {
         "ru": "Гортензия",
         "en": "Hydrangea",
         "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
+        "sci": "Hydrangea"
       },
       "wrongAnswers": [
         10
       ],
       "difficulty": "Easy",
-      "questionVariantId": "88-2",
+      "questionVariantId": "88_0-2",
       "questionType": "plant",
-      "selectionGroupId": "plant-88",
+      "selectionGroupId": "plant-88_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 88,
-      "correctAnswerId": 88,
+      "id": "88_0",
+      "correctAnswerId": "88_0",
       "imageId": "p88_0_4",
       "image": "images/HydrangeaQuercifolia_Nennieinszweidrei_Pixabay.JPG",
       "names": {
         "ru": "Гортензия",
         "en": "Hydrangea",
         "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
+        "sci": "Hydrangea"
       },
       "wrongAnswers": [
         10
       ],
       "difficulty": "Easy",
-      "questionVariantId": "88-3",
+      "questionVariantId": "88_0-3",
       "questionType": "plant",
-      "selectionGroupId": "plant-88",
+      "selectionGroupId": "plant-88_0",
       "questionPromptKey": "question"
     },
     {
@@ -14140,9 +14310,9 @@
       "imageId": "p108_0_1",
       "image": "images/Pelargonium_JuliaFilirovska.JPG",
       "names": {
-        "ru": "Пеларгония (Герань)",
-        "en": "Geranium (Pelargonium)",
-        "nl": "Geranium / Pelargonium",
+        "ru": "Пеларгония",
+        "en": "Pelargonium",
+        "nl": "Pelargonium",
         "sci": "Pelargonium"
       },
       "difficulty": "Easy",
@@ -14450,9 +14620,9 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 118,
-      "correctAnswerId": 118,
-      "imageId": "p118_0_1",
+      "id": "118_2",
+      "correctAnswerId": "118_2",
+      "imageId": "p118_2_1",
       "image": "images/Geranium_Hard_TinaNord.JPG",
       "names": {
         "ru": "Журавельник (Герань)",
@@ -14461,32 +14631,15 @@
         "sci": "Geranium"
       },
       "difficulty": "Medium",
-      "questionVariantId": "118-0",
+      "questionVariantId": "118_2-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-118",
+      "selectionGroupId": "plant-118_2",
       "questionPromptKey": "question"
     },
     {
-      "id": 118,
-      "correctAnswerId": 118,
-      "imageId": "p118_0_2",
-      "image": "images/Geranium_Pixabay2.JPG",
-      "names": {
-        "ru": "Журавельник (Герань)",
-        "en": "Hardy Geranium / Crane's-bill",
-        "nl": "Ooievaarsbek",
-        "sci": "Geranium"
-      },
-      "difficulty": "Medium",
-      "questionVariantId": "118-1",
-      "questionType": "plant",
-      "selectionGroupId": "plant-118",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 118,
-      "correctAnswerId": 118,
-      "imageId": "p118_0_3",
+      "id": "118_2",
+      "correctAnswerId": "118_2",
+      "imageId": "p118_2_2",
       "image": "images/Geranium_ord6.JPG",
       "names": {
         "ru": "Журавельник (Герань)",
@@ -14495,15 +14648,15 @@
         "sci": "Geranium"
       },
       "difficulty": "Medium",
-      "questionVariantId": "118-2",
+      "questionVariantId": "118_2-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-118",
+      "selectionGroupId": "plant-118_2",
       "questionPromptKey": "question"
     },
     {
-      "id": 118,
-      "correctAnswerId": 118,
-      "imageId": "p118_0_4",
+      "id": "118_2",
+      "correctAnswerId": "118_2",
+      "imageId": "p118_2_3",
       "image": "images/Geranium_pixabay.JPG",
       "names": {
         "ru": "Журавельник (Герань)",
@@ -14512,9 +14665,26 @@
         "sci": "Geranium"
       },
       "difficulty": "Medium",
-      "questionVariantId": "118-3",
+      "questionVariantId": "118_2-2",
       "questionType": "plant",
-      "selectionGroupId": "plant-118",
+      "selectionGroupId": "plant-118_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "118_1",
+      "correctAnswerId": "118_1",
+      "imageId": "p118_1_1",
+      "image": "images/GeraniumMagnificum_Kapa65_Pixabay.JPG",
+      "names": {
+        "ru": "Герань великолепная",
+        "en": "Purple cranesbill",
+        "nl": "Ooievaarsbek",
+        "sci": "Geranium magnificum"
+      },
+      "difficulty": null,
+      "questionVariantId": "118_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-118_1",
       "questionPromptKey": "question"
     },
     {
@@ -15039,7 +15209,7 @@
       "names": {
         "ru": "Звездчатый жасмин",
         "en": "Star jasmine",
-        "nl": "Sterjasmijn",
+        "nl": "Toscaanse jasmijn / Sterjasmijn",
         "sci": "Trachelospermum jasminoides"
       },
       "difficulty": "Easy",
@@ -15804,8 +15974,8 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 165,
-      "correctAnswerId": 165,
+      "id": "165_0",
+      "correctAnswerId": "165_0",
       "imageId": "p165_0_1",
       "image": "images/Helleborus_Aaronburden.JPG",
       "names": {
@@ -15815,14 +15985,14 @@
         "sci": "Helleborus"
       },
       "difficulty": "Easy",
-      "questionVariantId": "165-0",
+      "questionVariantId": "165_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-165",
+      "selectionGroupId": "plant-165_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 165,
-      "correctAnswerId": 165,
+      "id": "165_0",
+      "correctAnswerId": "165_0",
       "imageId": "p165_0_2",
       "image": "images/HelleborusNiger_Couleur_Pixabay.JPG",
       "names": {
@@ -15832,9 +16002,9 @@
         "sci": "Helleborus"
       },
       "difficulty": "Easy",
-      "questionVariantId": "165-1",
+      "questionVariantId": "165_0-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-165",
+      "selectionGroupId": "plant-165_0",
       "questionPromptKey": "question"
     },
     {
@@ -16277,7 +16447,7 @@
         "ru": "Вереск",
         "en": "Heather",
         "nl": "Struikheide",
-        "sci": "Calluna"
+        "sci": "Calluna vulgaris"
       },
       "difficulty": "Medium",
       "questionVariantId": "184-0",
@@ -17523,7 +17693,7 @@
           7,
           12,
           13,
-          18,
+          "18_0",
           22,
           24,
           27,
@@ -17543,7 +17713,7 @@
           75,
           76,
           "82_1",
-          88,
+          "88_0",
           91,
           93,
           94,
@@ -17566,7 +17736,7 @@
           "146_1",
           156,
           157,
-          165,
+          "165_0",
           168,
           181,
           189,
@@ -17626,7 +17796,7 @@
           110,
           112,
           113,
-          118,
+          "118_2",
           120,
           121,
           122,
@@ -17768,8 +17938,6 @@
           "p18_0_1",
           "p18_0_2",
           "p18_0_3",
-          "p18_0_4",
-          "p18_0_5",
           "p181_0_1",
           "p189_0_1",
           "p190_0_1",
@@ -17788,9 +17956,6 @@
           "p24_0_2",
           "p24_0_3",
           "p27_0_1",
-          "p27_0_2",
-          "p27_0_3",
-          "p27_0_4",
           "p29_0_1",
           "p29_0_2",
           "p29_0_3",
@@ -17875,10 +18040,9 @@
           "p112_0_2",
           "p112_0_3",
           "p113_0_1",
-          "p118_0_1",
-          "p118_0_2",
-          "p118_0_3",
-          "p118_0_4",
+          "p118_2_1",
+          "p118_2_2",
+          "p118_2_3",
           "p120_0_1",
           "p120_0_2",
           "p121_0_1",

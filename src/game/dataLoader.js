@@ -96,6 +96,7 @@ export const dataBundle = Object.freeze({
   plantImages: plantDataJson.plantImages,
   plantParameters: plantDataJson.plantParameters,
   plantFamilies: plantDataJson.plantFamilies,
+  memorization: plantDataJson.memorization,
   difficulties: plantDataJson.difficulties,
   questionDefinitionsByType: Object.freeze({
     [questionTypes.BOUQUET]: freezeQuestionDefinitions(bouquetQuestionDefinitions)
@@ -109,12 +110,101 @@ function parseCatalogId(rawId) {
   return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : stringId;
 }
 
+function cloneStructured(value) {
+  if (Array.isArray(value)) {
+    return value.map(item => cloneStructured(item));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, nestedValue]) => [key, cloneStructured(nestedValue)])
+    );
+  }
+
+  return value;
+}
+
+function deepFreeze(value) {
+  if (Array.isArray(value)) {
+    return Object.freeze(value.map(item => deepFreeze(item)));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.freeze(
+      Object.fromEntries(
+        Object.entries(value).map(([key, nestedValue]) => [key, deepFreeze(nestedValue)])
+      )
+    );
+  }
+
+  return value;
+}
+
+function buildPlantFamilyData(rawFamilies) {
+  const source = rawFamilies && typeof rawFamilies === 'object' ? rawFamilies : {};
+
+  const normalizedFamilies = Object.fromEntries(
+    Object.entries(source).map(([family, ids]) => {
+      const normalizedIds = Array.isArray(ids)
+        ? ids.map(entryId => parseCatalogId(entryId))
+        : [];
+
+      return [family, Object.freeze(normalizedIds)];
+    })
+  );
+
+  const familyByIdEntries = Object.entries(normalizedFamilies).flatMap(([family, ids]) =>
+    ids.map(id => [id, family])
+  );
+
+  return {
+    plantFamilies: Object.freeze(normalizedFamilies),
+    plantFamilyById: Object.freeze(Object.fromEntries(familyByIdEntries))
+  };
+}
+
+function buildPlantParameters({ plantParameters, plantFamilyById }) {
+  const source = plantParameters && typeof plantParameters === 'object' ? plantParameters : {};
+
+  const normalizedEntries = Object.entries(source).map(([id, params]) => {
+    const parsedId = parseCatalogId(id);
+    const clone = params && typeof params === 'object' ? cloneStructured(params) : {};
+
+    const fallbackFamily = clone.family ?? plantFamilyById?.[parsedId] ?? plantFamilyById?.[id] ?? null;
+
+    if (fallbackFamily != null) {
+      clone.family = fallbackFamily;
+    } else if ('family' in clone && clone.family == null) {
+      clone.family = null;
+    }
+
+    return [parsedId, deepFreeze(clone)];
+  });
+
+  return Object.freeze(Object.fromEntries(normalizedEntries));
+}
+
 function freezeArray(array) {
   return Object.freeze(array.slice());
 }
 
 function freezeObject(object) {
   return Object.freeze({ ...object });
+}
+
+const plantFamilyData = buildPlantFamilyData(dataBundle.plantFamilies);
+
+export const plantFamilies = plantFamilyData.plantFamilies;
+export const plantFamilyById = plantFamilyData.plantFamilyById;
+
+export const plantParametersById = buildPlantParameters({
+  plantParameters: dataBundle.plantParameters,
+  plantFamilyById: plantFamilyData.plantFamilyById
+});
+
+export function getPlantParameters(id) {
+  const parsedId = parseCatalogId(id);
+  return plantParametersById[parsedId] || plantParametersById[id] || null;
 }
 
 function buildGenusData(genusEntries) {
