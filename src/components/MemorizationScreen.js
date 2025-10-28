@@ -26,7 +26,8 @@ const colors = Object.freeze({
   red: '#E0594A',
   redOrange: '#E7774A',
   purple: '#9C7EDA',
-  blue: '#6AB7E6'
+  blue: '#6AB7E6',
+  hotPink: '#FF4FA3'
 });
 
 function createIcon(pathElements, viewBox = '0 0 24 24') {
@@ -316,6 +317,48 @@ function buildToxicityParameterItems(toxicityData, language, unknownLabel) {
     .filter(Boolean);
 }
 
+function buildCustomTagParameterItems(rawTags, language) {
+  if (!rawTags) {
+    return [];
+  }
+
+  const entries = Array.isArray(rawTags) ? rawTags : [rawTags];
+
+  return entries
+    .map((entry, index) => {
+      if (entry === null || entry === undefined) {
+        return null;
+      }
+
+      const labelSource = typeof entry === 'object' ? (entry.label ?? entry.text ?? entry.name) : entry;
+      const resolvedLabel = typeof labelSource === 'string'
+        ? labelSource
+        : getLocalizedValue(labelSource, language);
+
+      const labelText = typeof resolvedLabel === 'string' && resolvedLabel.trim()
+        ? resolvedLabel.trim()
+        : null;
+
+      if (!labelText) {
+        return null;
+      }
+
+      const circleContent = typeof entry === 'object' && Object.prototype.hasOwnProperty.call(entry, 'circleContent')
+        ? entry.circleContent
+        : null;
+
+      return {
+        key: `custom-tag-${index}`,
+        label: labelText,
+        icon: null,
+        circleContent,
+        circleColor: colors.hotPink,
+        isUnknown: false
+      };
+    })
+    .filter(Boolean);
+}
+
 function PlantImage({ plant }) {
   const { createElement, useMemo } = ensureReact();
   const imageSrc = plant && typeof plant.image === 'string' ? plant.image : null;
@@ -475,6 +518,8 @@ export default function MemorizationScreen({
 
     parameterItems.push(...toxicityParameterItems);
 
+    parameterItems.push(...buildCustomTagParameterItems(data?.newTags, interfaceLanguage));
+
     if (lifeCycleTag && resolvedLifeCycleValue) {
       parameterItems.push({
         key: 'lifeCycle',
@@ -573,6 +618,20 @@ export default function MemorizationScreen({
       const label = item.label || unknownLabel;
       const isUnknownValue = item.isUnknown || label === unknownLabel;
 
+      const circleContentStyle = {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      };
+
+      const circleChild = IconComponent
+        ? createElement(IconComponent)
+        : (item.circleContent === undefined
+          ? createElement('span', { style: circleContentStyle }, '—')
+          : (item.circleContent === null
+            ? null
+            : createElement('span', { style: circleContentStyle }, item.circleContent)));
+
       return createElement('div', {
         key: item.key,
         style: {
@@ -593,19 +652,11 @@ export default function MemorizationScreen({
             alignItems: 'center',
             justifyContent: 'center',
             color: isUnknownValue ? 'rgba(15, 45, 43, 0.6)' : '#052625',
-            fontWeight: 700,
-            fontSize: '0.85rem'
-          }
-        }, IconComponent
-          ? createElement(IconComponent)
-          : createElement('span', {
-            style: {
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }
-          }, item.circleContent || '—')
-        ),
+          fontWeight: 700,
+          fontSize: '0.85rem'
+        }
+      }, circleChild
+      ),
         createElement('span', {
           key: `${item.key}-label`,
           style: {
