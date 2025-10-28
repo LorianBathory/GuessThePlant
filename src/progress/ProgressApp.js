@@ -297,8 +297,7 @@ export default function ProgressApp() {
   return createElement('div', { className: 'progress-wrapper' },
     createElement('div', { className: 'progress-content' }, [
       createElement('header', { key: 'header', className: 'progress-header' }, [
-        createElement('h1', { key: 'title', className: 'progress-heading' }, 'Прогресс каталога растений'),
-        createElement('p', { key: 'subtitle', className: 'progress-subtitle' }, 'Следите за тем, как наполняется коллекция: сколько растений уже имеют описания, фотографии и поддерживают разные режимы игры.')
+        createElement('h1', { key: 'title', className: 'progress-heading' }, 'Прогресс каталога растений')
       ]),
       createElement(RandomPlantShowcase, {
         key: 'random-plant',
