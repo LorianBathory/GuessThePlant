@@ -6864,62 +6864,106 @@
   "plantParameters": {
     "1": {
       "scientificName": "Asteriscus maritimus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial",
+      "additionalInfo": "Компактный средиземноморский кустарник, предпочитает солнце и устойчив к засухе.",
+      "toxicity": [
+        {
+          "level": 2,
+          "tag": "skin"
+        },
+        {
+          "level": 3,
+          "tag": "cat"
+        }
+      ]
     },
     "2": {
       "scientificName": "Daucus carota",
-      "family": "Apiaceae"
+      "family": "Apiaceae",
+      "lifeCycle": "biennial"
     },
     "3": {
       "scientificName": "Agapanthus africanus",
-      "family": "Amaryllidaceae"
+      "family": "Amaryllidaceae",
+      "lifeCycle": "perennial",
+      "additionalInfo": "Вечнозеленый травянистый многолетник. Высота цветочных стрелок — около 80 см.",
+      "toxicity": [
+        {
+          "level": 2,
+          "tag": "eat"
+        }
+      ],
+      "hardinessZone": "H2",
+      "light": "fullSun"
     },
     "4": {
       "scientificName": "Bougainvillea spectabilis",
-      "family": "Nyctaginaceae"
+      "family": "Nyctaginaceae",
+      "additionalInfo": "Компактный и густой кустарник, цветущий с яркими прицветниками. Минимально допустимая ночная температура — 10° С.",
+      "hardinessZone": "H1C",
+      "light": "fullSun"
     },
     "5": {
       "scientificName": "Camellia japonica",
-      "family": "Theaceae"
+      "family": "Theaceae",
+      "additionalInfo": "Вечнозеленый кустарник, цветущий весной. Бутоны нуждаются в защите от холодного ветра и утреннего солнца.",
+      "hardinessZone": "H5",
+      "light": "partialShade"
     },
     "6": {
       "scientificName": "Gerbera jamesonii",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial",
+      "additionalInfo": "Вечнозеленое растение, цветет с конца весны до конца лета. Часто выращивается как однолетник.",
+      "hardinessZone": "H1C",
+      "light": "fullSun"
     },
     "7": {
       "scientificName": "Euphorbia pulcherrima"
     },
     "8": {
       "scientificName": "Gazania",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "12": {
       "scientificName": "Pastinaca sativa",
-      "family": "Apiaceae"
+      "family": "Apiaceae",
+      "lifeCycle": "biennial"
     },
     "13": {
       "scientificName": "Allium",
-      "family": "Amaryllidaceae"
+      "family": "Amaryllidaceae",
+      "lifeCycle": "perennial"
     },
     "14": {
       "scientificName": "Camassia",
-      "family": "Asparagaceae"
+      "family": "Asparagaceae",
+      "lifeCycle": "perennial",
+      "additionalInfo": "Луковичное многолетнее растение высотой до 1,2 м. Предпочитает полутень, переносит полное солнце.",
+      "hardinessZone": "H4",
+      "light": "partialShade"
     },
     "15": {
       "scientificName": "Globularia",
-      "family": "Plantaginaceae"
+      "family": "Plantaginaceae",
+      "lifeCycle": "perennial"
     },
     "16": {
       "scientificName": "Fritillaria",
-      "family": "Liliaceae"
+      "family": "Liliaceae",
+      "lifeCycle": "perennial"
     },
     "17": {
       "scientificName": "Clematis",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "lifeCycle": "perennial"
     },
     "18": {
       "scientificName": "Wisteria",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "lifeCycle": "perennial"
     },
     "19": {
       "scientificName": "Nerium oleander",
@@ -6935,7 +6979,8 @@
     },
     "22": {
       "scientificName": "Tulipa",
-      "family": "Liliaceae"
+      "family": "Liliaceae",
+      "lifeCycle": "perennial"
     },
     "23": {
       "scientificName": "Gardenia",
@@ -6947,27 +6992,33 @@
     },
     "25": {
       "scientificName": "Leucanthemum vulgare",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "26": {
       "scientificName": "Dahlia",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "27": {
       "scientificName": "Echinacea",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "28": {
       "scientificName": "Gomphrena",
-      "family": "Amaranthaceae"
+      "family": "Amaranthaceae",
+      "lifeCycle": "annual"
     },
     "29": {
       "scientificName": "Chrysanthemum",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "30": {
       "scientificName": "Osteospermum",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "31": {
       "scientificName": "Rosa",
@@ -6975,7 +7026,8 @@
     },
     "32": {
       "scientificName": "Guzmania lingulata",
-      "family": "Bromeliaceae"
+      "family": "Bromeliaceae",
+      "lifeCycle": "perennial"
     },
     "33": {
       "scientificName": "Papaver",
@@ -6987,11 +7039,13 @@
     },
     "35": {
       "scientificName": "Lilium",
-      "family": "Liliaceae"
+      "family": "Liliaceae",
+      "lifeCycle": "perennial"
     },
     "36": {
       "scientificName": "Hemerocallis",
-      "family": "Asphodelaceae"
+      "family": "Asphodelaceae",
+      "lifeCycle": "perennial"
     },
     "37": {
       "scientificName": "Hymenocallis littoralis"
@@ -7002,7 +7056,8 @@
     },
     "39": {
       "scientificName": "Heliopsis helianthoides",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "40": {
       "scientificName": "Coreopsis",
@@ -7017,7 +7072,8 @@
     },
     "44": {
       "scientificName": "Ananas comosus",
-      "family": "Bromeliaceae"
+      "family": "Bromeliaceae",
+      "lifeCycle": "perennial"
     },
     "45": {
       "scientificName": "Yucca",
@@ -7025,11 +7081,13 @@
     },
     "46": {
       "scientificName": "Paeonia",
-      "family": "Paeoniaceae"
+      "family": "Paeoniaceae",
+      "lifeCycle": "perennial"
     },
     "47": {
       "scientificName": "Anemone",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "lifeCycle": "perennial"
     },
     "48": {
       "scientificName": "Callistemon"
@@ -7051,7 +7109,8 @@
     },
     "53": {
       "scientificName": "Sixalix atropurpurea",
-      "family": "Caprifoliaceae"
+      "family": "Caprifoliaceae",
+      "lifeCycle": "biennial"
     },
     "54": {
       "scientificName": "Lantana",
@@ -7070,7 +7129,7 @@
       "family": "Paulowniaceae"
     },
     "58": {
-      "scientificName": "Hedera Helix",
+      "scientificName": "Rosa",
       "family": "Rosaceae"
     },
     "59": {
@@ -7089,11 +7148,13 @@
     },
     "63": {
       "scientificName": "Zea mays",
-      "family": "Poaceae"
+      "family": "Poaceae",
+      "lifeCycle": "annual"
     },
     "64": {
       "scientificName": "Verbena",
-      "family": "Verbenaceae"
+      "family": "Verbenaceae",
+      "lifeCycle": "perennial"
     },
     "65": {
       "scientificName": "Myosotis",
@@ -7113,7 +7174,8 @@
     },
     "69": {
       "scientificName": "Eustoma",
-      "family": "Gentianaceae"
+      "family": "Gentianaceae",
+      "lifeCycle": "biennial"
     },
     "70": {
       "scientificName": "Physalis",
@@ -7125,15 +7187,18 @@
     },
     "72": {
       "scientificName": "Arctium",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "biennial"
     },
     "73": {
       "scientificName": "Aster",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "74": {
       "scientificName": "Phlox",
-      "family": "Polemoniaceae"
+      "family": "Polemoniaceae",
+      "lifeCycle": "perennial"
     },
     "75": {
       "scientificName": "Syringa",
@@ -7141,14 +7206,15 @@
     },
     "76": {
       "scientificName": "Petunia",
-      "family": "Solanaceae"
+      "family": "Solanaceae",
+      "lifeCycle": "perennial"
     },
     "77": {
       "scientificName": "Rhodomyrtus",
       "family": "Myrtaceae"
     },
     "78": {
-      "scientificName": "Lycianthes (Solanum) rantonnetii",
+      "scientificName": "Solanum",
       "family": "Solanaceae"
     },
     "79": {
@@ -7157,23 +7223,28 @@
     },
     "80": {
       "scientificName": "Caladium bicolor",
-      "family": "Araceae"
+      "family": "Araceae",
+      "lifeCycle": "perennial"
     },
     "81": {
       "scientificName": "Hosta",
-      "family": "Asparagaceae"
+      "family": "Asparagaceae",
+      "lifeCycle": "perennial"
     },
     "82": {
       "scientificName": "Viola tricolor var. hortensis",
-      "family": "Violaceae"
+      "family": "Violaceae",
+      "lifeCycle": "biennial"
     },
     "83": {
       "scientificName": "Campanula",
-      "family": "Campanulaceae"
+      "family": "Campanulaceae",
+      "lifeCycle": "perennial"
     },
     "84": {
       "scientificName": "Brassica oleracea Gongylodes Group",
-      "family": "Brassicaceae"
+      "family": "Brassicaceae",
+      "lifeCycle": "biennial"
     },
     "85": {
       "scientificName": "Buddleja davidii",
@@ -7200,50 +7271,61 @@
     },
     "91": {
       "scientificName": "Begonia",
-      "family": "Begoniaceae"
+      "family": "Begoniaceae",
+      "lifeCycle": "perennial"
     },
     "92": {
       "scientificName": "Ranunculus",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "lifeCycle": "perennial"
     },
     "93": {
       "scientificName": "Syngonium podophyllum",
-      "family": "Araceae"
+      "family": "Araceae",
+      "lifeCycle": "perennial"
     },
     "94": {
       "scientificName": "Orchidaceae",
-      "family": "Orchidaceae"
+      "family": "Orchidaceae",
+      "lifeCycle": "perennial"
     },
     "95": {
       "scientificName": "Musa",
-      "family": "Musaceae"
+      "family": "Musaceae",
+      "lifeCycle": "perennial"
     },
     "96": {
       "scientificName": "Zamioculcas zamiifolia",
-      "family": "Araceae"
+      "family": "Araceae",
+      "lifeCycle": "perennial"
     },
     "97": {
       "scientificName": "Tagetes",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "annual"
     },
     "98": {
       "scientificName": "Passiflora edulis",
-      "family": "Passifloraceae"
+      "family": "Passifloraceae",
+      "lifeCycle": "perennial"
     },
     "99": {
       "scientificName": "Cissus rhombifolia"
     },
     "100": {
-      "scientificName": "Helianthus",
-      "family": "Asteraceae"
+      "scientificName": "Helianthus annuus",
+      "family": "Asteraceae",
+      "lifeCycle": "annual"
     },
     "101": {
       "scientificName": "Cosmos bipinnatus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "annual"
     },
     "102": {
       "scientificName": "Aglaonema",
-      "family": "Araceae"
+      "family": "Araceae",
+      "lifeCycle": "perennial"
     },
     "103": {
       "scientificName": "Primula",
@@ -7251,39 +7333,48 @@
     },
     "104": {
       "scientificName": "Scilla",
-      "family": "Asparagaceae"
+      "family": "Asparagaceae",
+      "lifeCycle": "perennial"
     },
     "105": {
       "scientificName": "Narcissus",
-      "family": "Amaryllidaceae"
+      "family": "Amaryllidaceae",
+      "lifeCycle": "perennial"
     },
     "106": {
       "scientificName": "Lupinus",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "lifeCycle": "perennial"
     },
     "107": {
       "scientificName": "Muscari",
-      "family": "Asparagaceae"
+      "family": "Asparagaceae",
+      "lifeCycle": "perennial"
     },
     "108": {
       "scientificName": "Pelargonium",
-      "family": "Geraniaceae"
+      "family": "Geraniaceae",
+      "lifeCycle": "perennial"
     },
     "109": {
       "scientificName": "Calibrachoa",
-      "family": "Solanaceae"
+      "family": "Solanaceae",
+      "lifeCycle": "perennial"
     },
     "110": {
       "scientificName": "Coleus",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "lifeCycle": "perennial"
     },
     "112": {
       "scientificName": "Delphinium",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "lifeCycle": "perennial"
     },
     "113": {
       "scientificName": "Brunnera",
-      "family": "Boraginaceae"
+      "family": "Boraginaceae",
+      "lifeCycle": "perennial"
     },
     "114": {
       "scientificName": "Betula",
@@ -7295,46 +7386,56 @@
     },
     "116": {
       "scientificName": "Centaurea",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "118": {
       "scientificName": "Geranium",
-      "family": "Geraniaceae"
+      "family": "Geraniaceae",
+      "lifeCycle": "perennial"
     },
     "119": {
       "scientificName": "Bellis perennis",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "120": {
-      "scientificName": "Lamprocapnos (old: Dicentra)",
-      "family": "Papaveraceae"
+      "scientificName": "Lamprocapnos",
+      "family": "Papaveraceae",
+      "lifeCycle": "perennial"
     },
     "121": {
       "scientificName": "Gaillardia",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "122": {
       "scientificName": "Galanthus",
-      "family": "Amaryllidaceae"
+      "family": "Amaryllidaceae",
+      "lifeCycle": "perennial"
     },
     "123": {
       "scientificName": "Celosia",
-      "family": "Amaranthaceae"
+      "family": "Amaranthaceae",
+      "lifeCycle": "annual"
     },
     "124": {
       "scientificName": "Opuntia",
-      "family": "Cactaceae"
+      "family": "Cactaceae",
+      "lifeCycle": "perennial"
     },
     "125": {
       "scientificName": "Platycodon grandiflorus",
-      "family": "Campanulaceae"
+      "family": "Campanulaceae",
+      "lifeCycle": "perennial"
     },
     "126": {
       "scientificName": "Eucalyptus"
     },
     "127": {
       "scientificName": "Zinnia",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "annual"
     },
     "128": {
       "scientificName": "Carpobrotus edulis",
@@ -7342,11 +7443,13 @@
     },
     "130": {
       "scientificName": "Crocus",
-      "family": "Iridaceae"
+      "family": "Iridaceae",
+      "lifeCycle": "perennial"
     },
     "131": {
-      "scientificName": "Veronica",
-      "family": "Plantaginaceae"
+      "scientificName": "Veronica austriaca",
+      "family": "Plantaginaceae",
+      "lifeCycle": "perennial"
     },
     "132": {
       "scientificName": "Vriesea"
@@ -7370,7 +7473,8 @@
     },
     "139": {
       "scientificName": "Trachelospermum jasminoides",
-      "family": "Apocynaceae"
+      "family": "Apocynaceae",
+      "lifeCycle": "perennial"
     },
     "140": {
       "scientificName": "Lonicera tatarica",
@@ -7382,7 +7486,8 @@
     },
     "142": {
       "scientificName": "Hyacinthus",
-      "family": "Asparagaceae"
+      "family": "Asparagaceae",
+      "lifeCycle": "perennial"
     },
     "144": {
       "scientificName": "Astilbe",
@@ -7394,7 +7499,8 @@
     },
     "146": {
       "scientificName": "Trifolium pratense",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "lifeCycle": "perennial"
     },
     "147": {
       "scientificName": "Sempervivum",
@@ -7408,7 +7514,8 @@
     },
     "150": {
       "scientificName": "Salvia",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "lifeCycle": "perennial"
     },
     "151": {
       "scientificName": "Plectranthus"
@@ -7426,15 +7533,18 @@
     },
     "155": {
       "scientificName": "Angelonia",
-      "family": "Plantaginaceae"
+      "family": "Plantaginaceae",
+      "lifeCycle": "perennial"
     },
     "156": {
       "scientificName": "Cynara cardunculus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "perennial"
     },
     "157": {
       "scientificName": "Jasminum polyanthum",
-      "family": "Oleaceae"
+      "family": "Oleaceae",
+      "lifeCycle": "perennial"
     },
     "158": {
       "scientificName": "Sanchezia",
@@ -7442,35 +7552,43 @@
     },
     "159": {
       "scientificName": "Ageratum",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "annual"
     },
     "160": {
       "scientificName": "Aquilegia vulgaris",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "lifeCycle": "perennial"
     },
     "161": {
       "scientificName": "Aubrieta",
-      "family": "Brassicaceae"
+      "family": "Brassicaceae",
+      "lifeCycle": "perennial"
     },
     "162": {
       "scientificName": "Catharanthus",
-      "family": "Apocynaceae"
+      "family": "Apocynaceae",
+      "lifeCycle": "perennial"
     },
     "163": {
       "scientificName": "Fittonia",
-      "family": "Acanthaceae"
+      "family": "Acanthaceae",
+      "lifeCycle": "perennial"
     },
     "164": {
       "scientificName": "Fumaria",
-      "family": "Papaveraceae"
+      "family": "Papaveraceae",
+      "lifeCycle": "annual"
     },
     "165": {
       "scientificName": "Helleborus",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "lifeCycle": "perennial"
     },
     "166": {
       "scientificName": "Alcea",
-      "family": "Malvaceae"
+      "family": "Malvaceae",
+      "lifeCycle": "biennial"
     },
     "167": {
       "scientificName": "Cichorium Intybus",
@@ -7482,7 +7600,8 @@
     },
     "169": {
       "scientificName": "Amaranthus",
-      "family": "Amaranthaceae"
+      "family": "Amaranthaceae",
+      "lifeCycle": "annual"
     },
     "171": {
       "scientificName": "Ceanothus Impressus"
@@ -7729,7 +7848,8 @@
     },
     "13_1": {
       "scientificName": "Allium ursinum",
-      "family": "Amaryllidaceae"
+      "family": "Amaryllidaceae",
+      "lifeCycle": "perennial"
     },
     "13_2": {
       "scientificName": "Allium tuberosum",
@@ -7737,7 +7857,8 @@
     },
     "31_1": {
       "scientificName": "Rosa canina",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "lifeCycle": "perennial"
     },
     "31_2": {
       "scientificName": "Rosa rugosa",
@@ -7766,11 +7887,13 @@
     },
     "41_1": {
       "scientificName": "Dianthus barbatus",
-      "family": "Caryophyllaceae"
+      "family": "Caryophyllaceae",
+      "lifeCycle": "biennial"
     },
     "47_1": {
       "scientificName": "Anemone coronaria",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "lifeCycle": "perennial"
     },
     "47_2": {
       "scientificName": "Anemone nemorosa",
@@ -7782,7 +7905,8 @@
     },
     "83_1": {
       "scientificName": "Campanula rotundifolia",
-      "family": "Campanulaceae"
+      "family": "Campanulaceae",
+      "lifeCycle": "perennial"
     },
     "83_2": {
       "scientificName": "Campanula Portenschlagiana",
@@ -7802,11 +7926,13 @@
     },
     "106_1": {
       "scientificName": "Lupinus polyphyllus",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "lifeCycle": "perennial"
     },
     "106_2": {
       "scientificName": "Lupinus latifolius",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "lifeCycle": "perennial"
     },
     "106_3": {
       "scientificName": "Lupinus Rivularis"
@@ -7817,7 +7943,8 @@
     },
     "116_1": {
       "scientificName": "Centaurea cyanus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "lifeCycle": "annual"
     },
     "131_1": {
       "scientificName": "Veronica austriaca",
@@ -7829,11 +7956,13 @@
     },
     "150_1": {
       "scientificName": "Salvia officinalis",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "lifeCycle": "perennial"
     },
     "150_2": {
       "scientificName": "Salvia pratensis",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "lifeCycle": "perennial"
     },
     "150_3": {
       "scientificName": "Salvia farinacea"
@@ -7843,11 +7972,13 @@
     },
     "169_1": {
       "scientificName": "Amaranthus cruentus",
-      "family": "Amaranthaceae"
+      "family": "Amaranthaceae",
+      "lifeCycle": "annual"
     },
     "169_2": {
       "scientificName": "Amaranthus hypochondriacus",
-      "family": "Amaranthaceae"
+      "family": "Amaranthaceae",
+      "lifeCycle": "annual"
     },
     "173_1": {
       "scientificName": "Hebe speciosa"
@@ -16401,5 +16532,29 @@
         ]
       }
     }
+  },
+  "memorization": {
+    "plants": [
+      {
+        "id": 3,
+        "imageId": "p3_0_1"
+      },
+      {
+        "id": 4,
+        "imageId": "p4_0_1"
+      },
+      {
+        "id": 5,
+        "imageId": "p5_0_1"
+      },
+      {
+        "id": 6,
+        "imageId": "p6_0_1"
+      },
+      {
+        "id": 14,
+        "imageId": "p14_0_1"
+      }
+    ]
   }
 }
