@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import argparse
 import time
-import re
 from urllib.parse import quote
 
 import ezodf
@@ -29,6 +28,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException, TimeoutException
+
+from name_utils import latin_binomial_key
 
 FLO_BASE = "https://floraveg.eu"
 FLO_LIST_TPL = FLO_BASE + "/taxon/list?q={query}"
@@ -49,16 +50,32 @@ FLO_WAIT_SEC = 5.0
 CSE_WAIT_SEC = 12.0
 
 
-def latin_binomial_key(text: str) -> str:
-    """Return 'genus species' key from a text in lower-case (used only for floraveg)."""
-    if not text:
-        return ""
-    text = re.sub(r"\([^)]*\)", " ", text)
-    text = text.replace("×", "x").replace("✕", "x")
-    tokens = re.findall(r"[A-Za-z]+", text.lower())
-    skip = {"subsp", "ssp", "var", "f", "forma", "subvar", "cv", "cultivar"}
-    core = [t for t in tokens if t not in skip]
-    return " ".join(core[:2]) if len(core) >= 2 else ""
+def floraveg_candidate_queries(plant_name: str, binomial_key: str | None = None) -> list[str]:
+    """Return list of candidate queries/slug segments to try for floraveg."""
+    candidates: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: str | None):
+        value = (value or "").strip()
+        if value and value not in seen:
+            seen.add(value)
+            candidates.append(value)
+
+    add(plant_name)
+
+    hybrid_ascii = (plant_name or "").replace("×", "x").replace("✕", "x")
+    if hybrid_ascii != plant_name:
+        add(hybrid_ascii)
+
+    key = binomial_key if binomial_key is not None else latin_binomial_key(plant_name)
+    if key:
+        parts = key.split()
+        if len(parts) >= 2:
+            genus, species = parts[0], parts[1]
+            add(f"{genus.capitalize()} {species}")
+        add(key)
+
+    return candidates
 
 
 def create_driver(browser="chrome", headless=True):
@@ -133,7 +150,9 @@ def try_floraveg_overview(driver, plant_name: str, verbose=False) -> str | None:
     return None
 
 
-def find_on_floraveg(driver, plant_name: str, verbose=False) -> str | None:
+def find_on_floraveg(
+    driver, plant_name: str, verbose=False, binomial_key: str | None = None
+) -> str | None:
     """
     floraveg search flow:
       0) try direct overview /taxon/overview/<name>
@@ -141,86 +160,107 @@ def find_on_floraveg(driver, plant_name: str, verbose=False) -> str | None:
       2) /taxon/ UI search -> first overview link
     Only attempt floraveg when the name is binomial (two words).
     """
-    if len(plant_name.split()) < 2:
+    key = binomial_key if binomial_key is not None else latin_binomial_key(plant_name)
+    if not key:
         if verbose:
             print("    floraveg: skipped (not binomial)")
         return None
 
+    candidates = floraveg_candidate_queries(plant_name, binomial_key=key)
+
     # Step 0: direct overview
-    direct = try_floraveg_overview(driver, plant_name, verbose=verbose)
-    if direct:
-        return direct
+    for candidate in candidates:
+        direct = try_floraveg_overview(driver, candidate, verbose=verbose)
+        if direct:
+            return direct
 
     # Step 1: list search
-    q = quote(plant_name.strip())
-    list_url = FLO_LIST_TPL.format(query=q)
-    try:
-        if verbose:
-            print("    floraveg: open list URL:", list_url)
-        driver.get(list_url)
-        WebDriverWait(driver, FLO_WAIT_SEC).until(
-            lambda d: len(floraveg_collect_overview_links(d)) > 0
-        )
-        links = floraveg_collect_overview_links(driver)
-        if verbose:
-            print("    floraveg: list links:", links[:3], ("... total " + str(len(links)) if len(links) > 3 else ""))
-        if links:
-            return links[0]
-    except TimeoutException:
-        if verbose:
-            print("    floraveg: no links found on list page (timeout).")
-    except WebDriverException as e:
-        if verbose:
-            print("    floraveg list error:", e)
+    for candidate in candidates:
+        q = quote(candidate.strip())
+        list_url = FLO_LIST_TPL.format(query=q)
+        try:
+            if verbose:
+                print(f"    floraveg: open list URL ({candidate!r}):", list_url)
+            driver.get(list_url)
+            WebDriverWait(driver, FLO_WAIT_SEC).until(
+                lambda d: len(floraveg_collect_overview_links(d)) > 0
+            )
+            links = floraveg_collect_overview_links(driver)
+            if verbose:
+                print(
+                    "    floraveg: list links:",
+                    links[:3],
+                    ("... total " + str(len(links)) if len(links) > 3 else ""),
+                )
+            if links:
+                return links[0]
+        except TimeoutException:
+            if verbose:
+                print(
+                    f"    floraveg: no links found on list page for {candidate!r} (timeout)."
+                )
+        except WebDriverException as e:
+            if verbose:
+                print(f"    floraveg list error for {candidate!r}:", e)
 
     # Step 2: fallback to UI search
-    try:
-        if verbose:
-            print("    floraveg: open UI:", FLO_TAXON_UI)
-        driver.get(FLO_TAXON_UI)
-        input_el = None
-        for sel in [
-            "input[type='search']",
-            "input[name='q']",
-            "form input",
-            "input",
-        ]:
-            try:
-                input_el = WebDriverWait(driver, 2.0).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, sel))
-                )
-                if input_el:
-                    if verbose:
-                        print(f"    floraveg: found search input with selector: {sel!r}")
-                    break
-            except TimeoutException:
+    for candidate in candidates:
+        try:
+            if verbose:
+                print(f"    floraveg: open UI for {candidate!r}:", FLO_TAXON_UI)
+            driver.get(FLO_TAXON_UI)
+            input_el = None
+            for sel in [
+                "input[type='search']",
+                "input[name='q']",
+                "form input",
+                "input",
+            ]:
+                try:
+                    input_el = WebDriverWait(driver, 2.0).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, sel))
+                    )
+                    if input_el:
+                        if verbose:
+                            print(
+                                f"    floraveg: found search input with selector: {sel!r}"
+                            )
+                        break
+                except TimeoutException:
+                    continue
+
+            if not input_el:
+                if verbose:
+                    print("    floraveg: could not find search input on UI page.")
                 continue
 
-        if not input_el:
+            from selenium.webdriver.common.keys import Keys
+
+            input_el.clear()
+            input_el.send_keys(candidate)
+            input_el.send_keys(Keys.ENTER)
+
+            WebDriverWait(driver, FLO_WAIT_SEC).until(
+                lambda d: len(floraveg_collect_overview_links(d)) > 0
+            )
+            links = floraveg_collect_overview_links(driver)
             if verbose:
-                print("    floraveg: could not find search input on UI page.")
-            return None
+                print(
+                    "    floraveg: UI links:",
+                    links[:3],
+                    ("... total " + str(len(links)) if len(links) > 3 else ""),
+                )
+            if links:
+                return links[0]
 
-        from selenium.webdriver.common.keys import Keys
-        input_el.clear()
-        input_el.send_keys(plant_name)
-        input_el.send_keys(Keys.ENTER)
-
-        WebDriverWait(driver, FLO_WAIT_SEC).until(
-            lambda d: len(floraveg_collect_overview_links(d)) > 0
-        )
-        links = floraveg_collect_overview_links(driver)
-        if verbose:
-            print("    floraveg: UI links:", links[:3], ("... total " + str(len(links)) if len(links) > 3 else ""))
-        if links:
-            return links[0]
-
-    except TimeoutException:
-        if verbose:
-            print("    floraveg: no links found via UI (timeout).")
-    except WebDriverException as e:
-        if verbose:
-            print("    floraveg UI error:", e)
+        except TimeoutException:
+            if verbose:
+                print(
+                    f"    floraveg: no links found via UI for {candidate!r} (timeout)."
+                )
+        except WebDriverException as e:
+            if verbose:
+                print(f"    floraveg UI error for {candidate!r}:", e)
 
     return None
 
@@ -326,8 +366,11 @@ def process_ods(path: str, browser: str, headless: bool, max_rows: int | None, v
 
             # floraveg (binomials only)
             if not (flo_cell.value or "").strip():
-                if len(name.split()) >= 2:
-                    u1 = find_on_floraveg(driver, name, verbose=verbose)
+                binomial_key = latin_binomial_key(name)
+                if binomial_key:
+                    u1 = find_on_floraveg(
+                        driver, name, verbose=verbose, binomial_key=binomial_key
+                    )
                     if u1:
                         flo_cell.set_value(u1)
                         doc.save()
@@ -335,8 +378,11 @@ def process_ods(path: str, browser: str, headless: bool, max_rows: int | None, v
                         if verbose:
                             print("  floraveg:", u1)
                     else:
+                        flo_cell.set_value("no")
+                        doc.save()
+                        changed += 1
                         if verbose:
-                            print("  floraveg: not found")
+                            print("  floraveg: not found (marked 'no')")
                 else:
                     if verbose:
                         print("  floraveg: skipped (not binomial)")

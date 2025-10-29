@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import Iterable, List, Sequence, Tuple
 import xml.etree.ElementTree as ET
 
+from name_utils import canonical_name_key
+
 # Namespaces used in ODF content.xml files
 NAMESPACES = {
     "office": "urn:oasis:names:tc:opendocument:xmlns:office:1.0",
@@ -121,17 +123,43 @@ def build_updated_rows(
     plant_rows: List[Tuple[int, str]],
     column_count: int,
 ) -> Tuple[List[List[str]], List[Tuple[int, str]], List[str]]:
-    row_map = {}
+    exact_rows: dict[str, List[str]] = {}
+    normalised_index: dict[str, str] = {}
+
+    def register_row(name: str, row: List[str]) -> None:
+        if name in exact_rows:
+            return
+        exact_rows[name] = row
+        norm = canonical_name_key(name)
+        if norm and norm not in normalised_index:
+            normalised_index[norm] = name
+
+    def pop_row(name: str) -> List[str] | None:
+        row = exact_rows.pop(name, None)
+        if row is not None:
+            norm = canonical_name_key(name)
+            if norm and normalised_index.get(norm) == name:
+                normalised_index.pop(norm, None)
+        return row
+
     for row in existing_rows:
         if not row:
             continue
         key = row[0].strip()
-        if key and key not in row_map:
-            row_map[key] = list(row)
+        if key:
+            register_row(key, list(row))
+
     updated_rows: List[List[str]] = [list(header)]
     new_entries: List[Tuple[int, str]] = []
+
     for csv_row_index, plant_name in plant_rows:
-        row = row_map.pop(plant_name, None)
+        row = pop_row(plant_name)
+        if row is None:
+            norm = canonical_name_key(plant_name)
+            if norm:
+                alt_key = normalised_index.pop(norm, None)
+                if alt_key:
+                    row = pop_row(alt_key)
         if row is None:
             row = [""] * column_count
             row[0] = plant_name
@@ -141,7 +169,8 @@ def build_updated_rows(
             row = row[:column_count]
             row[0] = plant_name
         updated_rows.append(row)
-    removed = sorted(row_map.keys())
+
+    removed = sorted(exact_rows.keys())
     return updated_rows, new_entries, removed
 
 
