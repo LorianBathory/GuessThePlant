@@ -63,6 +63,22 @@ async function loadJsonModule(relativePath, {
   }
 }
 
+const plantCatalogJson = Object.freeze(await loadJsonModule('../data/json/plantCatalog.json', {
+  fileSystemHint: (
+    'Не удалось загрузить plantCatalog.json напрямую из файловой системы. '
+    + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
+    + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.'
+  )
+}));
+
+const plantFactsJson = Object.freeze(await loadJsonModule('../data/json/plantFacts.json', {
+  fileSystemHint: (
+    'Не удалось загрузить plantFacts.json напрямую из файловой системы. '
+    + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
+    + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.'
+  )
+}));
+
 const plantDataJson = Object.freeze(await loadJsonModule('../data/json/plantData.json', {
   fallbackKey: 'plantData',
   fileSystemHint: (
@@ -90,14 +106,14 @@ function freezeQuestionDefinitions(definitions) {
 }
 
 export const dataBundle = Object.freeze({
-  plantNames: plantDataJson.plantNames,
-  species: plantDataJson.species,
-  genus: plantDataJson.genus,
-  plantImages: plantDataJson.plantImages,
-  plantParameters: plantDataJson.plantParameters,
-  plantFamilies: plantDataJson.plantFamilies,
-  memorization: plantDataJson.memorization,
-  difficulties: plantDataJson.difficulties,
+  plantNames: plantCatalogJson.plantNames || plantDataJson.plantNames || {},
+  species: plantCatalogJson.species || plantDataJson.species || {},
+  genus: plantFactsJson.genus || plantCatalogJson.genus || plantDataJson.genus || [],
+  plantImages: plantCatalogJson.plantImages || plantDataJson.plantImages || [],
+  plantParameters: plantFactsJson.plantParameters || plantDataJson.plantParameters || {},
+  plantFamilies: plantFactsJson.plantFamilies || plantDataJson.plantFamilies || {},
+  memorization: plantDataJson.memorization || {},
+  difficulties: plantDataJson.difficulties || {},
   questionDefinitionsByType: Object.freeze({
     [questionTypes.BOUQUET]: freezeQuestionDefinitions(bouquetQuestionDefinitions)
   })
