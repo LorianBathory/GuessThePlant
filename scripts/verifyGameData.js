@@ -9,12 +9,131 @@ import {
   imageIdsByDifficulty,
   getDifficultyByQuestionId,
   getDifficultyByImageId,
-  difficultyLevels
+  difficultyLevels,
+  plantParametersById,
+  plantFamilies,
+  allGenusEntries,
+  buildGameDataForTesting
 } from '../src/game/dataLoader.js';
 import { questionTypes } from '../src/data/questionTypes.js';
 
 function assertHasKeys(object, message) {
   assert.ok(object && Object.keys(object).length > 0, message);
+}
+
+function unwrapJsonModule(module) {
+  return module && typeof module === 'object' && 'default' in module
+    ? module.default
+    : module;
+}
+
+async function loadJson(relativePath) {
+  let lastError;
+
+  try {
+    const module = await import(relativePath, { assert: { type: 'json' } });
+    return unwrapJsonModule(module) || {};
+  } catch (assertError) {
+    lastError = assertError;
+
+    try {
+      const module = await import(relativePath, { with: { type: 'json' } });
+      return unwrapJsonModule(module) || {};
+    } catch (withError) {
+      lastError = withError;
+    }
+  }
+
+  throw lastError;
+}
+
+const plantCatalogJson = await loadJson('../src/data/json/plantCatalog.json');
+const plantFactsJson = await loadJson('../src/data/json/plantFacts.json');
+
+const NUMERIC_ID_PATTERN = /^\d+$/;
+
+function parseCatalogId(rawId) {
+  const stringId = String(rawId);
+  return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : rawId;
+}
+
+function cloneStructured(value) {
+  if (Array.isArray(value)) {
+    return value.map(item => cloneStructured(item));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, nestedValue]) => [key, cloneStructured(nestedValue)])
+    );
+  }
+
+  return value;
+}
+
+function deepFreeze(value) {
+  if (Array.isArray(value)) {
+    return Object.freeze(value.map(item => deepFreeze(item)));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.freeze(
+      Object.fromEntries(
+        Object.entries(value).map(([key, nestedValue]) => [key, deepFreeze(nestedValue)])
+      )
+    );
+  }
+
+  return value;
+}
+
+function buildPlantFamilyDataFromJson(rawFamilies) {
+  const source = rawFamilies && typeof rawFamilies === 'object' ? rawFamilies : {};
+
+  const normalizedFamilies = Object.create(null);
+
+  Object.entries(source).forEach(([family, ids]) => {
+    const normalizedIds = Array.isArray(ids)
+      ? ids.map(entryId => parseCatalogId(entryId))
+      : [];
+
+    normalizedFamilies[family] = normalizedIds;
+  });
+
+  const plantFamilyById = {};
+
+  Object.entries(normalizedFamilies).forEach(([family, ids]) => {
+    ids.forEach(id => {
+      plantFamilyById[id] = family;
+      plantFamilyById[String(id)] = family;
+    });
+  });
+
+  return { plantFamilies: deepFreeze(normalizedFamilies), plantFamilyById };
+}
+
+function buildPlantParametersFromJson({ plantParameters, plantFamilies }) {
+  const { plantFamilyById } = buildPlantFamilyDataFromJson(plantFamilies);
+  const source = plantParameters && typeof plantParameters === 'object' ? plantParameters : {};
+
+  const normalizedParameters = Object.create(null);
+
+  Object.entries(source).forEach(([id, params]) => {
+    const parsedId = parseCatalogId(id);
+    const clone = params && typeof params === 'object' ? cloneStructured(params) : {};
+
+    const fallbackFamily = clone.family ?? plantFamilyById[parsedId] ?? plantFamilyById[id] ?? null;
+
+    if (fallbackFamily != null) {
+      clone.family = fallbackFamily;
+    } else if ('family' in clone && clone.family == null) {
+      clone.family = null;
+    }
+
+    normalizedParameters[parsedId] = clone;
+  });
+
+  return deepFreeze(normalizedParameters);
 }
 
 function assertPlantIntegrity() {
@@ -73,8 +192,58 @@ function assertDifficultyLookups() {
   assert.ok(difficultyLevels.MEDIUM, 'Default difficulty level must be available');
 }
 
+function assertCatalogConsistency() {
+  const normalizedGenus = Array.isArray(plantFactsJson.genus) && plantFactsJson.genus.length > 0
+    ? plantFactsJson.genus
+    : plantCatalogJson.genus || [];
+
+  const combinedGameData = buildGameDataForTesting({
+    plantNames: plantCatalogJson.plantNames || {},
+    genusEntries: normalizedGenus,
+    plantImages: plantCatalogJson.plantImages || [],
+    speciesEntries: plantCatalogJson.species || {}
+  });
+
+  const familyDataFromJson = buildPlantFamilyDataFromJson(plantFactsJson.plantFamilies);
+  const plantParametersFromJson = buildPlantParametersFromJson({
+    plantParameters: plantFactsJson.plantParameters,
+    plantFamilies: plantFactsJson.plantFamilies
+  });
+
+  assert.deepStrictEqual(
+    combinedGameData.plants,
+    plants,
+    'Plants derived from catalog JSON must match runtime export'
+  );
+
+  assert.deepStrictEqual(
+    combinedGameData.allGenusEntries,
+    allGenusEntries,
+    'Genus entries from plantFacts.json must match runtime export'
+  );
+
+  assert.deepStrictEqual(
+    familyDataFromJson.plantFamilies,
+    plantFamilies,
+    'Plant family mapping derived from plantFacts.json must match runtime export'
+  );
+
+  assert.deepStrictEqual(
+    plantParametersFromJson,
+    plantParametersById,
+    'Plant parameters from plantFacts.json must match runtime export'
+  );
+
+  assert.deepStrictEqual(
+    combinedGameData.speciesById,
+    speciesById,
+    'Species catalog derived from plantCatalog.json must match runtime export'
+  );
+}
+
 assertPlantIntegrity();
 assertBouquetIntegrity();
 assertDifficultyLookups();
+assertCatalogConsistency();
 
 console.log('Game data verification passed');
