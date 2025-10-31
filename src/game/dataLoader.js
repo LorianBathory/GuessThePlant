@@ -1,5 +1,12 @@
 import { questionTypes } from '../data/questionTypes.js';
 
+const NUMERIC_ID_PATTERN = /^\d+$/;
+
+function parseCatalogId(rawId) {
+  const stringId = String(rawId);
+  return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : stringId;
+}
+
 function extractJsonModuleData(module, fallbackKey) {
   if (module && typeof module === 'object') {
     if ('default' in module) {
@@ -63,17 +70,9 @@ async function loadJsonModule(relativePath, {
   }
 }
 
-const plantCatalogJson = Object.freeze(await loadJsonModule('../data/json/plantCatalog.json', {
+const memorizationJson = Object.freeze(await loadJsonModule('../data/json/memorization.json', {
   fileSystemHint: (
-    'Не удалось загрузить plantCatalog.json напрямую из файловой системы. '
-    + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
-    + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.'
-  )
-}));
-
-const plantFactsJson = Object.freeze(await loadJsonModule('../data/json/plantFacts.json', {
-  fileSystemHint: (
-    'Не удалось загрузить plantFacts.json напрямую из файловой системы. '
+    'Не удалось загрузить memorization.json напрямую из файловой системы. '
     + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
     + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.'
   )
@@ -93,6 +92,113 @@ const bouquetQuestionDefinitions = Object.freeze(await loadJsonModule('../data/j
   fallbackKey: 'bouquetQuestions'
 }));
 
+function addUniqueValue(list, value) {
+  const key = String(value);
+
+  if (!list.some(existing => String(existing) === key)) {
+    list.push(value);
+  }
+
+  return list;
+}
+
+export function derivePlantCatalogFromQuestions(plantQuestions = []) {
+  if (!Array.isArray(plantQuestions) || plantQuestions.length === 0) {
+    return {
+      plantNames: {},
+      species: {},
+      plantImages: []
+    };
+  }
+
+  const plantNames = Object.create(null);
+  const speciesDraft = Object.create(null);
+  const plantImagesById = new Map();
+
+  plantQuestions.forEach(question => {
+    if (!question || typeof question !== 'object') {
+      return;
+    }
+
+    const rawId = question.correctAnswerId ?? question.id;
+    if (rawId == null) {
+      return;
+    }
+
+    const parsedId = parseCatalogId(rawId);
+    const idKey = String(parsedId);
+
+    const names = question.names && typeof question.names === 'object'
+      ? { ...question.names }
+      : undefined;
+
+    if (names && !plantNames[idKey]) {
+      plantNames[idKey] = names;
+    }
+
+    if (!speciesDraft[idKey]) {
+      speciesDraft[idKey] = {
+        id: parsedId,
+        names: names ? { ...names } : undefined,
+        images: [],
+        wrongAnswers: []
+      };
+    }
+
+    const draftEntry = speciesDraft[idKey];
+
+    if (names && !draftEntry.names) {
+      draftEntry.names = { ...names };
+    }
+
+    if (Array.isArray(question.wrongAnswers)) {
+      question.wrongAnswers.forEach(answerId => {
+        const normalized = parseCatalogId(answerId);
+        addUniqueValue(draftEntry.wrongAnswers, normalized);
+      });
+    }
+
+    const imageId = question.imageId != null ? String(question.imageId) : null;
+    const imageSrc = typeof question.image === 'string' ? question.image : null;
+
+    if (imageId && imageSrc) {
+      addUniqueValue(draftEntry.images, imageId);
+
+      if (!plantImagesById.has(imageId)) {
+        plantImagesById.set(imageId, { id: imageId, src: imageSrc });
+      }
+    }
+  });
+
+  const species = Object.fromEntries(
+    Object.entries(speciesDraft).map(([idKey, entry]) => {
+      const names = plantNames[idKey] || entry.names || {};
+      const normalizedEntry = {
+        id: entry.id,
+        names
+      };
+
+      if (entry.images.length > 0) {
+        normalizedEntry.images = entry.images.slice();
+      }
+
+      if (entry.wrongAnswers.length > 0) {
+        normalizedEntry.wrongAnswers = entry.wrongAnswers.slice();
+      }
+
+      return [idKey, normalizedEntry];
+    })
+  );
+
+  return {
+    plantNames,
+    species,
+    plantImages: Array.from(plantImagesById.values())
+  };
+}
+
+const derivedCatalog = derivePlantCatalogFromQuestions(plantDataJson.plantQuestions || []);
+
 function freezeQuestionDefinitions(definitions) {
   if (!Array.isArray(definitions)) {
     return Object.freeze([]);
@@ -106,25 +212,22 @@ function freezeQuestionDefinitions(definitions) {
 }
 
 export const dataBundle = Object.freeze({
-  plantNames: plantCatalogJson.plantNames || plantDataJson.plantNames || {},
-  species: plantCatalogJson.species || plantDataJson.species || {},
-  genus: plantFactsJson.genus || plantCatalogJson.genus || plantDataJson.genus || [],
-  plantImages: plantCatalogJson.plantImages || plantDataJson.plantImages || [],
-  plantParameters: plantFactsJson.plantParameters || plantDataJson.plantParameters || {},
-  plantFamilies: plantFactsJson.plantFamilies || plantDataJson.plantFamilies || {},
-  memorization: plantDataJson.memorization || {},
+  plantNames: derivedCatalog.plantNames,
+  species: derivedCatalog.species,
+  genus: Array.isArray(memorizationJson.genus) ? memorizationJson.genus : Array.isArray(plantDataJson.genus) ? plantDataJson.genus : [],
+  plantImages: derivedCatalog.plantImages,
+  plantParameters: memorizationJson.plantParameters || plantDataJson.plantParameters || {},
+  plantFamilies: memorizationJson.plantFamilies || plantDataJson.plantFamilies || {},
+  memorization: (
+    memorizationJson && typeof memorizationJson === 'object'
+      ? { plants: Array.isArray(memorizationJson.plants) ? memorizationJson.plants : [] }
+      : {}
+  ),
   difficulties: plantDataJson.difficulties || {},
   questionDefinitionsByType: Object.freeze({
     [questionTypes.BOUQUET]: freezeQuestionDefinitions(bouquetQuestionDefinitions)
   })
 });
-
-const NUMERIC_ID_PATTERN = /^\d+$/;
-
-function parseCatalogId(rawId) {
-  const stringId = String(rawId);
-  return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : stringId;
-}
 
 function cloneStructured(value) {
   if (Array.isArray(value)) {
@@ -517,6 +620,66 @@ function buildPlants({ speciesById, plantImagesById, difficultyLookups }) {
   );
 }
 
+function normalizeMemorizationEntry(entry) {
+  if (!entry || typeof entry !== 'object') {
+    return null;
+  }
+
+  const rawId = entry.id ?? entry.plantId ?? entry.correctAnswerId;
+  const imageId = entry.imageId != null ? String(entry.imageId) : null;
+
+  if (rawId == null || !imageId) {
+    return null;
+  }
+
+  return {
+    id: parseCatalogId(rawId),
+    imageId
+  };
+}
+
+function buildMemorizationPlants({ memorizationEntries, speciesById, plantImagesById, difficultyLookups }) {
+  if (!Array.isArray(memorizationEntries) || memorizationEntries.length === 0) {
+    return Object.freeze([]);
+  }
+
+  const normalizedEntries = memorizationEntries
+    .map(normalizeMemorizationEntry)
+    .filter(Boolean);
+
+  return Object.freeze(
+    normalizedEntries
+      .map(({ id, imageId }) => {
+        const species = speciesById[id];
+        const imageEntry = plantImagesById[imageId];
+
+        if (!species || !species.names || !imageEntry) {
+          return null;
+        }
+
+        const overrideDifficulty = difficultyLookups.getImageDifficulty(imageEntry.id, questionTypes.PLANT);
+        const difficulty = overrideDifficulty
+          || difficultyLookups.getQuestionDifficulty(id, questionTypes.PLANT)
+          || difficultyLookups.defaultDifficulty;
+
+        return Object.freeze({
+          id,
+          correctAnswerId: id,
+          imageId: imageEntry.id,
+          image: imageEntry.src,
+          names: species.names,
+          wrongAnswers: species.wrongAnswers,
+          difficulty,
+          questionVariantId: `memorization-${id}`,
+          questionType: questionTypes.PLANT,
+          selectionGroupId: `memorization-${id}`,
+          questionPromptKey: 'question'
+        });
+      })
+      .filter(Boolean)
+  );
+}
+
 function buildBouquetQuestions({ bouquetDefinitions, plantNamesById, difficultyLookups }) {
   return Object.freeze(
     bouquetDefinitions.map(entry => {
@@ -609,6 +772,12 @@ function buildGameData({
     plantImagesById: imagesData.plantImagesById,
     difficultyLookups: difficultyData
   });
+  const memorizationPlants = buildMemorizationPlants({
+    memorizationEntries: dataBundle.memorization?.plants,
+    speciesById: speciesData.speciesById,
+    plantImagesById: imagesData.plantImagesById,
+    difficultyLookups: difficultyData
+  });
   const normalizedQuestionDefinitions = (
     questionDefinitionsByType && typeof questionDefinitionsByType === 'object'
       ? questionDefinitionsByType
@@ -631,6 +800,7 @@ function buildGameData({
     ...genusData,
     ...speciesData,
     plants,
+    memorizationPlants,
     bouquetQuestions: bouquetSet,
     questionSetsByType,
     questionDefinitionsByType: Object.freeze({ ...normalizedQuestionDefinitions }),
@@ -670,6 +840,8 @@ export const {
   getImageDifficulty,
   defaultDifficulty
 } = gameData;
+
+export const memorizationPlants = gameData.memorizationPlants;
 
 export const ALL_CHOICE_IDS = allChoiceIds;
 export const imageDifficultyOverrides = imageDifficultyLookup;

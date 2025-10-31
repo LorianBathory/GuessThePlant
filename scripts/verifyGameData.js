@@ -13,7 +13,8 @@ import {
   plantParametersById,
   plantFamilies,
   allGenusEntries,
-  buildGameDataForTesting
+  buildGameDataForTesting,
+  derivePlantCatalogFromQuestions
 } from '../src/game/dataLoader.js';
 import { questionTypes } from '../src/data/questionTypes.js';
 
@@ -47,8 +48,8 @@ async function loadJson(relativePath) {
   throw lastError;
 }
 
-const plantCatalogJson = await loadJson('../src/data/json/plantCatalog.json');
-const plantFactsJson = await loadJson('../src/data/json/plantFacts.json');
+const plantDataJson = await loadJson('../src/data/json/plantData.json');
+const memorizationJson = await loadJson('../src/data/json/memorization.json');
 
 const NUMERIC_ID_PATTERN = /^\d+$/;
 
@@ -193,21 +194,25 @@ function assertDifficultyLookups() {
 }
 
 function assertCatalogConsistency() {
-  const normalizedGenus = Array.isArray(plantFactsJson.genus) && plantFactsJson.genus.length > 0
-    ? plantFactsJson.genus
-    : plantCatalogJson.genus || [];
+  const normalizedGenus = Array.isArray(memorizationJson.genus) && memorizationJson.genus.length > 0
+    ? memorizationJson.genus
+    : Array.isArray(plantDataJson.genus)
+      ? plantDataJson.genus
+      : [];
+
+  const canonicalCatalog = derivePlantCatalogFromQuestions(plantDataJson.plantQuestions || []);
 
   const combinedGameData = buildGameDataForTesting({
-    plantNames: plantCatalogJson.plantNames || {},
+    plantNames: canonicalCatalog.plantNames,
     genusEntries: normalizedGenus,
-    plantImages: plantCatalogJson.plantImages || [],
-    speciesEntries: plantCatalogJson.species || {}
+    plantImages: canonicalCatalog.plantImages,
+    speciesEntries: canonicalCatalog.species
   });
 
-  const familyDataFromJson = buildPlantFamilyDataFromJson(plantFactsJson.plantFamilies);
+  const familyDataFromJson = buildPlantFamilyDataFromJson(memorizationJson.plantFamilies);
   const plantParametersFromJson = buildPlantParametersFromJson({
-    plantParameters: plantFactsJson.plantParameters,
-    plantFamilies: plantFactsJson.plantFamilies
+    plantParameters: memorizationJson.plantParameters,
+    plantFamilies: memorizationJson.plantFamilies
   });
 
   assert.deepStrictEqual(
@@ -219,25 +224,25 @@ function assertCatalogConsistency() {
   assert.deepStrictEqual(
     combinedGameData.allGenusEntries,
     allGenusEntries,
-    'Genus entries from plantFacts.json must match runtime export'
+    'Genus entries from memorization.json must match runtime export'
   );
 
   assert.deepStrictEqual(
     familyDataFromJson.plantFamilies,
     plantFamilies,
-    'Plant family mapping derived from plantFacts.json must match runtime export'
+    'Plant family mapping derived from memorization.json must match runtime export'
   );
 
   assert.deepStrictEqual(
     plantParametersFromJson,
     plantParametersById,
-    'Plant parameters from plantFacts.json must match runtime export'
+    'Plant parameters from memorization.json must match runtime export'
   );
 
   assert.deepStrictEqual(
     combinedGameData.speciesById,
     speciesById,
-    'Species catalog derived from plantCatalog.json must match runtime export'
+    'Species catalog derived from plantData.json must match runtime export'
   );
 }
 
