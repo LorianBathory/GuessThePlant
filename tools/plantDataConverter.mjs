@@ -2,6 +2,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { basename } from 'node:path';
 
+import { buildGameDataForTesting, deriveNormalizedPlantData } from '../src/game/dataLoader.js';
+
 const CSV_HEADER = [
   'id',
   '(ru)',
@@ -290,12 +292,14 @@ async function convertJsonToCsv(inputPath, outputPath) {
   const jsonText = await readFile(inputPath, 'utf8');
   const plantData = JSON.parse(jsonText);
 
-  const namesById = plantData.plantNames || {};
-  const speciesById = plantData.species || {};
+  const normalizedCatalog = deriveNormalizedPlantData(plantData);
+  const namesById = normalizedCatalog.plantNames || {};
+  const speciesById = normalizedCatalog.species || {};
   const parametersById = plantData.plantParameters || {};
-  const questions = ensureArray(plantData.plantQuestions).filter((entry) => entry?.questionType === 'plant');
-  const difficultySource = plantData.difficulties || {};
-  const questionIdsByDifficulty = difficultySource.questionIdsByDifficulty?.plant || {};
+  const difficultySource = normalizedCatalog.difficulties || {};
+  const questionIdsByDifficulty = difficultySource.questionIdsByDifficulty?.plant
+    || difficultySource.questionIdsByDifficulty?.PLANT
+    || {};
 
   const baseDifficultyById = new Map();
   for (const [difficulty, ids] of Object.entries(questionIdsByDifficulty)) {
@@ -304,6 +308,15 @@ async function convertJsonToCsv(inputPath, outputPath) {
     }
   }
 
+  const normalizedGameData = buildGameDataForTesting({
+    plantNames: namesById,
+    speciesEntries: speciesById,
+    plantImages: normalizedCatalog.plantImages || [],
+    difficulties: difficultySource,
+    questionDefinitionsByType: {}
+  });
+
+  const questions = Array.isArray(normalizedGameData.plants) ? normalizedGameData.plants : [];
   const questionsByPlantId = new Map();
   for (const question of questions) {
     const plantId = normalizeId(question.correctAnswerId ?? question.id);
@@ -393,14 +406,8 @@ function extractList(cell) {
 
 function parseCsvData(rows) {
   const records = parseCsvRows(rows);
-  const plantNames = {};
-  const species = {};
-  const plantQuestions = [];
-  const plantImages = new Map();
-  const plantParameters = {};
-  const plantFamilies = new Map();
-  const baseDifficultyById = new Map();
-  const imageDifficultyById = new Map();
+  const plants = {};
+  const seenImageIds = new Set();
 
   for (const record of records) {
     const plantId = normalizeId(record.id ?? record['id '] ?? '');
@@ -412,31 +419,10 @@ function parseCsvData(rows) {
     const en = record.en || '';
     const nl = record.nl || '';
     const sci = record.sci || '';
-    const family = record.family || '';
     const { base, overrides } = parseDifficultyCell(
       record.difficulty || '',
       record.difficultyOverrides || ''
     );
-
-    plantNames[plantId] = { ru, en, nl, sci };
-
-    if (sci || family) {
-      const params = {};
-      if (sci) params.scientificName = sci;
-      if (family) params.family = family;
-      plantParameters[plantId] = params;
-    }
-
-    if (family) {
-      if (!plantFamilies.has(family)) {
-        plantFamilies.set(family, []);
-      }
-      plantFamilies.get(family).push(plantId);
-    }
-
-    if (base) {
-      baseDifficultyById.set(plantId, base);
-    }
 
     const wrongAnswersRaw = extractList(record.wrongAnswers || '');
     const wrongAnswers = wrongAnswersRaw
@@ -470,101 +456,62 @@ function parseCsvData(rows) {
     overrides.forEach((difficulty, imageId) => {
       const normalizedId = normalizeId(imageId);
       const autoId = legacyImageIdMap.get(normalizedId) || normalizedId;
-      normalizedOverrides.set(autoId, difficulty);
+      if (autoId) {
+        normalizedOverrides.set(autoId, difficulty);
+      }
     });
 
-    species[plantId] = {
+    const imageEntries = [];
+    finalImageIds.forEach((imageId, index) => {
+      const normalizedId = normalizeId(imageId);
+      if (!normalizedId) {
+        return;
+      }
+
+      if (seenImageIds.has(normalizedId)) {
+        throw new Error(`Повторяющийся идентификатор изображения ${normalizedId} (строка ${record.__line}).`);
+      }
+      seenImageIds.add(normalizedId);
+
+      const imageFile = imageFiles[index] || '';
+      const src = imageFile
+        ? (imageFile.startsWith('images/') ? imageFile : `images/${imageFile}`)
+        : `images/${normalizedId}.JPG`;
+
+      const overrideDifficulty = normalizedOverrides.get(normalizedId) || null;
+      const imageEntry = { id: normalizedId, src };
+
+      if (overrideDifficulty) {
+        imageEntry.difficulty = overrideDifficulty;
+      }
+
+      imageEntries.push(imageEntry);
+    });
+
+    const plantEntry = {
       id: isNumericId(plantId) ? Number(plantId) : plantId,
-      names: { ru, en, nl, sci },
-      images: finalImageIds,
-      ...(wrongAnswers.length > 0 ? { wrongAnswers } : {})
+      names: { ru, en, nl, sci }
     };
 
-    finalImageIds.forEach((imageId, index) => {
-      const imageFile = imageFiles[index] || '';
-      if (imageFile) {
-        plantImages.set(imageId, { id: imageId, src: imageFile.startsWith('images/') ? imageFile : `images/${imageFile}` });
-      }
-      const variantIndex = index;
-      const difficulty = normalizedOverrides.get(imageId) || base || null;
-      if (difficulty) {
-        imageDifficultyById.set(imageId, difficulty);
-      }
-      const questionWrongAnswers = wrongAnswers.length > 0 ? wrongAnswers : [];
-      plantQuestions.push({
-        id: isNumericId(plantId) ? Number(plantId) : plantId,
-        correctAnswerId: isNumericId(plantId) ? Number(plantId) : plantId,
-        imageId,
-        image: imageFile ? (imageFile.startsWith('images/') ? imageFile : `images/${imageFile}`) : '',
-        names: { ru, en, nl, sci },
-        ...(questionWrongAnswers.length > 0 ? { wrongAnswers: questionWrongAnswers.slice() } : {}),
-        difficulty: difficulty || null,
-        questionVariantId: `${plantId}-${variantIndex}`,
-        questionType: 'plant',
-        selectionGroupId: `plant-${plantId}`,
-        questionPromptKey: 'question'
-      });
-    });
+    if (base) {
+      plantEntry.difficulty = base;
+    }
+
+    if (wrongAnswers.length > 0) {
+      plantEntry.wrongAnswers = wrongAnswers;
+    }
+
+    if (imageEntries.length > 0) {
+      plantEntry.images = imageEntries;
+    }
+
+    plants[String(plantId)] = plantEntry;
   }
 
-  const questionIdsByDifficulty = {
-    plant: {
-      Easy: [],
-      Medium: [],
-      Hard: []
-    }
+  return {
+    difficultyLevels: { ...DIFFICULTY_LEVELS },
+    plants
   };
-
-  for (const [plantId, difficulty] of baseDifficultyById.entries()) {
-    if (questionIdsByDifficulty.plant[difficulty]) {
-      questionIdsByDifficulty.plant[difficulty].push(isNumericId(plantId) ? Number(plantId) : plantId);
-    }
-  }
-
-  for (const level of Object.keys(questionIdsByDifficulty.plant)) {
-    questionIdsByDifficulty.plant[level].sort(comparePlantIds);
-  }
-
-  const imageIdsByDifficulty = {
-    plant: {
-      Easy: [],
-      Medium: [],
-      Hard: []
-    }
-  };
-
-  for (const [imageId, difficulty] of imageDifficultyById.entries()) {
-    if (imageIdsByDifficulty.plant[difficulty]) {
-      imageIdsByDifficulty.plant[difficulty].push(imageId);
-    }
-  }
-
-  for (const level of Object.keys(imageIdsByDifficulty.plant)) {
-    imageIdsByDifficulty.plant[level].sort((a, b) => a.localeCompare(b, 'en'));
-  }
-
-  const plantFamiliesObject = {};
-  for (const [family, ids] of plantFamilies.entries()) {
-    plantFamiliesObject[family] = ids.sort(comparePlantIds);
-  }
-
-  const result = {
-    plantNames,
-    species,
-    plantImages: Array.from(plantImages.values()).sort((a, b) => a.id.localeCompare(b.id, 'en')),
-    plantParameters,
-    plantFamilies: plantFamiliesObject,
-    bouquetQuestions: [],
-    genus: [],
-    plantQuestions,
-    difficulties: {
-      difficultyLevels: { ...DIFFICULTY_LEVELS },
-      questionIdsByDifficulty,
-      imageIdsByDifficulty
-    }
-  };
-
-  return result;
 }
 
 async function convertCsvToJson(inputPath, outputPath) {

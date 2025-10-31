@@ -1,6 +1,6 @@
 # Data JSON Structure Overview
 
-This document summarizes the JSON-like structures that power Guess The Plant's datasets and the required fields each entity exposes. Runtime data is assembled by [`src/game/dataLoader.js`](../src/game/dataLoader.js), which derives catalogue data from [`plantData.json`](../src/data/json/plantData.json), merges plant facts and memorization entries from [`memorization.json`](../src/data/json/memorization.json) и подмешивает специализированные режимы из отдельных файлов (например, [`bouquetQuestions.json`](../src/data/json/bouquetQuestions.json)).
+This document summarizes the JSON-like structures that power Guess The Plant's datasets and the required fields each entity exposes. Runtime data is assembled by [`src/game/dataLoader.js`](../src/game/dataLoader.js), который читает сгруппированный каталог растений (`plants`) и справочник уровней сложности (`difficultyLevels`) из [`plantData.json`](../src/data/json/plantData.json), затем нормализует его в коллекции `plantNames`, `species` и `plantImages`, объединяет растениеведческие факты из [`memorization.json`](../src/data/json/memorization.json) и подмешивает специализированные режимы из отдельных файлов (например, [`bouquetQuestions.json`](../src/data/json/bouquetQuestions.json)).
 
 ## Жёсткие инварианты данных
 - **`plantQuestions`**: формируется автоматически при сборке из нормализованных разделов (plantNames, species, plantImages, difficulties) внутри src/data/json/plantData.json. Редактирование этого раздела вручную не требуется и не сохраняется при экспорте. Никакие другие файлы (в том числе временные артефакты) не могут содержать или дублировать вопросы о растениях.
@@ -10,14 +10,23 @@ This document summarizes the JSON-like structures that power Guess The Plant's d
 
 ## Identifier formats
 
-- **Plant IDs** come from `plantNamesById` and related catalogs. They are either integers or strings that start with digits and may include underscore-delimited numeric suffixes (e.g., `83_1`). The helper `parseCatalogId` inside the loader normalizes numeric-looking values to numbers, leaving composite IDs как строки.【F:src/game/dataLoader.js†L96-L112】
-- **Image IDs** for plants are alphanumeric strings such as `p13_1` or `97_6`. Bouquet-specific images use IDs like `bq001`. All plant image paths start with `images/`, while bouquet assets live under `images/bouquets/`. Plant image metadata is derived from the `plantQuestions` entries inside [`plantData.json`](../src/data/json/plantData.json), while bouquet assets are described inside [`bouquetQuestions.json`](../src/data/json/bouquetQuestions.json).【F:src/data/json/plantData.json†L1-L204】【F:src/game/dataLoader.js†L70-L84】
+- **Plant IDs** come from the grouped `plants` map and related catalogs. They are either integers or strings that start with digits and may include underscore-delimited numeric suffixes (e.g., `83_1`). The helper `parseCatalogId` inside the loader normalizes numeric-looking values to numbers, leaving composite IDs как строки.【F:src/game/dataLoader.js†L96-L112】
+- **Image IDs** for plants are alphanumeric strings such as `p13_1` or `97_6`. Bouquet-specific images use IDs like `bq001`. All plant image paths start with `images/`, while bouquet assets live under `images/bouquets/`. Plant image metadata хранится внутри массива `images` каждой записи из [`plantData.json`](../src/data/json/plantData.json), а букетные изображения описаны в [`bouquetQuestions.json`](../src/data/json/bouquetQuestions.json). Loader собирает плоский список `plantImages` на этапе нормализации.【F:src/data/json/plantData.json†L1-L206】【F:src/game/dataLoader.js†L256-L275】
 
 ## Core entities
 
-- **Location:** Каждая запись в `plantQuestions` внутри `src/data/json/plantData.json` содержит `names`, из которых `dataLoader` строит `plantNamesById`.
+### Plant catalog entry (`plantData.plants[...]`)
+
+- **Location:** Объект `plants` внутри [`plantData.json`](../src/data/json/plantData.json) сопоставляет идентификатор растения с исходной записью.
+- **Shape:** Каждая запись хранит локализации (`names`), отвлекающие ответы (`wrongAnswers`), базовую сложность (`difficulty`) и массив изображений (`images`). Изображения описываются объектами `{ id, src, difficulty? }`.
+- **Required fields:** `id`, `names`.
+- **Optional fields:** `difficulty`, `wrongAnswers`, `images`.
+
+### Plant localization map (`plantNamesById`)
+
+- **Location:** Строится загрузчиком на основе `plants`, кэшируется в `plantNamesById` и экспортируется из [`dataLoader.js`](../src/game/dataLoader.js).
 - **Shape:** Объект, сопоставляющий каждому идентификатору растения структуру локализаций.
-- **Required fields:** `ru`, `en`, `nl`, `sci` (строки с локализованным и научным названием).【F:src/data/json/plantData.json†L1-L204】
+- **Required fields:** `ru`, `en`, `nl`, `sci` (строки с локализованным и научным названием).【F:src/game/dataLoader.js†L657-L718】
 - **Optional fields:** None.
 
 ### Genus definition (`genus` entries)
@@ -36,7 +45,7 @@ This document summarizes the JSON-like structures that power Guess The Plant's d
   - `wrongAnswers` (array of plant IDs overriding genus-level defaults).【F:src/data/json/memorization.json†L1630-L1650】
 
 ### Species catalog entry (`speciesById`)
-`dataLoader` комбинирует локализованные названия из `plantQuestions` (`plantData.json`) с родовыми данными из `memorization.json`, формируя нормализованную запись вида.
+`dataLoader` комбинирует локализованные названия и метаданные из раздела `species` (`plantData.json`) с родовыми данными из `memorization.json`, формируя нормализованную запись вида.
 - **Required fields:**
   - `id` (plant ID).
   - `names` (localization object from `plantNamesById`).
@@ -64,9 +73,9 @@ Loaded from [`memorization.json`](../src/data/json/memorization.json) и нор�
 - **Shape:** Object mapping botanical family names to arrays of plant IDs (numeric or string) that belong to the family. IDs are normalized the same way as species IDs.【F:src/game/dataLoader.js†L144-L181】
 
 ### Plant image entry (`plantImages` / `plantImagesById`)
-- **Shape:** Each entry has `id` (string) and `src` (relative image path starting with `images/`).
+- **Shape:** Each entry has `id` (string) and `src` (relative image path starting with `images/`). Optional `difficulty` overrides the plant-level difficulty for a single photo.
 - **Required fields:** `id`, `src`.
-- **Optional fields:** None. The helper `plantImagesById` materializes an ID→entry map for lookups.【F:src/data/json/plantData.json†L1-L204】【F:src/game/dataLoader.js†L256-L275】
+- **Optional fields:** `difficulty`. The helper `plantImagesById` materializes an ID→entry map for lookups, собирая данные из `plants[].images`.【F:src/data/json/plantData.json†L1-L206】【F:src/game/dataLoader.js†L256-L275】
 
 ### Bouquet question definition (`bouquetQuestions.json`)
 - **Location:** Отдельный файл [`src/data/json/bouquetQuestions.json`](../src/data/json/bouquetQuestions.json), который читается загрузчиком при старте игры.
@@ -76,7 +85,7 @@ Loaded from [`memorization.json`](../src/data/json/memorization.json) и нор�
 
 ## Cross-entity references
 
-- `images` arrays in species or genus entries must reference image IDs declared in `plantImages`.
+- `images` arrays in plant entries (и наследуемых родовых записях) must reference image IDs declared in the derived `plantImages` list.
 - `wrongAnswers` arrays always contain plant IDs that must resolve through `plantNamesById`/`speciesById`.
 - `genusId` on a species record must reference an entry from the `genus` array so the loader can inherit defaults.【F:src/game/dataLoader.js†L198-L286】
 - Bouquet question `correctPlantId` values must exist in `plantNamesById`, ensuring `names` is always hydrated during normalization.【F:src/game/dataLoader.js†L392-L455】

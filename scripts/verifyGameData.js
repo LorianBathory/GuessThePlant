@@ -14,7 +14,7 @@ import {
   plantFamilies,
   allGenusEntries,
   buildGameDataForTesting,
-  derivePlantCatalogFromQuestions
+  deriveNormalizedPlantData
 } from '../src/game/dataLoader.js';
 import { questionTypes } from '../src/data/questionTypes.js';
 
@@ -200,13 +200,18 @@ function assertCatalogConsistency() {
       ? plantDataJson.genus
       : [];
 
-  const canonicalCatalog = derivePlantCatalogFromQuestions(plantDataJson.plantQuestions || []);
+  const normalizedPlantData = deriveNormalizedPlantData(plantDataJson);
+  const canonicalPlantNames = normalizedPlantData.plantNames || {};
+  const canonicalSpecies = normalizedPlantData.species || {};
+  const canonicalPlantImages = normalizedPlantData.plantImages || [];
+  const canonicalDifficulties = normalizedPlantData.difficulties || {};
 
   const combinedGameData = buildGameDataForTesting({
-    plantNames: canonicalCatalog.plantNames,
+    plantNames: canonicalPlantNames,
     genusEntries: normalizedGenus,
-    plantImages: canonicalCatalog.plantImages,
-    speciesEntries: canonicalCatalog.species
+    plantImages: canonicalPlantImages,
+    speciesEntries: canonicalSpecies,
+    difficulties: canonicalDifficulties
   });
 
   const familyDataFromJson = buildPlantFamilyDataFromJson(memorizationJson.plantFamilies);
