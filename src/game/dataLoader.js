@@ -7,6 +7,247 @@ function parseCatalogId(rawId) {
   return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : stringId;
 }
 
+function cloneDifficultyBuckets(buckets = {}) {
+  return Object.fromEntries(
+    Object.entries(buckets).map(([difficulty, ids]) => [
+      difficulty,
+      Array.isArray(ids) ? ids.slice() : []
+    ])
+  );
+}
+
+function createDifficultyCollector(initialBuckets = {}) {
+  const buckets = Object.create(null);
+  const seenKeys = Object.create(null);
+
+  Object.entries(initialBuckets || {}).forEach(([difficulty, values]) => {
+    const normalizedDifficulty = String(difficulty);
+    const normalizedValues = Array.isArray(values) ? values : [];
+    buckets[normalizedDifficulty] = normalizedValues.slice();
+    const seen = new Set();
+
+    normalizedValues.forEach(value => {
+      seen.add(String(value));
+    });
+
+    seenKeys[normalizedDifficulty] = seen;
+  });
+
+  return {
+    buckets,
+    add(difficulty, value) {
+      if (difficulty == null || value == null) {
+        return;
+      }
+
+      const normalizedDifficulty = String(difficulty);
+      let bucket = buckets[normalizedDifficulty];
+      let seen = seenKeys[normalizedDifficulty];
+
+      if (!bucket) {
+        bucket = [];
+        buckets[normalizedDifficulty] = bucket;
+      }
+
+      if (!seen) {
+        seen = new Set();
+        seenKeys[normalizedDifficulty] = seen;
+      }
+
+      const key = typeof value === 'number' ? String(value) : String(value);
+
+      if (seen.has(key)) {
+        return;
+      }
+
+      bucket.push(value);
+      seen.add(key);
+    }
+  };
+}
+
+function cloneDifficultyTypeMap(source = {}, replacementKey, replacementBuckets) {
+  const cloned = Object.fromEntries(
+    Object.entries(source || {}).map(([questionType, buckets]) => [
+      questionType,
+      cloneDifficultyBuckets(buckets)
+    ])
+  );
+
+  if (replacementKey) {
+    cloned[replacementKey] = cloneDifficultyBuckets(replacementBuckets || {});
+  }
+
+  return cloned;
+}
+
+function mergeDifficultyLevels(primary = {}, fallback = {}) {
+  return { ...fallback, ...primary };
+}
+
+function deriveNormalizedPlantData(rawPlantData = {}) {
+  if (!rawPlantData || typeof rawPlantData !== 'object') {
+    return {
+      plantCatalog: {},
+      plantNames: {},
+      species: {},
+      plantImages: [],
+      difficulties: {
+        difficultyLevels: {},
+        questionIdsByDifficulty: {},
+        imageIdsByDifficulty: {}
+      }
+    };
+  }
+
+  if (!rawPlantData.plants || typeof rawPlantData.plants !== 'object') {
+    const difficulties = rawPlantData.difficulties && typeof rawPlantData.difficulties === 'object'
+      ? rawPlantData.difficulties
+      : {
+          difficultyLevels: rawPlantData.difficultyLevels && typeof rawPlantData.difficultyLevels === 'object'
+            ? rawPlantData.difficultyLevels
+            : {}
+        };
+
+    return {
+      plantCatalog: rawPlantData.plants && typeof rawPlantData.plants === 'object'
+        ? rawPlantData.plants
+        : {},
+      plantNames: rawPlantData.plantNames && typeof rawPlantData.plantNames === 'object'
+        ? rawPlantData.plantNames
+        : {},
+      species: rawPlantData.species && typeof rawPlantData.species === 'object'
+        ? rawPlantData.species
+        : {},
+      plantImages: Array.isArray(rawPlantData.plantImages) ? rawPlantData.plantImages : [],
+      difficulties: {
+        difficultyLevels: difficulties.difficultyLevels || {},
+        questionIdsByDifficulty: difficulties.questionIdsByDifficulty || {},
+        imageIdsByDifficulty: difficulties.imageIdsByDifficulty || {}
+      }
+    };
+  }
+
+  const fallbackDifficulties = rawPlantData.difficulties && typeof rawPlantData.difficulties === 'object'
+    ? rawPlantData.difficulties
+    : {};
+
+  const normalizedDifficultyLevels = mergeDifficultyLevels(
+    rawPlantData.difficultyLevels && typeof rawPlantData.difficultyLevels === 'object'
+      ? rawPlantData.difficultyLevels
+      : {},
+    fallbackDifficulties.difficultyLevels
+  );
+
+  const plantQuestionCollector = createDifficultyCollector(
+    fallbackDifficulties.questionIdsByDifficulty?.plant || fallbackDifficulties.questionIdsByDifficulty?.[questionTypes.PLANT]
+  );
+  const plantImageCollector = createDifficultyCollector(
+    fallbackDifficulties.imageIdsByDifficulty?.plant || fallbackDifficulties.imageIdsByDifficulty?.[questionTypes.PLANT]
+  );
+
+  const normalizedPlantNames = Object.create(null);
+  const normalizedSpecies = Object.create(null);
+  const imageMap = new Map();
+
+  Object.entries(rawPlantData.plants).forEach(([idKey, entry]) => {
+    if (!entry || typeof entry !== 'object') {
+      return;
+    }
+
+    const rawId = entry.id ?? idKey;
+
+    if (rawId == null) {
+      return;
+    }
+
+    const parsedId = parseCatalogId(rawId);
+    const idString = String(rawId);
+    const names = entry.names && typeof entry.names === 'object' ? { ...entry.names } : {};
+    const wrongAnswers = Array.isArray(entry.wrongAnswers)
+      ? entry.wrongAnswers.map(answerId => parseCatalogId(answerId))
+      : [];
+    const genusId = entry.genusId != null ? parseCatalogId(entry.genusId) : undefined;
+
+    normalizedPlantNames[idString] = names;
+
+    const imageEntries = Array.isArray(entry.images) ? entry.images : [];
+    const imageIds = [];
+
+    imageEntries.forEach(imageEntry => {
+      if (!imageEntry) {
+        return;
+      }
+
+      if (typeof imageEntry === 'string') {
+        const normalizedId = String(imageEntry);
+        imageIds.push(normalizedId);
+        return;
+      }
+
+      const imageId = imageEntry.id != null ? String(imageEntry.id) : null;
+      const src = typeof imageEntry.src === 'string' ? imageEntry.src : null;
+
+      if (!imageId || !src) {
+        return;
+      }
+
+      const existing = imageMap.get(imageId);
+      const normalized = existing || { id: imageId, src };
+
+      if (!normalized.src) {
+        normalized.src = src;
+      }
+
+      if (typeof imageEntry.difficulty === 'string' && imageEntry.difficulty.length > 0) {
+        normalized.difficulty = imageEntry.difficulty;
+        plantImageCollector.add(imageEntry.difficulty, imageId);
+      }
+
+      imageMap.set(imageId, normalized);
+      imageIds.push(imageId);
+    });
+
+    if (typeof entry.difficulty === 'string' && entry.difficulty.length > 0) {
+      plantQuestionCollector.add(entry.difficulty, parsedId);
+    }
+
+    normalizedSpecies[idString] = {
+      id: parsedId,
+      names,
+      ...(imageIds.length > 0 ? { images: imageIds } : {}),
+      ...(wrongAnswers.length > 0 ? { wrongAnswers } : {}),
+      ...(genusId != null ? { genusId } : {})
+    };
+  });
+
+  const normalizedPlantImages = Array.from(imageMap.values());
+
+  const questionIdsByDifficulty = cloneDifficultyTypeMap(
+    fallbackDifficulties.questionIdsByDifficulty,
+    'plant',
+    plantQuestionCollector.buckets
+  );
+
+  const imageIdsByDifficulty = cloneDifficultyTypeMap(
+    fallbackDifficulties.imageIdsByDifficulty,
+    'plant',
+    plantImageCollector.buckets
+  );
+
+  return {
+    plantCatalog: rawPlantData.plants,
+    plantNames: normalizedPlantNames,
+    species: normalizedSpecies,
+    plantImages: normalizedPlantImages,
+    difficulties: {
+      difficultyLevels: normalizedDifficultyLevels,
+      questionIdsByDifficulty,
+      imageIdsByDifficulty
+    }
+  };
+}
+
 function extractJsonModuleData(module, fallbackKey) {
   if (module && typeof module === 'object') {
     if ('default' in module) {
@@ -87,117 +328,12 @@ const plantDataJson = Object.freeze(await loadJsonModule('../data/json/plantData
   )
 }));
 
+const normalizedPlantData = deriveNormalizedPlantData(plantDataJson);
+
 const bouquetQuestionDefinitions = Object.freeze(await loadJsonModule('../data/json/bouquetQuestions.json', {
   fallbackValue: [],
   fallbackKey: 'bouquetQuestions'
 }));
-
-function addUniqueValue(list, value) {
-  const key = String(value);
-
-  if (!list.some(existing => String(existing) === key)) {
-    list.push(value);
-  }
-
-  return list;
-}
-
-export function derivePlantCatalogFromQuestions(plantQuestions = []) {
-  if (!Array.isArray(plantQuestions) || plantQuestions.length === 0) {
-    return {
-      plantNames: {},
-      species: {},
-      plantImages: []
-    };
-  }
-
-  const plantNames = Object.create(null);
-  const speciesDraft = Object.create(null);
-  const plantImagesById = new Map();
-
-  plantQuestions.forEach(question => {
-    if (!question || typeof question !== 'object') {
-      return;
-    }
-
-    const rawId = question.correctAnswerId ?? question.id;
-    if (rawId == null) {
-      return;
-    }
-
-    const parsedId = parseCatalogId(rawId);
-    const idKey = String(parsedId);
-
-    const names = question.names && typeof question.names === 'object'
-      ? { ...question.names }
-      : undefined;
-
-    if (names && !plantNames[idKey]) {
-      plantNames[idKey] = names;
-    }
-
-    if (!speciesDraft[idKey]) {
-      speciesDraft[idKey] = {
-        id: parsedId,
-        names: names ? { ...names } : undefined,
-        images: [],
-        wrongAnswers: []
-      };
-    }
-
-    const draftEntry = speciesDraft[idKey];
-
-    if (names && !draftEntry.names) {
-      draftEntry.names = { ...names };
-    }
-
-    if (Array.isArray(question.wrongAnswers)) {
-      question.wrongAnswers.forEach(answerId => {
-        const normalized = parseCatalogId(answerId);
-        addUniqueValue(draftEntry.wrongAnswers, normalized);
-      });
-    }
-
-    const imageId = question.imageId != null ? String(question.imageId) : null;
-    const imageSrc = typeof question.image === 'string' ? question.image : null;
-
-    if (imageId && imageSrc) {
-      addUniqueValue(draftEntry.images, imageId);
-
-      if (!plantImagesById.has(imageId)) {
-        plantImagesById.set(imageId, { id: imageId, src: imageSrc });
-      }
-    }
-  });
-
-  const species = Object.fromEntries(
-    Object.entries(speciesDraft).map(([idKey, entry]) => {
-      const names = plantNames[idKey] || entry.names || {};
-      const normalizedEntry = {
-        id: entry.id,
-        names
-      };
-
-      if (entry.images.length > 0) {
-        normalizedEntry.images = entry.images.slice();
-      }
-
-      if (entry.wrongAnswers.length > 0) {
-        normalizedEntry.wrongAnswers = entry.wrongAnswers.slice();
-      }
-
-      return [idKey, normalizedEntry];
-    })
-  );
-
-  return {
-    plantNames,
-    species,
-    plantImages: Array.from(plantImagesById.values())
-  };
-}
-
-const derivedCatalog = derivePlantCatalogFromQuestions(plantDataJson.plantQuestions || []);
 
 function freezeQuestionDefinitions(definitions) {
   if (!Array.isArray(definitions)) {
@@ -212,10 +348,11 @@ function freezeQuestionDefinitions(definitions) {
 }
 
 export const dataBundle = Object.freeze({
-  plantNames: derivedCatalog.plantNames,
-  species: derivedCatalog.species,
+  plantCatalog: normalizedPlantData.plantCatalog,
+  plantNames: normalizedPlantData.plantNames,
+  species: normalizedPlantData.species,
   genus: Array.isArray(memorizationJson.genus) ? memorizationJson.genus : Array.isArray(plantDataJson.genus) ? plantDataJson.genus : [],
-  plantImages: derivedCatalog.plantImages,
+  plantImages: normalizedPlantData.plantImages,
   plantParameters: memorizationJson.plantParameters || plantDataJson.plantParameters || {},
   plantFamilies: memorizationJson.plantFamilies || plantDataJson.plantFamilies || {},
   memorization: (
@@ -223,7 +360,7 @@ export const dataBundle = Object.freeze({
       ? { plants: Array.isArray(memorizationJson.plants) ? memorizationJson.plants : [] }
       : {}
   ),
-  difficulties: plantDataJson.difficulties || {},
+  difficulties: normalizedPlantData.difficulties,
   questionDefinitionsByType: Object.freeze({
     [questionTypes.BOUQUET]: freezeQuestionDefinitions(bouquetQuestionDefinitions)
   })
@@ -816,6 +953,8 @@ function buildGameData({
 }
 
 export const gameData = buildGameData();
+
+export { deriveNormalizedPlantData };
 
 export const {
   plantNamesById,
