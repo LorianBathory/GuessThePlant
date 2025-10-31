@@ -1,8 +1,14 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from 'node:fs/promises';
-import { basename } from 'node:path';
+import { basename, dirname, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { buildGameDataForTesting, deriveNormalizedPlantData } from '../src/game/dataLoader.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const REPO_ROOT = resolve(__dirname, '..');
+const DEFAULT_PLANT_DATA_PATH = resolve(REPO_ROOT, 'src', 'data', 'json', 'plantData.json');
 
 const CSV_HEADER = [
   'id',
@@ -42,6 +48,44 @@ const DIFFICULTY_LEVELS = {
   MEDIUM: 'Medium',
   HARD: 'Hard'
 };
+
+const DIFFICULTY_LABEL_ORDER = Object.values(DIFFICULTY_LEVELS);
+
+const DIFFICULTY_NORMALIZATION_MAP = new Map(
+  Object.entries(DIFFICULTY_LEVELS).flatMap(([key, label]) => [
+    [key.toLowerCase(), label],
+    [label.toLowerCase(), label]
+  ])
+);
+
+function normalizeDifficultyLabel(value, { lineNumber, fieldName } = {}) {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  const trimmed = stripWrappingQuotes(value);
+  if (!trimmed || trimmed.toLowerCase() === 'null') {
+    return null;
+  }
+
+  const normalized = DIFFICULTY_NORMALIZATION_MAP.get(trimmed.toLowerCase());
+  if (normalized) {
+    return normalized;
+  }
+
+  const context = [];
+  if (lineNumber) {
+    context.push(`строка ${lineNumber}`);
+  }
+  if (fieldName) {
+    context.push(fieldName);
+  }
+
+  const suffix = context.length > 0 ? ` (${context.join(', ')})` : '';
+  throw new Error(
+    `Неизвестное значение сложности "${trimmed}"${suffix}. Допустимые значения: ${DIFFICULTY_LABEL_ORDER.join(', ')}.`
+  );
+}
 
 function stripWrappingQuotes(value) {
   if (value === null || value === undefined) {
@@ -231,7 +275,7 @@ function parseCsv(text) {
   return rows.filter((r) => r.some((cell) => cell.trim() !== ''));
 }
 
-function parseOverrides(rawOverrides) {
+function parseOverrides(rawOverrides, lineNumber) {
   const overrides = new Map();
   if (!rawOverrides) {
     return overrides;
@@ -240,26 +284,39 @@ function parseOverrides(rawOverrides) {
   for (const segment of segments) {
     const [imageIdPart, difficultyPart] = segment.split(':').map((piece) => stripWrappingQuotes(piece));
     if (imageIdPart && difficultyPart) {
-      overrides.set(imageIdPart, difficultyPart);
+      const normalizedDifficulty = normalizeDifficultyLabel(difficultyPart, {
+        lineNumber,
+        fieldName: `переопределение сложности для ${imageIdPart}`
+      });
+      overrides.set(imageIdPart, normalizedDifficulty);
     }
   }
   return overrides;
 }
 
-function parseDifficultyCell(baseCell, overridesCell = '') {
+function parseDifficultyCell(baseCell, overridesCell = '', lineNumber) {
   const rawBase = stripWrappingQuotes(baseCell);
   const overridesSource = stripWrappingQuotes(overridesCell);
   if (!overridesSource) {
     const legacyMatch = rawBase.match(/^(.*?)(?:\s*\(overrides:\s*(.+)\))$/i);
     if (legacyMatch) {
       const base = legacyMatch[1].trim();
-      const overrides = parseOverrides(legacyMatch[2]);
-      return { base: base && base.toLowerCase() !== 'null' ? base : null, overrides };
+      const overrides = parseOverrides(legacyMatch[2], lineNumber);
+      return {
+        base: normalizeDifficultyLabel(base, {
+          lineNumber,
+          fieldName: 'базовая сложность'
+        }),
+        overrides
+      };
     }
   }
 
-  const base = rawBase && rawBase.toLowerCase() !== 'null' ? rawBase : null;
-  const overrides = parseOverrides(overridesSource);
+  const base = normalizeDifficultyLabel(rawBase, {
+    lineNumber,
+    fieldName: 'базовая сложность'
+  });
+  const overrides = parseOverrides(overridesSource, lineNumber);
   return { base, overrides };
 }
 
@@ -404,9 +461,61 @@ function extractList(cell) {
     .filter((item) => item !== '');
 }
 
+function compareDifficultyLabels(a, b) {
+  const indexA = DIFFICULTY_LABEL_ORDER.indexOf(a);
+  const indexB = DIFFICULTY_LABEL_ORDER.indexOf(b);
+
+  if (indexA === -1 && indexB === -1) {
+    return a.localeCompare(b, 'en');
+  }
+
+  if (indexA === -1) {
+    return 1;
+  }
+
+  if (indexB === -1) {
+    return -1;
+  }
+
+  return indexA - indexB;
+}
+
+function addToDifficultyBucket(bucketMap, difficulty, value) {
+  if (!difficulty) {
+    return;
+  }
+
+  let bucket = bucketMap.get(difficulty);
+  if (!bucket) {
+    bucket = new Set();
+    bucketMap.set(difficulty, bucket);
+  }
+
+  bucket.add(value);
+}
+
+function buildDifficultyBucketOutput(bucketMap, compareValues) {
+  if (!bucketMap || bucketMap.size === 0) {
+    return {};
+  }
+
+  const entries = Array.from(bucketMap.entries()).map(([difficulty, values]) => [
+    difficulty,
+    Array.from(values).sort(compareValues)
+  ]);
+
+  entries.sort(([difficultyA], [difficultyB]) => compareDifficultyLabels(difficultyA, difficultyB));
+
+  return Object.fromEntries(entries);
+}
+
 function parseCsvData(rows) {
   const records = parseCsvRows(rows);
-  const plants = {};
+  const plantNames = new Map();
+  const speciesEntries = new Map();
+  const plantImages = [];
+  const questionDifficultyBuckets = new Map();
+  const imageDifficultyBuckets = new Map();
   const seenImageIds = new Set();
 
   for (const record of records) {
@@ -421,13 +530,25 @@ function parseCsvData(rows) {
     const sci = record.sci || '';
     const { base, overrides } = parseDifficultyCell(
       record.difficulty || '',
-      record.difficultyOverrides || ''
+      record.difficultyOverrides || '',
+      record.__line
     );
 
     const wrongAnswersRaw = extractList(record.wrongAnswers || '');
-    const wrongAnswers = wrongAnswersRaw
-      .map((value) => normalizeWrongAnswerId(value))
-      .filter((value) => value !== null);
+    const wrongAnswers = [];
+    const seenWrongAnswers = new Set();
+    wrongAnswersRaw.forEach((value) => {
+      const normalizedValue = normalizeWrongAnswerId(value);
+      if (normalizedValue === null) {
+        return;
+      }
+      const key = typeof normalizedValue === 'number' ? String(normalizedValue) : normalizedValue;
+      if (seenWrongAnswers.has(key)) {
+        return;
+      }
+      seenWrongAnswers.add(key);
+      wrongAnswers.push(normalizedValue);
+    });
 
     const imageFiles = extractList(record.imageFiles || '');
     const manualImageIds = extractList(record.imageIds || '');
@@ -452,6 +573,10 @@ function parseCsvData(rows) {
       });
     }
 
+    const localizedNames = { ru, en, nl, sci };
+    plantNames.set(String(plantId), localizedNames);
+
+    const numericId = isNumericId(plantId) ? Number(plantId) : plantId;
     const normalizedOverrides = new Map();
     overrides.forEach((difficulty, imageId) => {
       const normalizedId = normalizeId(imageId);
@@ -461,7 +586,7 @@ function parseCsvData(rows) {
       }
     });
 
-    const imageEntries = [];
+    const imageReferences = [];
     finalImageIds.forEach((imageId, index) => {
       const normalizedId = normalizeId(imageId);
       if (!normalizedId) {
@@ -478,39 +603,56 @@ function parseCsvData(rows) {
         ? (imageFile.startsWith('images/') ? imageFile : `images/${imageFile}`)
         : `images/${normalizedId}.JPG`;
 
-      const overrideDifficulty = normalizedOverrides.get(normalizedId) || null;
-      const imageEntry = { id: normalizedId, src };
+      plantImages.push({ id: normalizedId, src });
+      imageReferences.push(normalizedId);
 
-      if (overrideDifficulty) {
-        imageEntry.difficulty = overrideDifficulty;
+      const resolvedDifficulty = normalizedOverrides.get(normalizedId) || base;
+      if (resolvedDifficulty) {
+        addToDifficultyBucket(imageDifficultyBuckets, resolvedDifficulty, normalizedId);
       }
-
-      imageEntries.push(imageEntry);
     });
 
-    const plantEntry = {
-      id: isNumericId(plantId) ? Number(plantId) : plantId,
-      names: { ru, en, nl, sci }
+    const speciesEntry = {
+      id: numericId,
+      names: localizedNames
     };
 
-    if (base) {
-      plantEntry.difficulty = base;
+    if (imageReferences.length > 0) {
+      speciesEntry.images = imageReferences;
     }
 
     if (wrongAnswers.length > 0) {
-      plantEntry.wrongAnswers = wrongAnswers;
+      speciesEntry.wrongAnswers = wrongAnswers;
     }
 
-    if (imageEntries.length > 0) {
-      plantEntry.images = imageEntries;
-    }
+    speciesEntries.set(String(plantId), speciesEntry);
 
-    plants[String(plantId)] = plantEntry;
+    if (base) {
+      addToDifficultyBucket(questionDifficultyBuckets, base, numericId);
+    }
   }
 
+  const sortedPlantIds = Array.from(plantNames.keys()).sort(comparePlantIds);
+  const normalizedPlantNames = Object.fromEntries(sortedPlantIds.map((id) => [id, plantNames.get(id)]));
+  const normalizedSpecies = Object.fromEntries(
+    sortedPlantIds
+      .map((id) => [id, speciesEntries.get(id)])
+      .filter(([, entry]) => Boolean(entry))
+  );
+  const sortedPlantImages = plantImages.sort((a, b) => a.id.localeCompare(b.id, 'en'));
+
+  const questionBuckets = buildDifficultyBucketOutput(questionDifficultyBuckets, comparePlantIds);
+  const imageBuckets = buildDifficultyBucketOutput(imageDifficultyBuckets, (a, b) => a.localeCompare(b, 'en'));
+
   return {
-    difficultyLevels: { ...DIFFICULTY_LEVELS },
-    plants
+    plantNames: normalizedPlantNames,
+    species: normalizedSpecies,
+    plantImages: sortedPlantImages,
+    difficulties: {
+      difficultyLevels: { ...DIFFICULTY_LEVELS },
+      questionIdsByDifficulty: { plant: questionBuckets },
+      imageIdsByDifficulty: { plant: imageBuckets }
+    }
   };
 }
 
@@ -519,11 +661,23 @@ async function convertCsvToJson(inputPath, outputPath) {
   const rows = parseCsv(csvText);
   const data = parseCsvData(rows);
   await writeFile(outputPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  console.log(`CSV успешно преобразован в JSON: ${outputPath}`);
+  const relativePath = relative(REPO_ROOT, outputPath);
+  console.log(`CSV успешно преобразован в JSON: ${relativePath}`);
 }
 
 function printHelp() {
-  console.log(`Использование: node tools/plantDataConverter.mjs <команда> [параметры]\n\nДоступные команды:\n  to-csv   --input <путь к PlantData.json> --output <csv файл>\n  to-json  --input <путь к csv> --output <PlantData.json>\n  --help   Показать подсказку\n`);
+  console.log(
+    [
+      'Использование: node tools/plantDataConverter.mjs <команда> [параметры>',
+      '',
+      'Доступные команды:',
+      '  to-csv   --input <путь к PlantData.json> --output <csv файл>',
+      '  to-json  --input <путь к csv>',
+      '  --help   Показать подсказку',
+      '',
+      'Команда to-json перезаписывает src/data/json/plantData.json без создания промежуточных файлов.'
+    ].join('\n')
+  );
 }
 
 async function run() {
@@ -548,15 +702,28 @@ async function run() {
   }
 
   const input = options.get('input');
-  const output = options.get('output');
-  if (!input || !output) {
-    throw new Error('Необходимо указать параметры --input и --output.');
+  if (!input) {
+    throw new Error('Необходимо указать параметр --input.');
   }
 
   if (command === 'to-csv') {
+    const output = options.get('output');
+    if (!output) {
+      throw new Error('Команда to-csv требует параметр --output.');
+    }
     await convertJsonToCsv(input, output);
   } else if (command === 'to-json') {
-    await convertCsvToJson(input, output);
+    const requestedOutput = options.get('output');
+    if (requestedOutput) {
+      const resolvedRequested = resolve(process.cwd(), requestedOutput);
+      if (resolvedRequested !== DEFAULT_PLANT_DATA_PATH) {
+        console.warn(
+          'Параметр --output больше не поддерживается: данные всегда сохраняются в src/data/json/plantData.json.'
+        );
+      }
+    }
+
+    await convertCsvToJson(input, DEFAULT_PLANT_DATA_PATH);
   } else {
     printHelp();
     throw new Error(`Неизвестная команда: ${command}`);
