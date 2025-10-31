@@ -83,13 +83,13 @@
 
 ## Скрипты
 - `npm run lint` — проверка стиля кода и потенциальных ошибок с помощью ESLint.
-- `npm run export:data` — пересобирает `src/data/json/plantData.json` и сопутствующие файлы с вопросами (например, `bouquetQuestions.json`), сортируя записи и подтягивая параметры из `src/data/plantParameters.js`.
+- `npm run export:data` — пересобирает `src/data/json/plantData.json` и сопутствующие файлы с вопросами (например, `bouquetQuestions.json`), сортируя записи и подтягивая параметры из `src/data/json/plantFacts.json`.
 - `npm run serve` — запускает лёгкий локальный HTTP-сервер (порт 4173) для ручного тестирования приложения и проверки JSON-данных.
 
 ## Экспорт данных
 1. Убедитесь, что установлены зависимости проекта: `npm install`.
 2. Запустите `npm run export:data` из корня репозитория.
-3. После успешного завершения будут перезаписаны `src/data/json/plantData.json` и дополнительные файлы вопросов (включая `src/data/json/bouquetQuestions.json`). Скрипт сортирует записи и дополняет их параметрами из `src/data/plantParameters.js`, после чего данные можно проверить `npm run validate:data`.
+3. После успешного завершения будут перезаписаны `src/data/json/plantData.json` и дополнительные файлы вопросов (включая `src/data/json/bouquetQuestions.json`). Скрипт сортирует записи и дополняет их параметрами из `src/data/json/plantFacts.json`, после чего данные можно проверить `npm run validate:data`.
 
 ## Стек
 - [React 18](https://react.dev/) (UMD)

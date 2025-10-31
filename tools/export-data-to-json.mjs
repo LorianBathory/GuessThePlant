@@ -213,16 +213,16 @@ async function main() {
       difficultyLevels,
       questionIdsByDifficulty,
       imageIdsByDifficulty,
-      imageDifficultyOverrides
+      imageDifficultyOverrides,
+      plantParametersById,
+      plantFamilies
     },
     { allQuestions },
-    { plantParametersById, plantFamilies },
     { parameterTagLabels },
     { questionTypes }
   ] = await Promise.all([
     importModule('src/game/dataLoader.js'),
     importModule('src/data/questions.js'),
-    importModule('src/data/plantParameters.js'),
     importModule('src/data/parameterTags.js'),
     importModule('src/data/questionTypes.js')
   ]);
