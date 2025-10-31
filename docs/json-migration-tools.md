@@ -4,10 +4,11 @@ This document records the current state of the JSON migration tooling, checks th
 
 ## Delivered tooling
 
-- **`scripts/exportDataBundle.mjs`** bundles all runtime data (localized names, species catalog, images, plant parameters, families, bouquet questions, genus definitions and generated plant questions) into the JSON artifacts inside `src/data/json/`. Основной файл `plantData.json` описывает растения, а дополнительные наборы вопросов (например, `bouquetQuestions.json`) выгружаются рядом. Экспорт сортирует записи и зеркалит структуру, которую строит загрузчик в рантайме.【F:scripts/exportDataBundle.mjs†L1-L95】
-- **`scripts/validateDataBundle.mjs`** validates the generated bundle against `src/data/schema/plant.schema.json` using Ajv. Validation is strict enough to catch data regressions (for example, отсутствие префикса `images/` в разделе `plantImages` внутри `plantData.json` блокировало первый прогон).【F:scripts/validateDataBundle.mjs†L1-L46】【F:src/data/json/plantData.json†L7562-L7706】
+- **`scripts/exportDataBundle.mjs`** bundles all runtime data (localized names, species catalog, images, plant parameters, families, bouquet questions, genus definitions and generated plant questions) into the JSON artifacts inside `src/data/json/`. Основной файл `plantData.json` описывает вопросы и таблицы сложностей, а дополнительные наборы (например, `plantCatalog.json`, `plantFacts.json`, `bouquetQuestions.json`) живут рядом. Экспорт сортирует записи и зеркалит структуру, которую строит загрузчик в рантайме.【F:scripts/exportDataBundle.mjs†L1-L121】
+- **`scripts/validateDataBundle.mjs`** validates the generated bundle against `src/data/schema/plant.schema.json` using Ajv. Validation is strict enough to catch data regressions (for example, отсутствие префикса `images/` в разделе `plantImages` внутри `plantCatalog.json`).【F:scripts/validateDataBundle.mjs†L1-L46】【F:src/data/schema/plant.schema.json†L1-L188】
+- **`tools/plantDataConverter.mjs`** реализует двусторонний обмен между легаси-бандлом `docs/legacy/plantData.bundle.json` и таблицей `PlantData.csv`. Команда `to-csv` формирует табличный слепок для редакторов и переводчиков, `to-json` собирает обновлённый CSV в JSON (включая временный `PlantData.json`). Руководство — в `docs/plant-data-converter-guide.md`。【F:tools/plantDataConverter.mjs†L517-L590】【F:docs/plant-data-converter-guide.md†L1-L118】
 - **`package.json`** now exposes `npm run export:data` and `npm run validate:data` so the dataset can be regenerated and checked locally or in CI.【F:package.json†L6-L22】
-- **`src/data/json/plantData.json`** is the canonical JSON export produced by the new script. It matches the `plant.schema.json` expectations and can be used for downstream tooling or future runtime loaders.【F:src/data/json/plantData.json†L1-L20】【F:src/data/schema/plant.schema.json†L1-L188】
+- **`src/data/json/*.json`** — каноничные модульные файлы, из которых собирается рантайм. Они заменили прежний монолит `plantData.bundle.json` как основной источник правды и проходят схему `plant.schema.json` через экспорт/валидацию.【F:src/data/json/plantCatalog.json†L1-L466】【F:src/data/json/plantData.json†L1-L204】
 
 ## Validation results
 
@@ -17,7 +18,7 @@ This document records the current state of the JSON migration tooling, checks th
 ## Gaps and risks
 
 - **Runtime still depends on JS modules.** The game code continues to import JS datasets; JSON is generated offline only. A loader that hydrates runtime state from `plantData.json` is still missing.
-- **No CSV/tabular ingest path yet.** The exporter makes it easy to snapshot current data but there is no inverse process that would take spreadsheet rows (or the JSON bundle) and apply them back into the JS sources or a new JSON-first pipeline.
+- **Manual merge from CSV.** Конвертер выдаёт промежуточные артефакты (`PlantData.csv` → `PlantData.json`), но пока нет автоматического импорта обратно в модульные JSON. После правок таблицы данные приходится переносить в `plantCatalog.json`, `plantFacts.json` и `plantData.json` вручную.
 - **Schema target downgraded to draft-07.** Validation uses Ajv v6, so the schema currently relies on draft-07 features only. If we want 2020-12 features we will need to vendor Ajv v8 or adjust installation policies.
 - **Image existence and auxiliary checks out of scope.** The validator ensures structural correctness but does not check that image files exist on disk, that wrong answer IDs resolve, or that difficulty mappings stay synchronized. Those checks are still enforced implicitly by the JS pipeline.
 

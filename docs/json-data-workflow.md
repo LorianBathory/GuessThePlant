@@ -8,6 +8,27 @@
 
 Загрузчик [`src/game/dataLoader.js`](../src/game/dataLoader.js) объединяет эти файлы в единый бандл (`speciesById`, `plants`, индексы сложности) и дополняет результат вопросами, которые подгружаются из отдельных файлов по типу. Для букетов используется [`src/data/json/bouquetQuestions.json`](../src/data/json/bouquetQuestions.json); в дальнейшем по аналогии можно добавить новые типы вопросов, просто зарегистрировав их нормализатор и указав путь к файлу.
 
+## Табличный цикл редактирования
+
+Для офлайн-редактирования локализаций и справочных данных используется CSV-слепок `PlantData.csv`, который поддерживает конвертер [`tools/plantDataConverter.mjs`](../tools/plantDataConverter.mjs). Рабочий процесс выглядит так:
+
+1. Обновите CSV из легаси-бандла (если требуется актуальная копия):
+
+   ```bash
+   node tools/plantDataConverter.mjs to-csv --input docs/legacy/plantData.bundle.json --output PlantData.csv
+   ```
+
+2. Внесите изменения в `PlantData.csv` (вручную или через вспомогательные скрипты наподобие [`scripts/translate/translation_pipeline.py`](../scripts/translate/translation_pipeline.py)). Структура колонок описана в `docs/plant-data-converter-guide.md`.
+3. Преобразуйте таблицу обратно в JSON, указав временный артефакт (например, `PlantData.json`) или перезаписав `docs/legacy/plantData.bundle.json`:
+
+   ```bash
+   node tools/plantDataConverter.mjs to-json --input PlantData.csv --output PlantData.json
+   ```
+
+4. Сопоставьте изменения с модульными файлами в `src/data/json/` и перенесите обновлённые значения в соответствующие разделы (`plantCatalog.json`, `plantFacts.json`, `plantData.json`). После синхронизации запустите `npm run export:data` и `npm run validate:data`, чтобы обновить легаси-бандл и убедиться в корректности структуры.
+
+Файл `PlantData.json`, созданный на шаге 3, служит промежуточным артефактом и не хранится в Git. Его можно удалять после того, как изменения перенесены в модульные JSON.
+
 ## Добавление нового растения
 
 1. **Имена** – добавьте локализованные названия в раздел `plantNames` внутри [`plantCatalog.json`](../src/data/json/plantCatalog.json). Используйте существующую схему идентификаторов (`100`, `100_1` и т. п.).

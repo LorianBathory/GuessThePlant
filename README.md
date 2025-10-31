@@ -39,18 +39,28 @@
 ## Структура проекта
 ```
 .
-├── index.html          # Точка входа приложения (подключение React UMD и Tailwind)
-├── voice-mode/         # Отдельная HTML-страница с голосовым интерфейсом для бесконечного режима
+├── index.html               # Точка входа приложения (подключение React UMD и Tailwind)
+├── voice-mode/              # Отдельная HTML-страница с голосовым интерфейсом для бесконечного режима
+├── PlantData.csv            # Табличный срез каталога растений для редактирования и локализационных скриптов
+├── docs/
+│   ├── json-data-workflow.md      # Пайплайн обновления данных и загрузчиков
+│   ├── plant-data-converter-guide.md # Руководство по конвертеру CSV ⇄ JSON
+│   └── legacy/plantData.bundle.json # Исторический монолитный бандл (пересобирается npm run export:data)
 ├── src/
-│   ├── index.js        # Инициализация React-приложения
-│   ├── voiceMode/      # Компоненты и точка входа «версии для слабовидящих»
-│   ├── components/     # Компоненты интерфейса (PlantQuizGame)
-│   ├── data/           # Данные по растениям, вариантам ответов и файлам родов
-│   ├── i18n/           # Локализованные тексты интерфейса
-│   └── utils/          # Вспомогательные функции (перетасовка массива и т.д.)
-├── images/             # Иллюстрации растений
-├── eslint.config.js    # Настройка линтера
-└── package.json        # Скрипты и dev-зависимости
+│   ├── index.js             # Инициализация React-приложения
+│   ├── voiceMode/           # Компоненты и точка входа «версии для слабовидящих»
+│   ├── components/          # Компоненты интерфейса (PlantQuizGame)
+│   ├── data/
+│   │   ├── json/            # Каноничные JSON-модули каталога и вопросов
+│   │   ├── schema/          # JSON Schema для валидации экспортируемого бандла
+│   │   └── parameterTags.js # Расшифровки тегов параметров растений
+│   ├── i18n/                # Локализованные тексты интерфейса
+│   └── utils/               # Вспомогательные функции (перетасовка массива и т.д.)
+├── images/                  # Иллюстрации растений
+├── tools/                   # Утилиты: локальный сервер, экспортёр данных, CSV-конвертер
+├── scripts/                 # Дополнительные скрипты синхронизации и экспорта
+├── eslint.config.js         # Настройка линтера
+└── package.json             # Скрипты и dev-зависимости
 ```
 
 ## Быстрый старт
@@ -90,6 +100,15 @@
 1. Убедитесь, что установлены зависимости проекта: `npm install`.
 2. Запустите `npm run export:data` из корня репозитория.
 3. После успешного завершения будет перезаписан `docs/legacy/plantData.bundle.json`. Скрипт сортирует записи, собирая их из `plantCatalog.json`, `plantFacts.json`, `plantData.json` и `bouquetQuestions.json`, после чего данные можно проверить `npm run validate:data`.
+
+## Работа с данными и конвертером
+
+- **Каноничные источники.** Игра читает данные из модульных JSON внутри `src/data/json/`. Они остаются правкой «истины», а `npm run export:data` формирует из них легаси-бандл `docs/legacy/plantData.bundle.json` для совместимости с внешними инструментами.【F:src/data/json/plantCatalog.json†L1-L466】【F:scripts/exportDataBundle.mjs†L1-L121】
+- **PlantData.csv.** В корне репозитория лежит редактируемая таблица `PlantData.csv`, которую используют переводчики и редакторы. Её структуры соответствует колонкам, описанным в `docs/plant-data-converter-guide.md`. При необходимости таблицу можно регенерировать из легаси-бандла и обратно через конвертер.【F:PlantData.csv†L1-L20】【F:docs/plant-data-converter-guide.md†L1-L116】
+- **Конвертер.** Скрипт `tools/plantDataConverter.mjs` поддерживает команды `to-csv` и `to-json`. Первая выгружает `docs/legacy/plantData.bundle.json` в `PlantData.csv`, вторая собирает обновлённый CSV в JSON (например, `docs/legacy/plantData.bundle.json` или временный `PlantData.json`). Подробная инструкция — в `docs/plant-data-converter-guide.md`. После обратной конвертации перенесите изменения в модульные файлы из `src/data/json/`, а затем запустите `npm run export:data` и `npm run validate:data`, чтобы обновить бандл и проверить целостность данных.【F:tools/plantDataConverter.mjs†L517-L590】【F:docs/plant-data-converter-guide.md†L57-L118】
+- **PlantData.json.** Файл на корневом уровне больше не хранится в Git и рассматривается как временный артефакт. Его можно создавать локально командой `node tools/plantDataConverter.mjs to-json --input PlantData.csv --output PlantData.json`, если требуется единый JSON для внешних инструментов. Перед коммитом удаляйте или игнорируйте этот файл, чтобы избежать ложных изменений в истории репозитория.【F:tools/plantDataConverter.mjs†L517-L590】
+
+Актуальные примеры запуска команд и ручной конвейер описаны в `docs/json-data-workflow.md`.
 
 ## Стек
 - [React 18](https://react.dev/) (UMD)
