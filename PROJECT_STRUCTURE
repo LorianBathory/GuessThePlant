@@ -6,7 +6,7 @@
 - `eslint.config.js` — Configures ESLint rules for the project (see file for detailed setup).【F:eslint.config.js†L1-L68】
 - `PlantData.csv` — Табличный слепок каталога растений, который редактируют контент-редакторы перед обратной конвертацией в JSON-бандл. Его поддерживает конвертер `tools/plantDataConverter.mjs`.【F:PlantData.csv†L1-L20】【F:tools/plantDataConverter.mjs†L517-L590】
 - `docs/` — Документация по структуре данных, пайплайн редактирования и легаси-артефакты (`docs/legacy/plantData.bundle.json`).【F:docs/json-data-workflow.md†L1-L52】【F:docs/legacy/README.md†L1-L40】
-- `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/json/plantCatalog.json†L1-L466】
+- `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/json/plantData.json†L1-L120】
 - `tools/` — Node-утилиты: локальный сервер, экспортёр данных и CSV-конвертер (`plantDataConverter.mjs`).【F:tools/localStaticServer.mjs†L1-L111】【F:tools/plantDataConverter.mjs†L1-L120】
 - `scripts/` — Служебные сценарии для экспорта/валидации бандла и синхронизации вспомогательных таблиц.【F:scripts/exportDataBundle.mjs†L1-L121】【F:scripts/links/sync_links.py†L1-L290】
 
@@ -25,7 +25,7 @@
   - `useEndlessMode.js` — Перемешивает весь каталог вопросов, начисляет +1/−2 балла и завершает сессию по исчерпанию вопросов либо при отрицательном счёте.【F:src/hooks/useEndlessMode.js†L1-L123】
   - `useSecureImageSource.js` — Fetches plant images as Blob URLs, кэширует и освобождает их по мере использования, скрывая оригинальные имена файлов от игроков.【F:src/hooks/useSecureImageSource.js†L1-L84】【F:src/hooks/useSecureImageSource.js†L86-L120】
 - `data/`
-- `json/` — Каноничное хранилище данных каталога. Файл `plantCatalog.json` содержит `plantNames`, `species` и `plantImages`; `plantFacts.json` хранит `plantParameters`, `plantFamilies` и определения `genus`; `plantData.json` отвечает за игровые вопросы, таблицы сложностей и вспомогательные режимы; `bouquetQuestions.json` выделен для букетов.【F:src/data/json/plantCatalog.json†L1-L466】【F:src/data/json/plantFacts.json†L1-L320】【F:src/data/json/plantData.json†L1-L204】【F:src/data/json/bouquetQuestions.json†L1-L160】
+- `json/` — Каноничное хранилище данных каталога. `plantData.json` содержит `plantQuestions` с локализованными названиями, ID изображений, списками отвлекающих ответов и таблицами сложностей; `memorization.json` хранит `plantParameters`, `plantFamilies`, `genus` и список карточек режима заучивания; `bouquetQuestions.json` выделен для букетов. Дублирование или склейка этих модулей вне экспортного пайплайна запрещены.【F:src/data/json/memorization.json†L1-L320】【F:src/data/json/plantData.json†L1-L204】【F:src/data/json/bouquetQuestions.json†L1-L160】
   - `schema/plant.schema.json` — JSON Schema для проверки экспортированного легаси-бандла и вспомогательных артефактов.【F:src/data/schema/plant.schema.json†L1-L188】
   - `parameterTags.js` — Расшифровки тегов, которые дополняют основной каталог при загрузке игры.【F:src/data/parameterTags.js†L1-L82】
   - `questionTypes.js` / `questions.js` — Перечисление типов вопросов и преднастроенные подборки (например, букетные задания) поверх каталогизированных данных.【F:src/data/questionTypes.js†L1-L25】【F:src/data/questions.js†L1-L118】

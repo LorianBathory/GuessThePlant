@@ -3,9 +3,9 @@ import {
   speciesById,
   plantImages,
   bouquetQuestions,
-  plants
+  plants,
+  memorizationPlants
 } from '../game/dataLoader.js';
-import { memorizationPlants } from '../data/memorization/memorizationCatalog.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 
 function isMeaningfulString(value) {
