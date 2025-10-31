@@ -201,7 +201,7 @@
         23,
         24
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "5-2",
       "questionType": "plant",
       "selectionGroupId": "plant-5",
@@ -224,7 +224,7 @@
         23,
         24
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "5-3",
       "questionType": "plant",
       "selectionGroupId": "plant-5",
@@ -353,7 +353,7 @@
         100,
         39
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "8-2",
       "questionType": "plant",
       "selectionGroupId": "plant-8",
@@ -375,7 +375,7 @@
         100,
         39
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "8-3",
       "questionType": "plant",
       "selectionGroupId": "plant-8",
@@ -397,7 +397,7 @@
         100,
         39
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "8-4",
       "questionType": "plant",
       "selectionGroupId": "plant-8",
@@ -419,7 +419,7 @@
         100,
         39
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "8-5",
       "questionType": "plant",
       "selectionGroupId": "plant-8",
@@ -448,6 +448,57 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 9,
+      "correctAnswerId": 9,
+      "imageId": "p9_0_1",
+      "image": "images/LamiumMaculatum_Nennieinszweidrei_Pixabay.jpg",
+      "names": {
+        "ru": "Яснотка пятнистая",
+        "en": "Spotted dead-nettle",
+        "nl": "Gevlekte dovenetel",
+        "sci": "Lamium Maculatum"
+      },
+      "difficulty": null,
+      "questionVariantId": "9-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-9",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 10,
+      "correctAnswerId": 10,
+      "imageId": "p10_0_1",
+      "image": "images/ToreniaFournieri_DuyLeDuc_Pexels.JPG",
+      "names": {
+        "ru": "Торения Фурнье",
+        "en": "Bluewings",
+        "nl": "Dames-pantoffel | Torenia",
+        "sci": "Torenia fournieri"
+      },
+      "difficulty": null,
+      "questionVariantId": "10-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-10",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 11,
+      "correctAnswerId": 11,
+      "imageId": "p11_0_1",
+      "image": "images/SpiraeaJaponica.JPG",
+      "names": {
+        "ru": "Спирея японская",
+        "en": "Japanese meadowsweet | Japanese spiraea",
+        "nl": "Japanse spirea",
+        "sci": "Spiraea japonica"
+      },
+      "difficulty": null,
+      "questionVariantId": "11-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-11",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 12,
       "correctAnswerId": 12,
       "imageId": "p12_0_1",
@@ -466,6 +517,44 @@
       "questionVariantId": "12-0",
       "questionType": "plant",
       "selectionGroupId": "plant-12",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "13_2",
+      "correctAnswerId": "13_2",
+      "imageId": "p13_2_1",
+      "image": "images/AlliumTuberosum_NguyenTienThịnh.JPG",
+      "names": {
+        "ru": "Лук клубневой",
+        "en": "Chinese chives",
+        "nl": "Chinese bieslook",
+        "sci": "Allium tuberosum"
+      },
+      "wrongAnswers": [
+        3,
+        11
+      ],
+      "difficulty": null,
+      "questionVariantId": "13_2-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-13_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "13_3",
+      "correctAnswerId": "13_3",
+      "imageId": "p13_3_1",
+      "image": "images/AlliumAngulosum_DominikRh_Pixabay.JPG",
+      "names": {
+        "ru": "Лук угловатый",
+        "en": "Mouse garlic",
+        "nl": "Kantige look",
+        "sci": "Allium Angulosum"
+      },
+      "difficulty": null,
+      "questionVariantId": "13_3-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-13_3",
       "questionPromptKey": "question"
     },
     {
@@ -553,24 +642,24 @@
       "questionPromptKey": "question"
     },
     {
-      "id": "13_2",
-      "correctAnswerId": "13_2",
-      "imageId": "p13_2_1",
-      "image": "images/AlliumTuberosum_NguyenTienThịnh.JPG",
+      "id": 13,
+      "correctAnswerId": 13,
+      "imageId": "p13_0_5",
+      "image": "images/AlliumAngulosum_DominikRh_Pixabay.JPG",
       "names": {
-        "ru": "Лук клубневой",
-        "en": "Chinese chives",
-        "nl": "Chinese bieslook",
-        "sci": "Allium tuberosum"
+        "ru": "Лук",
+        "en": "Allium",
+        "nl": "Reuzenlook",
+        "sci": "Allium"
       },
       "wrongAnswers": [
         3,
         11
       ],
-      "difficulty": null,
-      "questionVariantId": "13_2-0",
+      "difficulty": "Easy",
+      "questionVariantId": "13-4",
       "questionType": "plant",
-      "selectionGroupId": "plant-13_2",
+      "selectionGroupId": "plant-13",
       "questionPromptKey": "question"
     },
     {
@@ -637,6 +726,23 @@
       "questionPromptKey": "question"
     },
     {
+      "id": "17_1",
+      "correctAnswerId": "17_1",
+      "imageId": "p17_1_1",
+      "image": "images/ClematisMontana_ZenAga_Pixabay.JPG",
+      "names": {
+        "ru": "Ломонос горный",
+        "en": "Anemone clematis",
+        "nl": "Bergbosrank",
+        "sci": "Clematis montana"
+      },
+      "difficulty": null,
+      "questionVariantId": "17_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-17_1",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 17,
       "correctAnswerId": 17,
       "imageId": "p17_0_1",
@@ -688,8 +794,8 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 18,
-      "correctAnswerId": 18,
+      "id": "18_0",
+      "correctAnswerId": "18_0",
       "imageId": "p18_0_1",
       "image": "images/Wisteria_MyNguyen.JPG",
       "names": {
@@ -699,14 +805,14 @@
         "sci": "Wisteria"
       },
       "difficulty": "Easy",
-      "questionVariantId": "18-0",
+      "questionVariantId": "18_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-18",
+      "selectionGroupId": "plant-18_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 18,
-      "correctAnswerId": 18,
+      "id": "18_0",
+      "correctAnswerId": "18_0",
       "imageId": "p18_0_2",
       "image": "images/Wysteria_AnnieSpratt.JPG",
       "names": {
@@ -716,32 +822,15 @@
         "sci": "Wisteria"
       },
       "difficulty": "Easy",
-      "questionVariantId": "18-1",
+      "questionVariantId": "18_0-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-18",
+      "selectionGroupId": "plant-18_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 18,
-      "correctAnswerId": 18,
+      "id": "18_0",
+      "correctAnswerId": "18_0",
       "imageId": "p18_0_3",
-      "image": "images/Wisteria_EvieFjord_Unsplash.JPG",
-      "names": {
-        "ru": "Глициния",
-        "en": "Wisteria",
-        "nl": "Blauwe regen",
-        "sci": "Wisteria"
-      },
-      "difficulty": "Easy",
-      "questionVariantId": "18-2",
-      "questionType": "plant",
-      "selectionGroupId": "plant-18",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 18,
-      "correctAnswerId": 18,
-      "imageId": "p18_0_4",
       "image": "images/Wisteria_joshOgden_Unsplash.JPG",
       "names": {
         "ru": "Глициния",
@@ -750,9 +839,43 @@
         "sci": "Wisteria"
       },
       "difficulty": "Easy",
-      "questionVariantId": "18-3",
+      "questionVariantId": "18_0-2",
       "questionType": "plant",
-      "selectionGroupId": "plant-18",
+      "selectionGroupId": "plant-18_0",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "18_1",
+      "correctAnswerId": "18_1",
+      "imageId": "p18_1_1",
+      "image": "images/WisteriaSinensis_EvieFjord_Unsplash.JPG",
+      "names": {
+        "ru": "Глициния китайская",
+        "en": "Chinese wisteria",
+        "nl": "Chinese blauweregen",
+        "sci": "Wisteria sinensis"
+      },
+      "difficulty": null,
+      "questionVariantId": "18_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-18_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "18_2",
+      "correctAnswerId": "18_2",
+      "imageId": "p18_2_1",
+      "image": "images/WisteriaFrutescens_KellyIshmael_StockSnap.JPG",
+      "names": {
+        "ru": "Глициния кустарниковая",
+        "en": "American wisteria",
+        "nl": "Blauweregen",
+        "sci": "Wisteria frutescens"
+      },
+      "difficulty": null,
+      "questionVariantId": "18_2-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-18_2",
       "questionPromptKey": "question"
     },
     {
@@ -1116,7 +1239,7 @@
         73,
         77
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "26-2",
       "questionType": "plant",
       "selectionGroupId": "plant-26",
@@ -1146,10 +1269,78 @@
       "questionPromptKey": "question"
     },
     {
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_1",
+      "image": "images/Echinacea_AlexasFotos.JPG",
+      "names": {
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
+      },
+      "difficulty": null,
+      "questionVariantId": "27_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-27_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_2",
+      "image": "images/Echinacea_ForhadHossain.JPG",
+      "names": {
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
+      },
+      "difficulty": null,
+      "questionVariantId": "27_1-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-27_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_3",
+      "image": "images/Echinacea_Medium_RomanBiernacki.JPG",
+      "names": {
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
+      },
+      "difficulty": null,
+      "questionVariantId": "27_1-2",
+      "questionType": "plant",
+      "selectionGroupId": "plant-27_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "27_1",
+      "correctAnswerId": "27_1",
+      "imageId": "p27_1_4",
+      "image": "images/EchinaceaWhite_TravelPhotographer_StockSnap.JPG",
+      "names": {
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
+      },
+      "difficulty": null,
+      "questionVariantId": "27_1-3",
+      "questionType": "plant",
+      "selectionGroupId": "plant-27_1",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 27,
       "correctAnswerId": 27,
       "imageId": "p27_0_1",
-      "image": "images/Echinacea_AlexasFotos.JPG",
+      "image": "images/Echinacea_TravelPhotographer_StockSnap.JPG",
       "names": {
         "ru": "Эхинацея",
         "en": "Coneflower",
@@ -1164,52 +1355,6 @@
       ],
       "difficulty": "Easy",
       "questionVariantId": "27-0",
-      "questionType": "plant",
-      "selectionGroupId": "plant-27",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 27,
-      "correctAnswerId": 27,
-      "imageId": "p27_0_2",
-      "image": "images/Echinacea_ForhadHossain.JPG",
-      "names": {
-        "ru": "Эхинацея",
-        "en": "Coneflower",
-        "nl": "Zonnehoed",
-        "sci": "Echinacea"
-      },
-      "wrongAnswers": [
-        6,
-        38,
-        115,
-        121
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "27-1",
-      "questionType": "plant",
-      "selectionGroupId": "plant-27",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 27,
-      "correctAnswerId": 27,
-      "imageId": "p27_0_3",
-      "image": "images/Echinacea_Medium_RomanBiernacki.JPG",
-      "names": {
-        "ru": "Эхинацея",
-        "en": "Coneflower",
-        "nl": "Zonnehoed",
-        "sci": "Echinacea"
-      },
-      "wrongAnswers": [
-        6,
-        38,
-        115,
-        121
-      ],
-      "difficulty": "Medium",
-      "questionVariantId": "27-2",
       "questionType": "plant",
       "selectionGroupId": "plant-27",
       "questionPromptKey": "question"
@@ -1362,7 +1507,7 @@
         41,
         73
       ],
-      "difficulty": "Medium",
+      "difficulty": "Easy",
       "questionVariantId": "29-1",
       "questionType": "plant",
       "selectionGroupId": "plant-29",
@@ -1385,7 +1530,7 @@
         41,
         73
       ],
-      "difficulty": "Hard",
+      "difficulty": "Easy",
       "questionVariantId": "29-2",
       "questionType": "plant",
       "selectionGroupId": "plant-29",
@@ -1408,7 +1553,7 @@
         41,
         73
       ],
-      "difficulty": "Medium",
+      "difficulty": "Easy",
       "questionVariantId": "29-3",
       "questionType": "plant",
       "selectionGroupId": "plant-29",
@@ -1479,7 +1624,7 @@
         25,
         8
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "30-0",
       "questionType": "plant",
       "selectionGroupId": "plant-30",
@@ -1508,190 +1653,6 @@
       "questionVariantId": "30-1",
       "questionType": "plant",
       "selectionGroupId": "plant-30",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_1",
-      "image": "images/RoseEasy_HartonoSubagio.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-0",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_2",
-      "image": "images/Rose_Easy_JÉSHOOTS.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-1",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_3",
-      "image": "images/Rose_Hard.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-2",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_4",
-      "image": "images/Rose_Easy_SonnySixteen.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-3",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_5",
-      "image": "images/Rose_Medium_AliefBaldwin.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-4",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_6",
-      "image": "images/RosaRugosa.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-5",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_7",
-      "image": "images/RosaCanina_Mary_StockSnap.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-6",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 31,
-      "correctAnswerId": 31,
-      "imageId": "p31_0_8",
-      "image": "images/Rosa_MohanNannapaneni.JPG",
-      "names": {
-        "ru": "Роза",
-        "en": "Rose",
-        "nl": "Roos",
-        "sci": "Rosa"
-      },
-      "wrongAnswers": [
-        41,
-        69,
-        46,
-        5
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "31-7",
-      "questionType": "plant",
-      "selectionGroupId": "plant-31",
       "questionPromptKey": "question"
     },
     {
@@ -1735,6 +1696,190 @@
       "questionVariantId": "31_2-0",
       "questionType": "plant",
       "selectionGroupId": "plant-31_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_1",
+      "image": "images/RoseEasy_HartonoSubagio.JPG",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_2",
+      "image": "images/Rose_Easy_JÉSHOOTS.JPG",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_3",
+      "image": "images/Rose_Hard.JPG",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-2",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_4",
+      "image": "images/Rose_Easy_SonnySixteen.JPG",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-3",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_5",
+      "image": "images/Rose_Medium_AliefBaldwin.JPG",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-4",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_6",
+      "image": "images/RosaRugosa.JPG",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-5",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_7",
+      "image": "images/RosaCanina_Mary_StockSnap.JPG",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-6",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 31,
+      "correctAnswerId": 31,
+      "imageId": "p31_0_8",
+      "image": "images/Rosa_MohanNannapaneni.JPG",
+      "names": {
+        "ru": "Роза",
+        "en": "Rose",
+        "nl": "Roos",
+        "sci": "Rosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "31-7",
+      "questionType": "plant",
+      "selectionGroupId": "plant-31",
       "questionPromptKey": "question"
     },
     {
@@ -1819,7 +1964,7 @@
         41,
         26
       ],
-      "difficulty": "Medium",
+      "difficulty": "Easy",
       "questionVariantId": "33-1",
       "questionType": "plant",
       "selectionGroupId": "plant-33",
@@ -1975,40 +2120,6 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 36,
-      "correctAnswerId": 36,
-      "imageId": "p36_0_1",
-      "image": "images/Hemerocallis_AlexOhan.JPG",
-      "names": {
-        "ru": "Лилейник",
-        "en": "Daylilies",
-        "nl": "Daglelie",
-        "sci": "Hemerocallis"
-      },
-      "difficulty": "Medium",
-      "questionVariantId": "36-0",
-      "questionType": "plant",
-      "selectionGroupId": "plant-36",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 36,
-      "correctAnswerId": 36,
-      "imageId": "p36_0_2",
-      "image": "images/Hemerocallis2_Gruendercoach_Pixabay.JPG",
-      "names": {
-        "ru": "Лилейник",
-        "en": "Daylilies",
-        "nl": "Daglelie",
-        "sci": "Hemerocallis"
-      },
-      "difficulty": "Medium",
-      "questionVariantId": "36-1",
-      "questionType": "plant",
-      "selectionGroupId": "plant-36",
-      "questionPromptKey": "question"
-    },
-    {
       "id": "36_1",
       "correctAnswerId": "36_1",
       "imageId": "p36_1_1",
@@ -2040,6 +2151,40 @@
       "questionVariantId": "36_2-0",
       "questionType": "plant",
       "selectionGroupId": "plant-36_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 36,
+      "correctAnswerId": 36,
+      "imageId": "p36_0_1",
+      "image": "images/Hemerocallis_AlexOhan.JPG",
+      "names": {
+        "ru": "Лилейник / Красноднев",
+        "en": "Daylilies",
+        "nl": "Daglelie",
+        "sci": "Hemerocallis"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "36-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-36",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 36,
+      "correctAnswerId": 36,
+      "imageId": "p36_0_2",
+      "image": "images/Hemerocallis2_Gruendercoach_Pixabay.JPG",
+      "names": {
+        "ru": "Лилейник",
+        "en": "Daylilies",
+        "nl": "Daglelie",
+        "sci": "Hemerocallis"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "36-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-36",
       "questionPromptKey": "question"
     },
     {
@@ -2116,6 +2261,27 @@
       "questionPromptKey": "question"
     },
     {
+      "id": "41_1",
+      "correctAnswerId": "41_1",
+      "imageId": "p41_1_1",
+      "image": "images/DianthusBarbatus_Nature'sBeauty_StockSnap.JPG",
+      "names": {
+        "ru": "Гвоздика бородатая (турецкая)",
+        "en": "Sweet William",
+        "nl": "Duizendschoon",
+        "sci": "Dianthus barbatus"
+      },
+      "wrongAnswers": [
+        39,
+        40
+      ],
+      "difficulty": "Medium",
+      "questionVariantId": "41_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-41_1",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 41,
       "correctAnswerId": 41,
       "imageId": "p41_0_1",
@@ -2182,24 +2348,20 @@
       "questionPromptKey": "question"
     },
     {
-      "id": "41_1",
-      "correctAnswerId": "41_1",
-      "imageId": "p41_1_1",
-      "image": "images/DianthusBarbatus_Nature'sBeauty_StockSnap.JPG",
+      "id": 42,
+      "correctAnswerId": 42,
+      "imageId": "p42_0_1",
+      "image": "images/Abutilon_TravelPhotographer_StockSnap.JPG",
       "names": {
-        "ru": "Гвоздика бородатая (турецкая)",
-        "en": "Sweet William",
-        "nl": "Duizendschoon",
-        "sci": "Dianthus barbatus"
+        "ru": "Абутилон / Канатник",
+        "en": "Indian mallow",
+        "nl": "Abutilon (G)",
+        "sci": "Abutilon"
       },
-      "wrongAnswers": [
-        39,
-        40
-      ],
-      "difficulty": "Medium",
-      "questionVariantId": "41_1-0",
+      "difficulty": null,
+      "questionVariantId": "42-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-41_1",
+      "selectionGroupId": "plant-42",
       "questionPromptKey": "question"
     },
     {
@@ -2457,7 +2619,7 @@
       "imageId": "p47_2_1",
       "image": "images/AmenoneNemorosa_MAKY_OREL_Pixabay.JPG",
       "names": {
-        "ru": "Ветреница (анемона) дубравная",
+        "ru": "Ветреница дубравная",
         "en": "European thimbleweed / Wood Anemone",
         "nl": "Bosanemoon",
         "sci": "Anemone nemorosa"
@@ -2728,7 +2890,7 @@
         65,
         66
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "54-1",
       "questionType": "plant",
       "selectionGroupId": "plant-54",
@@ -2810,7 +2972,7 @@
       "wrongAnswers": [
         67
       ],
-      "difficulty": "Medium",
+      "difficulty": "Easy",
       "questionVariantId": "55-2",
       "questionType": "plant",
       "selectionGroupId": "plant-55",
@@ -2900,6 +3062,40 @@
       "questionVariantId": "56-2",
       "questionType": "plant",
       "selectionGroupId": "plant-56",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 57,
+      "correctAnswerId": 57,
+      "imageId": "p57_0_1",
+      "image": "images/Paulownia_SevalTorun.jpg",
+      "names": {
+        "ru": "Павловния",
+        "en": "Princess Tree",
+        "nl": "Paulownia, Keizersboom",
+        "sci": "Paulownia"
+      },
+      "difficulty": null,
+      "questionVariantId": "57-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-57",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 58,
+      "correctAnswerId": 58,
+      "imageId": "p58_0_1",
+      "image": "images/CatharanthusRoseus_AvneetSingh_Pexels.JPG",
+      "names": {
+        "ru": "Катарантус розовый",
+        "en": "Madagascar Periwinkle",
+        "nl": "Roze maagdenpalm",
+        "sci": "Catharanthus Roseus (syn. Vinca rosea)"
+      },
+      "difficulty": "Hard",
+      "questionVariantId": "58-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-58",
       "questionPromptKey": "question"
     },
     {
@@ -3077,6 +3273,23 @@
       },
       "difficulty": "Easy",
       "questionVariantId": "63-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-63",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 63,
+      "correctAnswerId": 63,
+      "imageId": "p63_0_2",
+      "image": "images/Zea_WhiskerFlowers_Pixabay.JPG",
+      "names": {
+        "ru": "Кукуруза",
+        "en": "Corn",
+        "nl": "Maïs",
+        "sci": "Zea mays"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "63-1",
       "questionType": "plant",
       "selectionGroupId": "plant-63",
       "questionPromptKey": "question"
@@ -3273,6 +3486,40 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 71,
+      "correctAnswerId": 71,
+      "imageId": "p71_0_1",
+      "image": "images/AesculusHippocastanum_KirilGruev_Pexels.JPG",
+      "names": {
+        "ru": "Каштан",
+        "en": "Chestnut",
+        "nl": "Kastanje",
+        "sci": "Aesculus"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "71-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-71",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 71,
+      "correctAnswerId": 71,
+      "imageId": "p71_0_2",
+      "image": "images/AesculusHippocastanum_DominikRh_Pixabay.JPG",
+      "names": {
+        "ru": "Каштан",
+        "en": "Chestnut",
+        "nl": "Kastanje",
+        "sci": "Aesculus"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "71-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-71",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 72,
       "correctAnswerId": 72,
       "imageId": "p72_0_1",
@@ -3326,7 +3573,7 @@
       "wrongAnswers": [
         29
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "73-1",
       "questionType": "plant",
       "selectionGroupId": "plant-73",
@@ -3346,7 +3593,7 @@
       "wrongAnswers": [
         29
       ],
-      "difficulty": "Easy",
+      "difficulty": "Medium",
       "questionVariantId": "73-2",
       "questionType": "plant",
       "selectionGroupId": "plant-73",
@@ -3685,6 +3932,63 @@
       "questionPromptKey": "question"
     },
     {
+      "id": "82_1",
+      "correctAnswerId": "82_1",
+      "imageId": "p82_1_1",
+      "image": "images/Viola_DamianApanasowicz.JPG",
+      "names": {
+        "ru": "Анютины глазки",
+        "en": "Pansy",
+        "nl": "Viooltje, Driekleurig viooltje",
+        "sci": "Viola tricolor var. hortensis"
+      },
+      "wrongAnswers": [
+        20
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "82_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-82_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "82_1",
+      "correctAnswerId": "82_1",
+      "imageId": "p82_1_2",
+      "image": "images/Viola_Akuptsova_Pixabay.JPG",
+      "names": {
+        "ru": "Анютины глазки",
+        "en": "Pansy",
+        "nl": "Viooltje, Driekleurig viooltje",
+        "sci": "Viola tricolor var. hortensis"
+      },
+      "wrongAnswers": [
+        20
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "82_1-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-82_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "82_2",
+      "correctAnswerId": "82_2",
+      "imageId": "p82_2_1",
+      "image": "images/ViolaSororia_BobRichards_StockSnap.jpg",
+      "names": {
+        "ru": "Фиалка сестринская",
+        "en": "Common blue violet",
+        "nl": "Zusterviooltje",
+        "sci": "Viola Sororia"
+      },
+      "difficulty": null,
+      "questionVariantId": "82_2-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-82_2",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 82,
       "correctAnswerId": 82,
       "imageId": "p82_0_1",
@@ -3780,6 +4084,26 @@
       ],
       "difficulty": "Hard",
       "questionVariantId": "84-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-84",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 84,
+      "correctAnswerId": 84,
+      "imageId": "p84_0_2",
+      "image": "images/BrassicaOleracea_BARBARA808_Pixabay.JPG",
+      "names": {
+        "ru": "Кольраби",
+        "en": "Kohlrabi",
+        "nl": "Koolrabi",
+        "sci": "Brassica oleracea Gongylodes Group"
+      },
+      "wrongAnswers": [
+        22
+      ],
+      "difficulty": "Hard",
+      "questionVariantId": "84-1",
       "questionType": "plant",
       "selectionGroupId": "plant-84",
       "questionPromptKey": "question"
@@ -3922,63 +4246,83 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 88,
-      "correctAnswerId": 88,
+      "id": "88_0",
+      "correctAnswerId": "88_0",
       "imageId": "p88_0_1",
       "image": "images/Hydrangea.JPG",
       "names": {
         "ru": "Гортензия",
         "en": "Hydrangea",
         "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
+        "sci": "Hydrangea"
       },
       "wrongAnswers": [
         10
       ],
-      "difficulty": "Medium",
-      "questionVariantId": "88-0",
+      "difficulty": "Easy",
+      "questionVariantId": "88_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-88",
+      "selectionGroupId": "plant-88_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 88,
-      "correctAnswerId": 88,
+      "id": "88_0",
+      "correctAnswerId": "88_0",
       "imageId": "p88_0_2",
       "image": "images/Hydrangea_Easy.JPG",
       "names": {
         "ru": "Гортензия",
         "en": "Hydrangea",
         "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
+        "sci": "Hydrangea"
       },
       "wrongAnswers": [
         10
       ],
       "difficulty": "Easy",
-      "questionVariantId": "88-1",
+      "questionVariantId": "88_0-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-88",
+      "selectionGroupId": "plant-88_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 88,
-      "correctAnswerId": 88,
+      "id": "88_0",
+      "correctAnswerId": "88_0",
       "imageId": "p88_0_3",
       "image": "images/Hydrangea_MohanNannapaneni.JPG",
       "names": {
         "ru": "Гортензия",
         "en": "Hydrangea",
         "nl": "Hortensia",
-        "sci": "Hydrangea macrophylla"
+        "sci": "Hydrangea"
       },
       "wrongAnswers": [
         10
       ],
       "difficulty": "Easy",
-      "questionVariantId": "88-2",
+      "questionVariantId": "88_0-2",
       "questionType": "plant",
-      "selectionGroupId": "plant-88",
+      "selectionGroupId": "plant-88_0",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "88_0",
+      "correctAnswerId": "88_0",
+      "imageId": "p88_0_4",
+      "image": "images/HydrangeaQuercifolia_Nennieinszweidrei_Pixabay.JPG",
+      "names": {
+        "ru": "Гортензия",
+        "en": "Hydrangea",
+        "nl": "Hortensia",
+        "sci": "Hydrangea"
+      },
+      "wrongAnswers": [
+        10
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "88_0-3",
+      "questionType": "plant",
+      "selectionGroupId": "plant-88_0",
       "questionPromptKey": "question"
     },
     {
@@ -4075,7 +4419,7 @@
       "wrongAnswers": [
         27
       ],
-      "difficulty": "Medium",
+      "difficulty": "Easy",
       "questionVariantId": "91-1",
       "questionType": "plant",
       "selectionGroupId": "plant-91",
@@ -4135,7 +4479,7 @@
       "wrongAnswers": [
         28
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "92-0",
       "questionType": "plant",
       "selectionGroupId": "plant-92",
@@ -4430,7 +4774,7 @@
       "wrongAnswers": [
         31
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "98-0",
       "questionType": "plant",
       "selectionGroupId": "plant-98",
@@ -4454,28 +4798,6 @@
       "questionVariantId": "98-1",
       "questionType": "plant",
       "selectionGroupId": "plant-98",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 100,
-      "correctAnswerId": 100,
-      "imageId": "p100_0_1",
-      "image": "images/Helianthus_Easy.jpg",
-      "names": {
-        "ru": "Подсолнечник",
-        "en": "Sunflower",
-        "nl": "Zonnebloem",
-        "sci": "Helianthus"
-      },
-      "wrongAnswers": [
-        6,
-        39,
-        27
-      ],
-      "difficulty": "Easy",
-      "questionVariantId": "100-0",
-      "questionType": "plant",
-      "selectionGroupId": "plant-100",
       "questionPromptKey": "question"
     },
     {
@@ -4520,6 +4842,28 @@
       "questionVariantId": "100_2-0",
       "questionType": "plant",
       "selectionGroupId": "plant-100_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 100,
+      "correctAnswerId": 100,
+      "imageId": "p100_0_1",
+      "image": "images/Helianthus_Easy.jpg",
+      "names": {
+        "ru": "Подсолнечник",
+        "en": "Sunflower",
+        "nl": "Zonnebloem",
+        "sci": "Helianthus"
+      },
+      "wrongAnswers": [
+        6,
+        39,
+        27
+      ],
+      "difficulty": "Easy",
+      "questionVariantId": "100-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-100",
       "questionPromptKey": "question"
     },
     {
@@ -4617,6 +4961,40 @@
       "questionVariantId": "102-1",
       "questionType": "plant",
       "selectionGroupId": "plant-102",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 103,
+      "correctAnswerId": 103,
+      "imageId": "p103_0_1",
+      "image": "images/Primula_E1St0rm_Pixabay.JPG",
+      "names": {
+        "ru": "Примула",
+        "en": "Primrose",
+        "nl": "Sleutelbloem",
+        "sci": "Primula"
+      },
+      "difficulty": null,
+      "questionVariantId": "103-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-103",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 103,
+      "correctAnswerId": 103,
+      "imageId": "p103_0_2",
+      "image": "images/PrimulaDenticulata_TravelPhotographer_StockSnap.JPG",
+      "names": {
+        "ru": "Примула",
+        "en": "Primrose",
+        "nl": "Sleutelbloem",
+        "sci": "Primula"
+      },
+      "difficulty": null,
+      "questionVariantId": "103-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-103",
       "questionPromptKey": "question"
     },
     {
@@ -4909,6 +5287,23 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 111,
+      "correctAnswerId": 111,
+      "imageId": "p111_0_1",
+      "image": "images/Aloe_DouglasAlbertoNave_Pexels.JPG",
+      "names": {
+        "ru": "Алоэ",
+        "en": "Aloe",
+        "nl": "Aloë",
+        "sci": "Aloe"
+      },
+      "difficulty": null,
+      "questionVariantId": "111-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-111",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 112,
       "correctAnswerId": 112,
       "imageId": "p112_0_1",
@@ -4942,7 +5337,7 @@
       "wrongAnswers": [
         131
       ],
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "questionVariantId": "112-1",
       "questionType": "plant",
       "selectionGroupId": "plant-112",
@@ -5054,23 +5449,6 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 116,
-      "correctAnswerId": 116,
-      "imageId": "p116_0_1",
-      "image": "images/CentaureaKnapweeds_Hard_SiegfriedPoepperl.JPG",
-      "names": {
-        "ru": "Василёк",
-        "en": "Knapweeds",
-        "nl": "Knoopkruid",
-        "sci": "Centaurea"
-      },
-      "difficulty": "Easy",
-      "questionVariantId": "116-0",
-      "questionType": "plant",
-      "selectionGroupId": "plant-116",
-      "questionPromptKey": "question"
-    },
-    {
       "id": "116_1",
       "correctAnswerId": "116_1",
       "imageId": "p116_1_1",
@@ -5088,9 +5466,60 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 118,
-      "correctAnswerId": 118,
-      "imageId": "p118_0_1",
+      "id": 116,
+      "correctAnswerId": 116,
+      "imageId": "p116_0_1",
+      "image": "images/CentaureaKnapweeds_Hard_SiegfriedPoepperl.JPG",
+      "names": {
+        "ru": "Василёк",
+        "en": "Knapweeds",
+        "nl": "Knoopkruid",
+        "sci": "Centaurea"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "116-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-116",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 117,
+      "correctAnswerId": 117,
+      "imageId": "p117_0_1",
+      "image": "images/AstrantiaMajor_TravelPhotographer2_StockSnap_KINMIFZQVX.JPG",
+      "names": {
+        "ru": "Астранция",
+        "en": "Masterwort",
+        "nl": "Sterrenscherm | Zeeuws knoopje",
+        "sci": "Astrantia"
+      },
+      "difficulty": null,
+      "questionVariantId": "117-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-117",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "118_1",
+      "correctAnswerId": "118_1",
+      "imageId": "p118_1_1",
+      "image": "images/GeraniumMagnificum_Kapa65_Pixabay.JPG",
+      "names": {
+        "ru": "Герань великолепная",
+        "en": "Purple cranesbill",
+        "nl": "Ooievaarsbek",
+        "sci": "Geranium magnificum"
+      },
+      "difficulty": null,
+      "questionVariantId": "118_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-118_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "118_2",
+      "correctAnswerId": "118_2",
+      "imageId": "p118_2_1",
       "image": "images/Geranium_Hard_TinaNord.JPG",
       "names": {
         "ru": "Журавельник (Герань)",
@@ -5099,32 +5528,15 @@
         "sci": "Geranium"
       },
       "difficulty": "Medium",
-      "questionVariantId": "118-0",
+      "questionVariantId": "118_2-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-118",
+      "selectionGroupId": "plant-118_2",
       "questionPromptKey": "question"
     },
     {
-      "id": 118,
-      "correctAnswerId": 118,
-      "imageId": "p118_0_2",
-      "image": "images/Geranium_Pixabay2.JPG",
-      "names": {
-        "ru": "Журавельник (Герань)",
-        "en": "Hardy Geranium / Crane's-bill",
-        "nl": "Ooievaarsbek",
-        "sci": "Geranium"
-      },
-      "difficulty": "Medium",
-      "questionVariantId": "118-1",
-      "questionType": "plant",
-      "selectionGroupId": "plant-118",
-      "questionPromptKey": "question"
-    },
-    {
-      "id": 118,
-      "correctAnswerId": 118,
-      "imageId": "p118_0_3",
+      "id": "118_2",
+      "correctAnswerId": "118_2",
+      "imageId": "p118_2_2",
       "image": "images/Geranium_ord6.JPG",
       "names": {
         "ru": "Журавельник (Герань)",
@@ -5133,9 +5545,26 @@
         "sci": "Geranium"
       },
       "difficulty": "Medium",
-      "questionVariantId": "118-2",
+      "questionVariantId": "118_2-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-118",
+      "selectionGroupId": "plant-118_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "118_2",
+      "correctAnswerId": "118_2",
+      "imageId": "p118_2_3",
+      "image": "images/Geranium_pixabay.JPG",
+      "names": {
+        "ru": "Журавельник (Герань)",
+        "en": "Hardy Geranium / Crane's-bill",
+        "nl": "Ooievaarsbek",
+        "sci": "Geranium"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "118_2-2",
+      "questionType": "plant",
+      "selectionGroupId": "plant-118_2",
       "questionPromptKey": "question"
     },
     {
@@ -5287,6 +5716,23 @@
       },
       "difficulty": "Medium",
       "questionVariantId": "122-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-122",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 122,
+      "correctAnswerId": 122,
+      "imageId": "p122_0_2",
+      "image": "images/GalanthusNivalis_RalphsFotos_Pixabay.JPG",
+      "names": {
+        "ru": "Галантус",
+        "en": "Snowdrop",
+        "nl": "Sneeuwklokje",
+        "sci": "Galanthus"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "122-1",
       "questionType": "plant",
       "selectionGroupId": "plant-122",
       "questionPromptKey": "question"
@@ -5462,6 +5908,40 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 127,
+      "correctAnswerId": 127,
+      "imageId": "p127_0_4",
+      "image": "images/Zinnia_BARBARA808_Pixabay.JPG",
+      "names": {
+        "ru": "Цинния",
+        "en": "Zinnia",
+        "nl": "Zinnia",
+        "sci": "Zinnia"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "127-3",
+      "questionType": "plant",
+      "selectionGroupId": "plant-127",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 129,
+      "correctAnswerId": 129,
+      "imageId": "p129_0_1",
+      "image": "images/CakileMaritima_BobRichards_StockSnap.jpg",
+      "names": {
+        "ru": "Морская горчица",
+        "en": "European searocket",
+        "nl": "Zeeraket",
+        "sci": "Cakile Maritima"
+      },
+      "difficulty": null,
+      "questionVariantId": "129-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-129",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 130,
       "correctAnswerId": 130,
       "imageId": "p130_0_1",
@@ -5534,6 +6014,91 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 133,
+      "correctAnswerId": 133,
+      "imageId": "p133_0_1",
+      "image": "images/Neoregelia_whiskerFlowers_Pixabay.JPG",
+      "names": {
+        "ru": "Неорегелия",
+        "en": "Neoregelia",
+        "nl": "Neoregelia",
+        "sci": "Neoregelia"
+      },
+      "difficulty": null,
+      "questionVariantId": "133-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-133",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 133,
+      "correctAnswerId": 133,
+      "imageId": "p133_0_2",
+      "image": "images/Neoregelia-ignatrtonosbg_Pixabay.JPG",
+      "names": {
+        "ru": "Неорегелия",
+        "en": "Neoregelia",
+        "nl": "Neoregelia",
+        "sci": "Neoregelia"
+      },
+      "difficulty": null,
+      "questionVariantId": "133-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-133",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 135,
+      "correctAnswerId": 135,
+      "imageId": "p135_0_1",
+      "image": "images/Calendula_BARBARA808_Pixabay.JPG",
+      "names": {
+        "ru": "Календула",
+        "en": "Marigold",
+        "nl": "Goudsbloem",
+        "sci": "Calendula"
+      },
+      "difficulty": null,
+      "questionVariantId": "135-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-135",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 135,
+      "correctAnswerId": 135,
+      "imageId": "p135_0_2",
+      "image": "images/CalendulaOfficinalis_BARBARA808_Pixabay.JPG",
+      "names": {
+        "ru": "Календула",
+        "en": "Marigold",
+        "nl": "Goudsbloem",
+        "sci": "Calendula"
+      },
+      "difficulty": null,
+      "questionVariantId": "135-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-135",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 138,
+      "correctAnswerId": 138,
+      "imageId": "p138_0_1",
+      "image": "images/AntirrhinumMajus_VintageRS_StockSnap.JPG",
+      "names": {
+        "ru": "Львиный зев",
+        "en": "Snapdragon",
+        "nl": "Vlambloem / Leeuwenbek",
+        "sci": "Antirrhinum"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "138-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-138",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 139,
       "correctAnswerId": 139,
       "imageId": "p139_0_1",
@@ -5581,7 +6146,7 @@
       "wrongAnswers": [
         14
       ],
-      "difficulty": "Medium",
+      "difficulty": "Easy",
       "questionVariantId": "142-0",
       "questionType": "plant",
       "selectionGroupId": "plant-142",
@@ -5708,20 +6273,105 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 146,
-      "correctAnswerId": 146,
-      "imageId": "p146_0_1",
+      "id": 143,
+      "correctAnswerId": 143,
+      "imageId": "p143_0_1",
+      "image": "images/CastaneaSativa_E1St0rm_Pixabay.JPG",
+      "names": {
+        "ru": "Каштан посевной",
+        "en": "Sweet chestnut",
+        "nl": "Tamme kastanje",
+        "sci": "Castanea Sativa"
+      },
+      "difficulty": null,
+      "questionVariantId": "143-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-143",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 144,
+      "correctAnswerId": 144,
+      "imageId": "p144_0_1",
+      "image": "images/Astilbe_Akuptsova_Pixabay.JPG",
+      "names": {
+        "ru": "Астильба",
+        "en": "Astilbe",
+        "nl": "Astilbe",
+        "sci": "Astilbe"
+      },
+      "difficulty": null,
+      "questionVariantId": "144-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-144",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "146_1",
+      "correctAnswerId": "146_1",
+      "imageId": "p146_1_1",
       "image": "images/Clover_YanaKuyan.JPG",
       "names": {
-        "ru": "Клевер",
+        "ru": "Клевер луговой",
         "en": "Red Clover",
         "nl": "Rode klaver",
         "sci": "Trifolium pratense"
       },
       "difficulty": "Easy",
-      "questionVariantId": "146-0",
+      "questionVariantId": "146_1-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-146",
+      "selectionGroupId": "plant-146_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "146_1",
+      "correctAnswerId": "146_1",
+      "imageId": "p146_1_2",
+      "image": "images/TrifoliumPratense.JPG",
+      "names": {
+        "ru": "Клевер луговой",
+        "en": "Red Clover",
+        "nl": "Rode klaver",
+        "sci": "Trifolium pratense"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "146_1-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-146_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "146_2",
+      "correctAnswerId": "146_2",
+      "imageId": "p146_2_1",
+      "image": "images/TrifoliumRepens_WhiskerFlowers_Pixabay.JPG",
+      "names": {
+        "ru": "Клевер ползучий",
+        "en": "White Clover",
+        "nl": "Witte klaver",
+        "sci": "Trifolium Repens"
+      },
+      "difficulty": null,
+      "questionVariantId": "146_2-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-146_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "146_3",
+      "correctAnswerId": "146_3",
+      "imageId": "p146_3_1",
+      "image": "images/TrifoliumIncarnatum_Ganajp_Pexels.JPG",
+      "names": {
+        "ru": "Клевер мясо-красный",
+        "en": "Crimson clover",
+        "nl": "Inkarnaatklaver",
+        "sci": "Trifolium Incarnatum"
+      },
+      "difficulty": null,
+      "questionVariantId": "146_3-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-146_3",
       "questionPromptKey": "question"
     },
     {
@@ -5742,8 +6392,8 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 150,
-      "correctAnswerId": 150,
+      "id": "150_0",
+      "correctAnswerId": "150_0",
       "imageId": "p150_0_1",
       "image": "images/SalviaOfficinalis_TravelPhotographer_StockSnap.JPG",
       "names": {
@@ -5753,14 +6403,14 @@
         "sci": "Salvia"
       },
       "difficulty": null,
-      "questionVariantId": "150-0",
+      "questionVariantId": "150_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-150",
+      "selectionGroupId": "plant-150_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 150,
-      "correctAnswerId": 150,
+      "id": "150_0",
+      "correctAnswerId": "150_0",
       "imageId": "p150_0_2",
       "image": "images/SalviaOfficinalis2_TravelPhotographer_StockSnap.JPG",
       "names": {
@@ -5770,9 +6420,9 @@
         "sci": "Salvia"
       },
       "difficulty": null,
-      "questionVariantId": "150-1",
+      "questionVariantId": "150_0-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-150",
+      "selectionGroupId": "plant-150_0",
       "questionPromptKey": "question"
     },
     {
@@ -5861,6 +6511,23 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 150,
+      "correctAnswerId": 150,
+      "imageId": "p150_0_2",
+      "image": "images/SalviaOfficinalis2_TravelPhotographer_StockSnap.JPG",
+      "names": {
+        "ru": "Шалфей",
+        "en": "Sage",
+        "nl": "Salie",
+        "sci": "Salvia"
+      },
+      "difficulty": null,
+      "questionVariantId": "150-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-150",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 152,
       "correctAnswerId": 152,
       "imageId": "p152_0_1",
@@ -5895,8 +6562,8 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 153,
-      "correctAnswerId": 153,
+      "id": "153_0",
+      "correctAnswerId": "153_0",
       "imageId": "p153_0_1",
       "image": "images/CornusFlorida.JPG",
       "names": {
@@ -5910,14 +6577,14 @@
         24
       ],
       "difficulty": "Medium",
-      "questionVariantId": "153-0",
+      "questionVariantId": "153_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-153",
+      "selectionGroupId": "plant-153_0",
       "questionPromptKey": "question"
     },
     {
-      "id": 153,
-      "correctAnswerId": 153,
+      "id": "153_0",
+      "correctAnswerId": "153_0",
       "imageId": "p153_0_2",
       "image": "images/CornusFlorida_MohanNannapaneni_Pexels.JPG",
       "names": {
@@ -5931,9 +6598,47 @@
         24
       ],
       "difficulty": "Medium",
-      "questionVariantId": "153-1",
+      "questionVariantId": "153_0-1",
       "questionType": "plant",
-      "selectionGroupId": "plant-153",
+      "selectionGroupId": "plant-153_0",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "153_0",
+      "correctAnswerId": "153_0",
+      "imageId": "p153_0_3",
+      "image": "images/CornusFlorida_KellyIshmael_StockSnap.JPG",
+      "names": {
+        "ru": "Кизил",
+        "en": "Flowering Dogwood",
+        "nl": "Oostamerikaanse kornoelje",
+        "sci": "Cornus Florida"
+      },
+      "wrongAnswers": [
+        17,
+        24
+      ],
+      "difficulty": "Medium",
+      "questionVariantId": "153_0-2",
+      "questionType": "plant",
+      "selectionGroupId": "plant-153_0",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "153_1",
+      "correctAnswerId": "153_1",
+      "imageId": "p153_1_1",
+      "image": "images/CornusSericea.JPG",
+      "names": {
+        "ru": "Свида шелковистая / Дёрен белый",
+        "en": "redosier dogwood",
+        "nl": "Canadese kornoelje",
+        "sci": "Cornus sericea"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "153_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-153_1",
       "questionPromptKey": "question"
     },
     {
@@ -6162,6 +6867,27 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 162,
+      "correctAnswerId": 162,
+      "imageId": "p162_0_2",
+      "image": "images/CatharanthusRoseus_AvneetSingh_Pexels.JPG",
+      "names": {
+        "ru": "Катарантус",
+        "en": "Catharanthus",
+        "nl": "Catharanthus",
+        "sci": "Catharanthus Roseus"
+      },
+      "wrongAnswers": [
+        23,
+        139
+      ],
+      "difficulty": "Hard",
+      "questionVariantId": "162-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-162",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 163,
       "correctAnswerId": 163,
       "imageId": "p163_0_1",
@@ -6210,6 +6936,40 @@
       "questionVariantId": "164-0",
       "questionType": "plant",
       "selectionGroupId": "plant-164",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "165_0",
+      "correctAnswerId": "165_0",
+      "imageId": "p165_0_1",
+      "image": "images/Helleborus_Aaronburden.JPG",
+      "names": {
+        "ru": "Морозник",
+        "en": "Hellebore",
+        "nl": "Nieskruid",
+        "sci": "Helleborus"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "165_0-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-165_0",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "165_0",
+      "correctAnswerId": "165_0",
+      "imageId": "p165_0_2",
+      "image": "images/HelleborusNiger_Couleur_Pixabay.JPG",
+      "names": {
+        "ru": "Морозник",
+        "en": "Hellebore",
+        "nl": "Nieskruid",
+        "sci": "Helleborus"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "165_0-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-165_0",
       "questionPromptKey": "question"
     },
     {
@@ -6298,8 +7058,8 @@
       "questionPromptKey": "question"
     },
     {
-      "id": 169,
-      "correctAnswerId": 169,
+      "id": "169_0",
+      "correctAnswerId": "169_0",
       "imageId": "p169_0_1",
       "image": "images/AmaranthusCruentus_JuliaFilirovska.JPG",
       "names": {
@@ -6309,9 +7069,9 @@
         "sci": "Amaranthus"
       },
       "difficulty": "Medium",
-      "questionVariantId": "169-0",
+      "questionVariantId": "169_0-0",
       "questionType": "plant",
-      "selectionGroupId": "plant-169",
+      "selectionGroupId": "plant-169_0",
       "questionPromptKey": "question"
     },
     {
@@ -6346,6 +7106,40 @@
       "questionVariantId": "169_2-0",
       "questionType": "plant",
       "selectionGroupId": "plant-169_2",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 169,
+      "correctAnswerId": 169,
+      "imageId": "p169_0_1",
+      "image": "images/AmaranthusCruentus_JuliaFilirovska.JPG",
+      "names": {
+        "ru": "Амарант",
+        "en": "Amaranth",
+        "nl": "Amarant",
+        "sci": "Amaranthus"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "169-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-169",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 170,
+      "correctAnswerId": 170,
+      "imageId": "p170_0_1",
+      "image": "images/CistusAlbidus_Joseviparra_Pixabay.JPG",
+      "names": {
+        "ru": "Ладанник (цистус) беловатый",
+        "en": "White-leaved rockrose (Cistus)",
+        "nl": "Grijsbladige cistus | Witbladige cistusroos",
+        "sci": "Cistus Albidus"
+      },
+      "difficulty": null,
+      "questionVariantId": "170-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-170",
       "questionPromptKey": "question"
     },
     {
@@ -6593,6 +7387,23 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 179,
+      "correctAnswerId": 179,
+      "imageId": "p179_0_2",
+      "image": "images/Pyracantha_Stefpal_Pixabay.jpg",
+      "names": {
+        "ru": "Пираканта алая",
+        "en": "Firethorn / Scarlet firethorn",
+        "nl": "Vuurdoorn",
+        "sci": "Pyracantha Coccinea"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "179-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-179",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 181,
       "correctAnswerId": 181,
       "imageId": "p181_0_1",
@@ -6661,6 +7472,23 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 185,
+      "correctAnswerId": 185,
+      "imageId": "p185_0_2",
+      "image": "images/EschscholziaCalifornica_BARBARA808_Pixabay.JPG",
+      "names": {
+        "ru": "Эшшольция калифорнийская",
+        "en": "California poppy",
+        "nl": "Californische klaproos",
+        "sci": "Eschscholzia Californica"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "185-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-185",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 186,
       "correctAnswerId": 186,
       "imageId": "p186_0_1",
@@ -6707,6 +7535,23 @@
       },
       "difficulty": "Medium",
       "questionVariantId": "186-2",
+      "questionType": "plant",
+      "selectionGroupId": "plant-186",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 186,
+      "correctAnswerId": 186,
+      "imageId": "p186_0_4",
+      "image": "images/HeleniumAutumnale_WhiskerFlowers_Pixabay.JPG",
+      "names": {
+        "ru": "Гелениум осенний",
+        "en": "Sneezeweed",
+        "nl": "Zonnekruid",
+        "sci": "Helenium Autumnale"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "186-3",
       "questionType": "plant",
       "selectionGroupId": "plant-186",
       "questionPromptKey": "question"
@@ -6984,6 +7829,23 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 202,
+      "correctAnswerId": 202,
+      "imageId": "p202_0_2",
+      "image": "images/Pulsatilla-Nennieinszweidrei_Pixabay.jpg",
+      "names": {
+        "ru": "Прострел",
+        "en": "Pasque flower",
+        "nl": "Wildemanskruid",
+        "sci": "Pulsatilla"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "202-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-202",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 203,
       "correctAnswerId": 203,
       "imageId": "p203_0_1",
@@ -7222,6 +8084,23 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 216,
+      "correctAnswerId": 216,
+      "imageId": "p216_0_2",
+      "image": "images/BerberisAquifolium_E1St0rm_Pixabay.JPG",
+      "names": {
+        "ru": "Барбарис",
+        "en": "Barberry",
+        "nl": "Berberis",
+        "sci": "Berberis"
+      },
+      "difficulty": "Medium",
+      "questionVariantId": "216-1",
+      "questionType": "plant",
+      "selectionGroupId": "plant-216",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 217,
       "correctAnswerId": 217,
       "imageId": "p217_0_1",
@@ -7338,6 +8217,40 @@
       "questionVariantId": "223-0",
       "questionType": "plant",
       "selectionGroupId": "plant-223",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "224_1",
+      "correctAnswerId": "224_1",
+      "imageId": "p224_1_1",
+      "image": "images/HederaRhombea_Pexels_Pixabay.JPG",
+      "names": {
+        "ru": "Плющ",
+        "en": "Japanese ivy",
+        "nl": "Japanse klimop",
+        "sci": "Hedera Rhombea"
+      },
+      "difficulty": null,
+      "questionVariantId": "224_1-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-224_1",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "224_2",
+      "correctAnswerId": "224_2",
+      "imageId": "p224_2_1",
+      "image": "images/HederaHelix.JPG",
+      "names": {
+        "ru": "Плющ обыкновенный",
+        "en": "English ivy",
+        "nl": "Klimop",
+        "sci": "Hedera helix"
+      },
+      "difficulty": "Easy",
+      "questionVariantId": "224_2-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-224_2",
       "questionPromptKey": "question"
     },
     {
@@ -7628,6 +8541,159 @@
       "questionType": "plant",
       "selectionGroupId": "plant-238",
       "questionPromptKey": "question"
+    },
+    {
+      "id": 239,
+      "correctAnswerId": 239,
+      "imageId": "p239_0_1",
+      "image": "images/Nidularium_Stevebidmead_Pixabay.JPG",
+      "names": {
+        "ru": "Нидуляриум - род",
+        "en": "Nidularium",
+        "nl": "Nidularium",
+        "sci": "Nidularium"
+      },
+      "difficulty": null,
+      "questionVariantId": "239-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-239",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 240,
+      "correctAnswerId": 240,
+      "imageId": "p240_0_1",
+      "image": "images/Convolvulus_BARBARA808_Pixabay.JPG",
+      "names": {
+        "ru": "Вьюнок",
+        "en": "Bindweed",
+        "nl": "Winde",
+        "sci": "Convolvulus"
+      },
+      "difficulty": null,
+      "questionVariantId": "240-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-240",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 241,
+      "correctAnswerId": 241,
+      "imageId": "p241_0_1",
+      "image": "images/CotoneasterHorizontalis.JPG",
+      "names": {
+        "ru": "Кизильник горизонтальный",
+        "en": "Rockspray cotoneaster",
+        "nl": "Vlakke dwergmispel",
+        "sci": "Cotoneaster Horizontalis"
+      },
+      "difficulty": null,
+      "questionVariantId": "241-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-241",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 242,
+      "correctAnswerId": 242,
+      "imageId": "p242_0_1",
+      "image": "images/Craspedia_Rollstein_Pixabay.JPG",
+      "names": {
+        "ru": "Краспедия",
+        "en": "Craspedia",
+        "nl": "Gele ballen",
+        "sci": "Craspedia"
+      },
+      "difficulty": null,
+      "questionVariantId": "242-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-242",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 243,
+      "correctAnswerId": 243,
+      "imageId": "p243_0_1",
+      "image": "images/EchinopsisOxygona_BARBARA808_Pixabay.JPG",
+      "names": {
+        "ru": "Эхинопсис острогранный",
+        "en": "Easter-lily cactus",
+        "nl": "Paasleliecactus",
+        "sci": "Echinopsis Oxygona"
+      },
+      "difficulty": null,
+      "questionVariantId": "243-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-243",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 244,
+      "correctAnswerId": 244,
+      "imageId": "p244_0_1",
+      "image": "images/LimoniumArboreum_WhiskerFlowers_Pixabay.JPG",
+      "names": {
+        "ru": "Кермек (лимониум) древесный",
+        "en": "Limonium Arboreum",
+        "nl": "Limonium Arboreum",
+        "sci": "Limonium Arboreum"
+      },
+      "difficulty": null,
+      "questionVariantId": "244-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-244",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 245,
+      "correctAnswerId": 245,
+      "imageId": "p245_0_1",
+      "image": "images/LobeliaCardinalis_BobRichards_StockSnap.JPG",
+      "names": {
+        "ru": "Лобелия пурпурная",
+        "en": "Cardinal flower",
+        "nl": "Kardinaalslobelia / Scharlaken lobelia",
+        "sci": "Lobelia Cardinalis"
+      },
+      "difficulty": null,
+      "questionVariantId": "245-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-245",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 246,
+      "correctAnswerId": 246,
+      "imageId": "p246_0_1",
+      "image": "images/ScaevolaAemula-WhiskerFlowers_Pixabay.JPG",
+      "names": {
+        "ru": "Сцевола приятная",
+        "en": "Fan flower",
+        "nl": "Elfenwaaier / Waaierbloem",
+        "sci": "Scaevola Aemula"
+      },
+      "difficulty": null,
+      "questionVariantId": "246-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-246",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 247,
+      "correctAnswerId": 247,
+      "imageId": "p247_0_1",
+      "image": "images/VacciniumMyrtillus_Mary_StockSnap.JPG",
+      "names": {
+        "ru": "Черника обыкновенная",
+        "en": "European blueberry",
+        "nl": "Blauwe bosbes",
+        "sci": "Vaccinium Myrtillus"
+      },
+      "difficulty": null,
+      "questionVariantId": "247-0",
+      "questionType": "plant",
+      "selectionGroupId": "plant-247",
+      "questionPromptKey": "question"
     }
   ],
   "difficulties": {
@@ -7643,7 +8709,7 @@
           7,
           12,
           13,
-          18,
+          "18_0",
           22,
           24,
           27,
@@ -7655,15 +8721,15 @@
           44,
           51,
           55,
-          58,
           63,
           66,
           70,
+          71,
           74,
           75,
           76,
-          82,
-          88,
+          "82_1",
+          "88_0",
           91,
           93,
           94,
@@ -7680,12 +8746,13 @@
           119,
           124,
           130,
+          138,
           139,
           142,
-          146,
+          "146_1",
           156,
           157,
-          165,
+          "165_0",
           168,
           181,
           189,
@@ -7697,8 +8764,15 @@
           214,
           218,
           223,
-          224,
-          235
+          "224_2",
+          235,
+          18,
+          58,
+          82,
+          88,
+          146,
+          165,
+          224
         ],
         "Medium": [
           2,
@@ -7717,8 +8791,10 @@
           36,
           39,
           40,
+          "41_1",
           46,
           47,
+          "47_1",
           54,
           56,
           59,
@@ -7730,6 +8806,7 @@
           73,
           81,
           83,
+          "83_1",
           85,
           86,
           90,
@@ -7737,11 +8814,12 @@
           96,
           98,
           101,
+          "106_2",
           109,
           110,
           112,
           113,
-          118,
+          "118_2",
           120,
           121,
           122,
@@ -7749,14 +8827,18 @@
           125,
           127,
           131,
-          153,
+          "131_1",
+          "131_2",
+          "150_2",
+          "153_0",
+          "153_1",
           159,
           160,
           163,
           164,
           166,
           167,
-          169,
+          "169_0",
           172,
           176,
           177,
@@ -7793,11 +8875,9 @@
           232,
           234,
           236,
-          "106_2",
-          "150_2",
-          "41_1",
-          "47_1",
-          "83_1"
+          118,
+          153,
+          169
         ],
         "Hard": [
           1,
@@ -7809,6 +8889,7 @@
           50,
           52,
           53,
+          58,
           77,
           78,
           79,
@@ -7819,8 +8900,9 @@
           158,
           161,
           162,
+          "169_2",
           171,
-          173,
+          "173_0",
           174,
           175,
           187,
@@ -7832,8 +8914,9 @@
           227,
           229,
           233,
-          237,
-          "169_2"
+          238,
+          173,
+          237
         ]
       }
     },
@@ -7860,28 +8943,29 @@
           "p13_0_2",
           "p13_0_3",
           "p13_0_4",
+          "p13_0_5",
           "p130_0_1",
           "p130_0_2",
+          "p138_0_1",
           "p139_0_1",
+          "p142_0_1",
           "p142_0_2",
           "p142_0_3",
           "p142_0_4",
           "p142_0_5",
           "p142_0_6",
           "p142_0_7",
-          "p146_0_1",
-          "p146_0_2",
+          "p146_1_1",
+          "p146_1_2",
           "p156_0_1",
-          "p156_0_2",
           "p157_0_1",
           "p165_0_1",
+          "p165_0_2",
           "p168_0_1",
           "p168_0_2",
           "p18_0_1",
           "p18_0_2",
           "p18_0_3",
-          "p18_0_4",
-          "p18_0_5",
           "p181_0_1",
           "p189_0_1",
           "p190_0_1",
@@ -7892,16 +8976,18 @@
           "p214_0_1",
           "p218_0_1",
           "p22_0_1",
+          "p22_0_2",
           "p223_0_1",
-          "p224_0_1",
+          "p224_2_1",
           "p235_0_1",
           "p24_0_1",
           "p24_0_2",
           "p24_0_3",
           "p27_0_1",
-          "p27_0_2",
-          "p27_0_4",
           "p29_0_1",
+          "p29_0_2",
+          "p29_0_3",
+          "p29_0_4",
           "p29_0_5",
           "p29_0_6",
           "p31_0_1",
@@ -7913,6 +8999,7 @@
           "p31_0_7",
           "p31_0_8",
           "p33_0_1",
+          "p33_0_2",
           "p33_0_3",
           "p33_0_4",
           "p35_0_1",
@@ -7926,25 +9013,33 @@
           "p44_0_2",
           "p44_0_3",
           "p51_0_1",
+          "p51_0_2",
           "p55_0_1",
           "p55_0_2",
+          "p55_0_3",
           "p55_0_4",
           "p6_0_1",
           "p63_0_1",
+          "p63_0_2",
           "p66_0_1",
           "p7_0_1",
           "p70_0_1",
-          "p73_0_3",
+          "p71_0_1",
+          "p71_0_2",
           "p74_0_1",
           "p74_0_2",
           "p75_0_1",
+          "p75_0_2",
           "p76_0_1",
           "p76_0_2",
-          "p82_0_1",
+          "p82_1_1",
+          "p82_1_2",
+          "p88_0_1",
           "p88_0_2",
           "p88_0_3",
           "p88_0_4",
           "p91_0_1",
+          "p91_0_2",
           "p91_0_3",
           "p91_0_4",
           "p93_0_1",
@@ -7957,7 +9052,17 @@
           "p97_0_2",
           "p97_0_3",
           "p97_0_4",
-          "p97_0_5"
+          "p97_0_5",
+          "p146_0_1",
+          "p146_0_2",
+          "p156_0_2",
+          "p18_0_4",
+          "p18_0_5",
+          "p224_0_1",
+          "p27_0_2",
+          "p27_0_4",
+          "p73_0_3",
+          "p82_0_1"
         ],
         "Medium": [
           "p101_0_1",
@@ -7970,17 +9075,18 @@
           "p110_0_3",
           "p110_0_4",
           "p112_0_1",
+          "p112_0_2",
           "p112_0_3",
           "p113_0_1",
-          "p118_0_1",
-          "p118_0_2",
-          "p118_0_3",
-          "p118_0_4",
+          "p118_2_1",
+          "p118_2_2",
+          "p118_2_3",
           "p120_0_1",
           "p120_0_2",
           "p121_0_1",
           "p121_0_2",
           "p122_0_1",
+          "p122_0_2",
           "p123_0_1",
           "p123_0_2",
           "p123_0_3",
@@ -7988,12 +9094,15 @@
           "p127_0_1",
           "p127_0_2",
           "p127_0_3",
-          "p142_0_1",
+          "p127_0_4",
+          "p131_1_1",
+          "p131_2_1",
           "p15_0_1",
           "p150_2_1",
           "p153_0_1",
           "p153_0_2",
           "p153_0_3",
+          "p153_1_1",
           "p159_0_1",
           "p159_0_2",
           "p16_0_1",
@@ -8015,12 +9124,15 @@
           "p178_0_3",
           "p178_0_4",
           "p179_0_1",
+          "p179_0_2",
           "p183_0_1",
           "p184_0_1",
           "p185_0_1",
+          "p185_0_2",
           "p186_0_1",
           "p186_0_2",
           "p186_0_3",
+          "p186_0_4",
           "p188_0_1",
           "p188_0_2",
           "p19_0_1",
@@ -8032,6 +9144,7 @@
           "p201_0_1",
           "p201_0_2",
           "p202_0_1",
+          "p202_0_2",
           "p203_0_1",
           "p204_0_1",
           "p205_0_1",
@@ -8045,9 +9158,9 @@
           "p212_0_1",
           "p215_0_1",
           "p216_0_1",
+          "p216_0_2",
           "p217_0_1",
           "p219_0_1",
-          "p22_0_2",
           "p220_0_1",
           "p221_0_1",
           "p222_0_1",
@@ -8064,17 +9177,15 @@
           "p25_0_1",
           "p26_0_1",
           "p26_0_2",
+          "p26_0_3",
           "p26_0_4",
-          "p27_0_3",
-          "p29_0_2",
-          "p29_0_4",
           "p3_0_1",
+          "p3_0_2",
+          "p30_0_1",
           "p30_0_2",
-          "p33_0_2",
           "p36_0_1",
           "p36_0_2",
           "p39_0_1",
-          "p4_0_2",
           "p40_0_1",
           "p40_0_2",
           "p41_1_1",
@@ -8086,9 +9197,12 @@
           "p47_1_1",
           "p5_0_1",
           "p5_0_2",
+          "p5_0_3",
+          "p5_0_4",
           "p5_0_5",
           "p54_0_1",
-          "p55_0_3",
+          "p54_0_2",
+          "p54_0_3",
           "p56_0_1",
           "p56_0_2",
           "p56_0_3",
@@ -8107,12 +9221,17 @@
           "p69_0_1",
           "p72_0_1",
           "p73_0_1",
+          "p73_0_2",
+          "p73_0_3",
           "p73_0_4",
           "p73_0_5",
           "p73_0_6",
-          "p75_0_2",
           "p8_0_1",
           "p8_0_2",
+          "p8_0_3",
+          "p8_0_4",
+          "p8_0_5",
+          "p8_0_6",
           "p8_0_7",
           "p81_0_1",
           "p81_0_2",
@@ -8122,21 +9241,37 @@
           "p85_0_3",
           "p85_0_4",
           "p86_0_1",
-          "p88_0_1",
+          "p86_0_2",
           "p90_0_1",
-          "p91_0_2",
+          "p92_0_1",
           "p92_0_2",
           "p96_0_1",
-          "p98_0_2"
+          "p98_0_1",
+          "p98_0_2",
+          "p118_0_1",
+          "p118_0_2",
+          "p118_0_3",
+          "p118_0_4",
+          "p142_0_1",
+          "p22_0_2",
+          "p27_0_3",
+          "p29_0_2",
+          "p29_0_4",
+          "p33_0_2",
+          "p4_0_2",
+          "p55_0_3",
+          "p75_0_2",
+          "p88_0_1",
+          "p91_0_2"
         ],
         "Hard": [
           "p1_0_1",
-          "p112_0_2",
           "p14_0_1",
           "p155_0_1",
           "p158_0_1",
           "p161_0_1",
           "p162_0_1",
+          "p162_0_2",
           "p169_2_1",
           "p171_0_1",
           "p171_0_2",
@@ -8152,43 +9287,48 @@
           "p229_0_1",
           "p233_0_1",
           "p233_0_2",
-          "p237_0_1",
-          "p26_0_3",
+          "p238_0_1",
           "p28_0_1",
           "p28_0_2",
           "p28_0_3",
           "p28_0_4",
           "p28_0_5",
-          "p29_0_3",
-          "p3_0_2",
-          "p30_0_1",
           "p32_0_1",
           "p32_0_2",
           "p34_0_1",
           "p4_0_1",
-          "p5_0_3",
-          "p5_0_4",
+          "p4_0_2",
           "p50_0_1",
           "p50_0_2",
-          "p51_0_2",
           "p52_0_1",
           "p53_0_1",
-          "p54_0_2",
-          "p54_0_3",
-          "p73_0_2",
+          "p58_0_1",
           "p77_0_1",
           "p78_0_1",
           "p78_0_2",
           "p79_0_1",
           "p79_0_2",
+          "p80_0_1",
+          "p84_0_1",
+          "p84_0_2",
+          "p89_0_1",
+          "p112_0_2",
+          "p237_0_1",
+          "p26_0_3",
+          "p29_0_3",
+          "p3_0_2",
+          "p30_0_1",
+          "p5_0_3",
+          "p5_0_4",
+          "p51_0_2",
+          "p54_0_2",
+          "p54_0_3",
+          "p73_0_2",
           "p8_0_3",
           "p8_0_4",
           "p8_0_5",
           "p8_0_6",
-          "p80_0_1",
-          "p84_0_1",
           "p86_0_2",
-          "p89_0_1",
           "p92_0_1",
           "p98_0_1"
         ]
