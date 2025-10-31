@@ -12,7 +12,7 @@ This document summarizes the JSON-like structures that power Guess The Plant's d
 ### Localized plant name (`plantNamesById`)
 - **Location:** Раздел `plantNames` в `src/data/json/plantCatalog.json`.
 - **Shape:** Объект, сопоставляющий каждому идентификатору растения структуру локализаций.
-- **Required fields:** `ru`, `en`, `nl`, `sci` (строки с локализованным и научным названием).【F:src/data/json/plantData.json†L1-L120】
+- **Required fields:** `ru`, `en`, `nl`, `sci` (строки с локализованным и научным названием).【F:src/data/json/plantCatalog.json†L1-L164】
 - **Optional fields:** None.
 
 ### Genus definition (`genus` entries)
@@ -21,14 +21,14 @@ This document summarizes the JSON-like structures that power Guess The Plant's d
   - `id` (integer plant ID shared by the genus umbrella entry).
   - `slug` (string identifier used for lookups).
   - `entries` (object map of plant IDs to genus entries).
-- **Optional fields:** `wrongAnswers` (array of plant IDs suggested as distractors).【F:src/data/json/plantData.json†L7296-L7356】
+- **Optional fields:** `wrongAnswers` (array of plant IDs suggested as distractors).【F:src/data/json/plantFacts.json†L1630-L1650】
 
 ### Genus entry (`entries` map inside each genus)
 - **Required fields:**
   - `names` (same localization shape as `plantNamesById`).
 - **Optional fields:**
   - `images` (array of plant image IDs referencing `plantImages`).
-  - `wrongAnswers` (array of plant IDs overriding genus-level defaults).【F:src/data/json/plantData.json†L7296-L7356】
+  - `wrongAnswers` (array of plant IDs overriding genus-level defaults).【F:src/data/json/plantFacts.json†L1630-L1650】
 
 ### Species catalog entry (`speciesById`)
 `dataLoader` merges локализованные названия, данные родов и раздел `species` из `plantCatalog.json`/`plantFacts.json` в нормализованную запись вида.
@@ -79,5 +79,6 @@ Loaded from [`plantFacts.json`](../src/data/json/plantFacts.json) и норма�
 
 ## Tooling
 
-- Run `npm run export:data` to regenerate the legacy bundle at `docs/legacy/plantData.bundle.json` and keep it aligned with the normalized JSON modules.【F:scripts/exportDataBundle.mjs†L1-L110】
+- Run `npm run export:data` to regenerate the legacy bundle at `docs/legacy/plantData.bundle.json` and keep it aligned with the normalized JSON modules.【F:scripts/exportDataBundle.mjs†L1-L121】
 - Run `npm run validate:data` to ensure the exported bundle matches `src/data/schema/plant.schema.json`. The validator uses Ajv (draft-07) and will fail when paths or references drift from the schema.【F:scripts/validateDataBundle.mjs†L1-L46】【F:src/data/schema/plant.schema.json†L1-L188】
+- Use `node tools/plantDataConverter.mjs to-csv --input docs/legacy/plantData.bundle.json --output PlantData.csv` to generate the editable spreadsheet snapshot, and `to-json` to turn the table back into a JSON bundle or temporary `PlantData.json` artifact for review.【F:tools/plantDataConverter.mjs†L517-L590】
