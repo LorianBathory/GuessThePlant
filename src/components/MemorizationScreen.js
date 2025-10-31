@@ -1,5 +1,5 @@
 import { getParameterTagLabel } from '../data/parameterTags.js';
-import { getPlantParameters } from '../data/plantParameters.js';
+import { getPlantParameters } from '../game/dataLoader.js';
 import { defaultLang } from '../i18n/uiTexts.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 

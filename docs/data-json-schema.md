@@ -51,12 +51,12 @@ Derived from `speciesById` плюс загруженные изображени�
 - **Usage:** UI и конфигурация раундов читают вопросы через этот реестр, поэтому добавление нового типа требует только регистратора нормализатора и обновления карты данных.
 
 ### Plant parameter entry (`plantParametersById`)
-Created from `plantParametersRaw` and enriched with family data.
+Loaded from [`plantFacts.json`](../src/data/json/plantFacts.json) и нормализованный загрузчиком, который приводит идентификаторы к общему формату и подставляет семейство растения, если оно отсутствует.
 - **Required fields:** `scientificName` (string).
-- **Optional fields:** `lifeCycle` (enum-like string), `additionalInfo` (string), `toxicity` (array of `{ level: number, tag: string }`), `hardinessZone` (string), `light` (string), `family` (string or `null`). Plant IDs can be numeric or underscore-delimited strings, normalized via `normalizePlantId`.【F:src/data/plantParameters.js†L1-L172】【F:src/data/plantParameters.js†L200-L258】
+- **Optional fields:** `lifeCycle` (enum-like string), `additionalInfo` (string), `toxicity` (array of `{ level: number, tag: string }`), `hardinessZone` (string), `light` (string), `family` (string or `null`). Plant IDs can be numeric or underscore-delimited strings, normalized via `parseCatalogId` в загрузчике.【F:src/game/dataLoader.js†L182-L243】
 
 ### Plant family catalog (`plantFamilies`)
-- **Shape:** Object mapping botanical family names to arrays of plant IDs (numeric or string) that belong to the family. IDs are normalized the same way as species IDs.【F:src/data/plantParameters.js†L174-L244】
+- **Shape:** Object mapping botanical family names to arrays of plant IDs (numeric or string) that belong to the family. IDs are normalized the same way as species IDs.【F:src/game/dataLoader.js†L144-L181】
 
 ### Plant image entry (`plantImages` / `plantImagesById`)
 - **Shape:** Each entry has `id` (string) and `src` (relative image path starting with `images/`).

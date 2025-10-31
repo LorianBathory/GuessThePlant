@@ -13,9 +13,10 @@ import {
   allGenusEntries,
   difficultyLevels as rawDifficultyLevels,
   questionIdsByDifficulty as rawQuestionIdsByDifficulty,
-  imageIdsByDifficulty as rawImageIdsByDifficulty
+  imageIdsByDifficulty as rawImageIdsByDifficulty,
+  plantParametersById,
+  plantFamilies
 } from '../src/game/dataLoader.js';
-import { plantParametersById, plantFamilies } from '../src/data/plantParameters.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
