@@ -9,7 +9,7 @@ import Ajv from 'ajv';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
-const dataPath = path.join(repoRoot, 'src', 'data', 'json', 'plantData.json');
+const dataPath = path.join(repoRoot, 'docs', 'legacy', 'plantData.bundle.json');
 const schemaPath = path.join(repoRoot, 'src', 'data', 'schema', 'plant.schema.json');
 
 function formatError(error) {

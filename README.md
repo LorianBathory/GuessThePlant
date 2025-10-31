@@ -76,20 +76,20 @@
 - Классический режим снова становится доступен, как только в коллекции появляется достаточно новых (не просмотренных игроком) вопросов для полного прохождения всех трёх раундов; при старте сайта состояние проверяется автоматически и блокировка снимается без действий пользователя.【F:src/gameConfig.js†L1-L192】
 
 ## Каталог растений и роды
-- Загрузчик [`src/game/dataLoader.js`](src/game/dataLoader.js) объединяет растениеведческие данные из [`src/data/json/plantData.json`](src/data/json/plantData.json) с определениями вопросов по типам. Для букетов используется отдельный файл [`src/data/json/bouquetQuestions.json`](src/data/json/bouquetQuestions.json); все нормализованные наборы складываются в `questionSetsByType`, откуда их читает [`src/data/questions.js`](src/data/questions.js). Благодаря этому структура уже готова к появлению новых категорий вопросов.
-- Базовые описания родов, видов и изображений находятся напрямую в `plantData.json`: разделы `genus`, `species` и `plantImages` используют прежнюю иерархию идентификаторов (`100`, `'100_1'`, `'100_1_1'` и т. п.), поэтому привязка снимков и отвлекающих ответов сохраняется без дублирования данных.
+- Загрузчик [`src/game/dataLoader.js`](src/game/dataLoader.js) объединяет растениеведческие данные из трёх JSON-файлов: [`plantCatalog.json`](src/data/json/plantCatalog.json) с локализованными названиями и видами, [`plantFacts.json`](src/data/json/plantFacts.json) с параметрами и родами, а также [`plantData.json`](src/data/json/plantData.json) с игровыми вопросами и таблицами сложности. Для букетов используется отдельный файл [`src/data/json/bouquetQuestions.json`](src/data/json/bouquetQuestions.json); все нормализованные наборы складываются в `questionSetsByType`, откуда их читает [`src/data/questions.js`](src/data/questions.js). Благодаря этому структура уже готова к появлению новых категорий вопросов.
+- Базовые описания родов, видов и изображений находятся в `plantCatalog.json` и `plantFacts.json`: разделы `species`, `plantImages` и `genus` используют прежнюю иерархию идентификаторов (`100`, `'100_1'`, `'100_1_1'` и т. п.), поэтому привязка снимков и отвлекающих ответов сохраняется без дублирования данных.
 - Наследование `wrongAnswers` и изображений выполняется в `buildSpeciesData` внутри загрузчика: сначала учитываются поля конкретного вида из раздела `species`, после чего применяются общие настройки родов из `genus`. Это гарантирует, что верхнеуровневые записи (`100`) автоматически получают родовые варианты без дублирования данных.
 - Уровни сложности и связи «вопрос ↔ сложность» описаны в разделе `difficulties` внутри `plantData.json`. `dataLoader` собирает их в `difficultyLevels`, `questionIdsByDifficulty` и `imageIdsByDifficulty`, которыми пользуются `gameConfig` и аналитические скрипты. Классический режим (`gameConfig.js`) гарантирует, что в каждой игре появится по одному букетному вопросу, пока остаются неразыгранные группы.
 
 ## Скрипты
 - `npm run lint` — проверка стиля кода и потенциальных ошибок с помощью ESLint.
-- `npm run export:data` — пересобирает `src/data/json/plantData.json` и сопутствующие файлы с вопросами (например, `bouquetQuestions.json`), сортируя записи и подтягивая параметры из `src/data/json/plantFacts.json`.
+- `npm run export:data` — пересобирает легаси-бандл `docs/legacy/plantData.bundle.json`, сортируя записи и подтягивая параметры из модульных JSON.
 - `npm run serve` — запускает лёгкий локальный HTTP-сервер (порт 4173) для ручного тестирования приложения и проверки JSON-данных.
 
 ## Экспорт данных
 1. Убедитесь, что установлены зависимости проекта: `npm install`.
 2. Запустите `npm run export:data` из корня репозитория.
-3. После успешного завершения будут перезаписаны `src/data/json/plantData.json` и дополнительные файлы вопросов (включая `src/data/json/bouquetQuestions.json`). Скрипт сортирует записи и дополняет их параметрами из `src/data/json/plantFacts.json`, после чего данные можно проверить `npm run validate:data`.
+3. После успешного завершения будет перезаписан `docs/legacy/plantData.bundle.json`. Скрипт сортирует записи, собирая их из `plantCatalog.json`, `plantFacts.json`, `plantData.json` и `bouquetQuestions.json`, после чего данные можно проверить `npm run validate:data`.
 
 ## Стек
 - [React 18](https://react.dev/) (UMD)

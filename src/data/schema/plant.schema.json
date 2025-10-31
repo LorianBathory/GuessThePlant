@@ -48,6 +48,13 @@
       "description": "Difficulty metadata shared between plant and bouquet questions.",
       "$ref": "#/definitions/DifficultiesConfig"
     },
+    "bouquetQuestions": {
+      "description": "Optional list of bouquet question definitions exported for legacy tooling.",
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
     "genus": {
       "description": "Optional list of genus definitions exported separately in the code base.",
       "type": "array",
@@ -162,7 +169,7 @@
       "items": {
         "$ref": "#/definitions/ImageId"
       },
-      "minItems": 1,
+      "minItems": 0,
       "uniqueItems": true
     },
     "PlantIdArray": {

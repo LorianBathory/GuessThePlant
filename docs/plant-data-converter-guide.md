@@ -1,11 +1,11 @@
 # Конвертер PlantData ⇄ CSV
 
-Этот документ объясняет, как использовать скрипт `tools/plantDataConverter.mjs`, который преобразует файл `PlantData.json` в удобный для редактирования CSV и обратно. Инструкция рассчитана на людей без опыта работы с конвертерами и описывает процесс шаг за шагом.
+Этот документ объясняет, как использовать скрипт `tools/plantDataConverter.mjs`, который преобразует легаси-бандл `plantData.bundle.json` в удобный для редактирования CSV и обратно. Инструкция рассчитана на людей без опыта работы с конвертерами и описывает процесс шаг за шагом. Актуальный бандл лежит в [`docs/legacy/`](../docs/legacy/README.md) и при необходимости пересобирается командой `npm run export:data`.
 
 ## Что делает скрипт
 
 - **to-csv**: собирает сведения о растениях (названия на разных языках, научное название, семейство, изображения и сложности вопросов) и выгружает их в CSV по образцу `docs/sample.csv`.
-- **to-json**: считывает такой CSV и формирует новый `PlantData.json` с разделами, которые описывают только растения (`plantNames`, `species`, `plantImages`, `plantParameters`, `plantFamilies`, `difficulties`). Вопросы других типов (например, букеты) находятся в отдельных JSON-файлах и не затрагиваются конвертером.
+- **to-json**: считывает такой CSV и формирует новый `plantData.bundle.json` с разделами, которые описывают только растения (`plantNames`, `species`, `plantImages`, `plantParameters`, `plantFamilies`, `difficulties`). Вопросы других типов (например, букеты) находятся в отдельных JSON-файлах и не затрагиваются конвертером.
 
 > ⚠️ При обратном преобразовании поля, для которых в CSV оставлены пустые ячейки, попадут в JSON как пустые значения. Это нормально и отражает ограничения исходного файла.
 
@@ -15,14 +15,14 @@
 2. **Сам скрипт.** Его можно получить двумя способами:
    - скачать весь репозиторий (`Code → Download ZIP` на GitHub) и распаковать архив;
    - либо сохранить отдельно файл `tools/plantDataConverter.mjs` и папку `docs` (нужен пример CSV).
-3. **Файлы данных.** `PlantData.json`, который вы хотите преобразовать, или CSV в формате `docs/sample.csv`.
+3. **Файлы данных.** `docs/legacy/plantData.bundle.json`, который вы хотите преобразовать, или CSV в формате `docs/sample.csv`.
 
 ## Подготовка рабочего каталога
 
 1. Создайте на компьютере папку, например `GuessThePlant`.
 2. Скопируйте в неё:
    - файл `plantDataConverter.mjs` (оставьте его внутри подпапки `tools` — так команды ниже будут работать без изменений);
-   - при необходимости — исходный `PlantData.json` или CSV;
+   - при необходимости — исходный `plantData.bundle.json` или CSV;
    - файл-пример `docs/sample.csv` (по нему можно сверяться с форматированием колонок).
 
 После распаковки структура может выглядеть так:
@@ -33,7 +33,7 @@ GuessThePlant/
 │   └── plantDataConverter.mjs
 ├── docs/
 │   └── sample.csv
-└── ваши файлы данных
+└── ваши файлы данных (например, `plantData.bundle.json` и/или `PlantData.csv`)
 ```
 
 ## Как открыть терминал
@@ -54,13 +54,13 @@ cd C:\Users\Имя\Downloads\GuessThePlant
 cd ~/Downloads/GuessThePlant
 ```
 
-## Преобразование PlantData.json → CSV
+## Преобразование plantData.bundle.json → CSV
 
-1. Убедитесь, что файл `PlantData.json` лежит в текущей папке.
+1. Убедитесь, что файл `plantData.bundle.json` лежит в текущей папке.
 2. Выполните команду:
 
    ```bash
-   node tools/plantDataConverter.mjs to-csv --input src/data/json/PlantData.json --output PlantData.csv
+   node tools/plantDataConverter.mjs to-csv --input docs/legacy/plantData.bundle.json --output PlantData.csv
    ```
 
    - `--input` — путь к исходному JSON (может быть относительным или абсолютным).
@@ -68,16 +68,16 @@ cd ~/Downloads/GuessThePlant
 
 3. После завершения в консоли появится сообщение вида `Converted 200 plants to CSV: PlantData.csv`. Новый файл можно открыть в Excel, LibreOffice Calc или Google Sheets. Если программа спрашивает разделитель, выберите «запятая» (comma).
 
-## Преобразование CSV → PlantData.json
+## Преобразование CSV → plantData.bundle.json
 
 1. Подготовьте CSV в формате, аналогичном `docs/sample.csv`. Важно сохранять заголовок колонок и расставлять кавычки вокруг значений, содержащих запятые.
 2. Запустите команду:
 
    ```bash
-   node tools/plantDataConverter.mjs to-json --input PlantData.csv --output PlantData.json
+   node tools/plantDataConverter.mjs to-json --input PlantData.csv --output plantData.bundle.json
    ```
 
-3. В результате появится новый `PlantData.json`. Его можно проверить, открыв в текстовом редакторе. Файл уже отформатирован и готов к дальнейшему использованию.
+3. В результате появится новый `plantData.bundle.json`. Его можно проверить, открыв в текстовом редакторе. Файл уже отформатирован и готов к дальнейшему использованию.
 
 ## Формат столбцов CSV
 

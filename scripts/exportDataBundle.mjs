@@ -21,8 +21,8 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
-const outputDir = path.join(repoRoot, 'src', 'data', 'json');
-const outputFile = path.join(outputDir, 'plantData.json');
+const outputDir = path.join(repoRoot, 'docs', 'legacy');
+const outputFile = path.join(outputDir, 'plantData.bundle.json');
 
 function comparePlantIds(a, b) {
   const asNumber = Number(a);
