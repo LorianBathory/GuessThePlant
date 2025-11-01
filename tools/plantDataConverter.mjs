@@ -21,8 +21,7 @@ const CSV_HEADER = [
   'Названия файлов',
   'wrongAnswers',
   'Сложность',
-  'Переопределения сложности',
-  'Family'
+  'Переопределения сложности'
 ];
 
 const HEADER_ALIASES = new Map([
@@ -40,7 +39,6 @@ const HEADER_ALIASES = new Map([
   ['difficulty overrides', 'difficultyOverrides'],
   ['переопределения сложности', 'difficultyOverrides'],
   ['difficultyoverrides', 'difficultyOverrides'],
-  ['family', 'family']
 ]);
 
 const DIFFICULTY_LEVELS = {
@@ -57,6 +55,15 @@ const DIFFICULTY_NORMALIZATION_MAP = new Map(
     [label.toLowerCase(), label]
   ])
 );
+
+function isModernPlantDataStructure(plantData) {
+  return Boolean(
+    plantData
+    && typeof plantData === 'object'
+    && plantData.plants
+    && typeof plantData.plants === 'object'
+  );
+}
 
 function normalizeDifficultyLabel(value, { lineNumber, fieldName } = {}) {
   if (value === null || value === undefined) {
@@ -345,14 +352,11 @@ function ensureArray(value) {
   return [value];
 }
 
-async function convertJsonToCsv(inputPath, outputPath) {
-  const jsonText = await readFile(inputPath, 'utf8');
-  const plantData = JSON.parse(jsonText);
-
+function buildLegacyCsvRows(plantData) {
   const normalizedCatalog = deriveNormalizedPlantData(plantData);
   const namesById = normalizedCatalog.plantNames || {};
   const speciesById = normalizedCatalog.species || {};
-  const parametersById = plantData.plantParameters || {};
+  const parametersById = plantData?.plantParameters || {};
   const difficultySource = normalizedCatalog.difficulties || {};
   const questionIdsByDifficulty = difficultySource.questionIdsByDifficulty?.plant
     || difficultySource.questionIdsByDifficulty?.PLANT
@@ -390,7 +394,6 @@ async function convertJsonToCsv(inputPath, outputPath) {
     const names = namesById[plantId] || {};
     const params = parametersById[plantId] || {};
     const scientificName = names.sci || params.scientificName || '';
-    const family = params.family || '';
     const speciesEntry = speciesById[plantId] || {};
     const wrongAnswers = Array.isArray(speciesEntry.wrongAnswers) ? speciesEntry.wrongAnswers : [];
 
@@ -424,15 +427,145 @@ async function convertJsonToCsv(inputPath, outputPath) {
       questionEntries.map((entry) => entry.imageFile).filter(Boolean).join(', '),
       wrongAnswers.map((answerId) => normalizeId(answerId)).filter(Boolean).join(', '),
       formatBaseDifficulty(baseDifficulty),
-      formatDifficultyOverrides(overrides),
-      family || ''
+      formatDifficultyOverrides(overrides)
     ];
 
     rows.push(stringifyCsvRow(row));
   }
 
+  return { rows, count: plantIds.length };
+}
+
+function buildModernCsvRows(plantData) {
+  const rows = [CSV_HEADER.join(',')];
+  const plants = plantData && typeof plantData === 'object' && plantData.plants && typeof plantData.plants === 'object'
+    ? plantData.plants
+    : {};
+  const plantIds = Object.keys(plants).sort(comparePlantIds);
+
+  for (const plantIdKey of plantIds) {
+    const plantEntry = plants[plantIdKey];
+    if (!plantEntry || typeof plantEntry !== 'object') {
+      continue;
+    }
+
+    const normalizedPlantId = normalizeId(plantEntry.id ?? plantIdKey);
+    if (!normalizedPlantId) {
+      continue;
+    }
+
+    const localizedNames = plantEntry.names && typeof plantEntry.names === 'object' ? plantEntry.names : {};
+    const scientificName = localizedNames.sci || '';
+
+    const rawWrongAnswers = Array.isArray(plantEntry.wrongAnswers) ? plantEntry.wrongAnswers : [];
+    const wrongAnswers = [];
+    const seenWrongAnswers = new Set();
+    rawWrongAnswers.forEach((value) => {
+      const normalizedValue = normalizeWrongAnswerId(value);
+      if (normalizedValue === null) {
+        return;
+      }
+      const key = typeof normalizedValue === 'number' ? String(normalizedValue) : normalizedValue;
+      if (seenWrongAnswers.has(key)) {
+        return;
+      }
+      seenWrongAnswers.add(key);
+      wrongAnswers.push(normalizedValue);
+    });
+
+    const baseDifficulty = plantEntry.difficulty
+      ? normalizeDifficultyLabel(plantEntry.difficulty, {
+        fieldName: `базовая сложность для ${normalizedPlantId}`
+      })
+      : null;
+
+    const imageEntries = Array.isArray(plantEntry.images) ? plantEntry.images : [];
+    const normalizedImages = imageEntries
+      .map((imageEntry) => {
+        if (!imageEntry) {
+          return null;
+        }
+
+        if (typeof imageEntry === 'string') {
+          const normalizedId = normalizeId(imageEntry);
+          if (!normalizedId) {
+            return null;
+          }
+
+          return {
+            id: normalizedId,
+            src: `images/${normalizedId}.JPG`,
+            ...(baseDifficulty ? { difficulty: baseDifficulty } : {})
+          };
+        }
+
+        const normalizedId = normalizeId(imageEntry.id ?? '');
+        const src = typeof imageEntry.src === 'string' ? imageEntry.src : '';
+        if (!normalizedId || !src) {
+          return null;
+        }
+
+        const resolvedDifficulty = imageEntry.difficulty
+          ? normalizeDifficultyLabel(imageEntry.difficulty, {
+            fieldName: `сложность изображения ${normalizedId}`
+          })
+          : baseDifficulty;
+
+        return {
+          id: normalizedId,
+          src,
+          ...(resolvedDifficulty ? { difficulty: resolvedDifficulty } : {})
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.id.localeCompare(b.id, 'en'));
+
+    const overrides = new Map();
+    normalizedImages.forEach((imageEntry) => {
+      const difficulty = imageEntry.difficulty || null;
+      if (!difficulty) {
+        return;
+      }
+
+      if (!baseDifficulty || difficulty !== baseDifficulty) {
+        overrides.set(imageEntry.id, difficulty);
+      }
+    });
+
+    const row = [
+      normalizedPlantId,
+      localizedNames.ru || '',
+      localizedNames.en || '',
+      localizedNames.nl || '',
+      scientificName || '',
+      String(normalizedImages.length),
+      normalizedImages.map((entry) => entry.id).join(', '),
+      normalizedImages.map((entry) => (entry.src ? basename(entry.src) : '')).filter(Boolean).join(', '),
+      wrongAnswers.map((answerId) => normalizeId(answerId)).filter(Boolean).join(', '),
+      formatBaseDifficulty(baseDifficulty),
+      formatDifficultyOverrides(overrides)
+    ];
+
+    rows.push(stringifyCsvRow(row));
+  }
+
+  return { rows, count: plantIds.length };
+}
+
+async function convertJsonToCsv(inputPath, outputPath) {
+  const jsonText = await readFile(inputPath, 'utf8');
+  const plantData = JSON.parse(jsonText);
+
+  if (isModernPlantDataStructure(plantData)) {
+    const { rows, count } = buildModernCsvRows(plantData);
+    await writeFile(outputPath, rows.join('\n'), 'utf8');
+    console.log(`Converted ${count} plants to CSV: ${outputPath}`);
+    return;
+  }
+
+  const { rows, count } = buildLegacyCsvRows(plantData);
   await writeFile(outputPath, rows.join('\n'), 'utf8');
-  console.log(`Converted ${plantIds.length} plants to CSV: ${outputPath}`);
+  console.log(`Converted ${count} plants to CSV: ${outputPath}`);
 }
 
 function parseCsvRows(rows) {
@@ -511,11 +644,7 @@ function buildDifficultyBucketOutput(bucketMap, compareValues) {
 
 function parseCsvData(rows) {
   const records = parseCsvRows(rows);
-  const plantNames = new Map();
-  const speciesEntries = new Map();
-  const plantImages = [];
-  const questionDifficultyBuckets = new Map();
-  const imageDifficultyBuckets = new Map();
+  const plants = new Map();
   const seenImageIds = new Set();
 
   for (const record of records) {
@@ -560,11 +689,12 @@ function parseCsvData(rows) {
       throw new Error(`Количество imageId и файлов не совпадает (строка ${record.__line}).`);
     }
 
-    const autoImageIds = imageFiles.map((_, index) => generateImageId(plantId, index));
-    const finalImageIds = autoImageIds.length > 0 ? autoImageIds : normalizedManualImageIds;
+    const useManualIds = normalizedManualImageIds.length > 0;
+    const autoImageIds = useManualIds ? [] : imageFiles.map((_, index) => generateImageId(plantId, index));
+    const finalImageIds = useManualIds ? normalizedManualImageIds : autoImageIds;
 
     const legacyImageIdMap = new Map();
-    if (autoImageIds.length > 0) {
+    if (!useManualIds) {
       normalizedManualImageIds.forEach((normalizedManualId, index) => {
         const autoId = autoImageIds[index];
         if (normalizedManualId && autoId && normalizedManualId !== autoId) {
@@ -574,7 +704,6 @@ function parseCsvData(rows) {
     }
 
     const localizedNames = { ru, en, nl, sci };
-    plantNames.set(String(plantId), localizedNames);
 
     const numericId = isNumericId(plantId) ? Number(plantId) : plantId;
     const normalizedOverrides = new Map();
@@ -586,12 +715,18 @@ function parseCsvData(rows) {
       }
     });
 
-    const imageReferences = [];
+    const images = [];
+    const seenPlantImageIds = new Set();
     finalImageIds.forEach((imageId, index) => {
       const normalizedId = normalizeId(imageId);
       if (!normalizedId) {
         return;
       }
+
+      if (seenPlantImageIds.has(normalizedId)) {
+        throw new Error(`Повторяющийся идентификатор изображения ${normalizedId} (строка ${record.__line}).`);
+      }
+      seenPlantImageIds.add(normalizedId);
 
       if (seenImageIds.has(normalizedId)) {
         throw new Error(`Повторяющийся идентификатор изображения ${normalizedId} (строка ${record.__line}).`);
@@ -603,56 +738,33 @@ function parseCsvData(rows) {
         ? (imageFile.startsWith('images/') ? imageFile : `images/${imageFile}`)
         : `images/${normalizedId}.JPG`;
 
-      plantImages.push({ id: normalizedId, src });
-      imageReferences.push(normalizedId);
-
       const resolvedDifficulty = normalizedOverrides.get(normalizedId) || base;
-      if (resolvedDifficulty) {
-        addToDifficultyBucket(imageDifficultyBuckets, resolvedDifficulty, normalizedId);
-      }
+      const imageEntry = {
+        id: normalizedId,
+        src,
+        ...(resolvedDifficulty ? { difficulty: resolvedDifficulty } : {})
+      };
+
+      images.push(imageEntry);
     });
 
-    const speciesEntry = {
+    const plantEntry = {
       id: numericId,
-      names: localizedNames
+      names: localizedNames,
+      ...(base ? { difficulty: base } : {}),
+      ...(wrongAnswers.length > 0 ? { wrongAnswers } : {}),
+      ...(images.length > 0 ? { images } : {})
     };
 
-    if (imageReferences.length > 0) {
-      speciesEntry.images = imageReferences;
-    }
-
-    if (wrongAnswers.length > 0) {
-      speciesEntry.wrongAnswers = wrongAnswers;
-    }
-
-    speciesEntries.set(String(plantId), speciesEntry);
-
-    if (base) {
-      addToDifficultyBucket(questionDifficultyBuckets, base, numericId);
-    }
+    plants.set(String(plantId), plantEntry);
   }
 
-  const sortedPlantIds = Array.from(plantNames.keys()).sort(comparePlantIds);
-  const normalizedPlantNames = Object.fromEntries(sortedPlantIds.map((id) => [id, plantNames.get(id)]));
-  const normalizedSpecies = Object.fromEntries(
-    sortedPlantIds
-      .map((id) => [id, speciesEntries.get(id)])
-      .filter(([, entry]) => Boolean(entry))
-  );
-  const sortedPlantImages = plantImages.sort((a, b) => a.id.localeCompare(b.id, 'en'));
-
-  const questionBuckets = buildDifficultyBucketOutput(questionDifficultyBuckets, comparePlantIds);
-  const imageBuckets = buildDifficultyBucketOutput(imageDifficultyBuckets, (a, b) => a.localeCompare(b, 'en'));
+  const sortedPlantIds = Array.from(plants.keys()).sort(comparePlantIds);
+  const normalizedPlants = Object.fromEntries(sortedPlantIds.map((id) => [id, plants.get(id)]));
 
   return {
-    plantNames: normalizedPlantNames,
-    species: normalizedSpecies,
-    plantImages: sortedPlantImages,
-    difficulties: {
-      difficultyLevels: { ...DIFFICULTY_LEVELS },
-      questionIdsByDifficulty: { plant: questionBuckets },
-      imageIdsByDifficulty: { plant: imageBuckets }
-    }
+    difficultyLevels: { ...DIFFICULTY_LEVELS },
+    plants: normalizedPlants
   };
 }
 
