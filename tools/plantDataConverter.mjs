@@ -594,6 +594,54 @@ function extractList(cell) {
     .filter((item) => item !== '');
 }
 
+function compareDifficultyLabels(a, b) {
+  const indexA = DIFFICULTY_LABEL_ORDER.indexOf(a);
+  const indexB = DIFFICULTY_LABEL_ORDER.indexOf(b);
+
+  if (indexA === -1 && indexB === -1) {
+    return a.localeCompare(b, 'en');
+  }
+
+  if (indexA === -1) {
+    return 1;
+  }
+
+  if (indexB === -1) {
+    return -1;
+  }
+
+  return indexA - indexB;
+}
+
+function addToDifficultyBucket(bucketMap, difficulty, value) {
+  if (!difficulty) {
+    return;
+  }
+
+  let bucket = bucketMap.get(difficulty);
+  if (!bucket) {
+    bucket = new Set();
+    bucketMap.set(difficulty, bucket);
+  }
+
+  bucket.add(value);
+}
+
+function buildDifficultyBucketOutput(bucketMap, compareValues) {
+  if (!bucketMap || bucketMap.size === 0) {
+    return {};
+  }
+
+  const entries = Array.from(bucketMap.entries()).map(([difficulty, values]) => [
+    difficulty,
+    Array.from(values).sort(compareValues)
+  ]);
+
+  entries.sort(([difficultyA], [difficultyB]) => compareDifficultyLabels(difficultyA, difficultyB));
+
+  return Object.fromEntries(entries);
+}
+
 function parseCsvData(rows) {
   const records = parseCsvRows(rows);
   const plants = new Map();
