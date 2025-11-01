@@ -1,8 +1,14 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from 'node:fs/promises';
-import { basename } from 'node:path';
+import { basename, dirname, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { buildGameDataForTesting, deriveNormalizedPlantData } from '../src/game/dataLoader.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const REPO_ROOT = resolve(__dirname, '..');
+const DEFAULT_PLANT_DATA_PATH = resolve(REPO_ROOT, 'src', 'data', 'json', 'plantData.json');
 
 const CSV_HEADER = [
   'id',
@@ -15,8 +21,7 @@ const CSV_HEADER = [
   'Названия файлов',
   'wrongAnswers',
   'Сложность',
-  'Переопределения сложности',
-  'Family'
+  'Переопределения сложности'
 ];
 
 const HEADER_ALIASES = new Map([
@@ -34,7 +39,6 @@ const HEADER_ALIASES = new Map([
   ['difficulty overrides', 'difficultyOverrides'],
   ['переопределения сложности', 'difficultyOverrides'],
   ['difficultyoverrides', 'difficultyOverrides'],
-  ['family', 'family']
 ]);
 
 const DIFFICULTY_LEVELS = {
@@ -42,6 +46,53 @@ const DIFFICULTY_LEVELS = {
   MEDIUM: 'Medium',
   HARD: 'Hard'
 };
+
+const DIFFICULTY_LABEL_ORDER = Object.values(DIFFICULTY_LEVELS);
+
+const DIFFICULTY_NORMALIZATION_MAP = new Map(
+  Object.entries(DIFFICULTY_LEVELS).flatMap(([key, label]) => [
+    [key.toLowerCase(), label],
+    [label.toLowerCase(), label]
+  ])
+);
+
+function isModernPlantDataStructure(plantData) {
+  return Boolean(
+    plantData
+    && typeof plantData === 'object'
+    && plantData.plants
+    && typeof plantData.plants === 'object'
+  );
+}
+
+function normalizeDifficultyLabel(value, { lineNumber, fieldName } = {}) {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  const trimmed = stripWrappingQuotes(value);
+  if (!trimmed || trimmed.toLowerCase() === 'null') {
+    return null;
+  }
+
+  const normalized = DIFFICULTY_NORMALIZATION_MAP.get(trimmed.toLowerCase());
+  if (normalized) {
+    return normalized;
+  }
+
+  const context = [];
+  if (lineNumber) {
+    context.push(`строка ${lineNumber}`);
+  }
+  if (fieldName) {
+    context.push(fieldName);
+  }
+
+  const suffix = context.length > 0 ? ` (${context.join(', ')})` : '';
+  throw new Error(
+    `Неизвестное значение сложности "${trimmed}"${suffix}. Допустимые значения: ${DIFFICULTY_LABEL_ORDER.join(', ')}.`
+  );
+}
 
 function stripWrappingQuotes(value) {
   if (value === null || value === undefined) {
@@ -231,7 +282,7 @@ function parseCsv(text) {
   return rows.filter((r) => r.some((cell) => cell.trim() !== ''));
 }
 
-function parseOverrides(rawOverrides) {
+function parseOverrides(rawOverrides, lineNumber) {
   const overrides = new Map();
   if (!rawOverrides) {
     return overrides;
@@ -240,26 +291,39 @@ function parseOverrides(rawOverrides) {
   for (const segment of segments) {
     const [imageIdPart, difficultyPart] = segment.split(':').map((piece) => stripWrappingQuotes(piece));
     if (imageIdPart && difficultyPart) {
-      overrides.set(imageIdPart, difficultyPart);
+      const normalizedDifficulty = normalizeDifficultyLabel(difficultyPart, {
+        lineNumber,
+        fieldName: `переопределение сложности для ${imageIdPart}`
+      });
+      overrides.set(imageIdPart, normalizedDifficulty);
     }
   }
   return overrides;
 }
 
-function parseDifficultyCell(baseCell, overridesCell = '') {
+function parseDifficultyCell(baseCell, overridesCell = '', lineNumber) {
   const rawBase = stripWrappingQuotes(baseCell);
   const overridesSource = stripWrappingQuotes(overridesCell);
   if (!overridesSource) {
     const legacyMatch = rawBase.match(/^(.*?)(?:\s*\(overrides:\s*(.+)\))$/i);
     if (legacyMatch) {
       const base = legacyMatch[1].trim();
-      const overrides = parseOverrides(legacyMatch[2]);
-      return { base: base && base.toLowerCase() !== 'null' ? base : null, overrides };
+      const overrides = parseOverrides(legacyMatch[2], lineNumber);
+      return {
+        base: normalizeDifficultyLabel(base, {
+          lineNumber,
+          fieldName: 'базовая сложность'
+        }),
+        overrides
+      };
     }
   }
 
-  const base = rawBase && rawBase.toLowerCase() !== 'null' ? rawBase : null;
-  const overrides = parseOverrides(overridesSource);
+  const base = normalizeDifficultyLabel(rawBase, {
+    lineNumber,
+    fieldName: 'базовая сложность'
+  });
+  const overrides = parseOverrides(overridesSource, lineNumber);
   return { base, overrides };
 }
 
@@ -288,14 +352,11 @@ function ensureArray(value) {
   return [value];
 }
 
-async function convertJsonToCsv(inputPath, outputPath) {
-  const jsonText = await readFile(inputPath, 'utf8');
-  const plantData = JSON.parse(jsonText);
-
+function buildLegacyCsvRows(plantData) {
   const normalizedCatalog = deriveNormalizedPlantData(plantData);
   const namesById = normalizedCatalog.plantNames || {};
   const speciesById = normalizedCatalog.species || {};
-  const parametersById = plantData.plantParameters || {};
+  const parametersById = plantData?.plantParameters || {};
   const difficultySource = normalizedCatalog.difficulties || {};
   const questionIdsByDifficulty = difficultySource.questionIdsByDifficulty?.plant
     || difficultySource.questionIdsByDifficulty?.PLANT
@@ -333,7 +394,6 @@ async function convertJsonToCsv(inputPath, outputPath) {
     const names = namesById[plantId] || {};
     const params = parametersById[plantId] || {};
     const scientificName = names.sci || params.scientificName || '';
-    const family = params.family || '';
     const speciesEntry = speciesById[plantId] || {};
     const wrongAnswers = Array.isArray(speciesEntry.wrongAnswers) ? speciesEntry.wrongAnswers : [];
 
@@ -367,15 +427,145 @@ async function convertJsonToCsv(inputPath, outputPath) {
       questionEntries.map((entry) => entry.imageFile).filter(Boolean).join(', '),
       wrongAnswers.map((answerId) => normalizeId(answerId)).filter(Boolean).join(', '),
       formatBaseDifficulty(baseDifficulty),
-      formatDifficultyOverrides(overrides),
-      family || ''
+      formatDifficultyOverrides(overrides)
     ];
 
     rows.push(stringifyCsvRow(row));
   }
 
+  return { rows, count: plantIds.length };
+}
+
+function buildModernCsvRows(plantData) {
+  const rows = [CSV_HEADER.join(',')];
+  const plants = plantData && typeof plantData === 'object' && plantData.plants && typeof plantData.plants === 'object'
+    ? plantData.plants
+    : {};
+  const plantIds = Object.keys(plants).sort(comparePlantIds);
+
+  for (const plantIdKey of plantIds) {
+    const plantEntry = plants[plantIdKey];
+    if (!plantEntry || typeof plantEntry !== 'object') {
+      continue;
+    }
+
+    const normalizedPlantId = normalizeId(plantEntry.id ?? plantIdKey);
+    if (!normalizedPlantId) {
+      continue;
+    }
+
+    const localizedNames = plantEntry.names && typeof plantEntry.names === 'object' ? plantEntry.names : {};
+    const scientificName = localizedNames.sci || '';
+
+    const rawWrongAnswers = Array.isArray(plantEntry.wrongAnswers) ? plantEntry.wrongAnswers : [];
+    const wrongAnswers = [];
+    const seenWrongAnswers = new Set();
+    rawWrongAnswers.forEach((value) => {
+      const normalizedValue = normalizeWrongAnswerId(value);
+      if (normalizedValue === null) {
+        return;
+      }
+      const key = typeof normalizedValue === 'number' ? String(normalizedValue) : normalizedValue;
+      if (seenWrongAnswers.has(key)) {
+        return;
+      }
+      seenWrongAnswers.add(key);
+      wrongAnswers.push(normalizedValue);
+    });
+
+    const baseDifficulty = plantEntry.difficulty
+      ? normalizeDifficultyLabel(plantEntry.difficulty, {
+        fieldName: `базовая сложность для ${normalizedPlantId}`
+      })
+      : null;
+
+    const imageEntries = Array.isArray(plantEntry.images) ? plantEntry.images : [];
+    const normalizedImages = imageEntries
+      .map((imageEntry) => {
+        if (!imageEntry) {
+          return null;
+        }
+
+        if (typeof imageEntry === 'string') {
+          const normalizedId = normalizeId(imageEntry);
+          if (!normalizedId) {
+            return null;
+          }
+
+          return {
+            id: normalizedId,
+            src: `images/${normalizedId}.JPG`,
+            ...(baseDifficulty ? { difficulty: baseDifficulty } : {})
+          };
+        }
+
+        const normalizedId = normalizeId(imageEntry.id ?? '');
+        const src = typeof imageEntry.src === 'string' ? imageEntry.src : '';
+        if (!normalizedId || !src) {
+          return null;
+        }
+
+        const resolvedDifficulty = imageEntry.difficulty
+          ? normalizeDifficultyLabel(imageEntry.difficulty, {
+            fieldName: `сложность изображения ${normalizedId}`
+          })
+          : baseDifficulty;
+
+        return {
+          id: normalizedId,
+          src,
+          ...(resolvedDifficulty ? { difficulty: resolvedDifficulty } : {})
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.id.localeCompare(b.id, 'en'));
+
+    const overrides = new Map();
+    normalizedImages.forEach((imageEntry) => {
+      const difficulty = imageEntry.difficulty || null;
+      if (!difficulty) {
+        return;
+      }
+
+      if (!baseDifficulty || difficulty !== baseDifficulty) {
+        overrides.set(imageEntry.id, difficulty);
+      }
+    });
+
+    const row = [
+      normalizedPlantId,
+      localizedNames.ru || '',
+      localizedNames.en || '',
+      localizedNames.nl || '',
+      scientificName || '',
+      String(normalizedImages.length),
+      normalizedImages.map((entry) => entry.id).join(', '),
+      normalizedImages.map((entry) => (entry.src ? basename(entry.src) : '')).filter(Boolean).join(', '),
+      wrongAnswers.map((answerId) => normalizeId(answerId)).filter(Boolean).join(', '),
+      formatBaseDifficulty(baseDifficulty),
+      formatDifficultyOverrides(overrides)
+    ];
+
+    rows.push(stringifyCsvRow(row));
+  }
+
+  return { rows, count: plantIds.length };
+}
+
+async function convertJsonToCsv(inputPath, outputPath) {
+  const jsonText = await readFile(inputPath, 'utf8');
+  const plantData = JSON.parse(jsonText);
+
+  if (isModernPlantDataStructure(plantData)) {
+    const { rows, count } = buildModernCsvRows(plantData);
+    await writeFile(outputPath, rows.join('\n'), 'utf8');
+    console.log(`Converted ${count} plants to CSV: ${outputPath}`);
+    return;
+  }
+
+  const { rows, count } = buildLegacyCsvRows(plantData);
   await writeFile(outputPath, rows.join('\n'), 'utf8');
-  console.log(`Converted ${plantIds.length} plants to CSV: ${outputPath}`);
+  console.log(`Converted ${count} plants to CSV: ${outputPath}`);
 }
 
 function parseCsvRows(rows) {
@@ -406,8 +596,7 @@ function extractList(cell) {
 
 function parseCsvData(rows) {
   const records = parseCsvRows(rows);
-  const plants = {};
-  const seenImageIds = new Set();
+  const plants = new Map();
 
   for (const record of records) {
     const plantId = normalizeId(record.id ?? record['id '] ?? '');
@@ -421,13 +610,25 @@ function parseCsvData(rows) {
     const sci = record.sci || '';
     const { base, overrides } = parseDifficultyCell(
       record.difficulty || '',
-      record.difficultyOverrides || ''
+      record.difficultyOverrides || '',
+      record.__line
     );
 
     const wrongAnswersRaw = extractList(record.wrongAnswers || '');
-    const wrongAnswers = wrongAnswersRaw
-      .map((value) => normalizeWrongAnswerId(value))
-      .filter((value) => value !== null);
+    const wrongAnswers = [];
+    const seenWrongAnswers = new Set();
+    wrongAnswersRaw.forEach((value) => {
+      const normalizedValue = normalizeWrongAnswerId(value);
+      if (normalizedValue === null) {
+        return;
+      }
+      const key = typeof normalizedValue === 'number' ? String(normalizedValue) : normalizedValue;
+      if (seenWrongAnswers.has(key)) {
+        return;
+      }
+      seenWrongAnswers.add(key);
+      wrongAnswers.push(normalizedValue);
+    });
 
     const imageFiles = extractList(record.imageFiles || '');
     const manualImageIds = extractList(record.imageIds || '');
@@ -439,11 +640,12 @@ function parseCsvData(rows) {
       throw new Error(`Количество imageId и файлов не совпадает (строка ${record.__line}).`);
     }
 
-    const autoImageIds = imageFiles.map((_, index) => generateImageId(plantId, index));
-    const finalImageIds = autoImageIds.length > 0 ? autoImageIds : normalizedManualImageIds;
+    const useManualIds = normalizedManualImageIds.length > 0;
+    const autoImageIds = useManualIds ? [] : imageFiles.map((_, index) => generateImageId(plantId, index));
+    const finalImageIds = useManualIds ? normalizedManualImageIds : autoImageIds;
 
     const legacyImageIdMap = new Map();
-    if (autoImageIds.length > 0) {
+    if (!useManualIds) {
       normalizedManualImageIds.forEach((normalizedManualId, index) => {
         const autoId = autoImageIds[index];
         if (normalizedManualId && autoId && normalizedManualId !== autoId) {
@@ -452,6 +654,9 @@ function parseCsvData(rows) {
       });
     }
 
+    const localizedNames = { ru, en, nl, sci };
+
+    const numericId = isNumericId(plantId) ? Number(plantId) : plantId;
     const normalizedOverrides = new Map();
     overrides.forEach((difficulty, imageId) => {
       const normalizedId = normalizeId(imageId);
@@ -461,56 +666,51 @@ function parseCsvData(rows) {
       }
     });
 
-    const imageEntries = [];
+    const images = [];
+    const seenPlantImageIds = new Set();
     finalImageIds.forEach((imageId, index) => {
       const normalizedId = normalizeId(imageId);
       if (!normalizedId) {
         return;
       }
 
-      if (seenImageIds.has(normalizedId)) {
+      if (seenPlantImageIds.has(normalizedId)) {
         throw new Error(`Повторяющийся идентификатор изображения ${normalizedId} (строка ${record.__line}).`);
       }
-      seenImageIds.add(normalizedId);
+      seenPlantImageIds.add(normalizedId);
 
       const imageFile = imageFiles[index] || '';
       const src = imageFile
         ? (imageFile.startsWith('images/') ? imageFile : `images/${imageFile}`)
         : `images/${normalizedId}.JPG`;
 
-      const overrideDifficulty = normalizedOverrides.get(normalizedId) || null;
-      const imageEntry = { id: normalizedId, src };
+      const resolvedDifficulty = normalizedOverrides.get(normalizedId) || base;
+      const imageEntry = {
+        id: normalizedId,
+        src,
+        ...(resolvedDifficulty ? { difficulty: resolvedDifficulty } : {})
+      };
 
-      if (overrideDifficulty) {
-        imageEntry.difficulty = overrideDifficulty;
-      }
-
-      imageEntries.push(imageEntry);
+      images.push(imageEntry);
     });
 
     const plantEntry = {
-      id: isNumericId(plantId) ? Number(plantId) : plantId,
-      names: { ru, en, nl, sci }
+      id: numericId,
+      names: localizedNames,
+      ...(base ? { difficulty: base } : {}),
+      ...(wrongAnswers.length > 0 ? { wrongAnswers } : {}),
+      ...(images.length > 0 ? { images } : {})
     };
 
-    if (base) {
-      plantEntry.difficulty = base;
-    }
-
-    if (wrongAnswers.length > 0) {
-      plantEntry.wrongAnswers = wrongAnswers;
-    }
-
-    if (imageEntries.length > 0) {
-      plantEntry.images = imageEntries;
-    }
-
-    plants[String(plantId)] = plantEntry;
+    plants.set(String(plantId), plantEntry);
   }
+
+  const sortedPlantIds = Array.from(plants.keys()).sort(comparePlantIds);
+  const normalizedPlants = Object.fromEntries(sortedPlantIds.map((id) => [id, plants.get(id)]));
 
   return {
     difficultyLevels: { ...DIFFICULTY_LEVELS },
-    plants
+    plants: normalizedPlants
   };
 }
 
@@ -519,11 +719,23 @@ async function convertCsvToJson(inputPath, outputPath) {
   const rows = parseCsv(csvText);
   const data = parseCsvData(rows);
   await writeFile(outputPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  console.log(`CSV успешно преобразован в JSON: ${outputPath}`);
+  const relativePath = relative(REPO_ROOT, outputPath);
+  console.log(`CSV успешно преобразован в JSON: ${relativePath}`);
 }
 
 function printHelp() {
-  console.log(`Использование: node tools/plantDataConverter.mjs <команда> [параметры]\n\nДоступные команды:\n  to-csv   --input <путь к PlantData.json> --output <csv файл>\n  to-json  --input <путь к csv> --output <PlantData.json>\n  --help   Показать подсказку\n`);
+  console.log(
+    [
+      'Использование: node tools/plantDataConverter.mjs <команда> [параметры>',
+      '',
+      'Доступные команды:',
+      '  to-csv   --input <путь к PlantData.json> --output <csv файл>',
+      '  to-json  --input <путь к csv>',
+      '  --help   Показать подсказку',
+      '',
+      'Команда to-json перезаписывает src/data/json/plantData.json без создания промежуточных файлов.'
+    ].join('\n')
+  );
 }
 
 async function run() {
@@ -548,15 +760,28 @@ async function run() {
   }
 
   const input = options.get('input');
-  const output = options.get('output');
-  if (!input || !output) {
-    throw new Error('Необходимо указать параметры --input и --output.');
+  if (!input) {
+    throw new Error('Необходимо указать параметр --input.');
   }
 
   if (command === 'to-csv') {
+    const output = options.get('output');
+    if (!output) {
+      throw new Error('Команда to-csv требует параметр --output.');
+    }
     await convertJsonToCsv(input, output);
   } else if (command === 'to-json') {
-    await convertCsvToJson(input, output);
+    const requestedOutput = options.get('output');
+    if (requestedOutput) {
+      const resolvedRequested = resolve(process.cwd(), requestedOutput);
+      if (resolvedRequested !== DEFAULT_PLANT_DATA_PATH) {
+        console.warn(
+          'Параметр --output больше не поддерживается: данные всегда сохраняются в src/data/json/plantData.json.'
+        );
+      }
+    }
+
+    await convertCsvToJson(input, DEFAULT_PLANT_DATA_PATH);
   } else {
     printHelp();
     throw new Error(`Неизвестная команда: ${command}`);
