@@ -70,7 +70,8 @@ Loaded from [`memorization.json`](../src/data/json/memorization.json) и нор�
 - **Optional fields:** `lifeCycle` (enum-like string), `additionalInfo` (string), `toxicity` (array of `{ level: number, tag: string }`), `hardinessZone` (string), `light` (string), `family` (string or `null`). Plant IDs can be numeric or underscore-delimited strings, normalized via `parseCatalogId` в загрузчике.【F:src/game/dataLoader.js†L182-L243】
 
 ### Plant family catalog (`plantFamilies`)
-- **Shape:** Object mapping botanical family names to arrays of plant IDs (numeric or string) that belong to the family. IDs are normalized the same way as species IDs.【F:src/game/dataLoader.js†L144-L181】
+- **Source:** Derived automatically из `plantParameters` загрузчиком [`dataLoader.js`](../src/game/dataLoader.js); заполняется только для растений, у которых в параметрах указано поле `family`.
+- **Shape:** Object mapping botanical family names to arrays of plant IDs (numeric or string) that belong to the family. IDs are normalized the same way as species IDs.【F:src/game/dataLoader.js†L144-L214】
 
 ### Plant image entry (`plantImages` / `plantImagesById`)
 - **Shape:** Each entry has `id` (string) and `src` (relative image path starting with `images/`). Optional `difficulty` overrides the plant-level difficulty for a single photo.

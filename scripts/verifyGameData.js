@@ -88,6 +88,32 @@ function deepFreeze(value) {
   return value;
 }
 
+function derivePlantFamiliesFromParameters(plantParameters) {
+  if (!plantParameters || typeof plantParameters !== 'object') {
+    return {};
+  }
+
+  const buckets = Object.create(null);
+
+  Object.entries(plantParameters).forEach(([id, params]) => {
+    if (!params || typeof params !== 'object') {
+      return;
+    }
+
+    const family = params.family;
+
+    if (family == null || family === '') {
+      return;
+    }
+
+    const normalizedFamily = String(family);
+    const entries = buckets[normalizedFamily] || (buckets[normalizedFamily] = []);
+    entries.push(parseCatalogId(id));
+  });
+
+  return buckets;
+}
+
 function buildPlantFamilyDataFromJson(rawFamilies) {
   const source = rawFamilies && typeof rawFamilies === 'object' ? rawFamilies : {};
 
@@ -214,10 +240,16 @@ function assertCatalogConsistency() {
     difficulties: canonicalDifficulties
   });
 
-  const familyDataFromJson = buildPlantFamilyDataFromJson(memorizationJson.plantFamilies);
+  const plantFamiliesFromJson = (
+    memorizationJson && typeof memorizationJson.plantFamilies === 'object'
+      ? memorizationJson.plantFamilies
+      : derivePlantFamiliesFromParameters(memorizationJson.plantParameters)
+  );
+
+  const familyDataFromJson = buildPlantFamilyDataFromJson(plantFamiliesFromJson);
   const plantParametersFromJson = buildPlantParametersFromJson({
     plantParameters: memorizationJson.plantParameters,
-    plantFamilies: memorizationJson.plantFamilies
+    plantFamilies: plantFamiliesFromJson
   });
 
   assert.deepStrictEqual(
