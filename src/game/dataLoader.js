@@ -248,6 +248,32 @@ function deriveNormalizedPlantData(rawPlantData = {}) {
   };
 }
 
+function derivePlantFamiliesFromParameters(plantParameters) {
+  if (!plantParameters || typeof plantParameters !== 'object') {
+    return {};
+  }
+
+  const buckets = Object.create(null);
+
+  Object.entries(plantParameters).forEach(([id, params]) => {
+    if (!params || typeof params !== 'object') {
+      return;
+    }
+
+    const family = params.family;
+
+    if (family == null || family === '') {
+      return;
+    }
+
+    const normalizedFamily = String(family);
+    const entries = buckets[normalizedFamily] || (buckets[normalizedFamily] = []);
+    entries.push(parseCatalogId(id));
+  });
+
+  return buckets;
+}
+
 function extractJsonModuleData(module, fallbackKey) {
   if (module && typeof module === 'object') {
     if ('default' in module) {
@@ -335,6 +361,22 @@ const bouquetQuestionDefinitions = Object.freeze(await loadJsonModule('../data/j
   fallbackKey: 'bouquetQuestions'
 }));
 
+const plantParameterSource = (
+  memorizationJson && typeof memorizationJson.plantParameters === 'object'
+    ? memorizationJson.plantParameters
+    : plantDataJson && typeof plantDataJson.plantParameters === 'object'
+      ? plantDataJson.plantParameters
+      : {}
+);
+
+const plantFamilySource = (
+  memorizationJson && typeof memorizationJson.plantFamilies === 'object'
+    ? memorizationJson.plantFamilies
+    : plantDataJson && typeof plantDataJson.plantFamilies === 'object'
+      ? plantDataJson.plantFamilies
+      : derivePlantFamiliesFromParameters(plantParameterSource)
+);
+
 function freezeQuestionDefinitions(definitions) {
   if (!Array.isArray(definitions)) {
     return Object.freeze([]);
@@ -353,8 +395,8 @@ export const dataBundle = Object.freeze({
   species: normalizedPlantData.species,
   genus: Array.isArray(memorizationJson.genus) ? memorizationJson.genus : Array.isArray(plantDataJson.genus) ? plantDataJson.genus : [],
   plantImages: normalizedPlantData.plantImages,
-  plantParameters: memorizationJson.plantParameters || plantDataJson.plantParameters || {},
-  plantFamilies: memorizationJson.plantFamilies || plantDataJson.plantFamilies || {},
+  plantParameters: plantParameterSource,
+  plantFamilies: plantFamilySource,
   memorization: (
     memorizationJson && typeof memorizationJson === 'object'
       ? { plants: Array.isArray(memorizationJson.plants) ? memorizationJson.plants : [] }
