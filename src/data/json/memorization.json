@@ -19,7 +19,8 @@
     "2": {
       "scientificName": "Daucus carota",
       "family": "Apiaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "3": {
       "scientificName": "Agapanthus africanus",
@@ -58,33 +59,40 @@
       "light": "fullSun"
     },
     "7": {
-      "scientificName": "Euphorbia pulcherrima"
+      "scientificName": "Euphorbia pulcherrima",
+      "additionalInfo": "Описание заполняется"
     },
     "8": {
       "scientificName": "Gazania",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "9": {
       "scientificName": "Lamium Maculatum",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "10": {
-      "scientificName": "Torenia fournieri"
+      "scientificName": "Torenia fournieri",
+      "additionalInfo": "Описание заполняется"
     },
     "11": {
       "scientificName": "Spiraea japonica",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "12": {
       "scientificName": "Pastinaca sativa",
       "family": "Apiaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "13": {
       "scientificName": "Allium",
       "family": "Amaryllidaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "14": {
       "scientificName": "Camassia",
@@ -97,1205 +105,1500 @@
     "15": {
       "scientificName": "Globularia",
       "family": "Plantaginaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "16": {
       "scientificName": "Fritillaria",
       "family": "Liliaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "17": {
       "scientificName": "Clematis",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "18": {
       "scientificName": "Wisteria",
       "family": "Fabaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "19": {
       "scientificName": "Nerium oleander",
-      "family": "Apocynaceae"
+      "family": "Apocynaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "20": {
       "scientificName": "Sorbus",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "21": {
       "scientificName": "Rhododendron",
-      "family": "Ericaceae"
+      "family": "Ericaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "22": {
       "scientificName": "Tulipa",
       "family": "Liliaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "23": {
       "scientificName": "Gardenia",
-      "family": "Rubiaceae"
+      "family": "Rubiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "24": {
       "scientificName": "Magnolia",
-      "family": "Magnoliaceae"
+      "family": "Magnoliaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "25": {
       "scientificName": "Leucanthemum vulgare",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "26": {
       "scientificName": "Dahlia",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "27": {
       "scientificName": "Echinacea",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "28": {
       "scientificName": "Gomphrena",
       "family": "Amaranthaceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "29": {
       "scientificName": "Chrysanthemum",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "30": {
       "scientificName": "Osteospermum",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "31": {
       "scientificName": "Rosa",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "32": {
       "scientificName": "Guzmania lingulata",
       "family": "Bromeliaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "33": {
       "scientificName": "Papaver",
-      "family": "Papaveraceae"
+      "family": "Papaveraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "34": {
       "scientificName": "Metrosideros excelsa",
-      "family": "Myrtaceae"
+      "family": "Myrtaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "35": {
       "scientificName": "Lilium",
       "family": "Liliaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "36": {
       "scientificName": "Hemerocallis",
       "family": "Asphodelaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "37": {
-      "scientificName": "Hymenocallis littoralis"
+      "scientificName": "Hymenocallis littoralis",
+      "additionalInfo": "Описание заполняется"
     },
     "38": {
       "scientificName": "Tripleurospermum",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "39": {
       "scientificName": "Heliopsis helianthoides",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "40": {
       "scientificName": "Coreopsis",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "41": {
       "scientificName": "Dianthus",
-      "family": "Caryophyllaceae"
+      "family": "Caryophyllaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "42": {
       "scientificName": "Abutilon",
-      "family": "Malvaceae"
+      "family": "Malvaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "43": {
-      "scientificName": "Sansevieria"
+      "scientificName": "Sansevieria",
+      "additionalInfo": "Описание заполняется"
     },
     "44": {
       "scientificName": "Ananas comosus",
       "family": "Bromeliaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "45": {
       "scientificName": "Yucca",
-      "family": "Asparagaceae"
+      "family": "Asparagaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "46": {
       "scientificName": "Paeonia",
       "family": "Paeoniaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "47": {
       "scientificName": "Anemone",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "48": {
-      "scientificName": "Callistemon"
+      "scientificName": "Callistemon",
+      "additionalInfo": "Описание заполняется"
     },
     "49": {
-      "scientificName": "Myrtus"
+      "scientificName": "Myrtus",
+      "additionalInfo": "Описание заполняется"
     },
     "50": {
       "scientificName": "Jacaranda mimosifolia",
-      "family": "Bignoniaceae"
+      "family": "Bignoniaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "51": {
       "scientificName": "Punica granatum",
-      "family": "Lythraceae"
+      "family": "Lythraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "52": {
       "scientificName": "Pittosporum tobira",
-      "family": "Pittosporaceae"
+      "family": "Pittosporaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "53": {
       "scientificName": "Sixalix atropurpurea",
       "family": "Caprifoliaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "54": {
       "scientificName": "Lantana",
-      "family": "Verbenaceae"
+      "family": "Verbenaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "55": {
       "scientificName": "Hibiscus",
-      "family": "Malvaceae"
+      "family": "Malvaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "56": {
       "scientificName": "Robinia pseudoacacia",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "57": {
       "scientificName": "Paulownia",
-      "family": "Paulowniaceae"
+      "family": "Paulowniaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "58": {
       "scientificName": "Rosa",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "59": {
       "scientificName": "Crataegus",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "60": {
-      "scientificName": "Hylocereus"
+      "scientificName": "Hylocereus",
+      "additionalInfo": "Описание заполняется"
     },
     "61": {
-      "scientificName": "Schefflera"
+      "scientificName": "Schefflera",
+      "additionalInfo": "Описание заполняется"
     },
     "62": {
       "scientificName": "Malus",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "63": {
       "scientificName": "Zea mays",
       "family": "Poaceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "64": {
       "scientificName": "Verbena",
       "family": "Verbenaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "65": {
       "scientificName": "Myosotis",
-      "family": "Boraginaceae"
+      "family": "Boraginaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "66": {
       "scientificName": "Mentha",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "67": {
       "scientificName": "Lavatera",
-      "family": "Malvaceae"
+      "family": "Malvaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "68": {
       "scientificName": "Lavandula",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "69": {
       "scientificName": "Eustoma",
       "family": "Gentianaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "70": {
       "scientificName": "Physalis",
-      "family": "Solanaceae"
+      "family": "Solanaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "71": {
       "scientificName": "Castanea",
-      "family": "Fagaceae"
+      "family": "Fagaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "72": {
       "scientificName": "Arctium",
       "family": "Asteraceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "73": {
       "scientificName": "Aster",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "74": {
       "scientificName": "Phlox",
       "family": "Polemoniaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "75": {
       "scientificName": "Syringa",
-      "family": "Oleaceae"
+      "family": "Oleaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "76": {
       "scientificName": "Petunia",
       "family": "Solanaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "77": {
       "scientificName": "Rhodomyrtus",
-      "family": "Myrtaceae"
+      "family": "Myrtaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "78": {
       "scientificName": "Solanum",
-      "family": "Solanaceae"
+      "family": "Solanaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "79": {
       "scientificName": "Plumbago",
-      "family": "Plumbaginaceae"
+      "family": "Plumbaginaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "80": {
       "scientificName": "Caladium bicolor",
       "family": "Araceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "81": {
       "scientificName": "Hosta",
       "family": "Asparagaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "82": {
       "scientificName": "Viola tricolor var. hortensis",
       "family": "Violaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "83": {
       "scientificName": "Campanula",
       "family": "Campanulaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "84": {
       "scientificName": "Brassica oleracea Gongylodes Group",
       "family": "Brassicaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "85": {
       "scientificName": "Buddleja davidii",
-      "family": "Scrophulariaceae"
+      "family": "Scrophulariaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "86": {
       "scientificName": "Plumeria",
-      "family": "Apocynaceae"
+      "family": "Apocynaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "87": {
-      "scientificName": "Nelumbo nucifera"
+      "scientificName": "Nelumbo nucifera",
+      "additionalInfo": "Описание заполняется"
     },
     "88": {
       "scientificName": "Hydrangea macrophylla",
-      "family": "Hydrangeaceae"
+      "family": "Hydrangeaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "89": {
       "scientificName": "Santolina chamaecyparissus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "90": {
       "scientificName": "Fagus sylvatica",
-      "family": "Fagaceae"
+      "family": "Fagaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "91": {
       "scientificName": "Begonia",
       "family": "Begoniaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "92": {
       "scientificName": "Ranunculus",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "93": {
       "scientificName": "Syngonium podophyllum",
       "family": "Araceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "94": {
       "scientificName": "Orchidaceae",
       "family": "Orchidaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "95": {
       "scientificName": "Musa",
       "family": "Musaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "96": {
       "scientificName": "Zamioculcas zamiifolia",
       "family": "Araceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "97": {
       "scientificName": "Tagetes",
       "family": "Asteraceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "98": {
       "scientificName": "Passiflora edulis",
       "family": "Passifloraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "99": {
-      "scientificName": "Cissus rhombifolia"
+      "scientificName": "Cissus rhombifolia",
+      "additionalInfo": "Описание заполняется"
     },
     "100": {
       "scientificName": "Helianthus annuus",
       "family": "Asteraceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "101": {
       "scientificName": "Cosmos bipinnatus",
       "family": "Asteraceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "102": {
       "scientificName": "Aglaonema",
       "family": "Araceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "103": {
       "scientificName": "Primula",
-      "family": "Primulaceae"
+      "family": "Primulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "104": {
       "scientificName": "Scilla",
       "family": "Asparagaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "105": {
       "scientificName": "Narcissus",
       "family": "Amaryllidaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "106": {
       "scientificName": "Lupinus",
       "family": "Fabaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "107": {
       "scientificName": "Muscari",
       "family": "Asparagaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "108": {
       "scientificName": "Pelargonium",
       "family": "Geraniaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "109": {
       "scientificName": "Calibrachoa",
       "family": "Solanaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "110": {
       "scientificName": "Coleus",
       "family": "Lamiaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "111": {
-      "scientificName": "Aloe"
+      "scientificName": "Aloe",
+      "additionalInfo": "Описание заполняется"
     },
     "112": {
       "scientificName": "Delphinium",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "113": {
       "scientificName": "Brunnera",
       "family": "Boraginaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "114": {
       "scientificName": "Betula",
-      "family": "Betulaceae"
+      "family": "Betulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "115": {
       "scientificName": "Rudbeckia",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "116": {
       "scientificName": "Centaurea",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "117": {
       "scientificName": "Astrantia",
-      "family": "Apiaceae"
+      "family": "Apiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "118": {
       "scientificName": "Geranium",
       "family": "Geraniaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "119": {
       "scientificName": "Bellis perennis",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "120": {
       "scientificName": "Lamprocapnos",
       "family": "Papaveraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "121": {
       "scientificName": "Gaillardia",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "122": {
       "scientificName": "Galanthus",
       "family": "Amaryllidaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "123": {
       "scientificName": "Celosia",
       "family": "Amaranthaceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "124": {
       "scientificName": "Opuntia",
       "family": "Cactaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "125": {
       "scientificName": "Platycodon grandiflorus",
       "family": "Campanulaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "126": {
-      "scientificName": "Eucalyptus"
+      "scientificName": "Eucalyptus",
+      "additionalInfo": "Описание заполняется"
     },
     "127": {
       "scientificName": "Zinnia",
       "family": "Asteraceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "128": {
       "scientificName": "Carpobrotus edulis",
-      "family": "Aizoaceae"
+      "family": "Aizoaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "129": {
       "scientificName": "Cakile Maritima",
-      "family": "Brassicaceae"
+      "family": "Brassicaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "130": {
       "scientificName": "Crocus",
       "family": "Iridaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "131": {
       "scientificName": "Veronica austriaca",
       "family": "Plantaginaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "132": {
-      "scientificName": "Vriesea"
+      "scientificName": "Vriesea",
+      "additionalInfo": "Описание заполняется"
     },
     "133": {
-      "scientificName": "Neoregelia"
+      "scientificName": "Neoregelia",
+      "additionalInfo": "Описание заполняется"
     },
     "134": {
-      "scientificName": "Aechmea"
+      "scientificName": "Aechmea",
+      "additionalInfo": "Описание заполняется"
     },
     "135": {
       "scientificName": "Calendula",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "136": {
-      "scientificName": "Banksia"
+      "scientificName": "Banksia",
+      "additionalInfo": "Описание заполняется"
     },
     "137": {
       "scientificName": "Laburnum",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "138": {
       "scientificName": "Antirrhinum",
-      "family": "Plantaginaceae"
+      "family": "Plantaginaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "139": {
       "scientificName": "Trachelospermum jasminoides",
       "family": "Apocynaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "140": {
       "scientificName": "Lonicera tatarica",
-      "family": "Caprifoliaceae"
+      "family": "Caprifoliaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "141": {
       "scientificName": "Sophora japonica",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "142": {
       "scientificName": "Hyacinthus",
       "family": "Asparagaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "143": {
       "scientificName": "Castanea Sativa",
-      "family": "Fagaceae"
+      "family": "Fagaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "144": {
       "scientificName": "Astilbe",
-      "family": "Saxifragaceae"
+      "family": "Saxifragaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "145": {
       "scientificName": "Agrostemma",
-      "family": "Caryophyllaceae"
+      "family": "Caryophyllaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "146": {
       "scientificName": "Trifolium pratense",
       "family": "Fabaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "147": {
       "scientificName": "Sempervivum",
-      "family": "Crassulaceae"
+      "family": "Crassulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "148": {
-      "scientificName": "Fatsia"
+      "scientificName": "Fatsia",
+      "additionalInfo": "Описание заполняется"
     },
     "149": {
-      "scientificName": "Pachira"
+      "scientificName": "Pachira",
+      "additionalInfo": "Описание заполняется"
     },
     "150": {
       "scientificName": "Salvia",
       "family": "Lamiaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "151": {
-      "scientificName": "Plectranthus"
+      "scientificName": "Plectranthus",
+      "additionalInfo": "Описание заполняется"
     },
     "152": {
       "scientificName": "Malva",
-      "family": "Malvaceae"
+      "family": "Malvaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "153": {
       "scientificName": "Cornus Florida",
-      "family": "Cornaceae"
+      "family": "Cornaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "154": {
-      "scientificName": "Edgeworthia chrysantha"
+      "scientificName": "Edgeworthia chrysantha",
+      "additionalInfo": "Описание заполняется"
     },
     "155": {
       "scientificName": "Angelonia",
       "family": "Plantaginaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "156": {
       "scientificName": "Cynara cardunculus",
       "family": "Asteraceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "157": {
       "scientificName": "Jasminum polyanthum",
       "family": "Oleaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "158": {
       "scientificName": "Sanchezia",
-      "family": "Acanthaceae"
+      "family": "Acanthaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "159": {
       "scientificName": "Ageratum",
       "family": "Asteraceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "160": {
       "scientificName": "Aquilegia vulgaris",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "161": {
       "scientificName": "Aubrieta",
       "family": "Brassicaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "162": {
       "scientificName": "Catharanthus",
       "family": "Apocynaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "163": {
       "scientificName": "Fittonia",
       "family": "Acanthaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "164": {
       "scientificName": "Fumaria",
       "family": "Papaveraceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "165": {
       "scientificName": "Helleborus",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "166": {
       "scientificName": "Alcea",
       "family": "Malvaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "167": {
       "scientificName": "Cichorium Intybus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "168": {
       "scientificName": "Nymphaea",
-      "family": "Nymphaeaceae"
+      "family": "Nymphaeaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "169": {
       "scientificName": "Amaranthus",
       "family": "Amaranthaceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "170": {
-      "scientificName": "Cistus Albidus"
+      "scientificName": "Cistus Albidus",
+      "additionalInfo": "Описание заполняется"
     },
     "171": {
-      "scientificName": "Ceanothus Impressus"
+      "scientificName": "Ceanothus Impressus",
+      "additionalInfo": "Описание заполняется"
     },
     "172": {
       "scientificName": "Euonymus",
-      "family": "Celastraceae"
+      "family": "Celastraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "173": {
-      "scientificName": "Hebe"
+      "scientificName": "Hebe",
+      "additionalInfo": "Описание заполняется"
     },
     "174": {
-      "scientificName": "Kumara Plicatilis"
+      "scientificName": "Kumara Plicatilis",
+      "additionalInfo": "Описание заполняется"
     },
     "175": {
-      "scientificName": "Lewisia Cotyledon"
+      "scientificName": "Lewisia Cotyledon",
+      "additionalInfo": "Описание заполняется"
     },
     "176": {
       "scientificName": "Paulownia",
-      "family": "Paulowniaceae"
+      "family": "Paulowniaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "177": {
       "scientificName": "Phacelia",
-      "family": "Boraginaceae"
+      "family": "Boraginaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "178": {
       "scientificName": "Prunus Laurocerasus",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "179": {
       "scientificName": "Pyracantha Coccinea",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "181": {
       "scientificName": "Taraxacum Officinale",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "183": {
-      "scientificName": "Anturium"
+      "scientificName": "Anturium",
+      "additionalInfo": "Описание заполняется"
     },
     "184": {
       "scientificName": "Calluna",
-      "family": "Ericaceae"
+      "family": "Ericaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "185": {
       "scientificName": "Eschscholzia Californica",
-      "family": "Papaveraceae"
+      "family": "Papaveraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "186": {
       "scientificName": "Helenium Autumnale",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "187": {
-      "scientificName": "Heliconia Psittacorum"
+      "scientificName": "Heliconia Psittacorum",
+      "additionalInfo": "Описание заполняется"
     },
     "188": {
-      "scientificName": "Kalanchoe Blossfeldiana"
+      "scientificName": "Kalanchoe Blossfeldiana",
+      "additionalInfo": "Описание заполняется"
     },
     "189": {
-      "scientificName": "Fragaria × ananassa"
+      "scientificName": "Fragaria × ananassa",
+      "additionalInfo": "Описание заполняется"
     },
     "190": {
-      "scientificName": "Schlumbergera Truncata"
+      "scientificName": "Schlumbergera Truncata",
+      "additionalInfo": "Описание заполняется"
     },
     "191": {
       "scientificName": "Convallaria Majalis",
-      "family": "Asparagaceae"
+      "family": "Asparagaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "193": {
       "scientificName": "Silene chalcedonica",
-      "family": "Caryophyllaceae"
+      "family": "Caryophyllaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "194": {
-      "scientificName": "Xerochrysum bracteatum"
+      "scientificName": "Xerochrysum bracteatum",
+      "additionalInfo": "Описание заполняется"
     },
     "195": {
       "scientificName": "Antirrhinum majus",
-      "family": "Plantaginaceae"
+      "family": "Plantaginaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "196": {
-      "scientificName": "Justicia carnea"
+      "scientificName": "Justicia carnea",
+      "additionalInfo": "Описание заполняется"
     },
     "197": {
-      "scientificName": "Aichryson"
+      "scientificName": "Aichryson",
+      "additionalInfo": "Описание заполняется"
     },
     "200": {
       "scientificName": "Coriandrum sativum",
-      "family": "Apiaceae"
+      "family": "Apiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "201": {
       "scientificName": "Vinca Minor",
-      "family": "Apocynaceae"
+      "family": "Apocynaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "202": {
       "scientificName": "Pulsatilla",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "203": {
       "scientificName": "Catalpa",
-      "family": "Bignoniaceae"
+      "family": "Bignoniaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "204": {
-      "scientificName": "Cassava"
+      "scientificName": "Cassava",
+      "additionalInfo": "Описание заполняется"
     },
     "205": {
       "scientificName": "Sedum",
-      "family": "Crassulaceae"
+      "family": "Crassulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "206": {
-      "scientificName": "Spathiphyllum"
+      "scientificName": "Spathiphyllum",
+      "additionalInfo": "Описание заполняется"
     },
     "207": {
       "scientificName": "Alyssum",
-      "family": "Brassicaceae"
+      "family": "Brassicaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "208": {
       "scientificName": "Helianthemum",
-      "family": "Cistaceae"
+      "family": "Cistaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "209": {
       "scientificName": "Strobilanthes",
-      "family": "Acanthaceae"
+      "family": "Acanthaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "210": {
       "scientificName": "Valeriana",
-      "family": "Caprifoliaceae"
+      "family": "Caprifoliaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "211": {
       "scientificName": "Viburnum",
-      "family": "Adoxaceae"
+      "family": "Adoxaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "212": {
-      "scientificName": "Vitis vinifera"
+      "scientificName": "Vitis vinifera",
+      "additionalInfo": "Описание заполняется"
     },
     "213": {
-      "scientificName": "Whitfieldia"
+      "scientificName": "Whitfieldia",
+      "additionalInfo": "Описание заполняется"
     },
     "214": {
       "scientificName": "Anethum graveolens",
-      "family": "Apiaceae"
+      "family": "Apiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "215": {
-      "scientificName": "Bauhinia"
+      "scientificName": "Bauhinia",
+      "additionalInfo": "Описание заполняется"
     },
     "216": {
       "scientificName": "Berberis",
-      "family": "Berberidaceae"
+      "family": "Berberidaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "217": {
-      "scientificName": "Crocosmia"
+      "scientificName": "Crocosmia",
+      "additionalInfo": "Описание заполняется"
     },
     "218": {
       "scientificName": "Cucurbita pepo",
-      "family": "Cucurbitaceae"
+      "family": "Cucurbitaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "219": {
       "scientificName": "Cyclamen",
-      "family": "Primulaceae"
+      "family": "Primulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "220": {
-      "scientificName": "Duranta repens"
+      "scientificName": "Duranta repens",
+      "additionalInfo": "Описание заполняется"
     },
     "221": {
       "scientificName": "Eranthis",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "222": {
       "scientificName": "Ficaria",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "223": {
       "scientificName": "Fuchsia",
-      "family": "Onagraceae"
+      "family": "Onagraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "224": {
       "scientificName": "Hedera helix",
-      "family": "Araliaceae"
+      "family": "Araliaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "225": {
       "scientificName": "Ipomoea",
-      "family": "Convolvulaceae"
+      "family": "Convolvulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "226": {
-      "scientificName": "Jatropha integerrima"
+      "scientificName": "Jatropha integerrima",
+      "additionalInfo": "Описание заполняется"
     },
     "227": {
-      "scientificName": "Kopsia"
+      "scientificName": "Kopsia",
+      "additionalInfo": "Описание заполняется"
     },
     "228": {
-      "scientificName": "Laurus nobilis"
+      "scientificName": "Laurus nobilis",
+      "additionalInfo": "Описание заполняется"
     },
     "229": {
-      "scientificName": "Illicium anisatum"
+      "scientificName": "Illicium anisatum",
+      "additionalInfo": "Описание заполняется"
     },
     "230": {
-      "scientificName": "Lycoris radiata"
+      "scientificName": "Lycoris radiata",
+      "additionalInfo": "Описание заполняется"
     },
     "231": {
       "scientificName": "Monarda didyma",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "232": {
       "scientificName": "Nuphar lutea",
-      "family": "Nymphaeaceae"
+      "family": "Nymphaeaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "233": {
-      "scientificName": "Pachystachys"
+      "scientificName": "Pachystachys",
+      "additionalInfo": "Описание заполняется"
     },
     "234": {
       "scientificName": "Ilex aquifolium",
-      "family": "Aquifoliaceae"
+      "family": "Aquifoliaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "235": {
       "scientificName": "Oxalis triangularis",
-      "family": "Oxalidaceae"
+      "family": "Oxalidaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "236": {
       "scientificName": "Parthenocissus quinquefolia",
-      "family": "Vitaceae"
+      "family": "Vitaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "237": {
-      "scientificName": "Petrea volubilis"
+      "scientificName": "Petrea volubilis",
+      "additionalInfo": "Описание заполняется"
     },
     "238": {
-      "scientificName": "Trifolium Incarnatum"
+      "scientificName": "Trifolium Incarnatum",
+      "additionalInfo": "Описание заполняется"
     },
     "239": {
-      "scientificName": "Nidularium"
+      "scientificName": "Nidularium",
+      "additionalInfo": "Описание заполняется"
     },
     "240": {
       "scientificName": "Convolvulus",
-      "family": "Convolvulaceae"
+      "family": "Convolvulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "241": {
       "scientificName": "Cotoneaster Horizontalis",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "242": {
-      "scientificName": "Craspedia"
+      "scientificName": "Craspedia",
+      "additionalInfo": "Описание заполняется"
     },
     "243": {
-      "scientificName": "Echinopsis Oxygona"
+      "scientificName": "Echinopsis Oxygona",
+      "additionalInfo": "Описание заполняется"
     },
     "244": {
-      "scientificName": "Limonium Arboreum"
+      "scientificName": "Limonium Arboreum",
+      "additionalInfo": "Описание заполняется"
     },
     "245": {
-      "scientificName": "Lobelia Cardinalis"
+      "scientificName": "Lobelia Cardinalis",
+      "additionalInfo": "Описание заполняется"
     },
     "246": {
-      "scientificName": "Scaevola Aemula"
+      "scientificName": "Scaevola Aemula",
+      "additionalInfo": "Описание заполняется"
     },
     "247": {
       "scientificName": "Vaccinium Myrtillus",
-      "family": "Ericaceae"
+      "family": "Ericaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "401": {
       "scientificName": "Arctotheca calendula",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "402": {
-      "scientificName": "Lampranthus aureus"
+      "scientificName": "Lampranthus aureus",
+      "additionalInfo": "Описание заполняется"
     },
     "403": {
       "scientificName": "Heracleum",
-      "family": "Apiaceae"
+      "family": "Apiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "404": {
       "scientificName": "Angelica sylvestris",
-      "family": "Apiaceae"
+      "family": "Apiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "405": {
-      "scientificName": "Amaryllis"
+      "scientificName": "Amaryllis",
+      "additionalInfo": "Описание заполняется"
     },
     "406": {
       "scientificName": "Photinia",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "13_1": {
       "scientificName": "Allium ursinum",
       "family": "Amaryllidaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "13_2": {
       "scientificName": "Allium tuberosum",
-      "family": "Amaryllidaceae"
+      "family": "Amaryllidaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "13_3": {
-      "scientificName": "Allium Angulosum"
+      "scientificName": "Allium Angulosum",
+      "additionalInfo": "Описание заполняется"
     },
     "17_1": {
       "scientificName": "Clematis montana",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "18_0": {
       "scientificName": "Wisteria",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "18_1": {
       "scientificName": "Wisteria sinensis",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "18_2": {
-      "scientificName": "Wisteria frutescens"
+      "scientificName": "Wisteria frutescens",
+      "additionalInfo": "Описание заполняется"
     },
     "27_1": {
       "scientificName": "Echinacea purpurea",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "31_1": {
       "scientificName": "Rosa canina",
       "family": "Rosaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "31_2": {
       "scientificName": "Rosa rugosa",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "31_3": {
-      "scientificName": "Rosa damascena"
+      "scientificName": "Rosa damascena",
+      "additionalInfo": "Описание заполняется"
     },
     "31_4": {
       "scientificName": "Rosa multiflora",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "31_5": {
-      "scientificName": "Rosa moyesii"
+      "scientificName": "Rosa moyesii",
+      "additionalInfo": "Описание заполняется"
     },
     "31_6": {
       "scientificName": "Rosa glauca",
-      "family": "Rosaceae"
+      "family": "Rosaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "36_1": {
-      "scientificName": "Hemerocallis citrina"
+      "scientificName": "Hemerocallis citrina",
+      "additionalInfo": "Описание заполняется"
     },
     "36_2": {
       "scientificName": "Hemerocallis fulva",
-      "family": "Liliaceae"
+      "family": "Liliaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "41_1": {
       "scientificName": "Dianthus barbatus",
       "family": "Caryophyllaceae",
-      "lifeCycle": "biennial"
+      "lifeCycle": "biennial",
+      "additionalInfo": "Описание заполняется"
     },
     "47_1": {
       "scientificName": "Anemone coronaria",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "47_2": {
       "scientificName": "Anemone nemorosa",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "47_3": {
       "scientificName": "Anemone blanda",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "82_0": {
       "scientificName": "Viola",
-      "family": "Violaceae"
+      "family": "Violaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "82_1": {
       "scientificName": "Viola tricolor var. hortensis",
-      "family": "Violaceae"
+      "family": "Violaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "82_2": {
       "scientificName": "Viola Sororia",
-      "family": "Violaceae"
+      "family": "Violaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "83_1": {
       "scientificName": "Campanula rotundifolia",
       "family": "Campanulaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "83_2": {
       "scientificName": "Campanula Portenschlagiana",
-      "family": "Campanulaceae"
+      "family": "Campanulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "83_3": {
       "scientificName": "Campanula poscharskyana",
-      "family": "Campanulaceae"
+      "family": "Campanulaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "88_0": {
       "scientificName": "Hydrangea",
-      "family": "Hydrangeaceae"
+      "family": "Hydrangeaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "88_1": {
       "scientificName": "Hydrangea macrophylla",
-      "family": "Hydrangeaceae"
+      "family": "Hydrangeaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "88_2": {
-      "scientificName": "Hydrangea arborescens"
+      "scientificName": "Hydrangea arborescens",
+      "additionalInfo": "Описание заполняется"
     },
     "100_1": {
       "scientificName": "Helianthus annuus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "100_2": {
       "scientificName": "Helianthus tuberosus",
-      "family": "Asteraceae"
+      "family": "Asteraceae",
+      "additionalInfo": "Описание заполняется"
     },
     "106_1": {
       "scientificName": "Lupinus polyphyllus",
       "family": "Fabaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "106_2": {
       "scientificName": "Lupinus latifolius",
       "family": "Fabaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "106_3": {
-      "scientificName": "Lupinus Rivularis"
+      "scientificName": "Lupinus Rivularis",
+      "additionalInfo": "Описание заполняется"
     },
     "106_4": {
       "scientificName": "Lupinus pilosus",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "116_1": {
       "scientificName": "Centaurea cyanus",
       "family": "Asteraceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "118_1": {
-      "scientificName": "Geranium magnificum"
+      "scientificName": "Geranium magnificum",
+      "additionalInfo": "Описание заполняется"
     },
     "118_2": {
       "scientificName": "Geranium",
-      "family": "Geraniaceae"
+      "family": "Geraniaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "131_1": {
       "scientificName": "Veronica austriaca",
-      "family": "Plantaginaceae"
+      "family": "Plantaginaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "131_2": {
       "scientificName": "Veronica spicata",
-      "family": "Plantaginaceae"
+      "family": "Plantaginaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "146_0": {
       "scientificName": "Trifolium",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "146_1": {
       "scientificName": "Trifolium pratense",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "146_2": {
       "scientificName": "Trifolium Repens",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "146_3": {
       "scientificName": "Trifolium Incarnatum",
-      "family": "Fabaceae"
+      "family": "Fabaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "150_0": {
       "scientificName": "Salvia",
-      "family": "Lamiaceae"
+      "family": "Lamiaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "150_1": {
       "scientificName": "Salvia officinalis",
       "family": "Lamiaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "150_2": {
       "scientificName": "Salvia pratensis",
       "family": "Lamiaceae",
-      "lifeCycle": "perennial"
+      "lifeCycle": "perennial",
+      "additionalInfo": "Описание заполняется"
     },
     "150_3": {
-      "scientificName": "Salvia farinacea"
+      "scientificName": "Salvia farinacea",
+      "additionalInfo": "Описание заполняется"
     },
     "150_4": {
-      "scientificName": "Salvia rosmarinus"
+      "scientificName": "Salvia rosmarinus",
+      "additionalInfo": "Описание заполняется"
     },
     "153_0": {
       "scientificName": "Cornus Florida",
-      "family": "Cornaceae"
+      "family": "Cornaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "153_1": {
       "scientificName": "Cornus sericea",
-      "family": "Cornaceae"
+      "family": "Cornaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "165_0": {
       "scientificName": "Helleborus",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "165_1": {
       "scientificName": "Helleborus orientalis",
-      "family": "Ranunculaceae"
+      "family": "Ranunculaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "169_0": {
       "scientificName": "Amaranthus",
-      "family": "Amaranthaceae"
+      "family": "Amaranthaceae",
+      "additionalInfo": "Описание заполняется"
     },
     "169_1": {
       "scientificName": "Amaranthus cruentus",
       "family": "Amaranthaceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "169_2": {
       "scientificName": "Amaranthus hypochondriacus",
       "family": "Amaranthaceae",
-      "lifeCycle": "annual"
+      "lifeCycle": "annual",
+      "additionalInfo": "Описание заполняется"
     },
     "173_0": {
-      "scientificName": "Hebe"
+      "scientificName": "Hebe",
+      "additionalInfo": "Описание заполняется"
     },
     "173_1": {
-      "scientificName": "Hebe speciosa"
+      "scientificName": "Hebe speciosa",
+      "additionalInfo": "Описание заполняется"
     },
     "173_2": {
-      "scientificName": "Hebe Andersonii"
+      "scientificName": "Hebe Andersonii",
+      "additionalInfo": "Описание заполняется"
     },
     "224_1": {
-      "scientificName": "Hedera Rhombea"
+      "scientificName": "Hedera Rhombea",
+      "additionalInfo": "Описание заполняется"
     },
     "224_2": {
       "scientificName": "Hedera helix",
-      "family": "Araliaceae"
+      "family": "Araliaceae",
+      "additionalInfo": "Описание заполняется"
     }
   },
   "plantFamilies": {
