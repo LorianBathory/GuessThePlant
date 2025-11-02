@@ -4,17 +4,17 @@
       "scientificName": "Asteriscus maritimus",
       "family": "Asteraceae",
       "lifeCycle": "perennial",
-      "additionalInfo": "Компактный средиземноморский кустарник, предпочитает солнце и устойчив к засухе.",
       "toxicity": [
         {
-          "level": 2,
-          "tag": "skin"
+          "tag": "skin",
+          "level": 2
         },
         {
-          "level": 3,
-          "tag": "cat"
+          "tag": "cat",
+          "level": 3
         }
-      ]
+      ],
+      "additionalInfo": "Компактный средиземноморский кустарник, предпочитает солнце и устойчив к засухе."
     },
     "2": {
       "scientificName": "Daucus carota",
@@ -26,37 +26,37 @@
       "scientificName": "Agapanthus africanus",
       "family": "Amaryllidaceae",
       "lifeCycle": "perennial",
-      "additionalInfo": "Вечнозеленый травянистый многолетник. Высота цветочных стрелок — около 80 см.",
+      "hardinessZone": "H2",
+      "light": "fullSun",
       "toxicity": [
         {
-          "level": 2,
-          "tag": "eat"
+          "tag": "eat",
+          "level": 2
         }
       ],
-      "hardinessZone": "H2",
-      "light": "fullSun"
+      "additionalInfo": "Вечнозеленый травянистый многолетник. Высота цветочных стрелок — около 80 см."
     },
     "4": {
       "scientificName": "Bougainvillea spectabilis",
       "family": "Nyctaginaceae",
-      "additionalInfo": "Компактный и густой кустарник, цветущий с яркими прицветниками. Минимально допустимая ночная температура — 10° С.",
       "hardinessZone": "H1C",
-      "light": "fullSun"
+      "light": "fullSun",
+      "additionalInfo": "Компактный и густой кустарник, цветущий с яркими прицветниками. Минимально допустимая ночная температура — 10° С."
     },
     "5": {
       "scientificName": "Camellia japonica",
       "family": "Theaceae",
-      "additionalInfo": "Вечнозеленый кустарник, цветущий весной. Бутоны нуждаются в защите от холодного ветра и утреннего солнца.",
       "hardinessZone": "H5",
-      "light": "partialShade"
+      "light": "partialShade",
+      "additionalInfo": "Вечнозеленый кустарник, цветущий весной. Бутоны нуждаются в защите от холодного ветра и утреннего солнца."
     },
     "6": {
       "scientificName": "Gerbera jamesonii",
       "family": "Asteraceae",
       "lifeCycle": "perennial",
-      "additionalInfo": "Вечнозеленое растение, цветет с конца весны до конца лета. Часто выращивается как однолетник.",
       "hardinessZone": "H1C",
-      "light": "fullSun"
+      "light": "fullSun",
+      "additionalInfo": "Вечнозеленое растение, цветет с конца весны до конца лета. Часто выращивается как однолетник."
     },
     "7": {
       "scientificName": "Euphorbia pulcherrima",
@@ -98,9 +98,9 @@
       "scientificName": "Camassia",
       "family": "Asparagaceae",
       "lifeCycle": "perennial",
-      "additionalInfo": "Луковичное многолетнее растение высотой до 1,2 м. Предпочитает полутень, переносит полное солнце.",
       "hardinessZone": "H4",
-      "light": "partialShade"
+      "light": "partialShade",
+      "additionalInfo": "Луковичное многолетнее растение высотой до 1,2 м. Предпочитает полутень, переносит полное солнце."
     },
     "15": {
       "scientificName": "Globularia",

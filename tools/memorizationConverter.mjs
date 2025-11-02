@@ -52,6 +52,23 @@ function stripWrappingQuotes(value) {
 
   let trimmed = String(value).trim();
 
+  if (trimmed.startsWith('=') && trimmed.length > 2) {
+    const potentialQuote = trimmed[1];
+    if (potentialQuote === '"' || potentialQuote === "'") {
+      const trailingQuoteIndex = trimmed.lastIndexOf(potentialQuote);
+      if (trailingQuoteIndex > 1) {
+        trimmed = trimmed.slice(2, trailingQuoteIndex).trim();
+      }
+    }
+  }
+
+  if (trimmed.startsWith('=') && trimmed.length > 1) {
+    const candidate = trimmed.slice(1).trim();
+    if (candidate) {
+      trimmed = candidate;
+    }
+  }
+
   const startsWithQuote = (text) => text.startsWith('"') || text.startsWith("'");
   const endsWithQuote = (text) => text.endsWith('"') || text.endsWith("'");
 
