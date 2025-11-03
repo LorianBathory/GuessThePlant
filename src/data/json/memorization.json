@@ -16,12 +16,6 @@
       ],
       "additionalInfo": "Компактный средиземноморский кустарник, предпочитает солнце и устойчив к засухе."
     },
-    "2": {
-      "scientificName": "Daucus carota",
-      "family": "Apiaceae",
-      "lifeCycle": "biennial",
-      "additionalInfo": "Описание заполняется"
-    },
     "3": {
       "scientificName": "Agapanthus africanus",
       "family": "Amaryllidaceae",
@@ -60,6 +54,7 @@
     },
     "7": {
       "scientificName": "Euphorbia pulcherrima",
+      "family": "Euphorbiaceae",
       "additionalInfo": "Описание заполняется"
     },
     "8": {
@@ -75,6 +70,7 @@
     },
     "10": {
       "scientificName": "Torenia fournieri",
+      "family": "Linderniaceae",
       "additionalInfo": "Описание заполняется"
     },
     "11": {
@@ -86,12 +82,6 @@
       "scientificName": "Pastinaca sativa",
       "family": "Apiaceae",
       "lifeCycle": "biennial",
-      "additionalInfo": "Описание заполняется"
-    },
-    "13": {
-      "scientificName": "Allium",
-      "family": "Amaryllidaceae",
-      "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
     "14": {
@@ -117,12 +107,6 @@
     "17": {
       "scientificName": "Clematis",
       "family": "Ranunculaceae",
-      "lifeCycle": "perennial",
-      "additionalInfo": "Описание заполняется"
-    },
-    "18": {
-      "scientificName": "Wisteria",
-      "family": "Fabaceae",
       "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
@@ -196,12 +180,6 @@
     "31": {
       "scientificName": "Rosa",
       "family": "Rosaceae",
-      "additionalInfo": "Описание заполняется"
-    },
-    "32": {
-      "scientificName": "Guzmania lingulata",
-      "family": "Bromeliaceae",
-      "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
     "33": {
@@ -842,11 +820,6 @@
       "family": "Malvaceae",
       "additionalInfo": "Описание заполняется"
     },
-    "153": {
-      "scientificName": "Cornus Florida",
-      "family": "Cornaceae",
-      "additionalInfo": "Описание заполняется"
-    },
     "154": {
       "scientificName": "Edgeworthia chrysantha",
       "additionalInfo": "Описание заполняется"
@@ -908,12 +881,6 @@
       "scientificName": "Fumaria",
       "family": "Papaveraceae",
       "lifeCycle": "annual",
-      "additionalInfo": "Описание заполняется"
-    },
-    "165": {
-      "scientificName": "Helleborus",
-      "family": "Ranunculaceae",
-      "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
     "166": {
@@ -1306,15 +1273,18 @@
     "13_2": {
       "scientificName": "Allium tuberosum",
       "family": "Amaryllidaceae",
+      "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
     "13_3": {
-      "scientificName": "Allium Angulosum",
+      "scientificName": "Allium angulosum",
+      "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
     "17_1": {
       "scientificName": "Clematis montana",
       "family": "Ranunculaceae",
+      "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
     "18_0": {
@@ -1555,16 +1525,12 @@
     "165_0": {
       "scientificName": "Helleborus",
       "family": "Ranunculaceae",
+      "lifeCycle": "perennial",
       "additionalInfo": "Описание заполняется"
     },
     "165_1": {
       "scientificName": "Helleborus orientalis",
       "family": "Ranunculaceae",
-      "additionalInfo": "Описание заполняется"
-    },
-    "169_0": {
-      "scientificName": "Amaranthus",
-      "family": "Amaranthaceae",
       "additionalInfo": "Описание заполняется"
     },
     "169_1": {
@@ -1577,10 +1543,6 @@
       "scientificName": "Amaranthus hypochondriacus",
       "family": "Amaranthaceae",
       "lifeCycle": "annual",
-      "additionalInfo": "Описание заполняется"
-    },
-    "173_0": {
-      "scientificName": "Hebe",
       "additionalInfo": "Описание заполняется"
     },
     "173_1": {
@@ -1697,6 +1659,85 @@
       "questionPromptKey": "question"
     },
     {
+      "id": 8,
+      "imageId": "p8_0_1",
+      "correctAnswerId": 8,
+      "names": {
+        "ru": "Гацания",
+        "en": "Gazania",
+        "nl": "Gazania, Middagbloem",
+        "sci": "Gazania"
+      },
+      "wrongAnswers": [
+        30,
+        100,
+        39
+      ],
+      "image": "images/Gazania_AdilBadshah.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-8",
+      "selectionGroupId": "memorization-8",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 12,
+      "imageId": "p12_0_1",
+      "correctAnswerId": 12,
+      "names": {
+        "ru": "Пастернак",
+        "en": "Parsnip",
+        "nl": "Pastinaak",
+        "sci": "Pastinaca sativa"
+      },
+      "wrongAnswers": [
+        2,
+        11
+      ],
+      "image": "images/Parsnip_MagdaEhlers.JPG",
+      "difficulty": "Easy",
+      "questionVariantId": "memorization-12",
+      "selectionGroupId": "memorization-12",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "13_2",
+      "imageId": "p13_2_1",
+      "correctAnswerId": "13_2",
+      "names": {
+        "ru": "Лук клубневой",
+        "en": "Chinese chives",
+        "nl": "Chinese bieslook",
+        "sci": "Allium tuberosum"
+      },
+      "wrongAnswers": [
+        3,
+        11
+      ],
+      "image": "images/AlliumTuberosum_NguyenTienThịnh.JPG",
+      "questionVariantId": "memorization-13_2",
+      "selectionGroupId": "memorization-13_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "13_3",
+      "imageId": "p13_3_1",
+      "correctAnswerId": "13_3",
+      "names": {
+        "ru": "Лук угловатый",
+        "en": "Mouse garlic",
+        "nl": "Kantige look",
+        "sci": "Allium Angulosum"
+      },
+      "image": "images/AlliumAngulosum_DominikRh_Pixabay.JPG",
+      "questionVariantId": "memorization-13_3",
+      "selectionGroupId": "memorization-13_3",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
       "id": 14,
       "imageId": "p14_0_1",
       "correctAnswerId": 14,
@@ -1715,6 +1756,1049 @@
       "difficulty": "Hard",
       "questionVariantId": "memorization-14",
       "selectionGroupId": "memorization-14",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 15,
+      "imageId": "p15_0_1",
+      "correctAnswerId": 15,
+      "names": {
+        "ru": "Глобулярия",
+        "en": "Globe Daisy",
+        "nl": "Kogelbloem",
+        "sci": "Globularia"
+      },
+      "wrongAnswers": [
+        116
+      ],
+      "image": "images/Globularia-Nennieinszweidrei.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-15",
+      "selectionGroupId": "memorization-15",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "17_1",
+      "imageId": "p17_1_1",
+      "correctAnswerId": "17_1",
+      "names": {
+        "ru": "Ломонос горный",
+        "en": "Anemone clematis",
+        "nl": "Bergbosrank",
+        "sci": "Clematis montana"
+      },
+      "image": "images/ClematisMontana_ZenAga_Pixabay.JPG",
+      "questionVariantId": "memorization-17_1",
+      "selectionGroupId": "memorization-17_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "18_1",
+      "imageId": "p18_1_1",
+      "correctAnswerId": "18_1",
+      "names": {
+        "ru": "Глициния китайская",
+        "en": "Chinese wisteria",
+        "nl": "Chinese blauweregen",
+        "sci": "Wisteria sinensis"
+      },
+      "image": "images/WisteriaSinensis_EvieFjord_Unsplash.JPG",
+      "questionVariantId": "memorization-18_1",
+      "selectionGroupId": "memorization-18_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "18_2",
+      "imageId": "p18_2_1",
+      "correctAnswerId": "18_2",
+      "names": {
+        "ru": "Глициния кустарниковая",
+        "en": "American wisteria",
+        "nl": "Blauweregen",
+        "sci": "Wisteria frutescens"
+      },
+      "image": "images/WisteriaFrutescens_KellyIshmael_StockSnap.JPG",
+      "questionVariantId": "memorization-18_2",
+      "selectionGroupId": "memorization-18_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 19,
+      "imageId": "p19_0_2",
+      "correctAnswerId": 19,
+      "names": {
+        "ru": "Олеандр",
+        "en": "Oleander",
+        "nl": "Oleander",
+        "sci": "Nerium oleander"
+      },
+      "wrongAnswers": [
+        5,
+        21,
+        49
+      ],
+      "image": "images/NeriumOleander_Webentwicklerin_Pixabay.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-19",
+      "selectionGroupId": "memorization-19",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 25,
+      "imageId": "p25_0_1",
+      "correctAnswerId": 25,
+      "names": {
+        "ru": "Нивяник обыкновенный",
+        "en": "Oxeye daisy",
+        "nl": "Gewone margriet",
+        "sci": "Leucanthemum vulgare"
+      },
+      "wrongAnswers": [
+        29,
+        119
+      ],
+      "image": "images/ShastaDaisy_Sherry.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-25",
+      "selectionGroupId": "memorization-25",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "27_1",
+      "imageId": "p27_1_1",
+      "correctAnswerId": "27_1",
+      "names": {
+        "ru": "Эхинацея пурпурная",
+        "en": "eastern purple coneflower | eastern purple-coneflower | purple-coneflower",
+        "nl": "Rode zonnehoed",
+        "sci": "Echinacea purpurea"
+      },
+      "image": "images/Echinacea_AlexasFotos.JPG",
+      "questionVariantId": "memorization-27_1",
+      "selectionGroupId": "memorization-27_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 28,
+      "imageId": "p28_0_1",
+      "correctAnswerId": 28,
+      "names": {
+        "ru": "Гомфрена",
+        "en": "Gomphrena / Globe amaranth",
+        "nl": "Kogelamarant",
+        "sci": "Gomphrena"
+      },
+      "image": "images/Gomphrena_AliefBaldwin-325760-926737.JPG",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-28",
+      "selectionGroupId": "memorization-28",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 30,
+      "imageId": "p30_0_1",
+      "correctAnswerId": 30,
+      "names": {
+        "ru": "Остеоспермум",
+        "en": "African Daisy",
+        "nl": "Kaaps ganzenbloempje",
+        "sci": "Osteospermum"
+      },
+      "wrongAnswers": [
+        38,
+        39,
+        40,
+        6,
+        25,
+        8
+      ],
+      "image": "images/Osteospermum.JPG",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-30",
+      "selectionGroupId": "memorization-30",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "31_1",
+      "imageId": "p31_1_1",
+      "correctAnswerId": "31_1",
+      "names": {
+        "ru": "Шиповник",
+        "en": "Dog-rose",
+        "nl": "Hondroos",
+        "sci": "Rosa canina"
+      },
+      "wrongAnswers": [
+        4
+      ],
+      "image": "images/Dog-rose_KirilGruev.JPG",
+      "questionVariantId": "memorization-31_1",
+      "selectionGroupId": "memorization-31_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "31_2",
+      "imageId": "p31_2_1",
+      "correctAnswerId": "31_2",
+      "names": {
+        "ru": "Шиповник морщинистый",
+        "en": "Japanese rose | Rugosa rose",
+        "nl": "Rimpelroos",
+        "sci": "Rosa rugosa"
+      },
+      "wrongAnswers": [
+        41,
+        69,
+        46,
+        5
+      ],
+      "image": "images/RosaRugosa.JPG",
+      "questionVariantId": "memorization-31_2",
+      "selectionGroupId": "memorization-31_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 34,
+      "imageId": "p34_0_1",
+      "correctAnswerId": 34,
+      "names": {
+        "ru": "Похутукава",
+        "en": "Pohutukawa",
+        "nl": "Nieuw-Zeelandse kerstboom",
+        "sci": "Metrosideros excelsa"
+      },
+      "wrongAnswers": [
+        48,
+        49
+      ],
+      "image": "images/Pohutukawa.JPG",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-34",
+      "selectionGroupId": "memorization-34",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 35,
+      "imageId": "p35_0_1",
+      "correctAnswerId": 35,
+      "names": {
+        "ru": "Лилия",
+        "en": "Lily",
+        "nl": "Lelie",
+        "sci": "Lilium"
+      },
+      "wrongAnswers": [
+        36,
+        37
+      ],
+      "image": "images/Lily.JPG",
+      "difficulty": "Easy",
+      "questionVariantId": "memorization-35",
+      "selectionGroupId": "memorization-35",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 36,
+      "imageId": "p36_0_1",
+      "correctAnswerId": 36,
+      "names": {
+        "ru": "Лилейник / Красноднев",
+        "en": "Daylilies",
+        "nl": "Daglelie",
+        "sci": "Hemerocallis"
+      },
+      "image": "images/Hemerocallis_AlexOhan.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-36",
+      "selectionGroupId": "memorization-36",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "36_1",
+      "imageId": "p36_1_1",
+      "correctAnswerId": "36_1",
+      "names": {
+        "ru": "Лилейник (красоднев) лимонно-жёлтый",
+        "en": "Citron daylily",
+        "nl": "Daglelie",
+        "sci": "Hemerocallis citrina"
+      },
+      "image": "images/HemerocallisСitrina_BobRichard_StockSnap.JPG",
+      "questionVariantId": "memorization-36_1",
+      "selectionGroupId": "memorization-36_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "36_2",
+      "imageId": "p36_2_1",
+      "correctAnswerId": "36_2",
+      "names": {
+        "ru": "Лилейник оранжевый",
+        "en": "Orange daylily",
+        "nl": "Bruine daglelie",
+        "sci": "Hemerocallis fulva"
+      },
+      "image": "images/HemerocallisFulva_CurtChapman.JPG",
+      "questionVariantId": "memorization-36_2",
+      "selectionGroupId": "memorization-36_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 37,
+      "imageId": "p37_0_1",
+      "correctAnswerId": 37,
+      "names": {
+        "ru": "Лилия-паук / Гименокаллис",
+        "en": "Beach spider lily",
+        "nl": "Spinlelie / Hymenocallis",
+        "sci": "Hymenocallis littoralis"
+      },
+      "image": "images/HemenocallisLittoralis_HartonoSubagio_Pixabay.JPG",
+      "questionVariantId": "memorization-37",
+      "selectionGroupId": "memorization-37",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 39,
+      "imageId": "p39_0_1",
+      "correctAnswerId": 39,
+      "names": {
+        "ru": "Гелиопсис",
+        "en": "False Sunflower",
+        "nl": "Zonneoog",
+        "sci": "Heliopsis helianthoides"
+      },
+      "wrongAnswers": [
+        40,
+        100,
+        121
+      ],
+      "image": "images/Heliopsis_SaeedKhokhar.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-39",
+      "selectionGroupId": "memorization-39",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 40,
+      "imageId": "p40_0_1",
+      "correctAnswerId": 40,
+      "names": {
+        "ru": "Кореопсис",
+        "en": "Tickseed",
+        "nl": "Meisjesogen",
+        "sci": "Coreopsis"
+      },
+      "image": "images/Coreopsis_Daejeung.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-40",
+      "selectionGroupId": "memorization-40",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 41,
+      "imageId": "p41_0_1",
+      "correctAnswerId": 41,
+      "names": {
+        "ru": "Гвоздика",
+        "en": "Dianthus/Carnation",
+        "nl": "Anjer",
+        "sci": "Dianthus"
+      },
+      "wrongAnswers": [
+        39,
+        40,
+        97
+      ],
+      "image": "images/Dianthus.JPG",
+      "difficulty": "Easy",
+      "questionVariantId": "memorization-41",
+      "selectionGroupId": "memorization-41",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "41_1",
+      "imageId": "p41_1_1",
+      "correctAnswerId": "41_1",
+      "names": {
+        "ru": "Гвоздика бородатая (турецкая)",
+        "en": "Sweet William",
+        "nl": "Duizendschoon",
+        "sci": "Dianthus barbatus"
+      },
+      "wrongAnswers": [
+        39,
+        40
+      ],
+      "image": "images/DianthusBarbatus_Nature'sBeauty_StockSnap.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-41_1",
+      "selectionGroupId": "memorization-41_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 53,
+      "imageId": "p53_0_1",
+      "correctAnswerId": 53,
+      "names": {
+        "ru": "Скабиоза",
+        "en": "Sweet scabious",
+        "nl": "Weduwebloem",
+        "sci": "Sixalix atropurpurea"
+      },
+      "wrongAnswers": [
+        13,
+        15,
+        116
+      ],
+      "image": "images/Scabious.JPG",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-53",
+      "selectionGroupId": "memorization-53",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "82_2",
+      "imageId": "p82_2_1",
+      "correctAnswerId": "82_2",
+      "names": {
+        "ru": "Фиалка сестринская",
+        "en": "Common blue violet",
+        "nl": "Zusterviooltje",
+        "sci": "Viola Sororia"
+      },
+      "image": "images/ViolaSororia_BobRichards_StockSnap.jpg",
+      "questionVariantId": "memorization-82_2",
+      "selectionGroupId": "memorization-82_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "83_1",
+      "imageId": "p83_1_1",
+      "correctAnswerId": "83_1",
+      "names": {
+        "ru": "Колокольчик круглолистный",
+        "en": "Harebell",
+        "nl": "Grasklokje",
+        "sci": "Campanula rotundifolia"
+      },
+      "wrongAnswers": [
+        21
+      ],
+      "image": "images/CampanulaRotundifolia_Mary_StockSnap.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-83_1",
+      "selectionGroupId": "memorization-83_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "83_2",
+      "imageId": "p83_2_1",
+      "correctAnswerId": "83_2",
+      "names": {
+        "ru": "Колокольчик Портеншлага",
+        "en": "Dalmatian bellflower",
+        "nl": "Klokjesbloem",
+        "sci": "Campanula Portenschlagiana"
+      },
+      "wrongAnswers": [
+        21
+      ],
+      "image": "images/CampanulaPortenschlagiana_EllieBurgin.JPG",
+      "questionVariantId": "memorization-83_2",
+      "selectionGroupId": "memorization-83_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "83_3",
+      "imageId": "p83_3_1",
+      "correctAnswerId": "83_3",
+      "names": {
+        "ru": "Колокольчик Пожарского",
+        "en": "Serbian bellflower",
+        "nl": "Kruipklokje",
+        "sci": "Campanula poscharskyana"
+      },
+      "wrongAnswers": [
+        21
+      ],
+      "image": "images/CampanulaPoscharskyanana.JPG",
+      "questionVariantId": "memorization-83_3",
+      "selectionGroupId": "memorization-83_3",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 85,
+      "imageId": "p85_0_1",
+      "correctAnswerId": 85,
+      "names": {
+        "ru": "Будлея",
+        "en": "Butterfly bush",
+        "nl": "Vlinderstruik",
+        "sci": "Buddleja davidii"
+      },
+      "wrongAnswers": [
+        23
+      ],
+      "image": "images/Buddleja_GeorgWalter.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-85",
+      "selectionGroupId": "memorization-85",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 89,
+      "imageId": "p89_0_1",
+      "correctAnswerId": 89,
+      "names": {
+        "ru": "Сантолина",
+        "en": "Cotton lavender",
+        "nl": "Heiligenbloem",
+        "sci": "Santolina chamaecyparissus"
+      },
+      "wrongAnswers": [
+        25
+      ],
+      "image": "images/Santolina.JPG",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-89",
+      "selectionGroupId": "memorization-89",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 90,
+      "imageId": "p90_0_1",
+      "correctAnswerId": 90,
+      "names": {
+        "ru": "Бук",
+        "en": "Beech",
+        "nl": "Beuk",
+        "sci": "Fagus sylvatica"
+      },
+      "wrongAnswers": [
+        26
+      ],
+      "image": "images/Fagus.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-90",
+      "selectionGroupId": "memorization-90",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 92,
+      "imageId": "p92_0_1",
+      "correctAnswerId": 92,
+      "names": {
+        "ru": "Ранункулюс",
+        "en": "Ranunculus",
+        "nl": "Ranonkel",
+        "sci": "Ranunculus"
+      },
+      "wrongAnswers": [
+        28
+      ],
+      "image": "images/Ranunculus_Hard_ManishSharma.jpg",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-92",
+      "selectionGroupId": "memorization-92",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "100_2",
+      "imageId": "p100_2_1",
+      "correctAnswerId": "100_2",
+      "names": {
+        "ru": "Топинамбур",
+        "en": "Jerusalem artichoke",
+        "nl": "Aardpeer",
+        "sci": "Helianthus tuberosus"
+      },
+      "wrongAnswers": [
+        6,
+        39,
+        27
+      ],
+      "image": "images/Helianthus_Hard_ShiwaYachachin.JPG",
+      "questionVariantId": "memorization-100_2",
+      "selectionGroupId": "memorization-100_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 101,
+      "imageId": "p101_0_1",
+      "correctAnswerId": 101,
+      "names": {
+        "ru": "Космея",
+        "en": "Cosmos",
+        "nl": "Cosmea",
+        "sci": "Cosmos bipinnatus"
+      },
+      "wrongAnswers": [
+        16,
+        50
+      ],
+      "image": "images/Cosmo_WutthichaiCharoenburi.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-101",
+      "selectionGroupId": "memorization-101",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "106_1",
+      "imageId": "p106_1_1",
+      "correctAnswerId": "106_1",
+      "names": {
+        "ru": "Люпин многолистный",
+        "en": "Large-leaved lupine",
+        "nl": "Vaste lupine",
+        "sci": "Lupinus polyphyllus"
+      },
+      "image": "images/LupinusPolyphyllus_TravelPhotographer_StockSnap.JPG",
+      "questionVariantId": "memorization-106_1",
+      "selectionGroupId": "memorization-106_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "106_2",
+      "imageId": "p106_2_1",
+      "correctAnswerId": "106_2",
+      "names": {
+        "ru": "Люпин широколистный",
+        "en": "Broadleaf lupine",
+        "nl": "Lupinus latifolius",
+        "sci": "Lupinus latifolius"
+      },
+      "image": "images/LupinusLatifolius_Nature'sBeauty_StockSnap.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-106_2",
+      "selectionGroupId": "memorization-106_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "106_3",
+      "imageId": "p106_3_1",
+      "correctAnswerId": "106_3",
+      "names": {
+        "ru": "Люпин Rivularis",
+        "en": "Riverbank lupine",
+        "nl": "Lupinus Rivularis",
+        "sci": "Lupinus Rivularis"
+      },
+      "image": "images/LupinusRivularis_Pixabay.JPG",
+      "questionVariantId": "memorization-106_3",
+      "selectionGroupId": "memorization-106_3",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "106_4",
+      "imageId": "p106_4_1",
+      "correctAnswerId": "106_4",
+      "names": {
+        "ru": "Люпин волосистый",
+        "en": "Blue lupine",
+        "nl": "Lupinus pilosus",
+        "sci": "Lupinus pilosus"
+      },
+      "image": "images/LupinusPilosus_Moshehar_Pixabay.JPG",
+      "questionVariantId": "memorization-106_4",
+      "selectionGroupId": "memorization-106_4",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 107,
+      "imageId": "p107_0_1",
+      "correctAnswerId": 107,
+      "names": {
+        "ru": "Мускари",
+        "en": "Grape hyacinth",
+        "nl": "Blauwe druifjes",
+        "sci": "Muscari"
+      },
+      "image": "images/Muscari_RomanBiernacki3.JPG",
+      "difficulty": "Easy",
+      "questionVariantId": "memorization-107",
+      "selectionGroupId": "memorization-107",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 108,
+      "imageId": "p108_0_1",
+      "correctAnswerId": 108,
+      "names": {
+        "ru": "Пеларгония (Герань)",
+        "en": "Geranium (Pelargonium)",
+        "nl": "Geranium / Pelargonium",
+        "sci": "Pelargonium"
+      },
+      "image": "images/Pelargonium_JuliaFilirovska.JPG",
+      "difficulty": "Easy",
+      "questionVariantId": "memorization-108",
+      "selectionGroupId": "memorization-108",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 109,
+      "imageId": "p109_0_1",
+      "correctAnswerId": 109,
+      "names": {
+        "ru": "Калибрахоа",
+        "en": "Calibrachoa / Million bells",
+        "nl": "Calibrachoa",
+        "sci": "Calibrachoa"
+      },
+      "image": "images/Calibrachoa_SergejKarpow.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-109",
+      "selectionGroupId": "memorization-109",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 125,
+      "imageId": "p125_0_1",
+      "correctAnswerId": 125,
+      "names": {
+        "ru": "Ширококолокольчик",
+        "en": "Platycodon / Balloon flower",
+        "nl": "Ballonklokje",
+        "sci": "Platycodon grandiflorus"
+      },
+      "image": "images/Platycodon_AlexandrBondar.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-125",
+      "selectionGroupId": "memorization-125",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 127,
+      "imageId": "p127_0_1",
+      "correctAnswerId": 127,
+      "names": {
+        "ru": "Цинния",
+        "en": "Zinnia",
+        "nl": "Zinnia",
+        "sci": "Zinnia"
+      },
+      "image": "images/Zinnia_SukiLee.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-127",
+      "selectionGroupId": "memorization-127",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "131_1",
+      "imageId": "p131_1_1",
+      "correctAnswerId": "131_1",
+      "names": {
+        "ru": "Вероника австрийская",
+        "en": "Austrian speedwell | broadleaf speedwell | large speedwell | saw-leaved speedwell",
+        "nl": "Brede ereprijs s.l.",
+        "sci": "Veronica austriaca"
+      },
+      "wrongAnswers": [
+        14,
+        112
+      ],
+      "image": "images/VeronicaAustriaca_TatyanaAleksandrovna.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-131_1",
+      "selectionGroupId": "memorization-131_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "131_2",
+      "imageId": "p131_2_1",
+      "correctAnswerId": "131_2",
+      "names": {
+        "ru": "Вероника колосистая",
+        "en": "Spiked Speedwell",
+        "nl": "Aarereprijs",
+        "sci": "Veronica spicata"
+      },
+      "image": "images/Veronica_DiegoFabra.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-131_2",
+      "selectionGroupId": "memorization-131_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "150_1",
+      "imageId": "p150_1_1",
+      "correctAnswerId": "150_1",
+      "names": {
+        "ru": "Шалфей лекарственный",
+        "en": "Common sage",
+        "nl": "Tuin salie",
+        "sci": "Salvia officinalis"
+      },
+      "image": "images/SalviaOfficinalis_TravelPhotographer_StockSnap.JPG",
+      "questionVariantId": "memorization-150_1",
+      "selectionGroupId": "memorization-150_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "150_2",
+      "imageId": "p150_2_1",
+      "correctAnswerId": "150_2",
+      "names": {
+        "ru": "Шалфей луговой",
+        "en": "Meadow sage",
+        "nl": "Veldsalie",
+        "sci": "Salvia pratensis"
+      },
+      "image": "images/SalviaPratensis_BrettSayles_Pexels.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-150_2",
+      "selectionGroupId": "memorization-150_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "150_3",
+      "imageId": "p150_3_1",
+      "correctAnswerId": "150_3",
+      "names": {
+        "ru": "Шалфей мучнистый",
+        "en": "Mealycup sage",
+        "nl": "Blauwe salvia | Meelsalie | Poedersalie",
+        "sci": "Salvia farinacea"
+      },
+      "image": "images/SalviaFarinacea_AliefBaldwin_Pexels.JPG",
+      "questionVariantId": "memorization-150_3",
+      "selectionGroupId": "memorization-150_3",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "150_4",
+      "imageId": "p150_4_1",
+      "correctAnswerId": "150_4",
+      "names": {
+        "ru": "Розмарин лекарственный",
+        "en": "Rosemary",
+        "nl": "Rosmarinus officinalis",
+        "sci": "Salvia rosmarinus"
+      },
+      "image": "images/SalviaRosmarinus.JPG",
+      "questionVariantId": "memorization-150_4",
+      "selectionGroupId": "memorization-150_4",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 156,
+      "imageId": "p156_0_1",
+      "correctAnswerId": 156,
+      "names": {
+        "ru": "Артишок",
+        "en": "Artichoke",
+        "nl": "Artisjok",
+        "sci": "Cynara cardunculus"
+      },
+      "image": "images/Artichoke_MarkusWinkler.JPG",
+      "difficulty": "Easy",
+      "questionVariantId": "memorization-156",
+      "selectionGroupId": "memorization-156",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 160,
+      "imageId": "p160_0_1",
+      "correctAnswerId": 160,
+      "names": {
+        "ru": "Аквилегия",
+        "en": "Columbine",
+        "nl": "Akelei",
+        "sci": "Aquilegia vulgaris"
+      },
+      "image": "images/AquilegiaVulgaris_Diana.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-160",
+      "selectionGroupId": "memorization-160",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "169_1",
+      "imageId": "p169_1_1",
+      "correctAnswerId": "169_1",
+      "names": {
+        "ru": "Амарант багряный",
+        "en": "Red amaranth",
+        "nl": "Rode amarant",
+        "sci": "Amaranthus cruentus"
+      },
+      "image": "images/AmaranthusCruentus_JuliaFilirovska.JPG",
+      "questionVariantId": "memorization-169_1",
+      "selectionGroupId": "memorization-169_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "169_2",
+      "imageId": "p169_2_1",
+      "correctAnswerId": "169_2",
+      "names": {
+        "ru": "Амарант тёмный (печальный)",
+        "en": "Prince's-feather",
+        "nl": "Amaranthus hypochondriacus",
+        "sci": "Amaranthus hypochondriacus"
+      },
+      "image": "images/Amaranth_LevStrelchenko.jpg",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-169_2",
+      "selectionGroupId": "memorization-169_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 171,
+      "imageId": "p171_0_1",
+      "correctAnswerId": 171,
+      "names": {
+        "ru": "Цеанотус (краснокоренник) вдавленный",
+        "en": "Santa Barbara ceanothus",
+        "nl": "Amerikaanse sering",
+        "sci": "Ceanothus Impressus"
+      },
+      "image": "images/CeanothusImpressus_SonnySixteen.jpg",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-171",
+      "selectionGroupId": "memorization-171",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "173_1",
+      "imageId": "p173_1_1",
+      "correctAnswerId": "173_1",
+      "names": {
+        "ru": "Хебе красивая",
+        "en": "Showy hebe / Shrubby veronica",
+        "nl": "Struikveronica",
+        "sci": "Hebe speciosa"
+      },
+      "wrongAnswers": [
+        33
+      ],
+      "image": "images/HebeSpeciosa.JPG",
+      "questionVariantId": "memorization-173_1",
+      "selectionGroupId": "memorization-173_1",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": "173_2",
+      "imageId": "p173_2_1",
+      "correctAnswerId": "173_2",
+      "names": {
+        "ru": "Хебе Андерсона",
+        "en": "Anderson's hebe (Shrubby veronica)",
+        "nl": "Hebe (struikveronica) Andersonii",
+        "sci": "Hebe Andersonii"
+      },
+      "wrongAnswers": [
+        33
+      ],
+      "image": "images/HebeAndersonii_SonnySixteen_Pexels.JPG",
+      "questionVariantId": "memorization-173_2",
+      "selectionGroupId": "memorization-173_2",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 176,
+      "imageId": "p176_0_1",
+      "correctAnswerId": 176,
+      "names": {
+        "ru": "Павловния",
+        "en": "Paulownia / Princess tree",
+        "nl": "Anna Paulownaboom",
+        "sci": "Paulownia"
+      },
+      "image": "images/Paulownia_SevalTorun.jpg",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-176",
+      "selectionGroupId": "memorization-176",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 184,
+      "imageId": "p184_0_1",
+      "correctAnswerId": 184,
+      "names": {
+        "ru": "Вереск",
+        "en": "Heather",
+        "nl": "Struikheide",
+        "sci": "Calluna"
+      },
+      "image": "images/Calluna_Mary_StockSnap.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-184",
+      "selectionGroupId": "memorization-184",
+      "questionType": "plant",
+      "questionPromptKey": "question"
+    },
+    {
+      "id": 186,
+      "imageId": "p186_0_1",
+      "correctAnswerId": 186,
+      "names": {
+        "ru": "Гелениум осенний",
+        "en": "Sneezeweed",
+        "nl": "Zonnekruid",
+        "sci": "Helenium Autumnale"
+      },
+      "image": "images/HeleniumAutumnale_TravelPhotographer_StockSnap.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-186",
+      "selectionGroupId": "memorization-186",
       "questionType": "plant",
       "questionPromptKey": "question"
     }
