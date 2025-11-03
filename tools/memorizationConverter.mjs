@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const REPO_ROOT = resolve(__dirname, '..');
 const DEFAULT_MEMORIZATION_PATH = resolve(REPO_ROOT, 'src', 'data', 'json', 'memorization.json');
+const PLANT_DATA_PATH = resolve(REPO_ROOT, 'src', 'data', 'json', 'plantData.json');
 
 const CSV_HEADER = [
   'id',
@@ -177,6 +178,148 @@ function csvEscape(value) {
 
 function stringifyCsvRow(values) {
   return values.map(csvEscape).join(',');
+}
+
+function clonePlainObject(value) {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  return Object.fromEntries(Object.entries(value));
+}
+
+function cloneArray(array) {
+  return Array.isArray(array) ? array.slice() : null;
+}
+
+function getLookupKeysForPlantId(rawId) {
+  const normalized = normalizeId(rawId);
+  if (!normalized) {
+    return [];
+  }
+
+  const keys = new Set([normalized]);
+  if (isNumericId(normalized)) {
+    keys.add(String(Number(normalized)));
+  }
+  return Array.from(keys);
+}
+
+async function loadPlantCatalog() {
+  try {
+    const plantDataText = await readFile(PLANT_DATA_PATH, 'utf8');
+    const plantData = JSON.parse(plantDataText);
+    const plantEntries = plantData && typeof plantData === 'object' ? plantData.plants : null;
+
+    if (!plantEntries || typeof plantEntries !== 'object') {
+      return { plantById: new Map(), imageById: new Map(), isEmpty: true };
+    }
+
+    const plantById = new Map();
+    const imageById = new Map();
+
+    Object.entries(plantEntries).forEach(([rawId, plant]) => {
+      const lookupKeys = getLookupKeysForPlantId(rawId);
+      if (lookupKeys.length === 0) {
+        return;
+      }
+
+      const baseKey = lookupKeys[0];
+      const plantId = isNumericId(baseKey) ? Number(baseKey) : baseKey;
+      const normalizedPlant = plant && typeof plant === 'object' ? { ...plant, id: plantId } : { id: plantId };
+
+      lookupKeys.forEach((key) => {
+        plantById.set(key, normalizedPlant);
+      });
+
+      const images = Array.isArray(plant?.images) ? plant.images : [];
+      images.forEach((image) => {
+        if (!image || typeof image.id !== 'string') {
+          return;
+        }
+
+        const imageId = normalizeId(image.id);
+        if (!imageId) {
+          return;
+        }
+
+        imageById.set(imageId, {
+          ...image,
+          id: imageId,
+          plantLookupKey: baseKey,
+          plantId
+        });
+      });
+    });
+
+    return {
+      plantById,
+      imageById,
+      isEmpty: plantById.size === 0
+    };
+  } catch (error) {
+    return { plantById: new Map(), imageById: new Map(), isEmpty: true };
+  }
+}
+
+function enrichPlantEntry({ baseEntry, plantLookupKey, imageId, record, plantCatalog }) {
+  if (!plantCatalog || plantCatalog.isEmpty) {
+    return baseEntry;
+  }
+
+  const species = plantCatalog.plantById.get(plantLookupKey);
+  if (!species) {
+    throw new Error(`Не найдено растение с id «${plantLookupKey}» в plantData.json (строка ${record.__line}).`);
+  }
+
+  const imageEntry = plantCatalog.imageById.get(imageId);
+  if (!imageEntry) {
+    throw new Error(`Изображение с imageId «${imageId}» не найдено в plantData.json (строка ${record.__line}).`);
+  }
+
+  const imagePlantKey = normalizeId(imageEntry.plantLookupKey ?? imageEntry.plantId ?? '');
+  if (imagePlantKey && imagePlantKey !== plantLookupKey) {
+    throw new Error(`Изображение «${imageId}» не относится к растению «${plantLookupKey}» (строка ${record.__line}).`);
+  }
+
+  const result = { ...baseEntry };
+  result.correctAnswerId = baseEntry.id;
+
+  if (species.names && typeof species.names === 'object') {
+    const clonedNames = clonePlainObject(species.names);
+    if (clonedNames) {
+      result.names = clonedNames;
+    }
+  }
+
+  const wrongAnswers = cloneArray(species.wrongAnswers);
+  if (wrongAnswers) {
+    result.wrongAnswers = wrongAnswers;
+  }
+
+  if (imageEntry.src) {
+    result.image = imageEntry.src;
+  }
+
+  if (imageEntry.difficulty !== undefined && imageEntry.difficulty !== null) {
+    result.difficulty = imageEntry.difficulty;
+  } else if (species.difficulty !== undefined && species.difficulty !== null && result.difficulty === undefined) {
+    result.difficulty = species.difficulty;
+  }
+
+  if (!result.questionVariantId) {
+    result.questionVariantId = `memorization-${plantLookupKey}`;
+  }
+  if (!result.selectionGroupId) {
+    result.selectionGroupId = `memorization-${plantLookupKey}`;
+  }
+  if (!result.questionType) {
+    result.questionType = 'plant';
+  }
+  if (!result.questionPromptKey) {
+    result.questionPromptKey = 'question';
+  }
+
+  return result;
 }
 
 function parseCsv(text) {
@@ -445,9 +588,37 @@ function buildPlantParametersFromRecord(record) {
   return entry;
 }
 
-function buildPlantsArrayFromRecords(records) {
+function getPlantIdentifiers(record) {
+  const rawId = record.id || '';
+  const plantId = normalizeId(rawId);
+  if (!plantId) {
+    throw new Error(`Не указан идентификатор растения в строке ${record.__line}.`);
+  }
+
+  const entryId = isNumericId(plantId) ? Number(plantId) : plantId;
+
+  return {
+    plantId,
+    entryId
+  };
+}
+
+function buildPlantsArrayFromRecords(records, { existingPlants = [], plantCatalog } = {}) {
   const plants = [];
   const imageIds = new Set();
+
+  const existingById = new Map();
+  existingPlants.forEach((plant) => {
+    if (!plant || typeof plant !== 'object') {
+      return;
+    }
+    const keys = getLookupKeysForPlantId(plant.id ?? plant.correctAnswerId ?? plant.plantId);
+    keys.forEach((key) => {
+      if (key) {
+        existingById.set(key, plant);
+      }
+    });
+  });
 
   records.forEach((record) => {
     const rawImageId = record.imageId || '';
@@ -461,9 +632,30 @@ function buildPlantsArrayFromRecords(records) {
     }
     imageIds.add(imageId);
 
-    const id = normalizeId(record.id || '');
-    const plantId = isNumericId(id) ? Number(id) : id;
-    plants.push({ id: plantId, imageId });
+    const { plantId, entryId } = getPlantIdentifiers(record);
+    const lookupKeys = getLookupKeysForPlantId(plantId);
+
+    let existingEntry = null;
+    for (const key of lookupKeys) {
+      if (existingById.has(key)) {
+        existingEntry = existingById.get(key);
+        break;
+      }
+    }
+
+    const baseEntry = existingEntry && typeof existingEntry === 'object'
+      ? { ...existingEntry, id: entryId, imageId }
+      : { id: entryId, imageId };
+
+    const enriched = enrichPlantEntry({
+      baseEntry,
+      plantLookupKey: lookupKeys[0] || plantId,
+      imageId,
+      record,
+      plantCatalog
+    });
+
+    plants.push(enriched);
   });
 
   plants.sort((a, b) => comparePlantIds(String(a.id), String(b.id)));
@@ -477,35 +669,78 @@ async function convertCsvToJson(inputPath, outputPath) {
 
   const plantParameters = new Map();
 
-  records.forEach((record) => {
-    const rawId = record.id || '';
-    const id = normalizeId(rawId);
-    if (!id) {
-      throw new Error(`Не указан идентификатор растения в строке ${record.__line}.`);
-    }
+  const normalizedRecords = records.map((record) => {
+    const identifiers = getPlantIdentifiers(record);
 
-    if (plantParameters.has(id)) {
-      throw new Error(`Повторяющийся идентификатор растения «${id}» в строке ${record.__line}.`);
+    if (plantParameters.has(identifiers.plantId)) {
+      throw new Error(
+        `Повторяющийся идентификатор растения «${identifiers.plantId}» в строке ${record.__line}.`
+      );
     }
 
     const entry = buildPlantParametersFromRecord(record);
-    plantParameters.set(id, entry);
+    plantParameters.set(identifiers.plantId, entry);
+
+    return {
+      ...record,
+      id: identifiers.plantId
+    };
   });
 
   const sortedIds = Array.from(plantParameters.keys()).sort(comparePlantIds);
   const normalizedPlantParameters = Object.fromEntries(sortedIds.map((id) => [id, plantParameters.get(id)]));
 
-  const plants = buildPlantsArrayFromRecords(records);
-
   let existingGenus = [];
+  let existingPlants = [];
   try {
     const existingText = await readFile(outputPath, 'utf8');
     const existingJson = JSON.parse(existingText);
     if (existingJson && Array.isArray(existingJson.genus)) {
       existingGenus = existingJson.genus;
     }
+    if (existingJson && Array.isArray(existingJson.plants)) {
+      existingPlants = existingJson.plants;
+    }
   } catch (error) {
     existingGenus = [];
+    existingPlants = [];
+  }
+
+  const plantCatalog = await loadPlantCatalog();
+
+  const plants = buildPlantsArrayFromRecords(normalizedRecords, {
+    existingPlants,
+    plantCatalog
+  });
+
+  const imageRows = normalizedRecords.filter((record) => normalizeId(record.imageId || ''));
+  const rowsWithImageId = imageRows.length;
+  console.log(
+    `Строк с imageId в CSV: ${rowsWithImageId}. Добавлено записей в раздел plants: ${plants.length}.`
+  );
+
+  if (rowsWithImageId > 0) {
+    const sample = imageRows.slice(0, 5).map((record) => {
+      const imageId = normalizeId(record.imageId || '');
+      const plantId = normalizeId(record.id || '');
+      const lineNumber = record.__line || '?';
+      return `${plantId || '(пустой id)'} → ${imageId} (строка ${lineNumber})`;
+    });
+    console.log(`Примеры строк с imageId: ${sample.join('; ')}`);
+  } else {
+    console.log('В CSV не найдено ни одной строки с imageId.');
+  }
+
+  const rowsWithoutImageId = normalizedRecords.filter((record) => !normalizeId(record.imageId || ''));
+  if (rowsWithoutImageId.length > 0) {
+    const sample = rowsWithoutImageId.slice(0, 5).map((record) => {
+      const plantId = normalizeId(record.id || '');
+      const lineNumber = record.__line || '?';
+      return `${plantId || '(пустой id)'} (строка ${lineNumber})`;
+    });
+    console.log(
+      `Примеры строк без imageId (показываем первые ${sample.length} из ${rowsWithoutImageId.length}): ${sample.join('; ')}`
+    );
   }
 
   const result = {

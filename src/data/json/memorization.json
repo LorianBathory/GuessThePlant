@@ -1605,23 +1605,118 @@
   "plants": [
     {
       "id": 3,
-      "imageId": "p3_0_1"
+      "imageId": "p3_0_1",
+      "correctAnswerId": 3,
+      "names": {
+        "ru": "Агапантус",
+        "en": "Agapanthus",
+        "nl": "Afrikaanse lelie",
+        "sci": "Agapanthus africanus"
+      },
+      "wrongAnswers": [
+        13,
+        14,
+        15,
+        16,
+        142
+      ],
+      "image": "images/Agapanthus.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-3",
+      "selectionGroupId": "memorization-3",
+      "questionType": "plant",
+      "questionPromptKey": "question"
     },
     {
       "id": 4,
-      "imageId": "p4_0_1"
+      "imageId": "p4_0_1",
+      "correctAnswerId": 4,
+      "names": {
+        "ru": "Бугенвиллия",
+        "en": "Bougainvillea",
+        "nl": "Bouganville",
+        "sci": "Bougainvillea spectabilis"
+      },
+      "wrongAnswers": [
+        17,
+        18,
+        19,
+        21
+      ],
+      "image": "images/bougainvillea.JPG",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-4",
+      "selectionGroupId": "memorization-4",
+      "questionType": "plant",
+      "questionPromptKey": "question"
     },
     {
       "id": 5,
-      "imageId": "p5_0_1"
+      "imageId": "p5_0_1",
+      "correctAnswerId": 5,
+      "names": {
+        "ru": "Камелия японская",
+        "en": "Camellia",
+        "nl": "Japanse roos",
+        "sci": "Camellia japonica"
+      },
+      "wrongAnswers": [
+        21,
+        31,
+        23,
+        24
+      ],
+      "image": "images/Camellia.JPG",
+      "difficulty": "Medium",
+      "questionVariantId": "memorization-5",
+      "selectionGroupId": "memorization-5",
+      "questionType": "plant",
+      "questionPromptKey": "question"
     },
     {
       "id": 6,
-      "imageId": "p6_0_1"
+      "imageId": "p6_0_1",
+      "correctAnswerId": 6,
+      "names": {
+        "ru": "Гербера Джеймсона",
+        "en": "Gerbera",
+        "nl": "Gerbera",
+        "sci": "Gerbera jamesonii"
+      },
+      "wrongAnswers": [
+        25,
+        26,
+        27,
+        29
+      ],
+      "image": "images/Gerbera.JPG",
+      "difficulty": "Easy",
+      "questionVariantId": "memorization-6",
+      "selectionGroupId": "memorization-6",
+      "questionType": "plant",
+      "questionPromptKey": "question"
     },
     {
       "id": 14,
-      "imageId": "p14_0_1"
+      "imageId": "p14_0_1",
+      "correctAnswerId": 14,
+      "names": {
+        "ru": "Камассия",
+        "en": "Camas",
+        "nl": "Prairielelie",
+        "sci": "Camassia"
+      },
+      "wrongAnswers": [
+        112,
+        131,
+        142
+      ],
+      "image": "images/Camassia_AaronCloward.JPG",
+      "difficulty": "Hard",
+      "questionVariantId": "memorization-14",
+      "selectionGroupId": "memorization-14",
+      "questionType": "plant",
+      "questionPromptKey": "question"
     }
   ]
 }
