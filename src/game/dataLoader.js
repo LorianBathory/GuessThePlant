@@ -787,6 +787,7 @@ function buildPlants({ speciesById, plantImagesById, difficultyLookups }) {
             imageId: imageEntry.id,
             image: imageEntry.src,
             names: species.names,
+            ...(species.genusId != null ? { genusId: species.genusId } : {}),
             wrongAnswers: species.wrongAnswers,
             difficulty,
             questionVariantId: `${species.id}-${index}`,

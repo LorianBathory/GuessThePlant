@@ -1,4 +1,4 @@
-import { choicesById, ALL_CHOICE_IDS, memorizationPlants } from '../game/dataLoader.js';
+import { choicesById, ALL_CHOICE_IDS, memorizationPlants, speciesById } from '../game/dataLoader.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';
 import {
@@ -17,6 +17,40 @@ import {
 import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
 import { useClassicMode } from './useClassicMode.js';
 import { useEndlessMode } from './useEndlessMode.js';
+
+function getChoiceGenusGroupKey(choiceId) {
+  if (choiceId == null) {
+    return null;
+  }
+
+  const species = speciesById[choiceId];
+
+  if (species && species.genusId != null) {
+    return String(species.genusId);
+  }
+
+  if (species && species.id != null) {
+    return String(species.id);
+  }
+
+  return String(choiceId);
+}
+
+function getPlantGenusGroupKey(plant) {
+  if (!plant) {
+    return null;
+  }
+
+  if (plant.genusId != null) {
+    return String(plant.genusId);
+  }
+
+  if (plant.id != null) {
+    return String(plant.id);
+  }
+
+  return null;
+}
 
 function getAllowedPlantLanguageSet(interfaceLang) {
   return new Set([interfaceLang, 'sci'].filter(Boolean));
@@ -193,22 +227,31 @@ export default function useGameLogic() {
     }
 
     const correctId = plant.id;
+    const correctGenusKey = getPlantGenusGroupKey(plant);
+    const isChoiceAllowed = id => (
+      id !== correctId
+      && (correctGenusKey == null || getChoiceGenusGroupKey(id) !== correctGenusKey)
+    );
     let wrongIds = [];
 
     if (plant.wrongAnswers && plant.wrongAnswers.length > 0) {
-      wrongIds = plant.wrongAnswers.length > 3
-        ? shuffleArray(plant.wrongAnswers).slice(0, 3)
-        : plant.wrongAnswers.slice();
+      const filteredWrongAnswers = correctGenusKey == null
+        ? plant.wrongAnswers
+        : plant.wrongAnswers.filter(id => getChoiceGenusGroupKey(id) !== correctGenusKey);
+
+      wrongIds = filteredWrongAnswers.length > 3
+        ? shuffleArray(filteredWrongAnswers).slice(0, 3)
+        : filteredWrongAnswers.slice();
 
       if (wrongIds.length < 3) {
-        const available = ALL_CHOICE_IDS.filter(id => id !== correctId && !wrongIds.includes(id));
+        const available = ALL_CHOICE_IDS.filter(id => isChoiceAllowed(id) && !wrongIds.includes(id));
         const shuffled = shuffleArray(available);
         while (wrongIds.length < 3 && shuffled.length > 0) {
           wrongIds.push(shuffled.shift());
         }
       }
     } else {
-      const available = ALL_CHOICE_IDS.filter(id => id !== correctId);
+      const available = ALL_CHOICE_IDS.filter(isChoiceAllowed);
       wrongIds = shuffleArray(available).slice(0, 3);
     }
 
