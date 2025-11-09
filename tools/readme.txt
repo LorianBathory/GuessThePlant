@@ -3,5 +3,5 @@ http://localhost:4173/index.html
 
 __
 
-node tools/plantDataConverter.mjs to-json --input PlantData.csv --output PlantData.json
+node tools/plantDataValidator.mjs --write
 node tools/memorizationConverter.mjs to-csv --input src/data/json/memorization.json --output Memorization.csv
