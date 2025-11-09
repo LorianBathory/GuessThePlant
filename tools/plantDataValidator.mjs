@@ -789,6 +789,7 @@ function normalizeLegacyRows(rows, options = {}) {
   };
 
   const plants = new Map();
+  const plantSources = new Map();
 
   let materializedCount = 0;
 
@@ -937,7 +938,15 @@ function normalizeLegacyRows(rows, options = {}) {
       normalizedEntry.images = normalizedImages.sort((a, b) => a.id.localeCompare(b.id, 'en'));
     }
 
+    if (plantSources.has(plantKey)) {
+      const previousLabel = plantSources.get(plantKey);
+      throw new Error(
+        `Обнаружены дублирующиеся записи растения ${plantKey} (${previousLabel} и ${entryLabel}).`
+      );
+    }
+
     plants.set(plantKey, normalizedEntry);
+    plantSources.set(plantKey, entryLabel);
   });
 
   if (rows.length > 0 && materializedCount === 0) {
@@ -993,12 +1002,21 @@ function normalizePlantDataStructure(plantData) {
   };
 
   const normalizedPlants = new Map();
+  const normalizedPlantOrigins = new Map();
   const plantIds = Object.keys(plantsSource);
   plantIds.sort(comparePlantIds);
 
   plantIds.forEach((plantIdKey) => {
     const normalized = normalizePlantEntry(plantIdKey, plantsSource[plantIdKey], context);
+    const previousOrigin = normalizedPlantOrigins.get(normalized.key);
+    if (previousOrigin) {
+      throw new Error(
+        `Идентификатор растения ${normalized.key} конфликтует между ключами ${previousOrigin} и ${plantIdKey}.`
+      );
+    }
+
     normalizedPlants.set(normalized.key, normalized.entry);
+    normalizedPlantOrigins.set(normalized.key, plantIdKey);
   });
 
   const sortedPlants = Array.from(normalizedPlants.entries()).sort(([a], [b]) => comparePlantIds(a, b));
