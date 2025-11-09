@@ -23,20 +23,28 @@ const LEGACY_FIELD_ALIASES = new Map([
   ['(sci)', 'sci'],
   ['sci', 'sci'],
   ['scientificname', 'sci'],
-  ['images', 'imageCount'],
+  ['number_of_images', 'imageCount'],
+  ['image_count', 'imageCount'],
   ['imagecount', 'imageCount'],
+  ['количество изображений', 'imageCount'],
+  ['images', 'imageFiles'],
+  ['imagefiles', 'imageFiles'],
+  ['названия файлов', 'imageFiles'],
+  ['image_id', 'imageIds'],
+  ['imageid', 'imageIds'],
   ['id изображений', 'imageIds'],
   ['idизображений', 'imageIds'],
   ['imageids', 'imageIds'],
-  ['названия файлов', 'imageFiles'],
-  ['imagefiles', 'imageFiles'],
   ['wronganswers', 'wrongAnswers'],
   ['wrong answers', 'wrongAnswers'],
+  ['wrong_answers', 'wrongAnswers'],
   ['сложность', 'difficulty'],
   ['difficulty', 'difficulty'],
+  ['difficulty_modificator', 'difficultyOverrides'],
   ['переопределения сложности', 'difficultyOverrides'],
   ['difficulty overrides', 'difficultyOverrides'],
-  ['difficultyoverrides', 'difficultyOverrides']
+  ['difficultyoverrides', 'difficultyOverrides'],
+  ['extra', 'extra']
 ]);
 
 const DIFFICULTY_LEVELS = {
@@ -491,14 +499,14 @@ function normalizePlantEntry(plantIdKey, plantEntry, context) {
     }
 
     const existingImage = context.seenImageIds.get(normalizedImageId);
-    if (existingImage) {
-      throw new Error(
-        `imageId ${normalizedImageId} уже используется растением ${existingImage.plantKey} (обнаружено в ${plantKey}).`
-      );
+    if (existingImage && existingImage.src !== resolvedSource) {
+      throw new Error(`imageId ${normalizedImageId} уже используется другим растением с другим файлом (обнаружено в ${plantKey}).`);
     }
 
     seenPlantImageIds.add(normalizedImageId);
-    context.seenImageIds.set(normalizedImageId, { plantKey, src: resolvedSource });
+    if (!existingImage) {
+      context.seenImageIds.set(normalizedImageId, { plantKey, src: resolvedSource });
+    }
 
     const resolvedDifficulty = explicitDifficulty || baseDifficulty;
     if (resolvedDifficulty) {
@@ -559,6 +567,191 @@ function formatDifficultyCounts(counterMap) {
   return Object.fromEntries(entries);
 }
 
+function extractColumnNamesFromSource(columnsSource) {
+  if (!columnsSource) {
+    return [];
+  }
+
+  if (Array.isArray(columnsSource)) {
+    return columnsSource
+      .map((column) => {
+        if (typeof column === 'string') {
+          return toTrimmedString(column);
+        }
+        if (column && typeof column === 'object') {
+          const candidateKeys = ['name', 'column', 'key', 'field', 'title', 'caption', 'label'];
+          for (const key of candidateKeys) {
+            const value = column[key];
+            if (typeof value === 'string' && value.trim()) {
+              return value.trim();
+            }
+          }
+        }
+        return '';
+      })
+      .map((name) => toTrimmedString(name))
+      .filter((name) => name);
+  }
+
+  if (typeof columnsSource === 'object') {
+    const nestedCandidates = ['columns', 'names', 'headers', 'fields'];
+    for (const key of nestedCandidates) {
+      if (Array.isArray(columnsSource[key])) {
+        return extractColumnNamesFromSource(columnsSource[key]);
+      }
+    }
+    return [];
+  }
+
+  if (typeof columnsSource === 'string') {
+    return columnsSource
+      .split(',')
+      .map((segment) => toTrimmedString(segment))
+      .filter((name) => name);
+  }
+
+  return [];
+}
+
+function extendColumnNames(baseNames, length) {
+  const result = [];
+  for (let index = 0; index < length; index += 1) {
+    const baseName = Array.isArray(baseNames) ? baseNames[index] : undefined;
+    const trimmed = toTrimmedString(baseName);
+    if (trimmed) {
+      result.push(trimmed);
+    } else {
+      result.push(`column${index + 1}`);
+    }
+  }
+  return result;
+}
+
+function convertRowValuesToRecord(values, columnNames) {
+  const record = {};
+  const limit = Math.max(values.length, columnNames.length);
+  for (let index = 0; index < limit; index += 1) {
+    const columnName = toTrimmedString(columnNames[index] ?? '');
+    if (!columnName) {
+      continue;
+    }
+    if (Object.prototype.hasOwnProperty.call(record, columnName)) {
+      continue;
+    }
+    record[columnName] = values[index];
+  }
+  return record;
+}
+
+function maybeTreatAsHeader(rowValues, state) {
+  if (!Array.isArray(rowValues) || rowValues.length === 0) {
+    return false;
+  }
+
+  const trimmedValues = rowValues.map((value) => toTrimmedString(value));
+  const nonEmpty = trimmedValues.filter((value) => value);
+  if (nonEmpty.length === 0) {
+    return false;
+  }
+
+  const normalizedRow = trimmedValues.map((value) => value.toLowerCase());
+  const normalizedKnown = Array.isArray(state.columnNames)
+    ? state.columnNames.map((value) => toTrimmedString(value).toLowerCase())
+    : [];
+
+  const matchesKnown = normalizedKnown.length > 0
+    && normalizedRow.length <= normalizedKnown.length
+    && normalizedRow.every((value, index) => {
+      const known = normalizedKnown[index];
+      return known && value === known;
+    });
+
+  if (matchesKnown) {
+    state.headerConsumed = true;
+    return true;
+  }
+
+  if (state.headerConsumed) {
+    return false;
+  }
+
+  let recognized = 0;
+  normalizedRow.forEach((value) => {
+    if (value && LEGACY_FIELD_ALIASES.has(value)) {
+      recognized += 1;
+    }
+  });
+
+  if (recognized >= Math.max(1, Math.ceil(nonEmpty.length / 2))) {
+    if (!state.columnNames || state.columnNames.length === 0) {
+      state.columnNames = trimmedValues;
+    }
+    state.headerConsumed = true;
+    return true;
+  }
+
+  return false;
+}
+
+function materializeLegacyRow(rawRow, state, index) {
+  if (rawRow === null || rawRow === undefined) {
+    return null;
+  }
+
+  const entryLabel = `строка ${index + 1}`;
+  const columnErrorMessage =
+    `${entryLabel}: не удалось определить названия колонок в табличном JSON. ` +
+    'Добавьте строку заголовка или экспортируйте JSON вместе со списком колонок.';
+
+  if (Array.isArray(rawRow)) {
+    if (maybeTreatAsHeader(rawRow, state)) {
+      return null;
+    }
+    if (!state.columnNames || state.columnNames.length === 0) {
+      throw new Error(columnErrorMessage);
+    }
+    const columnNames = extendColumnNames(state.columnNames, rawRow.length);
+    return convertRowValuesToRecord(rawRow, columnNames);
+  }
+
+  if (typeof rawRow === 'object') {
+    const nestedObjectKeys = ['row', 'record', 'data'];
+    for (const key of nestedObjectKeys) {
+      const nested = rawRow[key];
+      if (nested && typeof nested === 'object' && !Array.isArray(nested)) {
+        return materializeLegacyRow(nested, state, index);
+      }
+    }
+
+    const valueCandidates = [
+      { values: rawRow.values, columns: rawRow.columns || rawRow.headers || rawRow.names || rawRow.fields },
+      { values: rawRow.row, columns: rawRow.columns || rawRow.headers || rawRow.names || rawRow.fields },
+      { values: rawRow.cells, columns: rawRow.columns || rawRow.headers || rawRow.names || rawRow.fields }
+    ];
+
+    for (const candidate of valueCandidates) {
+      if (Array.isArray(candidate.values)) {
+        const columnCandidates = extractColumnNamesFromSource(candidate.columns);
+        if (columnCandidates.length > 0) {
+          state.columnNames = columnCandidates;
+        }
+        if (maybeTreatAsHeader(candidate.values, state)) {
+          return null;
+        }
+        if (!state.columnNames || state.columnNames.length === 0) {
+          throw new Error(columnErrorMessage);
+        }
+        const columnNames = extendColumnNames(state.columnNames, candidate.values.length);
+        return convertRowValuesToRecord(candidate.values, columnNames);
+      }
+    }
+
+    return rawRow;
+  }
+
+  return null;
+}
+
 function normalizeLegacyRecord(rawRecord, index) {
   if (!rawRecord || typeof rawRecord !== 'object') {
     return null;
@@ -583,7 +776,12 @@ function normalizeLegacyRecord(rawRecord, index) {
   return normalized;
 }
 
-function normalizeLegacyRows(rows) {
+function normalizeLegacyRows(rows, options = {}) {
+  const state = {
+    columnNames: extractColumnNamesFromSource(options.columns),
+    headerConsumed: false
+  };
+
   const context = {
     seenImageIds: new Map(),
     difficultyCounts: new Map(),
@@ -591,12 +789,22 @@ function normalizeLegacyRows(rows) {
   };
 
   const plants = new Map();
+  const plantSources = new Map();
+
+  let materializedCount = 0;
 
   rows.forEach((rawRow, index) => {
-    const record = normalizeLegacyRecord(rawRow, index);
+    const materialized = materializeLegacyRow(rawRow, state, index);
+    if (!materialized) {
+      return;
+    }
+
+    const record = normalizeLegacyRecord(materialized, index);
     if (!record) {
       return;
     }
+
+    materializedCount += 1;
 
     const entryLabel = `запись ${index + 1}`;
     const plantId = normalizeId(record.id ?? record['id '] ?? '');
@@ -730,8 +938,22 @@ function normalizeLegacyRows(rows) {
       normalizedEntry.images = normalizedImages.sort((a, b) => a.id.localeCompare(b.id, 'en'));
     }
 
+    if (plantSources.has(plantKey)) {
+      const previousLabel = plantSources.get(plantKey);
+      throw new Error(
+        `Обнаружены дублирующиеся записи растения ${plantKey} (${previousLabel} и ${entryLabel}).`
+      );
+    }
+
     plants.set(plantKey, normalizedEntry);
+    plantSources.set(plantKey, entryLabel);
   });
+
+  if (rows.length > 0 && materializedCount === 0) {
+    throw new Error(
+      'Не удалось распознать строки табличного JSON. Проверьте, что экспорт содержит данные PlantData.'
+    );
+  }
 
   const sortedPlants = Array.from(plants.entries()).sort(([a], [b]) => comparePlantIds(a, b));
 
@@ -759,7 +981,14 @@ function normalizePlantDataStructure(plantData) {
 
   const possibleRows = plantData.rows || plantData.data || plantData.records;
   if (Array.isArray(possibleRows)) {
-    return normalizeLegacyRows(possibleRows);
+    const columnSource =
+      plantData.columns
+      || plantData.cols
+      || plantData.header
+      || plantData.headers
+      || plantData.fields
+      || (plantData.meta && (plantData.meta.columns || plantData.meta.headers || plantData.meta.fields));
+    return normalizeLegacyRows(possibleRows, { columns: columnSource });
   }
 
   const plantsSource = plantData.plants && typeof plantData.plants === 'object'
@@ -773,12 +1002,21 @@ function normalizePlantDataStructure(plantData) {
   };
 
   const normalizedPlants = new Map();
+  const normalizedPlantOrigins = new Map();
   const plantIds = Object.keys(plantsSource);
   plantIds.sort(comparePlantIds);
 
   plantIds.forEach((plantIdKey) => {
     const normalized = normalizePlantEntry(plantIdKey, plantsSource[plantIdKey], context);
+    const previousOrigin = normalizedPlantOrigins.get(normalized.key);
+    if (previousOrigin) {
+      throw new Error(
+        `Идентификатор растения ${normalized.key} конфликтует между ключами ${previousOrigin} и ${plantIdKey}.`
+      );
+    }
+
     normalizedPlants.set(normalized.key, normalized.entry);
+    normalizedPlantOrigins.set(normalized.key, plantIdKey);
   });
 
   const sortedPlants = Array.from(normalizedPlants.entries()).sort(([a], [b]) => comparePlantIds(a, b));
