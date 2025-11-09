@@ -491,14 +491,14 @@ function normalizePlantEntry(plantIdKey, plantEntry, context) {
     }
 
     const existingImage = context.seenImageIds.get(normalizedImageId);
-    if (existingImage && existingImage.src !== resolvedSource) {
-      throw new Error(`imageId ${normalizedImageId} уже используется другим растением с другим файлом (обнаружено в ${plantKey}).`);
+    if (existingImage) {
+      throw new Error(
+        `imageId ${normalizedImageId} уже используется растением ${existingImage.plantKey} (обнаружено в ${plantKey}).`
+      );
     }
 
     seenPlantImageIds.add(normalizedImageId);
-    if (!existingImage) {
-      context.seenImageIds.set(normalizedImageId, { plantKey, src: resolvedSource });
-    }
+    context.seenImageIds.set(normalizedImageId, { plantKey, src: resolvedSource });
 
     const resolvedDifficulty = explicitDifficulty || baseDifficulty;
     if (resolvedDifficulty) {
