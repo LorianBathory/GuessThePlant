@@ -10,6 +10,35 @@ const __dirname = dirname(__filename);
 const REPO_ROOT = resolve(__dirname, '..');
 const DEFAULT_PLANT_DATA_PATH = resolve(REPO_ROOT, 'src', 'data', 'json', 'plantData.json');
 
+const LEGACY_FIELD_ALIASES = new Map([
+  ['id ', 'id'],
+  ['id', 'id'],
+  ['plantid', 'id'],
+  ['(ru)', 'ru'],
+  ['ru', 'ru'],
+  ['(en)', 'en'],
+  ['en', 'en'],
+  ['(nl)', 'nl'],
+  ['nl', 'nl'],
+  ['(sci)', 'sci'],
+  ['sci', 'sci'],
+  ['scientificname', 'sci'],
+  ['images', 'imageCount'],
+  ['imagecount', 'imageCount'],
+  ['id изображений', 'imageIds'],
+  ['idизображений', 'imageIds'],
+  ['imageids', 'imageIds'],
+  ['названия файлов', 'imageFiles'],
+  ['imagefiles', 'imageFiles'],
+  ['wronganswers', 'wrongAnswers'],
+  ['wrong answers', 'wrongAnswers'],
+  ['сложность', 'difficulty'],
+  ['difficulty', 'difficulty'],
+  ['переопределения сложности', 'difficultyOverrides'],
+  ['difficulty overrides', 'difficultyOverrides'],
+  ['difficultyoverrides', 'difficultyOverrides']
+]);
+
 const DIFFICULTY_LEVELS = {
   EASY: 'Easy',
   MEDIUM: 'Medium',
@@ -48,6 +77,13 @@ function stripWrappingQuotes(value) {
   }
 
   return trimmed;
+}
+
+function toTrimmedString(value) {
+  if (value === null || value === undefined) {
+    return '';
+  }
+  return String(value).trim();
 }
 
 function normalizeId(id) {
@@ -166,12 +202,117 @@ function normalizeDifficultyLabel(value, { fieldName } = {}) {
   );
 }
 
+function ensureArray(value) {
+  if (!value) {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  return [value];
+}
+
+function extractList(rawValue) {
+  if (rawValue === null || rawValue === undefined) {
+    return [];
+  }
+
+  if (Array.isArray(rawValue)) {
+    return rawValue
+      .map((item) => stripWrappingQuotes(item))
+      .filter((item) => item !== '');
+  }
+
+  const text = stripWrappingQuotes(rawValue);
+  if (!text) {
+    return [];
+  }
+
+  if (text.startsWith('[') && text.endsWith(']')) {
+    try {
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed)) {
+        return parsed
+          .map((item) => stripWrappingQuotes(item))
+          .filter((item) => item !== '');
+      }
+    } catch (error) {
+      // fall through to comma-separated parsing
+    }
+  }
+
+  return text
+    .split(',')
+    .map((segment) => stripWrappingQuotes(segment))
+    .filter((segment) => segment !== '');
+}
+
 function normalizeWrongAnswerId(id) {
   const normalized = normalizeId(id);
   if (!normalized) {
     return null;
   }
   return isNumericId(normalized) ? Number(normalized) : normalized;
+}
+
+function parseOverrides(rawOverrides, { entryLabel } = {}) {
+  const overrides = new Map();
+  const source = stripWrappingQuotes(rawOverrides);
+  if (!source) {
+    return overrides;
+  }
+
+  const segments = ensureArray(
+    Array.isArray(rawOverrides)
+      ? rawOverrides
+      : source.split(',')
+  );
+
+  segments
+    .map((segment) => stripWrappingQuotes(segment))
+    .filter((segment) => segment !== '')
+    .forEach((segment) => {
+      const [imageIdPart, difficultyPart] = segment.split(':').map((piece) => stripWrappingQuotes(piece));
+      if (!imageIdPart || !difficultyPart) {
+        return;
+      }
+      const normalizedDifficulty = normalizeDifficultyLabel(difficultyPart, {
+        fieldName: `переопределение сложности для ${imageIdPart}${entryLabel ? ` (${entryLabel})` : ''}`
+      });
+      overrides.set(imageIdPart, normalizedDifficulty);
+    });
+
+  return overrides;
+}
+
+function parseDifficultyCell(baseCell, overridesCell, { entryLabel } = {}) {
+  const rawBase = stripWrappingQuotes(baseCell);
+  const overridesSource = stripWrappingQuotes(overridesCell);
+
+  if (!overridesSource) {
+    const legacyMatch = rawBase.match(/^(.*?)(?:\s*\(overrides:\s*(.+)\))$/i);
+    if (legacyMatch) {
+      const base = legacyMatch[1].trim();
+      const overrides = parseOverrides(legacyMatch[2], { entryLabel });
+      return {
+        base: normalizeDifficultyLabel(base, {
+          fieldName: entryLabel ? `базовая сложность для ${entryLabel}` : 'базовая сложность'
+        }),
+        overrides
+      };
+    }
+  }
+
+  const base = rawBase
+    ? normalizeDifficultyLabel(rawBase, {
+      fieldName: entryLabel ? `базовая сложность для ${entryLabel}` : 'базовая сложность'
+    })
+    : null;
+  const overrides = parseOverrides(overridesSource, { entryLabel });
+
+  return { base, overrides };
 }
 
 function compareDifficultyLabels(a, b) {
@@ -418,9 +559,207 @@ function formatDifficultyCounts(counterMap) {
   return Object.fromEntries(entries);
 }
 
+function normalizeLegacyRecord(rawRecord, index) {
+  if (!rawRecord || typeof rawRecord !== 'object') {
+    return null;
+  }
+
+  const normalized = {};
+  Object.entries(rawRecord).forEach(([rawKey, rawValue]) => {
+    if (rawKey === null || rawKey === undefined) {
+      return;
+    }
+
+    const trimmedKey = toTrimmedString(rawKey);
+    if (!trimmedKey) {
+      return;
+    }
+
+    const aliasKey = LEGACY_FIELD_ALIASES.get(trimmedKey.toLowerCase()) || trimmedKey;
+    normalized[aliasKey] = rawValue;
+  });
+
+  normalized.__entryIndex = index;
+  return normalized;
+}
+
+function normalizeLegacyRows(rows) {
+  const context = {
+    seenImageIds: new Map(),
+    difficultyCounts: new Map(),
+    totalImages: 0
+  };
+
+  const plants = new Map();
+
+  rows.forEach((rawRow, index) => {
+    const record = normalizeLegacyRecord(rawRow, index);
+    if (!record) {
+      return;
+    }
+
+    const entryLabel = `запись ${index + 1}`;
+    const plantId = normalizeId(record.id ?? record['id '] ?? '');
+    if (!plantId) {
+      throw new Error(`Не указан идентификатор растения (${entryLabel}).`);
+    }
+
+    const plantKey = String(plantId);
+    const numericId = isNumericId(plantId) ? Number(plantId) : plantId;
+
+    const localizedNames = {};
+    ['ru', 'en', 'nl', 'sci'].forEach((key) => {
+      const value = stripWrappingQuotes(record[key]);
+      if (value) {
+        localizedNames[key] = value;
+      }
+    });
+
+    const { base: baseDifficulty, overrides } = parseDifficultyCell(
+      record.difficulty || '',
+      record.difficultyOverrides || '',
+      { entryLabel: plantKey }
+    );
+
+    const wrongAnswersRaw = extractList(record.wrongAnswers || '');
+    const wrongAnswers = [];
+    const seenWrongAnswers = new Set();
+    wrongAnswersRaw.forEach((value) => {
+      const normalizedValue = normalizeWrongAnswerId(value);
+      if (normalizedValue === null) {
+        return;
+      }
+      const key = typeof normalizedValue === 'number' ? String(normalizedValue) : normalizedValue;
+      if (seenWrongAnswers.has(key)) {
+        return;
+      }
+      seenWrongAnswers.add(key);
+      wrongAnswers.push(normalizedValue);
+    });
+
+    const imageFiles = extractList(record.imageFiles || '');
+    const manualImageIds = extractList(record.imageIds || '');
+    const normalizedManualImageIds = manualImageIds
+      .map((manualId) => normalizeId(manualId))
+      .filter((manualId) => manualId);
+
+    if (imageFiles.length > 0 && normalizedManualImageIds.length > 0 && normalizedManualImageIds.length !== imageFiles.length) {
+      throw new Error(`Количество imageId и файлов не совпадает (${entryLabel}).`);
+    }
+
+    const useManualIds = normalizedManualImageIds.length > 0;
+    const autoImageIds = useManualIds
+      ? []
+      : imageFiles.map((_, imageIndex) => generateImageId(plantKey, imageIndex));
+    const finalImageIds = useManualIds ? normalizedManualImageIds : autoImageIds;
+
+    const legacyImageIdMap = new Map();
+    if (!useManualIds) {
+      normalizedManualImageIds.forEach((manualId, manualIndex) => {
+        const autoId = autoImageIds[manualIndex];
+        if (manualId && autoId && manualId !== autoId) {
+          legacyImageIdMap.set(manualId, autoId);
+        }
+      });
+    }
+
+    const normalizedOverrides = new Map();
+    overrides.forEach((difficulty, imageId) => {
+      const normalizedId = normalizeId(imageId);
+      const autoId = legacyImageIdMap.get(normalizedId) || normalizedId;
+      if (autoId) {
+        normalizedOverrides.set(autoId, difficulty);
+      }
+    });
+
+    const normalizedImages = [];
+    const seenPlantImageIds = new Set();
+
+    finalImageIds.forEach((imageId, imageIndex) => {
+      const normalizedImageId = normalizeId(imageId);
+      if (!normalizedImageId) {
+        return;
+      }
+
+      if (seenPlantImageIds.has(normalizedImageId)) {
+        throw new Error(`Растение ${plantKey} содержит повторяющийся imageId ${normalizedImageId}.`);
+      }
+
+      if (context.seenImageIds.has(normalizedImageId)) {
+        const previous = context.seenImageIds.get(normalizedImageId);
+        throw new Error(
+          `imageId ${normalizedImageId} уже используется растением ${previous.plantKey} (${entryLabel}).`
+        );
+      }
+
+      const imageFile = imageFiles[imageIndex] || '';
+      const resolvedSource = resolveImageSource(imageFile, normalizedImageId);
+
+      context.seenImageIds.set(normalizedImageId, { plantKey, src: resolvedSource });
+      seenPlantImageIds.add(normalizedImageId);
+
+      const resolvedDifficulty = normalizedOverrides.get(normalizedImageId) || baseDifficulty;
+      if (resolvedDifficulty) {
+        incrementDifficultyCounter(context.difficultyCounts, resolvedDifficulty);
+      }
+
+      const imageEntry = {
+        id: normalizedImageId,
+        src: resolvedSource,
+        ...(resolvedDifficulty ? { difficulty: resolvedDifficulty } : {})
+      };
+
+      normalizedImages.push(imageEntry);
+      context.totalImages += 1;
+    });
+
+    const normalizedEntry = {
+      id: numericId,
+      names: localizedNames
+    };
+
+    if (baseDifficulty) {
+      normalizedEntry.difficulty = baseDifficulty;
+    }
+
+    if (wrongAnswers.length > 0) {
+      normalizedEntry.wrongAnswers = wrongAnswers;
+    }
+
+    if (normalizedImages.length > 0) {
+      normalizedEntry.images = normalizedImages.sort((a, b) => a.id.localeCompare(b.id, 'en'));
+    }
+
+    plants.set(plantKey, normalizedEntry);
+  });
+
+  const sortedPlants = Array.from(plants.entries()).sort(([a], [b]) => comparePlantIds(a, b));
+
+  return {
+    data: {
+      difficultyLevels: { ...DIFFICULTY_LEVELS },
+      plants: Object.fromEntries(sortedPlants)
+    },
+    stats: {
+      plantCount: sortedPlants.length,
+      imageCount: context.totalImages,
+      difficultyCounts: formatDifficultyCounts(context.difficultyCounts)
+    }
+  };
+}
+
 function normalizePlantDataStructure(plantData) {
+  if (Array.isArray(plantData)) {
+    return normalizeLegacyRows(plantData);
+  }
+
   if (!plantData || typeof plantData !== 'object') {
     throw new Error('Ожидается объект JSON с описанием каталога растений.');
+  }
+
+  const possibleRows = plantData.rows || plantData.data || plantData.records;
+  if (Array.isArray(possibleRows)) {
+    return normalizeLegacyRows(possibleRows);
   }
 
   const plantsSource = plantData.plants && typeof plantData.plants === 'object'

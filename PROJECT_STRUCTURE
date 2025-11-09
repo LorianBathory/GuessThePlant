@@ -4,10 +4,10 @@
 - `index.html` — HTML entry point that loads React and Tailwind from CDNs and mounts the quiz application into the `#root` element.【F:index.html†L1-L27】
 - `package.json` — Declares project metadata and development tooling scripts (currently ESLint and data export helpers).【F:package.json†L1-L20】
 - `eslint.config.js` — Configures ESLint rules for the project (see file for detailed setup).【F:eslint.config.js†L1-L68】
-- `PlantData.csv` — Исторический табличный слепок каталога растений. Он пригодится для обзора данных, но основная работа теперь ведётся с JSON и валидатором `tools/plantDataValidator.mjs`.【F:PlantData.csv†L1-L20】【F:tools/plantDataValidator.mjs†L1-L353】
+- `PlantData.csv` — Исторический табличный слепок каталога растений. Он пригодится для обзора данных, но основная работа теперь ведётся с JSON и валидатором `tools/plantDataValidator.mjs`, который умеет принимать такие табличные выгрузки в формате JSON и превращать их в каноничные записи `plants`.【F:PlantData.csv†L1-L20】【F:tools/plantDataValidator.mjs†L1-L353】
 - `docs/` — Документация по структуре данных, пайплайн редактирования и легаси-артефакты (`docs/legacy/plantData.bundle.json`).【F:docs/json-data-workflow.md†L1-L52】【F:docs/legacy/README.md†L1-L40】
 - `images/` — Static assets with plant photos referenced by quiz questions.【F:src/data/json/plantData.json†L1-L120】
-- `tools/` — Node-утилиты: локальный сервер, экспортёр легаси-бандла, валидатор каталога растений (`plantDataValidator.mjs`) и вспомогательные конвертеры для других режимов.【F:tools/localStaticServer.mjs†L1-L111】【F:tools/plantDataValidator.mjs†L1-L353】
+- `tools/` — Node-утилиты: локальный сервер, экспортёр легаси-бандла, валидатор каталога растений (`plantDataValidator.mjs`, поддерживающий как каноничный JSON, так и табличные выгрузки из SQLite), и вспомогательные конвертеры для других режимов.【F:tools/localStaticServer.mjs†L1-L111】【F:tools/plantDataValidator.mjs†L1-L353】
 - `scripts/` — Служебные сценарии для экспорта/валидации бандла и синхронизации вспомогательных таблиц.【F:scripts/exportDataBundle.mjs†L1-L121】【F:scripts/links/sync_links.py†L1-L290】
 
 ## Source Directory (`src/`)
