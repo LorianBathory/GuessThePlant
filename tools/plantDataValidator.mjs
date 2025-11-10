@@ -257,6 +257,20 @@ function extractList(rawValue) {
     .filter((segment) => segment !== '');
 }
 
+function parseImageCount(rawValue, { entryLabel } = {}) {
+  const text = stripWrappingQuotes(rawValue);
+  if (!text) {
+    return null;
+  }
+
+  if (!/^\d+$/.test(text)) {
+    const suffix = entryLabel ? ` (${entryLabel})` : '';
+    throw new Error(`Некорректное значение number_of_images "${text}"${suffix}. Укажите целое число.`);
+  }
+
+  return Number(text);
+}
+
 function normalizeWrongAnswerId(id) {
   const normalized = normalizeId(id);
   if (!normalized) {
@@ -785,7 +799,8 @@ function normalizeLegacyRows(rows, options = {}) {
   const context = {
     seenImageIds: new Map(),
     difficultyCounts: new Map(),
-    totalImages: 0
+    totalImages: 0,
+    corrections: []
   };
 
   const plants = new Map();
@@ -845,26 +860,54 @@ function normalizeLegacyRows(rows, options = {}) {
     });
 
     const imageFiles = extractList(record.imageFiles || '');
+    const normalizedImageCount = imageFiles.length;
+
+    let declaredImageCount = null;
+    try {
+      declaredImageCount = parseImageCount(record.imageCount, {
+        entryLabel: `${entryLabel}, растение ${plantKey}`
+      });
+    } catch (error) {
+      throw error;
+    }
+
+    if (
+      (declaredImageCount === null && normalizedImageCount > 0)
+      || (declaredImageCount !== null && declaredImageCount !== normalizedImageCount)
+    ) {
+      context.corrections.push({
+        type: 'imageCount',
+        plantKey,
+        previous: declaredImageCount,
+        next: normalizedImageCount,
+        entryLabel
+      });
+    }
+
     const manualImageIds = extractList(record.imageIds || '');
-    const normalizedManualImageIds = manualImageIds
+    const normalizedManualImageIdsSource = manualImageIds
       .map((manualId) => normalizeId(manualId))
       .filter((manualId) => manualId);
+    const normalizedManualImageIds = normalizedManualImageIdsSource.slice(0, normalizedImageCount);
 
-    if (normalizedManualImageIds.length > imageFiles.length) {
-      throw new Error(`Количество imageId больше числа файлов (${entryLabel}).`);
+    if (normalizedManualImageIdsSource.length > normalizedManualImageIds.length) {
+      context.corrections.push({
+        type: 'trimmedImageIds',
+        plantKey,
+        removed: normalizedManualImageIdsSource.length - normalizedManualImageIds.length,
+        kept: normalizedManualImageIds.length,
+        entryLabel
+      });
     }
 
     const autoImageIds = imageFiles.map((_, imageIndex) => generateImageId(plantKey, imageIndex));
-    const finalImageIds = autoImageIds.slice();
+    const finalImageIds = autoImageIds.map((autoId, imageIndex) => normalizedManualImageIds[imageIndex] || autoId);
 
     const legacyImageIdMap = new Map();
     normalizedManualImageIds.forEach((manualId, manualIndex) => {
       const autoId = autoImageIds[manualIndex];
       if (autoId && manualId && manualId !== autoId) {
         legacyImageIdMap.set(manualId, autoId);
-      }
-      if (manualId) {
-        finalImageIds[manualIndex] = manualId;
       }
     });
 
@@ -954,7 +997,8 @@ function normalizeLegacyRows(rows, options = {}) {
     stats: {
       plantCount: sortedPlants.length,
       imageCount: context.totalImages,
-      difficultyCounts: formatDifficultyCounts(context.difficultyCounts)
+      difficultyCounts: formatDifficultyCounts(context.difficultyCounts),
+      corrections: context.corrections
     }
   };
 }
@@ -987,7 +1031,8 @@ function normalizePlantDataStructure(plantData) {
   const context = {
     seenImageIds: new Map(),
     difficultyCounts: new Map(),
-    totalImages: 0
+    totalImages: 0,
+    corrections: []
   };
 
   const normalizedPlants = new Map();
@@ -1011,7 +1056,8 @@ function normalizePlantDataStructure(plantData) {
     stats: {
       plantCount: sortedPlants.length,
       imageCount: context.totalImages,
-      difficultyCounts: formatDifficultyCounts(context.difficultyCounts)
+      difficultyCounts: formatDifficultyCounts(context.difficultyCounts),
+      corrections: context.corrections
     }
   };
 }
@@ -1053,6 +1099,36 @@ function validateAgainstGameLoader(plantData) {
   };
 }
 
+function describeCorrection(correction) {
+  if (!correction || typeof correction !== 'object') {
+    return null;
+  }
+
+  if (correction.type === 'imageCount') {
+    const { plantKey, previous, next } = correction;
+    const subject = plantKey ? `растение ${plantKey}` : 'запись';
+    if (previous === null || previous === undefined) {
+      return `${subject}: number_of_images установлено в ${next}.`;
+    }
+    if (previous === next) {
+      return null;
+    }
+    return `${subject}: number_of_images ${previous} → ${next}.`;
+  }
+
+  if (correction.type === 'trimmedImageIds') {
+    const { plantKey, removed, kept } = correction;
+    if (!removed) {
+      return null;
+    }
+    const subject = plantKey ? `растение ${plantKey}` : 'запись';
+    const keptPart = kept !== undefined ? ` (оставлено ${kept})` : '';
+    return `${subject}: удалено ${removed} лишних image_id${keptPart}.`;
+  }
+
+  return null;
+}
+
 function printSummary(stats, loaderSummary, { wroteToFile }) {
   const baseSummary = [
     `Проверка завершена: ${stats.plantCount} растений, ${stats.imageCount} изображений, ${loaderSummary.questionCount} вопросов.`
@@ -1069,6 +1145,18 @@ function printSummary(stats, loaderSummary, { wroteToFile }) {
     console.log('Распределение по сложностям:');
     difficultyEntries.forEach(([difficulty, count]) => {
       console.log(`  ${difficulty}: ${count}`);
+    });
+  }
+
+  const corrections = Array.isArray(stats.corrections) ? stats.corrections : [];
+  const correctionMessages = corrections
+    .map((correction) => describeCorrection(correction))
+    .filter((message) => message);
+
+  if (correctionMessages.length > 0) {
+    console.log('Автокоррекции:');
+    correctionMessages.forEach((message) => {
+      console.log(`  • ${message}`);
     });
   }
 }
