@@ -257,6 +257,35 @@ function extractList(rawValue) {
     .filter((segment) => segment !== '');
 }
 
+const IMAGE_FILE_PATTERN = /[^\s,]+?\.(?:jpe?g|png|webp|gif|bmp|svg|avif|heic)/gi;
+
+function extractImageFileList(rawValue) {
+  const baseList = extractList(rawValue);
+  const normalized = [];
+
+  baseList.forEach((entry) => {
+    const cleaned = stripWrappingQuotes(entry).replace(/\s+\./g, '.');
+    if (!cleaned) {
+      return;
+    }
+
+    const matches = cleaned.match(IMAGE_FILE_PATTERN);
+    if (matches && matches.length > 0) {
+      matches.forEach((match) => {
+        const normalizedMatch = stripWrappingQuotes(match);
+        if (normalizedMatch) {
+          normalized.push(normalizedMatch);
+        }
+      });
+      return;
+    }
+
+    normalized.push(cleaned);
+  });
+
+  return normalized;
+}
+
 function parseImageCount(rawValue, { entryLabel } = {}) {
   const text = stripWrappingQuotes(rawValue);
   if (!text) {
@@ -474,7 +503,9 @@ function normalizePlantEntry(plantIdKey, plantEntry, context) {
 
   const normalizedImages = [];
   const seenPlantImageIds = new Set();
-  const rawImageEntries = Array.isArray(plantEntry.images) ? plantEntry.images : [];
+  const rawImageEntries = Array.isArray(plantEntry.images)
+    ? plantEntry.images
+    : extractImageFileList(plantEntry.images);
 
   rawImageEntries.forEach((rawImageEntry, index) => {
     if (rawImageEntry === null || rawImageEntry === undefined) {
@@ -859,7 +890,7 @@ function normalizeLegacyRows(rows, options = {}) {
       wrongAnswers.push(normalizedValue);
     });
 
-    const imageFiles = extractList(record.imageFiles || '');
+    const imageFiles = extractImageFileList(record.imageFiles || '');
     const normalizedImageCount = imageFiles.length;
 
     let declaredImageCount = null;
