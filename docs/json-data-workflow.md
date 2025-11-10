@@ -14,26 +14,23 @@
 - **`memorization`** — конфигурация режима заучивания располагается строго в [`src/data/json/memorization.json`](../src/data/json/memorization.json). `plantData.json` не содержит разделов `memorization` или иных вспомогательных режимов.
 - **Раздельные модули** — модульные JSON-файлы в `src/data/json/` являются каноничными. Склейка в единый бандл возможна только внутри экспортных и валидационных скриптов (`npm run export:data`, `npm run validate:data`); хранить объединённые структуры в репозитории нельзя.
 
-## Табличный цикл редактирования
+## Валидация и нормализация каталога растений
 
-Для офлайн-редактирования локализаций и справочных данных используется CSV-слепок `PlantData.csv`, который поддерживает конвертер [`tools/plantDataConverter.mjs`](../tools/plantDataConverter.mjs). Рабочий процесс выглядит так:
+Каталог `src/data/json/plantData.json` считается каноническим источником данных. Для проверки структуры и автоматического наполнения вычисляемых полей (например, `imageId` и путей к файлам) используйте утилиту [`tools/plantDataValidator.mjs`](../tools/plantDataValidator.mjs). Она работает напрямую с JSON, не требуя промежуточных CSV-файлов.
 
-1. Обновите CSV из легаси-бандла (если требуется актуальная копия):
+Базовый сценарий — запустить проверку без изменения файла (обязательно через Node.js, а не Python):
 
-   ```bash
-   node tools/plantDataConverter.mjs to-csv --input docs/legacy/plantData.bundle.json --output PlantData.csv
-   ```
+```bash
+node tools/plantDataValidator.mjs
+```
 
-2. Внесите изменения в `PlantData.csv` (вручную или через вспомогательные скрипты наподобие [`scripts/translate/translation_pipeline.py`](../scripts/translate/translation_pipeline.py)). Структура колонок описана в `docs/plant-data-converter-guide.md`.
-3. Преобразуйте таблицу обратно в JSON, указав временный артефакт (например, `PlantData.json`) или перезаписав `docs/legacy/plantData.bundle.json`:
+Если нужно перезаписать исходный JSON нормализованной версией, добавьте `--write`:
 
-   ```bash
-   node tools/plantDataConverter.mjs to-json --input PlantData.csv --output PlantData.json
-   ```
+```bash
+node tools/plantDataValidator.mjs --write
+```
 
-4. Сопоставьте изменения с модульными файлами в `src/data/json/` и перенесите обновлённые значения в соответствующие разделы (`plantData.json`, `memorization.json`, `bouquetQuestions.json` при необходимости). После синхронизации запустите `npm run export:data` и `npm run validate:data`, чтобы обновить легаси-бандл и убедиться в корректности структуры.
-
-Файл `PlantData.json`, созданный на шаге 3, служит промежуточным артефактом и не хранится в Git. Его можно удалять после того, как изменения перенесены в модульные JSON.
+Скрипт также принимает параметры `--input` и `--output`, позволяя проверять сторонние файлы и сохранять результат в отдельном месте. Запускать их нужно той же командой `node ...`: вызов `py -3` стартует интерпретатор Python и завершится `SyntaxError`. Если вы выгружаете каталог из SQLite/DBeaver в табличном JSON (одна строка на изображение/растение), передайте этот файл через `--input` — валидатор сгруппирует строки по `id`, сгенерирует `imageId` и сформирует каноничный `plantData.json`. После обновления данных запустите `npm run export:data` и `npm run validate:data`, чтобы пересобрать легаси-бандл и убедиться в отсутствии расхождений.
 
 ## Добавление нового растения
 
