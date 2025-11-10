@@ -789,7 +789,6 @@ function normalizeLegacyRows(rows, options = {}) {
   };
 
   const plants = new Map();
-  const plantSources = new Map();
 
   let materializedCount = 0;
 
@@ -851,25 +850,23 @@ function normalizeLegacyRows(rows, options = {}) {
       .map((manualId) => normalizeId(manualId))
       .filter((manualId) => manualId);
 
-    if (imageFiles.length > 0 && normalizedManualImageIds.length > 0 && normalizedManualImageIds.length !== imageFiles.length) {
-      throw new Error(`Количество imageId и файлов не совпадает (${entryLabel}).`);
+    if (normalizedManualImageIds.length > imageFiles.length) {
+      throw new Error(`Количество imageId больше числа файлов (${entryLabel}).`);
     }
 
-    const useManualIds = normalizedManualImageIds.length > 0;
-    const autoImageIds = useManualIds
-      ? []
-      : imageFiles.map((_, imageIndex) => generateImageId(plantKey, imageIndex));
-    const finalImageIds = useManualIds ? normalizedManualImageIds : autoImageIds;
+    const autoImageIds = imageFiles.map((_, imageIndex) => generateImageId(plantKey, imageIndex));
+    const finalImageIds = autoImageIds.slice();
 
     const legacyImageIdMap = new Map();
-    if (!useManualIds) {
-      normalizedManualImageIds.forEach((manualId, manualIndex) => {
-        const autoId = autoImageIds[manualIndex];
-        if (manualId && autoId && manualId !== autoId) {
-          legacyImageIdMap.set(manualId, autoId);
-        }
-      });
-    }
+    normalizedManualImageIds.forEach((manualId, manualIndex) => {
+      const autoId = autoImageIds[manualIndex];
+      if (autoId && manualId && manualId !== autoId) {
+        legacyImageIdMap.set(manualId, autoId);
+      }
+      if (manualId) {
+        finalImageIds[manualIndex] = manualId;
+      }
+    });
 
     const normalizedOverrides = new Map();
     overrides.forEach((difficulty, imageId) => {
@@ -938,15 +935,7 @@ function normalizeLegacyRows(rows, options = {}) {
       normalizedEntry.images = normalizedImages.sort((a, b) => a.id.localeCompare(b.id, 'en'));
     }
 
-    if (plantSources.has(plantKey)) {
-      const previousLabel = plantSources.get(plantKey);
-      throw new Error(
-        `Обнаружены дублирующиеся записи растения ${plantKey} (${previousLabel} и ${entryLabel}).`
-      );
-    }
-
     plants.set(plantKey, normalizedEntry);
-    plantSources.set(plantKey, entryLabel);
   });
 
   if (rows.length > 0 && materializedCount === 0) {
@@ -1002,21 +991,12 @@ function normalizePlantDataStructure(plantData) {
   };
 
   const normalizedPlants = new Map();
-  const normalizedPlantOrigins = new Map();
   const plantIds = Object.keys(plantsSource);
   plantIds.sort(comparePlantIds);
 
   plantIds.forEach((plantIdKey) => {
     const normalized = normalizePlantEntry(plantIdKey, plantsSource[plantIdKey], context);
-    const previousOrigin = normalizedPlantOrigins.get(normalized.key);
-    if (previousOrigin) {
-      throw new Error(
-        `Идентификатор растения ${normalized.key} конфликтует между ключами ${previousOrigin} и ${plantIdKey}.`
-      );
-    }
-
     normalizedPlants.set(normalized.key, normalized.entry);
-    normalizedPlantOrigins.set(normalized.key, plantIdKey);
   });
 
   const sortedPlants = Array.from(normalizedPlants.entries()).sort(([a], [b]) => comparePlantIds(a, b));
