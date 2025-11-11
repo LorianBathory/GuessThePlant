@@ -1122,9 +1122,11 @@ async function main() {
     canonicalRawEntries.set(plantKey, canonicalEntry);
 
     const sanitizedRawEntry = { ...rawEntry };
-    sanitizedRawEntry.id = normalizedId;
+    const rawEntryId = sanitizeString(rawEntry.id);
+
+    sanitizedRawEntry.id = rawEntryId ?? String(normalizedId);
+    delete sanitizedRawEntry.names;
     if (names) {
-      sanitizedRawEntry.names = { ...names };
       Object.entries(names).forEach(([language, value]) => {
         if (language in sanitizedRawEntry) {
           sanitizedRawEntry[language] = value;
@@ -1134,15 +1136,13 @@ async function main() {
           sanitizedRawEntry[legacyKey] = value;
         }
       });
-    } else {
-      delete sanitizedRawEntry.names;
     }
     if (difficulty) {
       sanitizedRawEntry.difficulty = difficulty;
     } else {
       delete sanitizedRawEntry.difficulty;
     }
-    sanitizedRawEntry.wrongAnswers = wrongAnswers;
+    delete sanitizedRawEntry.wrongAnswers;
     const wrongAnswersString = wrongAnswers.map((value) => String(value)).join(', ');
     if ('wrong_answers' in sanitizedRawEntry || wrongAnswersString) {
       sanitizedRawEntry.wrong_answers = wrongAnswersString;
@@ -1165,7 +1165,16 @@ async function main() {
       sanitizedRawEntry.difficulty_modificator = '';
     }
 
-    sanitizedRawEntry.images = sanitizedImages;
+    const legacyImageNames = sanitizedImages
+      .map((image) => {
+        const src = sanitizeString(image.src);
+        if (!src) {
+          return undefined;
+        }
+        return src.startsWith('images/') ? src.slice('images/'.length) : src;
+      })
+      .filter((value) => Boolean(value));
+    sanitizedRawEntry.images = legacyImageNames.join(', ');
     sanitizedRawEntry.number_of_images = sanitizedImages.length;
 
     processedRawPlants.set(plantKey, sanitizedRawEntry);
