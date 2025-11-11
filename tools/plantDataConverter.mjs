@@ -128,6 +128,153 @@ function sanitizeNames(names) {
   return Object.keys(sanitized).length > 0 ? sanitized : undefined;
 }
 
+function splitLegacyList(value) {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => sanitizeString(item))
+      .filter((item) => Boolean(item));
+  }
+
+  const normalized = sanitizeString(value);
+  if (!normalized) {
+    return [];
+  }
+
+  return normalized
+    .split(',')
+    .map((token) => sanitizeString(token))
+    .filter((token) => Boolean(token));
+}
+
+const RAW_LEGACY_NON_NAME_FIELDS = new Set([
+  'id',
+  'plantId',
+  'plant_id',
+  'plantID',
+  'names',
+  'images',
+  'image_id',
+  'number_of_images',
+  'wrong_answers',
+  'wrongAnswers',
+  'difficulty',
+  'difficulty_modificator',
+  'difficultyModifier',
+  'extra'
+]);
+
+function normalizeLegacyNameKey(key) {
+  if (!key) {
+    return undefined;
+  }
+  const trimmed = String(key).trim();
+  if (!trimmed) {
+    return undefined;
+  }
+  if (trimmed.startsWith('(') && trimmed.endsWith(')')) {
+    return trimmed.slice(1, -1).trim();
+  }
+  return trimmed;
+}
+
+function extractNamesFromRawEntry(rawEntry) {
+  if (!rawEntry || typeof rawEntry !== 'object') {
+    return undefined;
+  }
+
+  const collected = {};
+  const fromNamesBlock = sanitizeNames(rawEntry.names);
+  if (fromNamesBlock) {
+    Object.assign(collected, fromNamesBlock);
+  }
+
+  Object.entries(rawEntry).forEach(([rawKey, rawValue]) => {
+    if (RAW_LEGACY_NON_NAME_FIELDS.has(rawKey)) {
+      return;
+    }
+    const normalizedKey = normalizeLegacyNameKey(rawKey);
+    if (!normalizedKey) {
+      return;
+    }
+    const normalizedValue = sanitizeString(rawValue);
+    if (!normalizedValue) {
+      return;
+    }
+    collected[normalizedKey] = normalizedValue;
+  });
+
+  return Object.keys(collected).length > 0 ? collected : undefined;
+}
+
+function extractWrongAnswersFromRawEntry(rawEntry) {
+  if (!rawEntry || typeof rawEntry !== 'object') {
+    return [];
+  }
+
+  const source = rawEntry.wrongAnswers ?? rawEntry.wrong_answers;
+  if (Array.isArray(source)) {
+    return sanitizeWrongAnswers(source);
+  }
+
+  if (source === null || source === undefined) {
+    return [];
+  }
+
+  if (typeof source === 'string') {
+    return sanitizeWrongAnswers(splitLegacyList(source));
+  }
+
+  return sanitizeWrongAnswers([source]);
+}
+
+function parseDifficultyModifiers(rawValue) {
+  const map = new Map();
+  splitLegacyList(rawValue).forEach((entry) => {
+    const [rawId, rawDifficulty] = entry.split(':');
+    const id = sanitizeString(rawId);
+    const difficulty = sanitizeString(rawDifficulty);
+    if (id && difficulty) {
+      map.set(id, difficulty);
+    }
+  });
+  return map;
+}
+
+function normalizeLegacyImages(rawEntry) {
+  if (!rawEntry || typeof rawEntry !== 'object') {
+    return [];
+  }
+
+  if (Array.isArray(rawEntry.images)) {
+    return rawEntry.images;
+  }
+
+  const imageNames = splitLegacyList(rawEntry.images);
+  const imageIds = splitLegacyList(rawEntry.image_id);
+  const difficultyOverrides = parseDifficultyModifiers(rawEntry.difficulty_modificator);
+
+  const normalized = [];
+  imageNames.forEach((imageName, index) => {
+    if (!imageName) {
+      return;
+    }
+    const normalizedSrc = imageName.startsWith('images/') ? imageName : `images/${imageName}`;
+    const imageId = imageIds[index];
+    const image = { src: normalizedSrc };
+    if (imageId) {
+      image.id = imageId;
+      image.image_id = imageId;
+    }
+    const modifierKey = imageId ?? undefined;
+    if (modifierKey && difficultyOverrides.has(modifierKey)) {
+      image.difficulty = difficultyOverrides.get(modifierKey);
+    }
+    normalized.push(image);
+  });
+
+  return normalized;
+}
+
 function normalizeWrongAnswerId(rawValue) {
   if (rawValue === null || rawValue === undefined) {
     return undefined;
@@ -858,11 +1005,12 @@ function validateRawHasPlantData(plantId, plantEntry, rawEntry) {
   }
 
   if (plantEntry.names) {
-    if (!rawEntry.names) {
+    const rawNames = extractNamesFromRawEntry(rawEntry);
+    if (!rawNames) {
       throw new Error(`Plant ${plantId} is missing the names block in rawPlantData.json`);
     }
     Object.entries(plantEntry.names).forEach(([language, value]) => {
-      if (hasMeaningfulValue(value) && !hasMeaningfulValue(rawEntry.names[language])) {
+      if (hasMeaningfulValue(value) && !hasMeaningfulValue(rawNames[language])) {
         throw new Error(`Plant ${plantId} is missing a value for names.${language} in rawPlantData.json`);
       }
     });
@@ -872,7 +1020,8 @@ function validateRawHasPlantData(plantId, plantEntry, rawEntry) {
     throw new Error(`Plant ${plantId} is missing difficulty in rawPlantData.json`);
   }
 
-  if (hasMeaningfulValue(plantEntry.wrongAnswers) && !hasMeaningfulValue(rawEntry.wrongAnswers)) {
+  const rawWrongAnswers = extractWrongAnswersFromRawEntry(rawEntry);
+  if (hasMeaningfulValue(plantEntry.wrongAnswers) && rawWrongAnswers.length === 0) {
     throw new Error(`Plant ${plantId} is missing wrongAnswers in rawPlantData.json`);
   }
 
@@ -962,11 +1111,12 @@ async function main() {
     const normalizedId = normalizePlantIdValue(plantKey);
     const existingPlantDataEntry = plantData.plants[plantKey];
     const existingImages = Array.isArray(existingPlantDataEntry?.images) ? existingPlantDataEntry.images : [];
-    const { sanitizedImages, canonicalImages } = sanitizeImages(rawEntry.images, plantKey, existingImages);
+    const legacyImages = normalizeLegacyImages(rawEntry);
+    const { sanitizedImages, canonicalImages } = sanitizeImages(legacyImages, plantKey, existingImages);
 
-    const names = sanitizeNames(rawEntry.names);
+    const names = extractNamesFromRawEntry(rawEntry);
     const difficulty = sanitizeString(rawEntry.difficulty);
-    const wrongAnswers = sanitizeWrongAnswers(rawEntry.wrongAnswers);
+    const wrongAnswers = extractWrongAnswersFromRawEntry(rawEntry);
 
     const canonicalEntry = {
       id: normalizedId
@@ -990,6 +1140,15 @@ async function main() {
     sanitizedRawEntry.id = normalizedId;
     if (names) {
       sanitizedRawEntry.names = { ...names };
+      Object.entries(names).forEach(([language, value]) => {
+        if (language in sanitizedRawEntry) {
+          sanitizedRawEntry[language] = value;
+        }
+        const legacyKey = `(${language})`;
+        if (legacyKey in sanitizedRawEntry) {
+          sanitizedRawEntry[legacyKey] = value;
+        }
+      });
     } else {
       delete sanitizedRawEntry.names;
     }
@@ -999,6 +1158,28 @@ async function main() {
       delete sanitizedRawEntry.difficulty;
     }
     sanitizedRawEntry.wrongAnswers = wrongAnswers;
+    const wrongAnswersString = wrongAnswers.map((value) => String(value)).join(', ');
+    if ('wrong_answers' in sanitizedRawEntry || wrongAnswersString) {
+      sanitizedRawEntry.wrong_answers = wrongAnswersString;
+    }
+
+    const imageIdList = sanitizedImages.map((image) => image.id).filter((id) => Boolean(id));
+
+    if (imageIdList.length > 0) {
+      sanitizedRawEntry.image_id = imageIdList.join(', ');
+    } else if ('image_id' in sanitizedRawEntry) {
+      delete sanitizedRawEntry.image_id;
+    }
+
+    const difficultyOverrides = sanitizedImages
+      .filter((image) => sanitizeString(image.difficulty) && sanitizeString(image.difficulty) !== difficulty)
+      .map((image) => `${image.id}:${sanitizeString(image.difficulty)}`);
+    if (difficultyOverrides.length > 0) {
+      sanitizedRawEntry.difficulty_modificator = difficultyOverrides.join(', ');
+    } else if ('difficulty_modificator' in sanitizedRawEntry) {
+      sanitizedRawEntry.difficulty_modificator = '';
+    }
+
     sanitizedRawEntry.images = sanitizedImages;
     sanitizedRawEntry.number_of_images = sanitizedImages.length;
 
