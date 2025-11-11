@@ -9,6 +9,10 @@ const REPO_ROOT = resolve(__dirname, '..');
 const DEFAULT_RAW_PATH = resolve(REPO_ROOT, 'src', 'data', 'json', 'rawPlantData.json');
 const DEFAULT_PLANT_PATH = resolve(REPO_ROOT, 'src', 'data', 'json', 'plantData.json');
 
+function isObjectLike(value) {
+  return value !== null && typeof value === 'object';
+}
+
 function parseArgs(argv) {
   const options = {
     rawPath: DEFAULT_RAW_PATH,
@@ -209,6 +213,101 @@ function buildRawPlantEntries(rawPlantContainer) {
       entries.push([canonicalKey, entry]);
     });
     return { entries, sourceType: 'object' };
+  }
+
+  throw new Error('rawPlantData.json must contain a "plants" object or array');
+}
+
+function getNestedValue(container, path) {
+  let current = container;
+  for (const segment of path) {
+    if (!isObjectLike(current) && !Array.isArray(current)) {
+      return undefined;
+    }
+    current = current[segment];
+  }
+  return current;
+}
+
+function cloneWithReplacedPath(root, path, replacement) {
+  if (!path || path.length === 0) {
+    return replacement;
+  }
+
+  const clone = Array.isArray(root) ? root.slice() : { ...root };
+  let sourceCursor = root;
+  let targetCursor = clone;
+
+  for (let index = 0; index < path.length; index += 1) {
+    const key = path[index];
+    const isLeaf = index === path.length - 1;
+
+    if (isLeaf) {
+      targetCursor[key] = replacement;
+      break;
+    }
+
+    const nextSource = isObjectLike(sourceCursor) || Array.isArray(sourceCursor)
+      ? sourceCursor[key]
+      : undefined;
+
+    let nextTarget;
+    if (Array.isArray(nextSource)) {
+      nextTarget = nextSource.slice();
+    } else if (isObjectLike(nextSource)) {
+      nextTarget = { ...nextSource };
+    } else {
+      nextTarget = {};
+    }
+
+    targetCursor[key] = nextTarget;
+    sourceCursor = nextSource;
+    targetCursor = nextTarget;
+  }
+
+  return clone;
+}
+
+function resolveRawPlantSource(rawData) {
+  if (Array.isArray(rawData)) {
+    const { entries, sourceType } = buildRawPlantEntries(rawData);
+    return {
+      entries,
+      sourceType,
+      serialize(sortedPlants) {
+        return JSON.stringify(sortedPlants, null, 2) + '\n';
+      },
+      baseline: JSON.stringify(rawData, null, 2) + '\n'
+    };
+  }
+
+  if (!isObjectLike(rawData)) {
+    throw new Error('rawPlantData.json must contain a "plants" object or array');
+  }
+
+  const candidatePaths = [
+    ['plants'],
+    ['plantData', 'plants'],
+    ['plant_data', 'plants'],
+    ['data', 'plants'],
+    ['plantCatalog']
+  ];
+
+  for (const path of candidatePaths) {
+    const container = getNestedValue(rawData, path);
+    if (!container || (!Array.isArray(container) && !isObjectLike(container))) {
+      continue;
+    }
+    const { entries, sourceType } = buildRawPlantEntries(container);
+    return {
+      entries,
+      sourceType,
+      serialize(sortedPlants) {
+        const clone = cloneWithReplacedPath(rawData, path, sortedPlants);
+        return JSON.stringify(clone, null, 2) + '\n';
+      },
+      baseline: JSON.stringify(rawData, null, 2) + '\n'
+    };
   }
 
   throw new Error('rawPlantData.json must contain a "plants" object or array');
@@ -596,11 +695,9 @@ async function main() {
   if (!plantData || typeof plantData !== 'object' || !plantData.plants || typeof plantData.plants !== 'object') {
     throw new Error('plantData.json must contain a "plants" object');
   }
-  if (!rawData || typeof rawData !== 'object') {
-    throw new Error('rawPlantData.json must contain a "plants" object or array');
-  }
-
-  const { entries: rawPlantEntries, sourceType: rawPlantSourceType } = buildRawPlantEntries(rawData.plants);
+  const rawPlantSource = resolveRawPlantSource(rawData);
+  const rawPlantEntries = rawPlantSource.entries;
+  const rawPlantSourceType = rawPlantSource.sourceType;
 
   const processedRawPlants = new Map();
   const canonicalRawEntries = new Map();
@@ -716,13 +813,10 @@ async function main() {
     ...plantData,
     plants: sortedPlants
   }, null, 2) + '\n';
-  const serializedRawData = JSON.stringify({
-    ...rawData,
-    plants: sortedRawPlants
-  }, null, 2) + '\n';
+  const serializedRawData = rawPlantSource.serialize(sortedRawPlants);
 
   const plantDataChanged = serializedPlantData !== JSON.stringify(plantData, null, 2) + '\n';
-  const rawDataChanged = serializedRawData !== JSON.stringify(rawData, null, 2) + '\n';
+  const rawDataChanged = serializedRawData !== rawPlantSource.baseline;
 
   if (options.dryRun) {
     if (additions.length === 0 && updates.length === 0 && !rawDataChanged) {
