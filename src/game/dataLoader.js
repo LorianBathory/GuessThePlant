@@ -54,7 +54,7 @@ function createDifficultyCollector(initialBuckets = {}) {
         seenKeys[normalizedDifficulty] = seen;
       }
 
-      const key = typeof value === 'number' ? String(value) : String(value);
+      const key = String(value);
 
       if (seen.has(key)) {
         return;
