@@ -152,6 +152,68 @@ function sanitizeWrongAnswers(list) {
   return sanitized;
 }
 
+const RAW_PLANT_ID_FIELDS = ['id', 'plantId', 'plant_id', 'plantID'];
+
+function extractPlantIdentifier(entry) {
+  if (!entry || typeof entry !== 'object') {
+    return undefined;
+  }
+  for (const fieldName of RAW_PLANT_ID_FIELDS) {
+    if (fieldName in entry) {
+      const normalized = sanitizeString(entry[fieldName]);
+      if (normalized) {
+        return normalized;
+      }
+    }
+  }
+  return undefined;
+}
+
+function buildRawPlantEntries(rawPlantContainer) {
+  const seenIds = new Set();
+  const entries = [];
+
+  if (Array.isArray(rawPlantContainer)) {
+    rawPlantContainer.forEach((entry, index) => {
+      if (!entry || typeof entry !== 'object') {
+        throw new Error(`Plant entry at index ${index} in rawPlantData.json must be an object`);
+      }
+      const identifier = extractPlantIdentifier(entry);
+      if (!identifier) {
+        throw new Error(`Plant entry at index ${index} in rawPlantData.json must include an id`);
+      }
+      const canonicalKey = String(normalizePlantIdValue(identifier));
+      if (seenIds.has(canonicalKey)) {
+        throw new Error(`Duplicate plant id ${canonicalKey} found in rawPlantData.json`);
+      }
+      seenIds.add(canonicalKey);
+      entries.push([canonicalKey, entry]);
+    });
+    return { entries, sourceType: 'array' };
+  }
+
+  if (rawPlantContainer && typeof rawPlantContainer === 'object') {
+    Object.entries(rawPlantContainer).forEach(([rawKey, entry]) => {
+      if (!entry || typeof entry !== 'object') {
+        throw new Error(`Plant ${rawKey} entry in rawPlantData.json must be an object`);
+      }
+      const identifier = extractPlantIdentifier(entry) || sanitizeString(rawKey);
+      if (!identifier) {
+        throw new Error(`Plant entry under key ${rawKey} in rawPlantData.json must include an id`);
+      }
+      const canonicalKey = String(normalizePlantIdValue(identifier));
+      if (seenIds.has(canonicalKey)) {
+        throw new Error(`Duplicate plant id ${canonicalKey} found in rawPlantData.json`);
+      }
+      seenIds.add(canonicalKey);
+      entries.push([canonicalKey, entry]);
+    });
+    return { entries, sourceType: 'object' };
+  }
+
+  throw new Error('rawPlantData.json must contain a "plants" object or array');
+}
+
 function parsePlantId(plantId) {
   const normalized = String(plantId).trim();
   const [head, ...rawSuffixParts] = normalized.split('_');
@@ -534,21 +596,17 @@ async function main() {
   if (!plantData || typeof plantData !== 'object' || !plantData.plants || typeof plantData.plants !== 'object') {
     throw new Error('plantData.json must contain a "plants" object');
   }
-  if (!rawData || typeof rawData !== 'object' || !rawData.plants || typeof rawData.plants !== 'object') {
-    throw new Error('rawPlantData.json must contain a "plants" object');
+  if (!rawData || typeof rawData !== 'object') {
+    throw new Error('rawPlantData.json must contain a "plants" object or array');
   }
 
-  const processedRawPlants = {};
+  const { entries: rawPlantEntries, sourceType: rawPlantSourceType } = buildRawPlantEntries(rawData.plants);
+
+  const processedRawPlants = new Map();
   const canonicalRawEntries = new Map();
-  const rawPlantKeys = Object.keys(rawData.plants);
 
-  rawPlantKeys.forEach((plantKey) => {
-    const rawEntry = rawData.plants[plantKey];
-    if (!rawEntry || typeof rawEntry !== 'object') {
-      throw new Error(`Plant ${plantKey} entry in rawPlantData.json must be an object`);
-    }
-
-    const normalizedId = normalizePlantIdValue(rawEntry.id ?? plantKey);
+  rawPlantEntries.forEach(([plantKey, rawEntry]) => {
+    const normalizedId = normalizePlantIdValue(plantKey);
     const existingPlantDataEntry = plantData.plants[plantKey];
     const existingImages = Array.isArray(existingPlantDataEntry?.images) ? existingPlantDataEntry.images : [];
     const { sanitizedImages, canonicalImages } = sanitizeImages(rawEntry.images, plantKey, existingImages);
@@ -591,12 +649,13 @@ async function main() {
     sanitizedRawEntry.images = sanitizedImages;
     sanitizedRawEntry.number_of_images = sanitizedImages.length;
 
-    processedRawPlants[plantKey] = sanitizedRawEntry;
+    processedRawPlants.set(plantKey, sanitizedRawEntry);
   });
 
   const canonicalPlantEntries = new Map();
   Object.entries(plantData.plants).forEach(([plantKey, entry]) => {
-    canonicalPlantEntries.set(plantKey, toCanonicalPlantEntry(entry, { imageIdKey: 'id' }));
+    const canonicalKey = String(normalizePlantIdValue(plantKey));
+    canonicalPlantEntries.set(canonicalKey, toCanonicalPlantEntry(entry, { imageIdKey: 'id' }));
   });
 
   const updates = [];
@@ -630,7 +689,8 @@ async function main() {
   });
 
   Object.keys(plantData.plants).forEach((plantKey) => {
-    if (!canonicalRawEntries.has(plantKey)) {
+    const canonicalKey = String(normalizePlantIdValue(plantKey));
+    if (!canonicalRawEntries.has(canonicalKey)) {
       throw new Error(`Plant ${plantKey} is present in plantData.json but missing from rawPlantData.json`);
     }
   });
@@ -641,11 +701,16 @@ async function main() {
     sortedPlants[key] = plantDataOutput[key];
   });
 
-  const sortedRawKeys = Object.keys(processedRawPlants).sort(comparePlantIds);
-  const sortedRawPlants = {};
-  sortedRawKeys.forEach((key) => {
-    sortedRawPlants[key] = processedRawPlants[key];
-  });
+  const sortedRawKeys = Array.from(processedRawPlants.keys()).sort(comparePlantIds);
+  let sortedRawPlants;
+  if (rawPlantSourceType === 'array') {
+    sortedRawPlants = sortedRawKeys.map((key) => processedRawPlants.get(key));
+  } else {
+    sortedRawPlants = {};
+    sortedRawKeys.forEach((key) => {
+      sortedRawPlants[key] = processedRawPlants.get(key);
+    });
+  }
 
   const serializedPlantData = JSON.stringify({
     ...plantData,
