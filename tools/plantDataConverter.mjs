@@ -997,11 +997,8 @@ function hasMeaningfulValue(value) {
 }
 
 function validateRawHasPlantData(plantId, plantEntry, rawEntry) {
-  if (!plantEntry) {
+  if (!plantEntry || !rawEntry) {
     return;
-  }
-  if (!rawEntry) {
-    throw new Error(`Plant ${plantId} is missing from rawPlantData.json`);
   }
 
   if (plantEntry.names) {
@@ -1016,18 +1013,6 @@ function validateRawHasPlantData(plantId, plantEntry, rawEntry) {
     });
   }
 
-  if (hasMeaningfulValue(plantEntry.difficulty) && !hasMeaningfulValue(rawEntry.difficulty)) {
-    throw new Error(`Plant ${plantId} is missing difficulty in rawPlantData.json`);
-  }
-
-  const rawWrongAnswers = extractWrongAnswersFromRawEntry(rawEntry);
-  if (hasMeaningfulValue(plantEntry.wrongAnswers) && rawWrongAnswers.length === 0) {
-    throw new Error(`Plant ${plantId} is missing wrongAnswers in rawPlantData.json`);
-  }
-
-  if (hasMeaningfulValue(plantEntry.images) && !hasMeaningfulValue(rawEntry.images)) {
-    throw new Error(`Plant ${plantId} is missing images in rawPlantData.json`);
-  }
 }
 
 function arePlantEntriesEqual(left, right) {
@@ -1194,14 +1179,31 @@ async function main() {
 
   const updates = [];
   const additions = [];
+  const removals = [];
+  const removedImageEntries = [];
   const plantDataOutput = { ...plantData.plants };
 
   canonicalPlantEntries.forEach((plantEntry, plantKey) => {
     const rawEntry = canonicalRawEntries.get(plantKey);
     validateRawHasPlantData(plantKey, plantEntry, rawEntry);
     if (!rawEntry) {
+      removals.push(plantKey);
+      delete plantDataOutput[plantKey];
       return;
     }
+
+    const plantImages = Array.isArray(plantEntry?.images) ? plantEntry.images : [];
+    if (plantImages.length > 0) {
+      const rawImages = Array.isArray(rawEntry.images) ? rawEntry.images : [];
+      const rawImageIdSet = new Set(rawImages.map((image) => image?.id).filter((id) => Boolean(id)));
+      const removedIds = plantImages
+        .map((image) => image?.id)
+        .filter((id) => Boolean(id) && !rawImageIdSet.has(id));
+      if (removedIds.length > 0) {
+        removedImageEntries.push([plantKey, removedIds]);
+      }
+    }
+
     if (!arePlantEntriesEqual(plantEntry, rawEntry)) {
       plantDataOutput[plantKey] = buildPlantDataEntry(rawEntry);
       updates.push(plantKey);
@@ -1222,12 +1224,7 @@ async function main() {
     }
   });
 
-  Object.keys(plantData.plants).forEach((plantKey) => {
-    const canonicalKey = String(normalizePlantIdValue(plantKey));
-    if (!canonicalRawEntries.has(canonicalKey)) {
-      throw new Error(`Plant ${plantKey} is present in plantData.json but missing from rawPlantData.json`);
-    }
-  });
+  const removedMissingRawPlants = removals.sort(comparePlantIds);
 
   const sortedPlantKeys = Object.keys(plantDataOutput).sort(comparePlantIds);
   const sortedPlants = {};
@@ -1256,7 +1253,7 @@ async function main() {
   const rawDataChanged = serializedRawData !== rawPlantSource.baseline;
 
   if (options.dryRun) {
-    if (additions.length === 0 && updates.length === 0 && !rawDataChanged) {
+    if (!plantDataChanged && !rawDataChanged) {
       console.log('No changes detected.');
     } else {
       if (updates.length > 0) {
@@ -1264,6 +1261,17 @@ async function main() {
       }
       if (additions.length > 0) {
         console.log(`Would add ${additions.length} new plant entries: ${additions.join(', ')}`);
+      }
+      if (removedMissingRawPlants.length > 0) {
+        console.log(`Would remove ${removedMissingRawPlants.length} plant entries missing from raw data: ${removedMissingRawPlants.join(', ')}`);
+      }
+      if (removedImageEntries.length > 0) {
+        const removedSummary = removedImageEntries
+          .map(([plantKey, imageIds]) => (imageIds.length > 0
+            ? `${plantKey} (removed: ${imageIds.join(', ')})`
+            : plantKey))
+          .join(', ');
+        console.log(`Would remove images from ${removedImageEntries.length} plant entries: ${removedSummary}`);
       }
       if (rawDataChanged) {
         console.log('Would rewrite rawPlantData.json with normalized image metadata.');
@@ -1289,6 +1297,17 @@ async function main() {
     }
     if (additions.length > 0) {
       console.log(`Added ${additions.length} plant entries: ${additions.join(', ')}`);
+    }
+    if (removedMissingRawPlants.length > 0) {
+      console.log(`Removed ${removedMissingRawPlants.length} plant entries missing from raw data: ${removedMissingRawPlants.join(', ')}`);
+    }
+    if (removedImageEntries.length > 0) {
+      const removedSummary = removedImageEntries
+        .map(([plantKey, imageIds]) => (imageIds.length > 0
+          ? `${plantKey} (removed: ${imageIds.join(', ')})`
+          : plantKey))
+        .join(', ');
+      console.log(`Removed images from ${removedImageEntries.length} plant entries: ${removedSummary}`);
     }
     if (rawDataChanged) {
       console.log('rawPlantData.json synchronized (image ids and counters).');
