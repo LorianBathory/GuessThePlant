@@ -1179,6 +1179,7 @@ async function main() {
 
   const updates = [];
   const additions = [];
+  const removals = [];
   const removedImageEntries = [];
   const plantDataOutput = { ...plantData.plants };
   const missingRawPlantEntries = [];
@@ -1187,7 +1188,8 @@ async function main() {
     const rawEntry = canonicalRawEntries.get(plantKey);
     validateRawHasPlantData(plantKey, plantEntry, rawEntry);
     if (!rawEntry) {
-      missingRawPlantEntries.push(plantKey);
+      removals.push(plantKey);
+      delete plantDataOutput[plantKey];
       return;
     }
 
@@ -1223,7 +1225,7 @@ async function main() {
     }
   });
 
-  const skippedMissingRawPlants = missingRawPlantEntries.sort(comparePlantIds);
+  const removedMissingRawPlants = removals.sort(comparePlantIds);
 
   const sortedPlantKeys = Object.keys(plantDataOutput).sort(comparePlantIds);
   const sortedPlants = {};
@@ -1252,7 +1254,7 @@ async function main() {
   const rawDataChanged = serializedRawData !== rawPlantSource.baseline;
 
   if (options.dryRun) {
-    if (additions.length === 0 && updates.length === 0 && !rawDataChanged) {
+    if (!plantDataChanged && !rawDataChanged) {
       console.log('No changes detected.');
     } else {
       if (updates.length > 0) {
@@ -1261,6 +1263,9 @@ async function main() {
       if (additions.length > 0) {
         console.log(`Would add ${additions.length} new plant entries: ${additions.join(', ')}`);
       }
+      if (removedMissingRawPlants.length > 0) {
+        console.log(`Would remove ${removedMissingRawPlants.length} plant entries missing from raw data: ${removedMissingRawPlants.join(', ')}`);
+      }
       if (removedImageEntries.length > 0) {
         const removedSummary = removedImageEntries
           .map(([plantKey, imageIds]) => (imageIds.length > 0
@@ -1268,9 +1273,6 @@ async function main() {
             : plantKey))
           .join(', ');
         console.log(`Would remove images from ${removedImageEntries.length} plant entries: ${removedSummary}`);
-      }
-      if (skippedMissingRawPlants.length > 0) {
-        console.log(`Would leave ${skippedMissingRawPlants.length} plant entries unchanged (missing in raw data): ${skippedMissingRawPlants.join(', ')}`);
       }
       if (rawDataChanged) {
         console.log('Would rewrite rawPlantData.json with normalized image metadata.');
@@ -1297,6 +1299,9 @@ async function main() {
     if (additions.length > 0) {
       console.log(`Added ${additions.length} plant entries: ${additions.join(', ')}`);
     }
+    if (removedMissingRawPlants.length > 0) {
+      console.log(`Removed ${removedMissingRawPlants.length} plant entries missing from raw data: ${removedMissingRawPlants.join(', ')}`);
+    }
     if (removedImageEntries.length > 0) {
       const removedSummary = removedImageEntries
         .map(([plantKey, imageIds]) => (imageIds.length > 0
@@ -1304,9 +1309,6 @@ async function main() {
           : plantKey))
         .join(', ');
       console.log(`Removed images from ${removedImageEntries.length} plant entries: ${removedSummary}`);
-    }
-    if (skippedMissingRawPlants.length > 0) {
-      console.log(`Left ${skippedMissingRawPlants.length} plant entries unchanged (missing in raw data): ${skippedMissingRawPlants.join(', ')}`);
     }
     if (rawDataChanged) {
       console.log('rawPlantData.json synchronized (image ids and counters).');
