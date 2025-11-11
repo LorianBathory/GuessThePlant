@@ -309,7 +309,7 @@
 		"extra" : ""
 	},
 	{
-		"id" : "18_0",
+		"id" : "18",
 		"ru" : "Глициния",
 		"en" : "Wisteria",
 		"nl" : "Blauwe regen",
@@ -645,7 +645,7 @@
 		"extra" : ""
 	},
 	{
-		"id" : "33_0",
+		"id" : "33",
 		"ru" : "Мак",
 		"en" : "Poppy",
 		"nl" : "Klaproos, Papaver",
@@ -2512,20 +2512,6 @@
 		"en" : "Sage",
 		"nl" : "Salie",
 		"sci" : "Salvia",
-		"number_of_images" : 1,
-		"image_id" : "p150_0_2",
-		"images" : "SalviaOfficinalis2_TravelPhotographer_StockSnap.JPG",
-		"wrong_answers" : "",
-		"difficulty" : "Easy",
-		"difficulty_modificator" : "",
-		"extra" : ""
-	},
-	{
-		"id" : "150_0",
-		"ru" : "Шалфей",
-		"en" : "Sage",
-		"nl" : "Salie",
-		"sci" : "Salvia",
 		"number_of_images" : 2,
 		"image_id" : "p150_0_1, p150_0_2",
 		"images" : "SalviaOfficinalis_TravelPhotographer_StockSnap.JPG, SalviaOfficinalis2_TravelPhotographer_StockSnap.JPG",
@@ -2607,25 +2593,25 @@
 	{
 		"id" : "153",
 		"ru" : "Кизил",
-		"en" : "Flowering Dogwood",
-		"nl" : "Oostamerikaanse kornoelje",
-		"sci" : "Cornus Florida",
-		"number_of_images" : 1,
-		"image_id" : "p153_0_3",
-		"images" : "CornusFlorida_KellyIshmael_StockSnap.JPG",
-		"wrong_answers" : "17, 24",
-		"difficulty" : "Medium",
+		"en" : "???",
+		"nl" : "???",
+		"sci" : "Cornus",
+		"number_of_images" : "",
+		"image_id" : "",
+		"images" : "",
+		"wrong_answers" : "",
+		"difficulty" : "",
 		"difficulty_modificator" : "",
 		"extra" : ""
 	},
 	{
-		"id" : "153_0",
+		"id" : "153_1",
 		"ru" : "Кизил",
 		"en" : "Flowering Dogwood",
 		"nl" : "Oostamerikaanse kornoelje",
 		"sci" : "Cornus Florida",
 		"number_of_images" : 3,
-		"image_id" : "p153_0_1, p153_0_2, p153_0_3",
+		"image_id" : "p153_1_1, p153_1_2, p153_1_3",
 		"images" : "CornusFlorida.JPG, CornusFlorida_MohanNannapaneni_Pexels.JPG, CornusFlorida_KellyIshmael_StockSnap.JPG",
 		"wrong_answers" : "17, 24",
 		"difficulty" : "Medium",
@@ -2633,7 +2619,7 @@
 		"extra" : ""
 	},
 	{
-		"id" : "153_1",
+		"id" : "153_2",
 		"ru" : "Свида шелковистая \/ Дёрен белый",
 		"en" : "redosier dogwood",
 		"nl" : "Canadese kornoelje",
@@ -2815,13 +2801,13 @@
 		"extra" : ""
 	},
 	{
-		"id" : "165_0",
+		"id" : "165_1",
 		"ru" : "Морозник черный",
 		"en" : "Christmas rose",
 		"nl" : "Kerstroos",
 		"sci" : "Helleborus niger",
 		"number_of_images" : 2,
-		"image_id" : "p165_0_1, p165_0_2",
+		"image_id" : "p165_1_1, p165_1_2",
 		"images" : "HelleborusNiger_Couleur_Pixabay.JPG",
 		"wrong_answers" : "",
 		"difficulty" : "Easy",
@@ -2829,7 +2815,7 @@
 		"extra" : ""
 	},
 	{
-		"id" : "165_1",
+		"id" : "165_2",
 		"ru" : "Морозник восточный",
 		"en" : "Lenten rose",
 		"nl" : "Lenteroos ",
@@ -4551,7 +4537,7 @@
 		"extra" : ""
 	},
 	{
-		"id" : "434_0",
+		"id" : "435",
 		"ru" : "Овсяница",
 		"en" : "Fescue",
 		"nl" : "Zwenkgras ",
@@ -4565,7 +4551,7 @@
 		"extra" : ""
 	},
 	{
-		"id" : "434_1",
+		"id" : "435_1",
 		"ru" : "Овсяница Готье",
 		"en" : "Festuca gautieri",
 		"nl" : "Berenvel",
@@ -4579,7 +4565,7 @@
 		"extra" : ""
 	},
 	{
-		"id" : "434_2",
+		"id" : "435_2",
 		"ru" : "Овсяница - род",
 		"en" : "Festuca glauca",
 		"nl" : "Blauw schapengras",
@@ -4596,7 +4582,7 @@
 		"id" : "251",
 		"ru" : "Ирис",
 		"en" : "Iris",
-		"nl" : "Lis \/ Iris",
+		"nl" : "Lis / Iris",
 		"sci" : "Iris",
 		"number_of_images" : "",
 		"image_id" : "",
@@ -4803,7 +4789,7 @@
 		"extra" : null
 	},
 	{
-		"id" : "236_0",
+		"id" : "236",
 		"ru" : "Девичий виноград",
 		"en" : "Parthenocissus",
 		"nl" : "Wilde wingerd",
