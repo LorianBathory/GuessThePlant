@@ -997,11 +997,8 @@ function hasMeaningfulValue(value) {
 }
 
 function validateRawHasPlantData(plantId, plantEntry, rawEntry) {
-  if (!plantEntry) {
+  if (!plantEntry || !rawEntry) {
     return;
-  }
-  if (!rawEntry) {
-    throw new Error(`Plant ${plantId} is missing from rawPlantData.json`);
   }
 
   if (plantEntry.names) {
@@ -1184,11 +1181,13 @@ async function main() {
   const additions = [];
   const removedImageEntries = [];
   const plantDataOutput = { ...plantData.plants };
+  const missingRawPlantEntries = [];
 
   canonicalPlantEntries.forEach((plantEntry, plantKey) => {
     const rawEntry = canonicalRawEntries.get(plantKey);
     validateRawHasPlantData(plantKey, plantEntry, rawEntry);
     if (!rawEntry) {
+      missingRawPlantEntries.push(plantKey);
       return;
     }
 
@@ -1224,12 +1223,7 @@ async function main() {
     }
   });
 
-  Object.keys(plantData.plants).forEach((plantKey) => {
-    const canonicalKey = String(normalizePlantIdValue(plantKey));
-    if (!canonicalRawEntries.has(canonicalKey)) {
-      throw new Error(`Plant ${plantKey} is present in plantData.json but missing from rawPlantData.json`);
-    }
-  });
+  const skippedMissingRawPlants = missingRawPlantEntries.sort(comparePlantIds);
 
   const sortedPlantKeys = Object.keys(plantDataOutput).sort(comparePlantIds);
   const sortedPlants = {};
@@ -1275,6 +1269,9 @@ async function main() {
           .join(', ');
         console.log(`Would remove images from ${removedImageEntries.length} plant entries: ${removedSummary}`);
       }
+      if (skippedMissingRawPlants.length > 0) {
+        console.log(`Would leave ${skippedMissingRawPlants.length} plant entries unchanged (missing in raw data): ${skippedMissingRawPlants.join(', ')}`);
+      }
       if (rawDataChanged) {
         console.log('Would rewrite rawPlantData.json with normalized image metadata.');
       }
@@ -1307,6 +1304,9 @@ async function main() {
           : plantKey))
         .join(', ');
       console.log(`Removed images from ${removedImageEntries.length} plant entries: ${removedSummary}`);
+    }
+    if (skippedMissingRawPlants.length > 0) {
+      console.log(`Left ${skippedMissingRawPlants.length} plant entries unchanged (missing in raw data): ${skippedMissingRawPlants.join(', ')}`);
     }
     if (rawDataChanged) {
       console.log('rawPlantData.json synchronized (image ids and counters).');
