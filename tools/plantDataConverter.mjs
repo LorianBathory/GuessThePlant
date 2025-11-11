@@ -290,7 +290,8 @@ function resolveRawPlantSource(rawData) {
     ['plantData', 'plants'],
     ['plant_data', 'plants'],
     ['data', 'plants'],
-    ['plantCatalog']
+    ['plantCatalog'],
+    ['PlantData_backup']
   ];
 
   for (const path of candidatePaths) {
