@@ -69,14 +69,20 @@ function printUsage() {
 }
 
 async function loadJson(path, label) {
+  let contents;
   try {
-    const contents = await readFile(path, 'utf8');
-    return JSON.parse(contents);
+    contents = await readFile(path, 'utf8');
   } catch (error) {
     if (error.code === 'ENOENT') {
       throw new Error(`Cannot find ${label} at ${path}`);
     }
     throw new Error(`Unable to read ${label} at ${path}: ${error.message}`);
+  }
+
+  try {
+    return { data: JSON.parse(contents), text: contents };
+  } catch (error) {
+    throw new Error(`Unable to parse ${label} at ${path}: ${error.message}`);
   }
 }
 
@@ -173,18 +179,30 @@ function extractPlantIdentifier(entry) {
   return undefined;
 }
 
-function buildRawPlantEntries(rawPlantContainer) {
+function buildRawPlantEntries(rawPlantContainer, { arrayEntryLineLookup } = {}) {
   const seenIds = new Set();
   const entries = [];
 
   if (Array.isArray(rawPlantContainer)) {
     rawPlantContainer.forEach((entry, index) => {
       if (!entry || typeof entry !== 'object') {
-        throw new Error(`Plant entry at index ${index} in rawPlantData.json must be an object`);
+        const lineNumber = typeof arrayEntryLineLookup === 'function'
+          ? arrayEntryLineLookup(index)
+          : undefined;
+        const location = lineNumber
+          ? `starting at line ${lineNumber} (index ${index})`
+          : `at index ${index}`;
+        throw new Error(`Plant entry ${location} in rawPlantData.json must be an object`);
       }
       const identifier = extractPlantIdentifier(entry);
       if (!identifier) {
-        throw new Error(`Plant entry at index ${index} in rawPlantData.json must include an id`);
+        const lineNumber = typeof arrayEntryLineLookup === 'function'
+          ? arrayEntryLineLookup(index)
+          : undefined;
+        const location = lineNumber
+          ? `starting at line ${lineNumber} (index ${index})`
+          : `at index ${index}`;
+        throw new Error(`Plant entry ${location} in rawPlantData.json must include an id`);
       }
       const canonicalKey = String(normalizePlantIdValue(identifier));
       if (seenIds.has(canonicalKey)) {
@@ -268,9 +286,241 @@ function cloneWithReplacedPath(root, path, replacement) {
   return clone;
 }
 
-function resolveRawPlantSource(rawData) {
+function createLineLookup(sourceText) {
+  const newlineIndices = [];
+  for (let index = 0; index < sourceText.length; index += 1) {
+    if (sourceText[index] === '\n') {
+      newlineIndices.push(index);
+    }
+  }
+
+  return function lineFromOffset(offset) {
+    if (typeof offset !== 'number' || Number.isNaN(offset)) {
+      return undefined;
+    }
+
+    let low = 0;
+    let high = newlineIndices.length;
+    while (low < high) {
+      const mid = Math.floor((low + high) / 2);
+      if (newlineIndices[mid] < offset) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
+    }
+
+    return low + 1;
+  };
+}
+
+const NUMBER_PATTERN = /^-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/;
+
+function createArrayEntryPositions(sourceText, pathSegments) {
+  if (typeof sourceText !== 'string') {
+    return undefined;
+  }
+
+  const targetPath = Array.isArray(pathSegments) ? pathSegments.slice() : [];
+  const positions = [];
+  let targetFound = false;
+  let index = 0;
+
+  const length = sourceText.length;
+
+  const isWhitespace = (charCode) => (
+    charCode === 32 ||
+    charCode === 9 ||
+    charCode === 10 ||
+    charCode === 13
+  );
+
+  const pathEquals = (path) => {
+    if (path.length !== targetPath.length) {
+      return false;
+    }
+    for (let position = 0; position < path.length; position += 1) {
+      if (path[position] !== targetPath[position]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const skipWhitespace = () => {
+    while (index < length && isWhitespace(sourceText.charCodeAt(index))) {
+      index += 1;
+    }
+  };
+
+  const parseString = () => {
+    if (sourceText[index] !== '"') {
+      throw new Error('Expected string while scanning rawPlantData.json');
+    }
+    const start = index;
+    index += 1;
+    let escaping = false;
+    while (index < length) {
+      const char = sourceText[index];
+      if (escaping) {
+        escaping = false;
+      } else if (char === '\\') {
+        escaping = true;
+      } else if (char === '"') {
+        break;
+      }
+      index += 1;
+    }
+    if (sourceText[index] !== '"') {
+      throw new Error('Unterminated string while scanning rawPlantData.json');
+    }
+    index += 1;
+    return JSON.parse(sourceText.slice(start, index));
+  };
+
+  const parseLiteral = (expected) => {
+    if (sourceText.slice(index, index + expected.length) !== expected) {
+      throw new Error(`Expected ${expected} while scanning rawPlantData.json`);
+    }
+    index += expected.length;
+  };
+
+  const parseNumber = () => {
+    const match = NUMBER_PATTERN.exec(sourceText.slice(index));
+    if (!match) {
+      throw new Error('Invalid number in rawPlantData.json');
+    }
+    index += match[0].length;
+  };
+
+  const parseValue = (path) => {
+    skipWhitespace();
+    if (index >= length) {
+      throw new Error('Unexpected end of file while scanning rawPlantData.json');
+    }
+    const char = sourceText[index];
+
+    if (char === '{') {
+      index += 1;
+      skipWhitespace();
+      if (sourceText[index] === '}') {
+        index += 1;
+        return;
+      }
+      while (index < length) {
+        skipWhitespace();
+        const key = parseString();
+        skipWhitespace();
+        if (sourceText[index] !== ':') {
+          throw new Error('Expected colon in object while scanning rawPlantData.json');
+        }
+        index += 1;
+        const nextPath = path.concat(key);
+        parseValue(nextPath);
+        skipWhitespace();
+        const delimiter = sourceText[index];
+        if (delimiter === ',') {
+          index += 1;
+          continue;
+        }
+        if (delimiter === '}') {
+          index += 1;
+          break;
+        }
+        throw new Error('Expected comma or closing brace while scanning rawPlantData.json');
+      }
+      return;
+    }
+
+    if (char === '[') {
+      const isTarget = pathEquals(path);
+      index += 1;
+      skipWhitespace();
+      if (sourceText[index] === ']') {
+        index += 1;
+        if (isTarget) {
+          targetFound = true;
+        }
+        return;
+      }
+      let elementIndex = 0;
+      while (index < length) {
+        skipWhitespace();
+        if (isTarget) {
+          targetFound = true;
+          positions[elementIndex] = index;
+        }
+        const nextPath = path.concat(elementIndex);
+        parseValue(nextPath);
+        elementIndex += 1;
+        skipWhitespace();
+        const delimiter = sourceText[index];
+        if (delimiter === ',') {
+          index += 1;
+          continue;
+        }
+        if (delimiter === ']') {
+          index += 1;
+          break;
+        }
+        throw new Error('Expected comma or closing bracket while scanning rawPlantData.json');
+      }
+      return;
+    }
+
+    if (char === '"') {
+      parseString();
+      return;
+    }
+
+    if (char === 't') {
+      parseLiteral('true');
+      return;
+    }
+    if (char === 'f') {
+      parseLiteral('false');
+      return;
+    }
+    if (char === 'n') {
+      parseLiteral('null');
+      return;
+    }
+
+    parseNumber();
+  };
+
+  try {
+    parseValue([]);
+  } catch (error) {
+    return undefined;
+  }
+
+  if (!targetFound) {
+    return undefined;
+  }
+
+  return positions;
+}
+
+function createArrayEntryLineLookup(sourceText, pathSegments) {
+  const positions = createArrayEntryPositions(sourceText, pathSegments);
+  if (!positions) {
+    return undefined;
+  }
+  const lineLookup = createLineLookup(sourceText);
+  return (index) => {
+    const offset = positions[index];
+    if (offset === undefined) {
+      return undefined;
+    }
+    return lineLookup(offset);
+  };
+}
+
+function resolveRawPlantSource(rawData, rawText) {
   if (Array.isArray(rawData)) {
-    const { entries, sourceType } = buildRawPlantEntries(rawData);
+    const arrayEntryLineLookup = createArrayEntryLineLookup(rawText, []);
+    const { entries, sourceType } = buildRawPlantEntries(rawData, { arrayEntryLineLookup });
     return {
       entries,
       sourceType,
@@ -298,7 +548,10 @@ function resolveRawPlantSource(rawData) {
     if (!container || (!Array.isArray(container) && !isObjectLike(container))) {
       continue;
     }
-    const { entries, sourceType } = buildRawPlantEntries(container);
+    const arrayEntryLineLookup = Array.isArray(container)
+      ? createArrayEntryLineLookup(rawText, path)
+      : undefined;
+    const { entries, sourceType } = buildRawPlantEntries(container, { arrayEntryLineLookup });
     return {
       entries,
       sourceType,
@@ -687,15 +940,18 @@ function arePlantEntriesEqual(left, right) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
-  const [plantData, rawData] = await Promise.all([
+  const [plantSource, rawSource] = await Promise.all([
     loadJson(options.plantPath, 'plantData.json'),
     loadJson(options.rawPath, 'rawPlantData.json')
   ]);
 
+  const plantData = plantSource.data;
+  const rawData = rawSource.data;
+
   if (!plantData || typeof plantData !== 'object' || !plantData.plants || typeof plantData.plants !== 'object') {
     throw new Error('plantData.json must contain a "plants" object');
   }
-  const rawPlantSource = resolveRawPlantSource(rawData);
+  const rawPlantSource = resolveRawPlantSource(rawData, rawSource.text);
   const rawPlantEntries = rawPlantSource.entries;
   const rawPlantSourceType = rawPlantSource.sourceType;
 
