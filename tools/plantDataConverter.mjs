@@ -1182,6 +1182,7 @@ async function main() {
   const removals = [];
   const removedImageEntries = [];
   const plantDataOutput = { ...plantData.plants };
+  const missingRawPlantEntries = [];
 
   canonicalPlantEntries.forEach((plantEntry, plantKey) => {
     const rawEntry = canonicalRawEntries.get(plantKey);
