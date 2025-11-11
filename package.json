@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "export:data": "node scripts/exportDataBundle.mjs",
     "validate:data": "node scripts/validateDataBundle.mjs",
-    "serve": "node tools/localStaticServer.mjs"
+    "serve": "node tools/localStaticServer.mjs",
+    "convert:plant-data": "node tools/plantDataConverter.mjs"
   },
   "keywords": [
     "quiz",
