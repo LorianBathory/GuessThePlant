@@ -37,6 +37,10 @@ export default function PlantQuizGame() {
   }
 
   if (game.roundPhase === 'memorization') {
+    const isInCollection = game.memorizationPlant
+      ? game.isPlantInMemorizationCollection(game.memorizationPlant.id)
+      : false;
+
     return createElement(MemorizationScreen, {
       texts: game.texts,
       plantLanguage: game.plantLanguage,
@@ -45,7 +49,13 @@ export default function PlantQuizGame() {
       onNextPlant: game.showNextMemorizationPlant,
       onReturnToMenu: game.returnToMenu,
       plant: game.memorizationPlant,
-      isMobile: game.isMobile
+      isMobile: game.isMobile,
+      onAddToCollection: game.addPlantToMemorizationCollection,
+      onRemoveFromCollection: game.removePlantFromMemorizationCollection,
+      isInCollection,
+      collectionFilter: game.memorizationCollectionFilter,
+      onCollectionFilterChange: game.changeMemorizationCollectionFilter,
+      collectionSize: game.memorizationCollectionSize
     });
   }
 
