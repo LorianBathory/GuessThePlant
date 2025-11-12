@@ -1,5 +1,5 @@
 import { getParameterTagLabel } from '../data/parameterTags.js';
-import { getPlantParameters } from '../game/dataLoader.js';
+import { getPlantParameters, getPlantTagDefinition } from '../game/dataLoader.js';
 import { defaultLang } from '../i18n/uiTexts.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 
@@ -29,6 +29,8 @@ const colors = Object.freeze({
   blue: '#6AB7E6',
   hotPink: '#FF4FA3'
 });
+
+const tagIconComponentCache = new Map();
 
 function createIcon(pathElements, viewBox = '0 0 24 24') {
   const { createElement } = ensureReact();
@@ -317,7 +319,43 @@ function buildToxicityParameterItems(toxicityData, language, unknownLabel) {
     .filter(Boolean);
 }
 
-function buildCustomTagParameterItems(rawTags, language) {
+function getTagIconComponent(iconUrl) {
+  if (typeof iconUrl !== 'string') {
+    return null;
+  }
+
+  const normalizedUrl = iconUrl.trim();
+
+  if (!normalizedUrl) {
+    return null;
+  }
+
+  if (tagIconComponentCache.has(normalizedUrl)) {
+    return tagIconComponentCache.get(normalizedUrl);
+  }
+
+  function TagIcon() {
+    const { createElement } = ensureReact();
+
+    return createElement('img', {
+      src: normalizedUrl,
+      alt: '',
+      style: {
+        width: '18px',
+        height: '18px',
+        objectFit: 'contain'
+      },
+      decoding: 'async',
+      loading: 'lazy',
+      'aria-hidden': 'true'
+    });
+  }
+
+  tagIconComponentCache.set(normalizedUrl, TagIcon);
+  return TagIcon;
+}
+
+function buildCustomTagParameterItems(rawTags, language, unknownLabel) {
   if (!rawTags) {
     return [];
   }
@@ -330,30 +368,64 @@ function buildCustomTagParameterItems(rawTags, language) {
         return null;
       }
 
-      const labelSource = typeof entry === 'object' ? (entry.label ?? entry.text ?? entry.name) : entry;
-      const resolvedLabel = typeof labelSource === 'string'
-        ? labelSource
-        : getLocalizedValue(labelSource, language);
+      let tagId = null;
+      let fallbackLabel = null;
+      let circleColor = colors.hotPink;
+      let circleContent = undefined;
 
-      const labelText = typeof resolvedLabel === 'string' && resolvedLabel.trim()
-        ? resolvedLabel.trim()
-        : null;
+      if (typeof entry === 'string') {
+        tagId = entry.trim();
+      } else if (entry && typeof entry === 'object') {
+        const rawId = typeof entry.id === 'string' ? entry.id : typeof entry.tag === 'string' ? entry.tag : null;
+        tagId = rawId && typeof rawId === 'string' ? rawId.trim() : null;
 
-      if (!labelText) {
-        return null;
+        const labelSource = entry.label ?? entry.text ?? entry.name;
+        fallbackLabel = getLocalizedValue(labelSource, language);
+
+        if (typeof entry.circleColor === 'string' && entry.circleColor.trim()) {
+          circleColor = entry.circleColor.trim();
+        }
+
+        if (Object.prototype.hasOwnProperty.call(entry, 'circleContent')) {
+          circleContent = entry.circleContent;
+        }
       }
 
-      const circleContent = typeof entry === 'object' && Object.prototype.hasOwnProperty.call(entry, 'circleContent')
-        ? entry.circleContent
-        : null;
+      const definition = tagId ? getPlantTagDefinition(tagId) : null;
+
+      if (!definition && !fallbackLabel && tagId) {
+        fallbackLabel = tagId;
+      }
+
+      const localizedLabel = definition ? getLocalizedValue(definition.label, language) : null;
+      const labelCandidate = typeof localizedLabel === 'string' && localizedLabel.trim()
+        ? localizedLabel.trim()
+        : (typeof fallbackLabel === 'string' && fallbackLabel.trim() ? fallbackLabel.trim() : null);
+
+      const labelText = labelCandidate || unknownLabel;
+
+      if (definition && typeof definition.circleColor === 'string' && definition.circleColor.trim()) {
+        circleColor = definition.circleColor.trim();
+      }
+
+      if (definition && Object.prototype.hasOwnProperty.call(definition, 'circleContent')) {
+        circleContent = definition.circleContent;
+      }
+
+      let icon = null;
+
+      if (definition && typeof definition.icon === 'string' && definition.icon.trim()) {
+        icon = getTagIconComponent(definition.icon.trim());
+        circleContent = null;
+      }
 
       return {
-        key: `custom-tag-${index}`,
+        key: `custom-tag-${index}-${tagId || 'unknown'}`,
         label: labelText,
-        icon: null,
-        circleContent,
-        circleColor: colors.hotPink,
-        isUnknown: false
+        icon,
+        circleContent: circleContent === undefined ? null : circleContent,
+        circleColor,
+        isUnknown: labelText === unknownLabel
       };
     })
     .filter(Boolean);
@@ -580,7 +652,8 @@ export default function MemorizationScreen({
 
     parameterItems.push(...toxicityParameterItems);
 
-    parameterItems.push(...buildCustomTagParameterItems(data?.newTags, interfaceLanguage));
+    const customTagSource = data?.tags ?? data?.tagIds ?? data?.newTags;
+    parameterItems.push(...buildCustomTagParameterItems(customTagSource, interfaceLanguage, unknownLabel));
 
     if (lifeCycleTag && resolvedLifeCycleValue) {
       parameterItems.push({

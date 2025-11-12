@@ -69,6 +69,11 @@ Loaded from [`memorization.json`](../src/data/json/memorization.json) и нор�
 - **Required fields:** `scientificName` (string).
 - **Optional fields:** `lifeCycle` (enum-like string), `additionalInfo` (string), `toxicity` (array of `{ level: number, tag: string }`), `hardinessZone` (string), `light` (string), `family` (string or `null`). Plant IDs can be numeric or underscore-delimited strings, normalized via `parseCatalogId` в загрузчике.【F:src/game/dataLoader.js†L182-L243】
 
+### Memorization tag definition (`plantTagDefinitionsById`)
+Loaded from [`plantParameters.json`](../src/data/json/plantParameters.json) и нормализованный загрузчиком в карту `plantTagDefinitionsById`.
+- **Required fields:** `id` (string), `label` (string или объект локализаций по языкам `ru`/`en`/`nl`).
+- **Optional fields:** `icon` (строка с путём к изображению), `circleColor` (hex-цвет или любой поддерживаемый CSS-цвет), `circleContent` (строка или `null`, чтобы заменить символ внутри круга). Если `icon` указан, UI подставляет `<img>` вместо текста в круге.【F:src/game/dataLoader.js†L120-L176】【F:src/components/MemorizationScreen.js†L320-L383】
+
 ### Plant family catalog (`plantFamilies`)
 - **Source:** Derived automatically из `plantParameters` загрузчиком [`dataLoader.js`](../src/game/dataLoader.js); заполняется только для растений, у которых в параметрах указано поле `family`.
 - **Shape:** Object mapping botanical family names to arrays of plant IDs (numeric or string) that belong to the family. IDs are normalized the same way as species IDs.【F:src/game/dataLoader.js†L144-L214】

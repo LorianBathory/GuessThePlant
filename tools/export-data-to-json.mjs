@@ -215,7 +215,8 @@ async function main() {
       imageIdsByDifficulty,
       imageDifficultyOverrides,
       plantParametersById,
-      plantFamilies
+      plantFamilies,
+      plantTagDefinitionsById
     },
     { allQuestions },
     { parameterTagLabels },
@@ -248,7 +249,8 @@ async function main() {
     parameters: {
       byId: plantParametersById,
       families: plantFamilies,
-      tagLabels: parameterTagLabels
+      tagLabels: parameterTagLabels,
+      tags: plantTagDefinitionsById
     }
   };
 
