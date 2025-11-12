@@ -442,12 +442,74 @@ export default function MemorizationScreen({
   interfaceLanguage,
   onNextPlant = () => {},
   plant = null,
-  isMobile = false
+  isMobile = false,
+  onAddToCollection = () => {},
+  onRemoveFromCollection = () => {},
+  isInCollection = false,
+  collectionFilter = 'all',
+  onCollectionFilterChange = () => {},
+  collectionSize = 0
 }) {
   const { createElement, useMemo } = ensureReact();
 
   const unknownLabel = texts.memorizationUnknown || '—';
   const nextButtonLabel = texts.memorizationNextButton || 'Next plant';
+  const addToCollectionLabel = texts.memorizationAddToCollection || 'Add to collection';
+  const removeFromCollectionLabel = texts.memorizationRemoveFromCollection || 'Remove from collection';
+  const filterLabel = texts.memorizationFilterLabel || 'Study set';
+  const filterAllLabel = texts.memorizationFilterAll || 'All cards';
+  const filterCollectionLabel = texts.memorizationFilterCollection || 'Collection only';
+
+  const activeFilter = collectionFilter === 'collection' ? 'collection' : 'all';
+  const collectionButtonDisabled = !plant || plant.id == null;
+  const collectionButtonLabel = isInCollection ? removeFromCollectionLabel : addToCollectionLabel;
+  const filterCollectionLabelWithCount = collectionSize > 0
+    ? `${filterCollectionLabel} (${collectionSize})`
+    : filterCollectionLabel;
+  const isCollectionFilterDisabled = collectionSize === 0;
+
+  const handleCollectionButtonClick = () => {
+    if (collectionButtonDisabled) {
+      return;
+    }
+
+    if (isInCollection) {
+      onRemoveFromCollection(plant.id);
+    } else {
+      onAddToCollection(plant.id);
+    }
+  };
+
+  const handleFilterSelect = value => {
+    if (value === activeFilter) {
+      return;
+    }
+
+    if (value === 'collection' && isCollectionFilterDisabled) {
+      return;
+    }
+
+    onCollectionFilterChange(value);
+  };
+
+  const collectionButtonStyle = useMemo(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: isMobile ? '12px 18px' : '12px 22px',
+    borderRadius: '999px',
+    border: `2px solid ${ACCENT_COLOR}`,
+    backgroundColor: isInCollection ? ACCENT_COLOR : 'rgba(194, 156, 39, 0.12)',
+    color: isInCollection ? '#052625' : ACCENT_COLOR,
+    cursor: collectionButtonDisabled ? 'not-allowed' : 'pointer',
+    opacity: collectionButtonDisabled ? 0.6 : 1,
+    fontWeight: 700,
+    fontSize: isMobile ? '0.95rem' : '1rem',
+    letterSpacing: '0.01em',
+    textTransform: 'none',
+    transition: 'background-color 0.2s ease, color 0.2s ease',
+    width: isMobile ? '100%' : 'auto'
+  }), [isMobile, isInCollection, collectionButtonDisabled]);
 
   const plantName = plant && plant.names
     ? (plant.names[plantLanguage] || plant.names[defaultLang] || plant.names.ru || Object.values(plant.names)[0])
@@ -597,9 +659,10 @@ export default function MemorizationScreen({
     background: 'rgba(8, 38, 36, 0.65)',
     border: `3px solid ${ACCENT_COLOR}`,
     borderRadius: 0,
-    cursor: 'pointer',
-    color: ACCENT_COLOR
-  }), [isMobile]);
+    cursor: plant ? 'pointer' : 'not-allowed',
+    color: ACCENT_COLOR,
+    opacity: plant ? 1 : 0.45
+  }), [isMobile, plant]);
 
   const parameterElements = useMemo(() => {
     if (!parameters.parameterItems.length) {
@@ -671,6 +734,101 @@ export default function MemorizationScreen({
     });
   }, [createElement, isMobile, parameters.parameterItems, unknownLabel]);
 
+  const collectionButtonElement = createElement('button', {
+    key: 'collection-button',
+    type: 'button',
+    onClick: handleCollectionButtonClick,
+    style: collectionButtonStyle,
+    disabled: collectionButtonDisabled
+  }, collectionButtonLabel);
+
+  const filterButtonsElements = ['all', 'collection'].map(value => {
+    const isActive = activeFilter === value;
+    const disabled = value === 'collection' ? isCollectionFilterDisabled : false;
+    const label = value === 'collection' ? filterCollectionLabelWithCount : filterAllLabel;
+
+    return createElement('button', {
+      key: `filter-option-${value}`,
+      type: 'button',
+      onClick: () => {
+        if (!disabled) {
+          handleFilterSelect(value);
+        }
+      },
+      disabled,
+      'aria-pressed': isActive ? 'true' : 'false',
+      style: {
+        padding: isMobile ? '10px 14px' : '10px 18px',
+        borderRadius: '999px',
+        border: `2px solid ${ACCENT_COLOR}`,
+        backgroundColor: isActive ? ACCENT_COLOR : 'transparent',
+        color: isActive ? '#052625' : ACCENT_COLOR,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.5 : 1,
+        fontWeight: 600,
+        fontSize: isMobile ? '0.88rem' : '0.95rem',
+        letterSpacing: '0.01em',
+        textTransform: 'none',
+        transition: 'background-color 0.2s ease, color 0.2s ease'
+      }
+    }, label);
+  });
+
+  const filterControl = createElement('div', {
+    key: 'filter-control',
+    style: {
+      flex: '1 1 auto',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+      padding: isMobile ? '12px' : '14px 18px',
+      borderRadius: '12px',
+      border: `1px solid ${ACCENT_COLOR}`,
+      backgroundColor: 'rgba(8, 38, 36, 0.55)'
+    }
+  }, [
+    createElement('span', {
+      key: 'filter-label',
+      style: {
+        fontSize: isMobile ? '0.78rem' : '0.82rem',
+        fontWeight: 700,
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+        color: ACCENT_COLOR
+      }
+    }, filterLabel),
+    createElement('div', {
+      key: 'filter-buttons',
+      style: {
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: '8px',
+        flexWrap: 'wrap',
+        alignItems: isMobile ? 'stretch' : 'center'
+      }
+    }, filterButtonsElements)
+  ]);
+
+  const controlsRow = createElement('div', {
+    key: 'controls-row',
+    style: {
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: isMobile ? 'stretch' : 'center',
+      gap: isMobile ? '12px' : '16px',
+      marginBottom: '20px'
+    }
+  }, [
+    createElement('div', {
+      key: 'collection-button-wrapper',
+      style: {
+        flex: isMobile ? '1 1 auto' : '0 0 auto',
+        display: 'flex'
+      }
+    }, [collectionButtonElement]),
+    filterControl
+  ]);
+
   const parameterRow = createElement('div', {
     key: 'parameters',
     style: {
@@ -721,6 +879,31 @@ export default function MemorizationScreen({
   ].filter(Boolean));
 
   const additionalInfoText = parameters.additionalInfo || texts.memorizationAdditionalInfoEmpty || 'не заполнено';
+  const emptyStateMessage = texts.memorizationNoPlant || 'Нет данных для отображения.';
+
+  const emptyStateContent = createElement('div', {
+    key: 'empty-state',
+    style: {
+      padding: isMobile ? '20px' : '24px',
+      backgroundColor: 'rgba(8, 38, 36, 0.55)',
+      border: `1px solid ${ACCENT_COLOR}`,
+      borderRadius: '12px',
+      color: '#F8F2D0',
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px'
+    }
+  }, [
+    createElement('p', {
+      key: 'empty-message',
+      style: {
+        margin: 0,
+        fontSize: isMobile ? '1rem' : '1.1rem',
+        fontWeight: 600
+      }
+    }, emptyStateMessage)
+  ]);
 
   const additionalInfoBlock = createElement('div', {
     key: 'additional-info',
@@ -767,34 +950,6 @@ export default function MemorizationScreen({
       ticks
     };
   }, [parameters.hardinessRange]);
-
-  if (!plant) {
-    return createElement('div', {
-      className: 'w-full',
-      style: outerStyle
-    }, createElement('div', {
-      className: 'w-full',
-      style: cardStyle
-    }, [
-      createElement('div', {
-        key: 'empty-info',
-        style: {
-          padding: isMobile ? '32px' : '48px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '24px',
-          alignItems: 'center',
-          textAlign: 'center',
-          color: '#F8F2D0'
-        }
-      }, [
-        createElement('p', {
-          key: 'no-plant',
-          className: 'text-xl font-semibold'
-        }, texts.memorizationNoPlant || 'Нет данных для отображения.')
-      ])
-    ]));
-  }
 
   const hardinessSection = createElement('div', {
     key: 'hardiness',
@@ -881,29 +1036,34 @@ export default function MemorizationScreen({
     ])
   ]);
 
+  const infoChildren = plant
+    ? [controlsRow, headingSection, parameterRow, additionalInfoBlock, hardinessSection]
+    : [controlsRow, emptyStateContent];
+
+  const cardChildren = [];
+
+  if (plant) {
+    cardChildren.push(createElement(PlantImage, { plant }));
+  }
+
+  cardChildren.push(createElement('div', {
+    key: 'info-section',
+    style: infoSectionStyle
+  }, infoChildren.filter(Boolean)));
+
   const cardElement = createElement('div', {
     key: 'card',
     className: 'w-full',
     style: cardStyle
-  }, [
-    createElement(PlantImage, { plant }),
-    createElement('div', {
-      key: 'info-section',
-      style: infoSectionStyle
-    }, [
-      headingSection,
-      parameterRow,
-      additionalInfoBlock,
-      hardinessSection
-    ].filter(Boolean))
-  ]);
+  }, cardChildren);
 
   const arrowButton = createElement('button', {
     key: 'next-arrow',
     type: 'button',
     onClick: onNextPlant,
     style: arrowButtonStyle,
-    'aria-label': nextButtonLabel
+    'aria-label': nextButtonLabel,
+    disabled: !plant
   }, createElement(ArrowIcon));
 
   const layoutChildren = [cardElement, arrowButton];

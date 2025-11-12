@@ -44,7 +44,12 @@ export const uiTexts = {
     memorizationToxicityLabel: "Токсичность",
     memorizationNextButton: "Следующее растение",
     memorizationUnknown: "Нет данных",
-    memorizationNoPlant: "Нет данных для отображения."
+    memorizationNoPlant: "Нет данных для отображения.",
+    memorizationAddToCollection: "В коллекцию",
+    memorizationRemoveFromCollection: "Удалить из коллекции",
+    memorizationFilterLabel: "Набор карточек",
+    memorizationFilterAll: "Все карточки",
+    memorizationFilterCollection: "Только коллекция"
   },
   en: {
     question: "What plant is this?",
@@ -91,7 +96,12 @@ export const uiTexts = {
     memorizationToxicityLabel: "Toxicity",
     memorizationNextButton: "Next plant",
     memorizationUnknown: "Not specified",
-    memorizationNoPlant: "No plant data available."
+    memorizationNoPlant: "No plant data available.",
+    memorizationAddToCollection: "Add to collection",
+    memorizationRemoveFromCollection: "Remove from collection",
+    memorizationFilterLabel: "Study set",
+    memorizationFilterAll: "All cards",
+    memorizationFilterCollection: "Collection only"
   },
   nl: {
     question: "Wat is deze plant?",
@@ -138,7 +148,12 @@ export const uiTexts = {
     memorizationToxicityLabel: "Giftigheid",
     memorizationNextButton: "Volgende plant",
     memorizationUnknown: "Niet gespecificeerd",
-    memorizationNoPlant: "Geen plantgegevens beschikbaar."
+    memorizationNoPlant: "Geen plantgegevens beschikbaar.",
+    memorizationAddToCollection: "Aan collectie toevoegen",
+    memorizationRemoveFromCollection: "Uit collectie verwijderen",
+    memorizationFilterLabel: "Set kaarten",
+    memorizationFilterAll: "Alle kaarten",
+    memorizationFilterCollection: "Alleen collectie"
   }
 };
 

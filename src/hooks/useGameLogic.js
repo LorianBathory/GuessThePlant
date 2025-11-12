@@ -18,6 +18,105 @@ import { DataLoadingError, GameLogicError } from '../utils/errorHandling.js';
 import { useClassicMode } from './useClassicMode.js';
 import { useEndlessMode } from './useEndlessMode.js';
 
+const MEMORIZATION_COLLECTION_STORAGE_KEY = 'gtp/memorizationCollection';
+const MEMORIZATION_FILTER_STORAGE_KEY = 'gtp/memorizationFilter';
+
+const MEMORIZATION_FILTERS = Object.freeze({
+  ALL: 'all',
+  COLLECTION: 'collection'
+});
+
+function normalizeCollectionIds(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const unique = new Set();
+  const result = [];
+
+  value.forEach(item => {
+    if (item == null) {
+      return;
+    }
+
+    const normalized = String(item);
+    if (!normalized) {
+      return;
+    }
+
+    if (!unique.has(normalized)) {
+      unique.add(normalized);
+      result.push(normalized);
+    }
+  });
+
+  return result;
+}
+
+function getStoredMemorizationCollection() {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return [];
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(MEMORIZATION_COLLECTION_STORAGE_KEY);
+    if (!rawValue) {
+      return [];
+    }
+
+    const parsed = JSON.parse(rawValue);
+    return normalizeCollectionIds(parsed);
+  } catch {
+    return [];
+  }
+}
+
+function storeMemorizationCollection(ids) {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  try {
+    const normalized = normalizeCollectionIds(ids);
+    if (normalized.length === 0) {
+      window.localStorage.removeItem(MEMORIZATION_COLLECTION_STORAGE_KEY);
+    } else {
+      window.localStorage.setItem(MEMORIZATION_COLLECTION_STORAGE_KEY, JSON.stringify(normalized));
+    }
+  } catch {
+    // Ignore storage write errors — the mode remains functional without persistence.
+  }
+}
+
+function getStoredMemorizationFilter() {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return MEMORIZATION_FILTERS.ALL;
+  }
+
+  try {
+    const stored = window.localStorage.getItem(MEMORIZATION_FILTER_STORAGE_KEY);
+    return stored === MEMORIZATION_FILTERS.COLLECTION ? MEMORIZATION_FILTERS.COLLECTION : MEMORIZATION_FILTERS.ALL;
+  } catch {
+    return MEMORIZATION_FILTERS.ALL;
+  }
+}
+
+function storeMemorizationFilter(filter) {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  try {
+    if (filter === MEMORIZATION_FILTERS.COLLECTION) {
+      window.localStorage.setItem(MEMORIZATION_FILTER_STORAGE_KEY, MEMORIZATION_FILTERS.COLLECTION);
+    } else {
+      window.localStorage.removeItem(MEMORIZATION_FILTER_STORAGE_KEY);
+    }
+  } catch {
+    // Ignore storage write errors — the mode remains functional without persistence.
+  }
+}
+
 function getChoiceGenusGroupKey(choiceId) {
   if (choiceId == null) {
     return null;
@@ -118,6 +217,8 @@ export default function useGameLogic() {
   const [isMobile, setIsMobile] = useState(() => getInitialIsMobile());
   const [isClassicModeUnavailable, setClassicModeUnavailable] = useState(() => isClassicModeDisabled());
   const [roundMistakes, setRoundMistakes] = useState([]);
+  const [memorizationCollectionIds, setMemorizationCollectionIds] = useState(() => getStoredMemorizationCollection());
+  const [memorizationCollectionFilter, setMemorizationCollectionFilter] = useState(() => getStoredMemorizationFilter());
 
   const texts = uiTexts[interfaceLanguage] || uiTexts[defaultLang];
 
@@ -168,8 +269,26 @@ export default function useGameLogic() {
   }, [startClassicGame]);
 
   const pickRandomMemorizationPlant = useCallback(() => {
+    const restrictToCollection = memorizationCollectionFilter === MEMORIZATION_FILTERS.COLLECTION
+      ? new Set(memorizationCollectionIds)
+      : null;
+
     const candidates = Array.isArray(memorizationPlants)
-      ? memorizationPlants.filter(plant => plant && typeof plant.image === 'string')
+      ? memorizationPlants.filter(plant => {
+        if (!plant || typeof plant.image !== 'string') {
+          return false;
+        }
+
+        if (!restrictToCollection) {
+          return true;
+        }
+
+        if (plant.id == null) {
+          return false;
+        }
+
+        return restrictToCollection.has(String(plant.id));
+      })
       : [];
 
     if (candidates.length === 0) {
@@ -181,12 +300,26 @@ export default function useGameLogic() {
       return shuffled[0];
     }
 
-    const nextCandidate = shuffled.find(plant => (
-      plant.questionVariantId !== memorizationPlant.questionVariantId
-    ));
+    const currentId = memorizationPlant.id == null ? null : String(memorizationPlant.id);
+    const nextCandidate = shuffled.find(candidate => {
+      if (!candidate) {
+        return false;
+      }
+
+      if (candidate.questionVariantId === memorizationPlant.questionVariantId) {
+        return false;
+      }
+
+      if (currentId == null) {
+        return true;
+      }
+
+      const candidateId = candidate.id == null ? null : String(candidate.id);
+      return candidateId !== currentId;
+    });
 
     return nextCandidate || shuffled[0];
-  }, [memorizationPlant]);
+  }, [memorizationPlant, memorizationCollectionIds, memorizationCollectionFilter]);
 
   const startMemorizationMode = useCallback(() => {
     if (timeoutRef.current) {
@@ -220,6 +353,63 @@ export default function useGameLogic() {
       preloadPlantImages([nextPlant]);
     }
   }, [pickRandomMemorizationPlant, preloadPlantImages]);
+
+  const addPlantToMemorizationCollection = useCallback(plantId => {
+    if (plantId == null) {
+      return;
+    }
+
+    const normalized = String(plantId);
+    if (!normalized) {
+      return;
+    }
+
+    setMemorizationCollectionIds(prev => {
+      if (prev.includes(normalized)) {
+        return prev;
+      }
+      return [...prev, normalized];
+    });
+  }, []);
+
+  const removePlantFromMemorizationCollection = useCallback(plantId => {
+    if (plantId == null) {
+      return;
+    }
+
+    const normalized = String(plantId);
+    if (!normalized) {
+      return;
+    }
+
+    setMemorizationCollectionIds(prev => {
+      if (!prev.includes(normalized)) {
+        return prev;
+      }
+      return prev.filter(id => id !== normalized);
+    });
+  }, []);
+
+  const changeMemorizationCollectionFilter = useCallback(nextFilter => {
+    setMemorizationCollectionFilter(
+      nextFilter === MEMORIZATION_FILTERS.COLLECTION
+        ? MEMORIZATION_FILTERS.COLLECTION
+        : MEMORIZATION_FILTERS.ALL
+    );
+  }, []);
+
+  const isPlantInMemorizationCollection = useCallback(plantId => {
+    if (plantId == null) {
+      return false;
+    }
+
+    const normalized = String(plantId);
+    if (!normalized) {
+      return false;
+    }
+
+    return memorizationCollectionIds.includes(normalized);
+  }, [memorizationCollectionIds]);
 
   const generateOptionIds = useCallback(plant => {
     if (!plant) {
@@ -326,6 +516,14 @@ export default function useGameLogic() {
   }, [plantLanguage]);
 
   useEffect(() => {
+    storeMemorizationCollection(memorizationCollectionIds);
+  }, [memorizationCollectionIds]);
+
+  useEffect(() => {
+    storeMemorizationFilter(memorizationCollectionFilter);
+  }, [memorizationCollectionFilter]);
+
+  useEffect(() => {
     const allowedLanguages = getAllowedPlantLanguageSet(interfaceLanguage);
     if (!allowedLanguages.has(plantLanguage)) {
       setPlantLanguage(interfaceLanguage);
@@ -343,6 +541,49 @@ export default function useGameLogic() {
       clearTimeout(timeoutRef.current);
     }
   }, []);
+
+  useEffect(() => {
+    if (roundPhase !== 'memorization') {
+      return;
+    }
+
+    if (memorizationCollectionFilter === MEMORIZATION_FILTERS.COLLECTION) {
+      if (memorizationCollectionIds.length === 0) {
+        if (memorizationPlant) {
+          setMemorizationPlant(null);
+        }
+        return;
+      }
+
+      const currentId = memorizationPlant && memorizationPlant.id != null
+        ? String(memorizationPlant.id)
+        : null;
+
+      if (!currentId || !memorizationCollectionIds.includes(currentId)) {
+        const nextPlant = pickRandomMemorizationPlant();
+        setMemorizationPlant(nextPlant || null);
+        if (nextPlant) {
+          preloadPlantImages([nextPlant]);
+        }
+      }
+      return;
+    }
+
+    if (!memorizationPlant) {
+      const nextPlant = pickRandomMemorizationPlant();
+      if (nextPlant) {
+        setMemorizationPlant(nextPlant);
+        preloadPlantImages([nextPlant]);
+      }
+    }
+  }, [
+    roundPhase,
+    memorizationCollectionFilter,
+    memorizationCollectionIds,
+    memorizationPlant,
+    pickRandomMemorizationPlant,
+    preloadPlantImages
+  ]);
 
   const logAnswerSelectedEvent = useCallback((selectedId, correctId) => {
     if (typeof window === 'undefined' || typeof window.gtag !== 'function') {
@@ -427,6 +668,8 @@ export default function useGameLogic() {
     });
   }, [optionIds, plantLanguage]);
 
+  const memorizationCollectionSize = memorizationCollectionIds.length;
+
   return {
     interfaceLanguage,
     plantLanguage,
@@ -462,6 +705,12 @@ export default function useGameLogic() {
     options,
     roundMistakes,
     memorizationPlant,
-    showNextMemorizationPlant
+    showNextMemorizationPlant,
+    addPlantToMemorizationCollection,
+    removePlantFromMemorizationCollection,
+    isPlantInMemorizationCollection,
+    memorizationCollectionSize,
+    memorizationCollectionFilter,
+    changeMemorizationCollectionFilter
   };
 }
