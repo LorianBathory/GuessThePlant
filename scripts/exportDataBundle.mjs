@@ -15,7 +15,8 @@ import {
   questionIdsByDifficulty as rawQuestionIdsByDifficulty,
   imageIdsByDifficulty as rawImageIdsByDifficulty,
   plantParametersById,
-  plantFamilies
+  plantFamilies,
+  plantTagDefinitionsById
 } from '../src/game/dataLoader.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -147,6 +148,11 @@ async function main() {
       .sort(([idA], [idB]) => comparePlantIds(idA, idB))
   );
 
+  const sortedTagDefinitions = Object.fromEntries(
+    Object.entries(plantTagDefinitionsById)
+      .sort(([tagA], [tagB]) => tagA.localeCompare(tagB, 'en'))
+  );
+
   const sortedPlantFamilies = Object.fromEntries(
     Object.entries(plantFamilies)
       .sort(([familyA], [familyB]) => familyA.localeCompare(familyB, 'en'))
@@ -166,6 +172,7 @@ async function main() {
     species: sortedSpecies,
     plantImages: sortedPlantImages,
     plantParameters: sortedPlantParameters,
+    plantParameterTags: sortedTagDefinitions,
     plantFamilies: sortedPlantFamilies,
     bouquetQuestions: sortedBouquets,
     difficulties: sortedDifficulties,

@@ -12,6 +12,7 @@ import {
   difficultyLevels,
   plantParametersById,
   plantFamilies,
+  plantTagDefinitionsById,
   allGenusEntries,
   buildGameDataForTesting,
   deriveNormalizedPlantData
@@ -50,6 +51,7 @@ async function loadJson(relativePath) {
 
 const plantDataJson = await loadJson('../src/data/json/plantData.json');
 const memorizationJson = await loadJson('../src/data/json/memorization.json');
+const plantParameterConfigJson = await loadJson('../src/data/json/plantParameters.json');
 
 const NUMERIC_ID_PATTERN = /^\d+$/;
 
@@ -219,6 +221,66 @@ function assertDifficultyLookups() {
   assert.ok(difficultyLevels.MEDIUM, 'Default difficulty level must be available');
 }
 
+function assertMemorizationTags() {
+  const tagDefinitions = plantParameterConfigJson && typeof plantParameterConfigJson === 'object'
+    ? plantParameterConfigJson.tags
+    : null;
+
+  const tagIdsFromConfig = new Set(
+    Array.isArray(tagDefinitions)
+      ? tagDefinitions
+        .map(entry => (entry && typeof entry === 'object' && typeof entry.id === 'string') ? entry.id.trim() : null)
+        .filter(Boolean)
+      : []
+  );
+
+  const normalizedDefinitionKeys = Object.keys(plantTagDefinitionsById || {});
+  assert.ok(normalizedDefinitionKeys.length > 0, 'Memorization tag definitions must be populated');
+
+  const unknownTags = new Set();
+
+  Object.values(plantParametersById).forEach(params => {
+    if (!params || typeof params !== 'object') {
+      return;
+    }
+
+    const rawTags = params.tags ?? params.tagIds ?? params.newTags;
+
+    if (!rawTags) {
+      return;
+    }
+
+    const entries = Array.isArray(rawTags) ? rawTags : [rawTags];
+
+    entries.forEach(entry => {
+      let tagId = null;
+
+      if (typeof entry === 'string') {
+        tagId = entry.trim();
+      } else if (entry && typeof entry === 'object') {
+        const candidate = typeof entry.id === 'string' ? entry.id : typeof entry.tag === 'string' ? entry.tag : null;
+        tagId = candidate ? candidate.trim() : null;
+      }
+
+      if (!tagId) {
+        return;
+      }
+
+      if (!plantTagDefinitionsById[tagId]) {
+        unknownTags.add(tagId);
+      }
+    });
+  });
+
+  assert.strictEqual(unknownTags.size, 0, `Unknown memorization tags referenced: ${Array.from(unknownTags).join(', ')}`);
+
+  normalizedDefinitionKeys.forEach(tagId => {
+    if (!tagIdsFromConfig.has(tagId)) {
+      throw new Error(`Tag "${tagId}" is exported by dataLoader but missing from plantParameters.json`);
+    }
+  });
+}
+
 function assertCatalogConsistency() {
   const normalizedGenus = Array.isArray(memorizationJson.genus) && memorizationJson.genus.length > 0
     ? memorizationJson.genus
@@ -286,6 +348,7 @@ function assertCatalogConsistency() {
 assertPlantIntegrity();
 assertBouquetIntegrity();
 assertDifficultyLookups();
+assertMemorizationTags();
 assertCatalogConsistency();
 
 console.log('Game data verification passed');

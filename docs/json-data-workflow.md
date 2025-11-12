@@ -4,6 +4,7 @@
 
 - [`plantData.json`](../src/data/json/plantData.json) хранит нормализованный каталог растений: `plantNames`, `species`, `plantImages` и таблицы сложности (`difficulties`). Игровые вопросы (`plants`) собираются автоматически функцией `buildPlants()` во время загрузки.
 - [`memorization.json`](../src/data/json/memorization.json) хранит параметры растений (`plantParameters`, включая поле `family` внутри каждой записи), определения родов (`genus`) и список карточек режима заучивания (`plants`).
+- [`plantParameters.json`](../src/data/json/plantParameters.json) описывает глобальный справочник тегов режима заучивания: идентификаторы, подписи на трёх языках и (опционально) иконки/цвета для UI.
 - [`bouquetQuestions.json`](../src/data/json/bouquetQuestions.json) содержит вопросы о букетах.
 
 Загрузчик [`src/game/dataLoader.js`](../src/game/dataLoader.js) объединяет эти файлы в единый бандл (`speciesById`, `plants`, индексы сложности) и дополняет результат вопросами, которые подгружаются из отдельных файлов по типу. Для букетов используется [`src/data/json/bouquetQuestions.json`](../src/data/json/bouquetQuestions.json), для заучивания — [`src/data/json/memorization.json`](../src/data/json/memorization.json); в дальнейшем по аналогии можно добавить новые типы вопросов, просто зарегистрировав их нормализатор и указав путь к файлу.

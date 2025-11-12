@@ -354,6 +354,11 @@ const plantDataJson = Object.freeze(await loadJsonModule('../data/json/plantData
   )
 }));
 
+const plantParameterConfigJson = Object.freeze(await loadJsonModule('../data/json/plantParameters.json', {
+  fallbackValue: {},
+  fallbackKey: 'plantParameterConfig'
+}));
+
 const normalizedPlantData = deriveNormalizedPlantData(plantDataJson);
 
 const bouquetQuestionDefinitions = Object.freeze(await loadJsonModule('../data/json/bouquetQuestions.json', {
@@ -377,6 +382,8 @@ const plantFamilySource = (
       : derivePlantFamiliesFromParameters(plantParameterSource)
 );
 
+const plantTagDefinitionsData = buildPlantTagDefinitions(plantParameterConfigJson);
+
 function freezeQuestionDefinitions(definitions) {
   if (!Array.isArray(definitions)) {
     return Object.freeze([]);
@@ -396,6 +403,7 @@ export const dataBundle = Object.freeze({
   genus: Array.isArray(memorizationJson.genus) ? memorizationJson.genus : Array.isArray(plantDataJson.genus) ? plantDataJson.genus : [],
   plantImages: normalizedPlantData.plantImages,
   plantParameters: plantParameterSource,
+  plantTagDefinitions: plantTagDefinitionsData.tags,
   plantFamilies: plantFamilySource,
   memorization: (
     memorizationJson && typeof memorizationJson === 'object'
@@ -461,6 +469,62 @@ function buildPlantFamilyData(rawFamilies) {
   };
 }
 
+function buildPlantTagDefinitions(config) {
+  const source = config && typeof config === 'object' ? config : {};
+  const tagEntries = Array.isArray(source.tags) ? source.tags : [];
+
+  const normalizedTags = tagEntries
+    .map(entry => {
+      if (!entry || typeof entry !== 'object') {
+        return null;
+      }
+
+      const rawId = entry.id ?? entry.tag ?? null;
+      const id = typeof rawId === 'string' ? rawId.trim() : null;
+
+      if (!id) {
+        return null;
+      }
+
+      const labelSource = entry.label ?? entry.text ?? entry.name ?? null;
+      let normalizedLabel = null;
+
+      if (labelSource && typeof labelSource === 'object' && !Array.isArray(labelSource)) {
+        const filteredEntries = Object.entries(labelSource)
+          .filter(([, value]) => typeof value === 'string' && value.trim());
+
+        if (filteredEntries.length) {
+          normalizedLabel = freezeObject(Object.fromEntries(
+            filteredEntries.map(([language, value]) => [language, value.trim()])
+          ));
+        }
+      } else if (typeof labelSource === 'string') {
+        const trimmed = labelSource.trim();
+        normalizedLabel = trimmed ? trimmed : null;
+      }
+
+      const icon = typeof entry.icon === 'string' && entry.icon.trim() ? entry.icon.trim() : null;
+      const circleColor = typeof entry.circleColor === 'string' && entry.circleColor.trim() ? entry.circleColor.trim() : null;
+      const circleContent = Object.prototype.hasOwnProperty.call(entry, 'circleContent') ? entry.circleContent : undefined;
+
+      const normalizedEntry = {
+        id,
+        ...(normalizedLabel !== null ? { label: normalizedLabel } : {}),
+        ...(icon ? { icon } : {}),
+        ...(circleColor ? { circleColor } : {}),
+        ...(circleContent !== undefined ? { circleContent } : {})
+      };
+
+      return Object.freeze(normalizedEntry);
+    })
+    .filter(Boolean);
+
+  return {
+    tags: Object.freeze(normalizedTags),
+    tagsById: Object.freeze(Object.fromEntries(normalizedTags.map(tag => [tag.id, tag])))
+  };
+}
+
 function buildPlantParameters({ plantParameters, plantFamilyById }) {
   const source = plantParameters && typeof plantParameters === 'object' ? plantParameters : {};
 
@@ -495,10 +559,27 @@ const plantFamilyData = buildPlantFamilyData(dataBundle.plantFamilies);
 export const plantFamilies = plantFamilyData.plantFamilies;
 export const plantFamilyById = plantFamilyData.plantFamilyById;
 
+export const plantTagDefinitions = plantTagDefinitionsData.tags;
+export const plantTagDefinitionsById = plantTagDefinitionsData.tagsById;
+
 export const plantParametersById = buildPlantParameters({
   plantParameters: dataBundle.plantParameters,
   plantFamilyById: plantFamilyData.plantFamilyById
 });
+
+export function getPlantTagDefinition(id) {
+  if (typeof id !== 'string') {
+    return null;
+  }
+
+  const normalizedId = id.trim();
+
+  if (!normalizedId) {
+    return null;
+  }
+
+  return plantTagDefinitionsById[normalizedId] || null;
+}
 
 export function getPlantParameters(id) {
   const parsedId = parseCatalogId(id);

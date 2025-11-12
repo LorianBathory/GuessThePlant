@@ -1,0 +1,20 @@
+{
+  "tags": [
+    {
+      "id": "droughtTolerant",
+      "label": {
+        "ru": "Засухоустойчивое",
+        "en": "Drought tolerant",
+        "nl": "Droogtetolerant"
+      }
+    },
+    {
+      "id": "medicinal",
+      "label": {
+        "ru": "Лекарственное растение",
+        "en": "Medicinal plant",
+        "nl": "Geneeskrachtige plant"
+      }
+    }
+  ]
+}
