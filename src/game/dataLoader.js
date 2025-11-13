@@ -274,6 +274,22 @@ function derivePlantFamiliesFromParameters(plantParameters) {
   return buckets;
 }
 
+function deriveMemorizationPlantEntries({ memorizationJson, plantParameters }) {
+  if (plantParameters && typeof plantParameters === 'object') {
+    const parameterIds = Object.keys(plantParameters);
+
+    if (parameterIds.length > 0) {
+      return parameterIds.map(id => ({ id }));
+    }
+  }
+
+  if (memorizationJson && typeof memorizationJson === 'object' && Array.isArray(memorizationJson.plants)) {
+    return memorizationJson.plants.slice();
+  }
+
+  return [];
+}
+
 function extractJsonModuleData(module, fallbackKey) {
   if (module && typeof module === 'object') {
     if ('default' in module) {
@@ -382,6 +398,11 @@ const plantFamilySource = (
       : derivePlantFamiliesFromParameters(plantParameterSource)
 );
 
+const memorizationPlantEntries = deriveMemorizationPlantEntries({
+  memorizationJson,
+  plantParameters: plantParameterSource
+});
+
 const plantTagDefinitionsData = buildPlantTagDefinitions(plantParameterConfigJson);
 
 function freezeQuestionDefinitions(definitions) {
@@ -406,8 +427,8 @@ export const dataBundle = Object.freeze({
   plantTagDefinitions: plantTagDefinitionsData.tags,
   plantFamilies: plantFamilySource,
   memorization: (
-    memorizationJson && typeof memorizationJson === 'object'
-      ? { plants: Array.isArray(memorizationJson.plants) ? memorizationJson.plants : [] }
+    memorizationPlantEntries.length > 0
+      ? { plants: Object.freeze(memorizationPlantEntries.slice()) }
       : {}
   ),
   difficulties: normalizedPlantData.difficulties,
