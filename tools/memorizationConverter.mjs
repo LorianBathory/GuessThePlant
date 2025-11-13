@@ -262,8 +262,24 @@ async function loadPlantCatalog() {
 }
 
 function enrichPlantEntry({ baseEntry, plantLookupKey, imageId, record, plantCatalog }) {
+  const result = { ...baseEntry };
+  delete result.imageId;
+
   if (!plantCatalog || plantCatalog.isEmpty) {
-    return baseEntry;
+    if (!result.questionVariantId) {
+      result.questionVariantId = `memorization-${plantLookupKey}`;
+    }
+    if (!result.selectionGroupId) {
+      result.selectionGroupId = `memorization-${plantLookupKey}`;
+    }
+    if (!result.questionType) {
+      result.questionType = 'plant';
+    }
+    if (!result.questionPromptKey) {
+      result.questionPromptKey = 'question';
+    }
+    result.correctAnswerId = baseEntry.id;
+    return result;
   }
 
   const species = plantCatalog.plantById.get(plantLookupKey);
@@ -271,17 +287,46 @@ function enrichPlantEntry({ baseEntry, plantLookupKey, imageId, record, plantCat
     throw new Error(`Не найдено растение с id «${plantLookupKey}» в plantData.json (строка ${record.__line}).`);
   }
 
-  const imageEntry = plantCatalog.imageById.get(imageId);
+  let imageEntry = null;
+
+  if (imageId) {
+    imageEntry = plantCatalog.imageById.get(imageId);
+    if (!imageEntry) {
+      throw new Error(`Изображение с imageId «${imageId}» не найдено в plantData.json (строка ${record.__line}).`);
+    }
+
+    const imagePlantKey = normalizeId(imageEntry.plantLookupKey ?? imageEntry.plantId ?? '');
+    if (imagePlantKey && imagePlantKey !== plantLookupKey) {
+      throw new Error(`Изображение «${imageId}» не относится к растению «${plantLookupKey}» (строка ${record.__line}).`);
+    }
+  }
+
   if (!imageEntry) {
-    throw new Error(`Изображение с imageId «${imageId}» не найдено в plantData.json (строка ${record.__line}).`);
+    const fallbackImages = Array.isArray(species.images)
+      ? species.images
+        .map((image) => {
+          if (!image) {
+            return null;
+          }
+          if (typeof image === 'string') {
+            const candidateId = normalizeId(image);
+            return candidateId ? plantCatalog.imageById.get(candidateId) || null : null;
+          }
+          if (typeof image === 'object' && image.id) {
+            const candidateId = normalizeId(image.id);
+            if (!candidateId) {
+              return null;
+            }
+            return plantCatalog.imageById.get(candidateId) || null;
+          }
+          return null;
+        })
+        .filter(Boolean)
+      : [];
+
+    imageEntry = fallbackImages[0] || null;
   }
 
-  const imagePlantKey = normalizeId(imageEntry.plantLookupKey ?? imageEntry.plantId ?? '');
-  if (imagePlantKey && imagePlantKey !== plantLookupKey) {
-    throw new Error(`Изображение «${imageId}» не относится к растению «${plantLookupKey}» (строка ${record.__line}).`);
-  }
-
-  const result = { ...baseEntry };
   result.correctAnswerId = baseEntry.id;
 
   if (species.names && typeof species.names === 'object') {
@@ -296,11 +341,11 @@ function enrichPlantEntry({ baseEntry, plantLookupKey, imageId, record, plantCat
     result.wrongAnswers = wrongAnswers;
   }
 
-  if (imageEntry.src) {
+  if (imageEntry && imageEntry.src) {
     result.image = imageEntry.src;
   }
 
-  if (imageEntry.difficulty !== undefined && imageEntry.difficulty !== null) {
+  if (imageEntry && imageEntry.difficulty !== undefined && imageEntry.difficulty !== null) {
     result.difficulty = imageEntry.difficulty;
   } else if (species.difficulty !== undefined && species.difficulty !== null && result.difficulty === undefined) {
     result.difficulty = species.difficulty;
@@ -623,14 +668,12 @@ function buildPlantsArrayFromRecords(records, { existingPlants = [], plantCatalo
   records.forEach((record) => {
     const rawImageId = record.imageId || '';
     const imageId = normalizeId(rawImageId);
-    if (!imageId) {
-      return;
+    if (imageId) {
+      if (imageIds.has(imageId)) {
+        throw new Error(`Повторяющийся imageId «${imageId}» в строке ${record.__line}.`);
+      }
+      imageIds.add(imageId);
     }
-
-    if (imageIds.has(imageId)) {
-      throw new Error(`Повторяющийся imageId «${imageId}» в строке ${record.__line}.`);
-    }
-    imageIds.add(imageId);
 
     const { plantId, entryId } = getPlantIdentifiers(record);
     const lookupKeys = getLookupKeysForPlantId(plantId);
@@ -643,14 +686,34 @@ function buildPlantsArrayFromRecords(records, { existingPlants = [], plantCatalo
       }
     }
 
+    if (!existingEntry && !imageId) {
+      return;
+    }
+
+    const plantLookupKey = lookupKeys[0] || plantId;
+    const speciesExists = !plantCatalog || plantCatalog.isEmpty
+      ? true
+      : plantCatalog.plantById.has(plantLookupKey);
+
+    if (!speciesExists) {
+      if (existingEntry && typeof existingEntry === 'object') {
+        const preserved = { ...existingEntry, id: entryId };
+        delete preserved.imageId;
+        plants.push(preserved);
+      }
+      return;
+    }
+
     const baseEntry = existingEntry && typeof existingEntry === 'object'
-      ? { ...existingEntry, id: entryId, imageId }
-      : { id: entryId, imageId };
+      ? { ...existingEntry, id: entryId }
+      : { id: entryId };
+
+    delete baseEntry.imageId;
 
     const enriched = enrichPlantEntry({
       baseEntry,
-      plantLookupKey: lookupKeys[0] || plantId,
-      imageId,
+      plantLookupKey,
+      imageId: imageId || null,
       record,
       plantCatalog
     });
@@ -708,13 +771,27 @@ async function convertCsvToJson(inputPath, outputPath) {
 
   const plantCatalog = await loadPlantCatalog();
 
-  const plants = buildPlantsArrayFromRecords(normalizedRecords, {
-    existingPlants,
-    plantCatalog
-  });
-
   const imageRows = normalizedRecords.filter((record) => normalizeId(record.imageId || ''));
   const rowsWithImageId = imageRows.length;
+
+  let plants = [];
+  if (rowsWithImageId === 0) {
+    plants = Array.isArray(existingPlants)
+      ? existingPlants
+        .filter((entry) => entry && typeof entry === 'object')
+        .map((entry) => {
+          const clone = { ...entry };
+          delete clone.imageId;
+          return clone;
+        })
+        .sort((a, b) => comparePlantIds(String(a.id), String(b.id)))
+      : [];
+  } else {
+    plants = buildPlantsArrayFromRecords(normalizedRecords, {
+      existingPlants,
+      plantCatalog
+    });
+  }
   console.log(
     `Строк с imageId в CSV: ${rowsWithImageId}. Добавлено записей в раздел plants: ${plants.length}.`
   );

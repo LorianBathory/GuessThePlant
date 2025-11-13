@@ -431,9 +431,87 @@ function buildCustomTagParameterItems(rawTags, language, unknownLabel) {
     .filter(Boolean);
 }
 
-function PlantImage({ plant }) {
-  const { createElement, useMemo } = ensureReact();
-  const imageSrc = plant && typeof plant.image === 'string' ? plant.image : null;
+function PlantImage({ plant, texts }) {
+  const { createElement, useMemo, useState, useEffect, useCallback } = ensureReact();
+
+  const imageEntries = useMemo(() => {
+    if (!plant) {
+      return [];
+    }
+
+    const entries = Array.isArray(plant.images)
+      ? plant.images
+        .map(imageEntry => {
+          if (!imageEntry) {
+            return null;
+          }
+
+          if (typeof imageEntry === 'string') {
+            const trimmed = imageEntry.trim();
+            return trimmed ? { id: null, src: trimmed } : null;
+          }
+
+          if (typeof imageEntry === 'object') {
+            const src = typeof imageEntry.src === 'string' ? imageEntry.src.trim() : '';
+            if (!src) {
+              return null;
+            }
+
+            const id = typeof imageEntry.id === 'string' && imageEntry.id.trim() ? imageEntry.id.trim() : null;
+            return { id, src };
+          }
+
+          return null;
+        })
+        .filter(Boolean)
+      : [];
+
+    if (entries.length > 0) {
+      return entries;
+    }
+
+    const fallbackSrc = plant && typeof plant.image === 'string' ? plant.image.trim() : '';
+    if (!fallbackSrc) {
+      return [];
+    }
+
+    const fallbackId = plant && typeof plant.imageId === 'string' && plant.imageId.trim() ? plant.imageId.trim() : null;
+    return [{ id: fallbackId, src: fallbackSrc }];
+  }, [plant]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const plantIdentifier = plant ? plant.id : null;
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [plantIdentifier, imageEntries.length]);
+
+  const hasImages = imageEntries.length > 0;
+  const hasMultipleImages = imageEntries.length > 1;
+  const currentImage = hasImages ? imageEntries[Math.min(currentIndex, imageEntries.length - 1)] : null;
+
+  useEffect(() => {
+    if (currentIndex >= imageEntries.length && imageEntries.length > 0) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, imageEntries.length]);
+
+  const showPrevious = useCallback(() => {
+    if (!hasMultipleImages) {
+      return;
+    }
+    setCurrentIndex(previous => (previous - 1 + imageEntries.length) % imageEntries.length);
+  }, [hasMultipleImages, imageEntries.length]);
+
+  const showNext = useCallback(() => {
+    if (!hasMultipleImages) {
+      return;
+    }
+    setCurrentIndex(previous => (previous + 1) % imageEntries.length);
+  }, [hasMultipleImages, imageEntries.length]);
+
+  const imageSrc = currentImage && typeof currentImage.src === 'string' ? currentImage.src : null;
   const { secureSrc, status } = useSecureImageSource(imageSrc);
 
   const containerStyle = useMemo(() => ({
@@ -451,7 +529,7 @@ function PlantImage({ plant }) {
 
   if (status === 'error') {
     return createElement('div', {
-      className: 'w-full flex items-center justify-center text-center',
+      className: 'w-full flex flex-col items-center justify-center text-center',
       style: {
         ...containerStyle,
         padding: '24px',
@@ -468,44 +546,92 @@ function PlantImage({ plant }) {
     }, createElement('span', { className: 'sr-only' }, 'Загрузка изображения'));
   }
 
-  return createElement('div', {
-    className: 'relative w-full h-0',
-    style: containerStyle
-  }, [
-    createElement('div', {
-      key: 'glow',
-      className: 'absolute inset-0',
-      style: {
-        background: 'radial-gradient(circle at 20% 25%, rgba(194, 156, 39, 0.22), transparent 55%)'
-      }
-    }),
-    createElement('img', {
-      key: 'image',
-      src: secureSrc,
-      alt: plant.names?.[defaultLang] || `Plant ${plant.id}`,
-      style: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover'
-      },
-      draggable: false,
-      onContextMenu: event => {
-        if (event && typeof event.preventDefault === 'function') {
-          event.preventDefault();
-        }
-      }
-    }),
-    createElement('div', {
-      key: 'shade',
-      className: 'absolute inset-0 pointer-events-none',
-      style: {
-        background: 'linear-gradient(180deg, rgba(8, 27, 26, 0) 40%, rgba(8, 27, 26, 0.75) 100%)'
-      }
-    })
-  ]);
+  const navButtonStyle = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '42px',
+    height: '42px',
+    borderRadius: '9999px',
+    border: `1px solid ${ACCENT_COLOR}`,
+    background: 'rgba(194, 156, 39, 0.18)',
+    color: ACCENT_COLOR,
+    cursor: 'pointer'
+  };
+
+  return createElement(
+    'div',
+    { className: 'w-full flex flex-col items-center' },
+    [
+      createElement('div', {
+        key: 'image-wrapper',
+        className: 'relative w-full h-0',
+        style: containerStyle
+      }, [
+        createElement('div', {
+          key: 'glow',
+          className: 'absolute inset-0',
+          style: {
+            background: 'radial-gradient(circle at 20% 25%, rgba(194, 156, 39, 0.22), transparent 55%)'
+          }
+        }),
+        createElement('img', {
+          key: `image-${currentImage?.id || currentIndex}`,
+          src: secureSrc,
+          alt: plant.names?.[defaultLang] || `Plant ${plant.id}`,
+          style: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
+          },
+          draggable: false,
+          onContextMenu: event => {
+            if (event && typeof event.preventDefault === 'function') {
+              event.preventDefault();
+            }
+          }
+        }),
+        createElement('div', {
+          key: 'shade',
+          className: 'absolute inset-0 pointer-events-none',
+          style: {
+            background: 'linear-gradient(180deg, rgba(8, 27, 26, 0) 40%, rgba(8, 27, 26, 0.75) 100%)'
+          }
+        })
+      ]),
+      hasMultipleImages
+        ? createElement('div', {
+          key: 'gallery-nav',
+          className: 'flex items-center justify-center gap-4 mt-4'
+        }, [
+          createElement('button', {
+            key: 'prev',
+            type: 'button',
+            onClick: showPrevious,
+            'aria-label': texts?.memorizationPrevImage || 'Предыдущее изображение',
+            style: navButtonStyle
+          }, createElement('span', {
+            style: { display: 'inline-flex', transform: 'scaleX(-1)' }
+          }, createElement(ArrowIcon))),
+          createElement('span', {
+            key: 'counter',
+            className: 'text-sm tracking-wide uppercase font-semibold',
+            style: { color: colors.accent }
+          }, `${currentIndex + 1} / ${imageEntries.length}`),
+          createElement('button', {
+            key: 'next',
+            type: 'button',
+            onClick: showNext,
+            'aria-label': texts?.memorizationNextImage || 'Следующее изображение',
+            style: navButtonStyle
+          }, createElement(ArrowIcon))
+        ])
+        : null
+    ]
+  );
 }
 
 export default function MemorizationScreen({
@@ -1116,7 +1242,7 @@ export default function MemorizationScreen({
   const cardChildren = [];
 
   if (plant) {
-    cardChildren.push(createElement(PlantImage, { plant }));
+    cardChildren.push(createElement(PlantImage, { plant, texts }));
   }
 
   cardChildren.push(createElement('div', {

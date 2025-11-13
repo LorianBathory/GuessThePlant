@@ -49,7 +49,9 @@ export const uiTexts = {
     memorizationRemoveFromCollection: "Удалить из коллекции",
     memorizationFilterLabel: "Набор карточек",
     memorizationFilterAll: "Все карточки",
-    memorizationFilterCollection: "Только коллекция"
+    memorizationFilterCollection: "Только коллекция",
+    memorizationPrevImage: "Предыдущее изображение",
+    memorizationNextImage: "Следующее изображение"
   },
   en: {
     question: "What plant is this?",
@@ -101,7 +103,9 @@ export const uiTexts = {
     memorizationRemoveFromCollection: "Remove from collection",
     memorizationFilterLabel: "Study set",
     memorizationFilterAll: "All cards",
-    memorizationFilterCollection: "Collection only"
+    memorizationFilterCollection: "Collection only",
+    memorizationPrevImage: "Previous photo",
+    memorizationNextImage: "Next photo"
   },
   nl: {
     question: "Wat is deze plant?",
@@ -153,7 +157,9 @@ export const uiTexts = {
     memorizationRemoveFromCollection: "Uit collectie verwijderen",
     memorizationFilterLabel: "Set kaarten",
     memorizationFilterAll: "Alle kaarten",
-    memorizationFilterCollection: "Alleen collectie"
+    memorizationFilterCollection: "Alleen collectie",
+    memorizationPrevImage: "Vorige foto",
+    memorizationNextImage: "Volgende foto"
   }
 };
 
