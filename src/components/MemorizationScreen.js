@@ -706,7 +706,7 @@ export default function MemorizationScreen({
     letterSpacing: '0.01em',
     textTransform: 'none',
     transition: 'background-color 0.2s ease, color 0.2s ease',
-    width: isMobile ? '100%' : 'auto'
+    width: '100%'
   }), [isMobile, isInCollection, collectionButtonDisabled]);
 
   const plantName = plant && plant.names
@@ -811,8 +811,10 @@ export default function MemorizationScreen({
       width: '100%',
       background: '#163B3A',
       display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      gap: isMobile ? '16px' : '24px',
       paddingTop: '24px',
       paddingRight: `${sidePadding}px`,
       paddingLeft: `${sidePadding}px`,
@@ -845,19 +847,20 @@ export default function MemorizationScreen({
     justifyContent: 'center',
     gap: isMobile ? '16px' : '24px',
     width: '100%',
-    maxWidth: isMobile ? '560px' : '860px'
+    maxWidth: isMobile ? '560px' : '1040px',
+    margin: '0 auto'
   }), [isMobile]);
 
   const arrowButtonStyle = useMemo(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: isMobile ? '12px' : '0px',
-    minWidth: isMobile ? '64px' : '76px',
-    height: isMobile ? '64px' : '100%',
+    padding: isMobile ? '12px' : '16px',
+    minWidth: isMobile ? '64px' : '72px',
+    height: isMobile ? '64px' : '88px',
     background: 'rgba(8, 38, 36, 0.65)',
     border: `3px solid ${ACCENT_COLOR}`,
-    borderRadius: 0,
+    borderRadius: isMobile ? '999px' : '16px',
     cursor: plant ? 'pointer' : 'not-allowed',
     color: ACCENT_COLOR,
     opacity: plant ? 1 : 0.45
@@ -941,7 +944,7 @@ export default function MemorizationScreen({
     disabled: collectionButtonDisabled
   }, collectionButtonLabel);
 
-  const filterButtonsElements = ['all', 'collection'].map(value => {
+  const renderFilterButtons = () => ['all', 'collection'].map(value => {
     const isActive = activeFilter === value;
     const disabled = value === 'collection' ? isCollectionFilterDisabled : false;
     const label = value === 'collection' ? filterCollectionLabelWithCount : filterAllLabel;
@@ -973,17 +976,17 @@ export default function MemorizationScreen({
     }, label);
   });
 
-  const filterControl = createElement('div', {
-    key: 'filter-control',
+  const buildFilterControl = (key, styleOverrides = {}) => createElement('div', {
+    key,
     style: {
-      flex: '1 1 auto',
       display: 'flex',
       flexDirection: 'column',
       gap: '8px',
       padding: isMobile ? '12px' : '14px 18px',
       borderRadius: '12px',
       border: `1px solid ${ACCENT_COLOR}`,
-      backgroundColor: 'rgba(8, 38, 36, 0.55)'
+      backgroundColor: 'rgba(8, 38, 36, 0.55)',
+      ...styleOverrides
     }
   }, [
     createElement('span', {
@@ -1005,27 +1008,7 @@ export default function MemorizationScreen({
         flexWrap: 'wrap',
         alignItems: isMobile ? 'stretch' : 'center'
       }
-    }, filterButtonsElements)
-  ]);
-
-  const controlsRow = createElement('div', {
-    key: 'controls-row',
-    style: {
-      display: 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      alignItems: isMobile ? 'stretch' : 'center',
-      gap: isMobile ? '12px' : '16px',
-      marginBottom: '20px'
-    }
-  }, [
-    createElement('div', {
-      key: 'collection-button-wrapper',
-      style: {
-        flex: isMobile ? '1 1 auto' : '0 0 auto',
-        display: 'flex'
-      }
-    }, [collectionButtonElement]),
-    filterControl
+    }, renderFilterButtons())
   ]);
 
   const parameterRow = createElement('div', {
@@ -1236,8 +1219,8 @@ export default function MemorizationScreen({
   ]);
 
   const infoChildren = plant
-    ? [controlsRow, headingSection, parameterRow, additionalInfoBlock, hardinessSection]
-    : [controlsRow, emptyStateContent];
+    ? [headingSection, parameterRow, additionalInfoBlock, hardinessSection]
+    : [emptyStateContent];
 
   const cardChildren = [];
 
@@ -1265,13 +1248,84 @@ export default function MemorizationScreen({
     disabled: !plant
   }, createElement(ArrowIcon));
 
-  const layoutChildren = [cardElement, arrowButton];
+  const collectionButtonWrapper = createElement('div', {
+    key: 'collection-button-wrapper',
+    style: {
+      marginTop: isMobile ? '12px' : '20px',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  }, [
+    createElement('div', {
+      key: 'collection-button-inner',
+      style: {
+        width: '100%',
+        maxWidth: isMobile ? '360px' : '420px',
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    }, [collectionButtonElement])
+  ]);
+
+  let layoutChildren = [];
+  const trailingChildren = [collectionButtonWrapper];
+
+  if (isMobile) {
+    layoutChildren = [
+      cardElement,
+      createElement('div', {
+        key: 'arrow-mobile-wrapper',
+        style: {
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100%'
+        }
+      }, [arrowButton])
+    ];
+
+    trailingChildren.push(buildFilterControl('filter-control-mobile', {
+      width: '100%'
+    }));
+  } else {
+    const sideColumnChildren = [];
+
+    sideColumnChildren.push(buildFilterControl('filter-control-desktop', {
+      alignSelf: 'stretch',
+      width: '260px'
+    }));
+
+    sideColumnChildren.push(createElement('div', {
+      key: 'arrow-container',
+      style: {
+        flex: '1 1 auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }
+    }, [arrowButton]));
+
+    const sideColumn = createElement('div', {
+      key: 'side-column',
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        gap: '20px',
+        flex: '0 0 auto'
+      }
+    }, sideColumnChildren);
+
+    layoutChildren = [cardElement, sideColumn];
+  }
+
+  const layoutElement = createElement('div', {
+    key: 'layout',
+    style: layoutStyle
+  }, layoutChildren);
 
   return createElement('div', {
     className: 'w-full',
     style: outerStyle
-  }, createElement('div', {
-    key: 'layout',
-    style: layoutStyle
-  }, layoutChildren));
+  }, [layoutElement, ...trailingChildren]);
 }
