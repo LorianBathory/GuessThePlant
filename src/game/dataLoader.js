@@ -887,16 +887,25 @@ function normalizeMemorizationEntry(entry) {
   }
 
   const rawId = entry.id ?? entry.plantId ?? entry.correctAnswerId;
-  const imageId = entry.imageId != null ? String(entry.imageId) : null;
-
-  if (rawId == null || !imageId) {
+  if (rawId == null) {
     return null;
   }
 
-  return {
-    id: parseCatalogId(rawId),
-    imageId
+  const normalized = {
+    id: parseCatalogId(rawId)
   };
+
+  const imageId = entry.imageId != null ? String(entry.imageId) : null;
+  if (imageId) {
+    normalized.imageId = imageId;
+  }
+
+  const explicitImage = typeof entry.image === 'string' ? entry.image.trim() : '';
+  if (explicitImage) {
+    normalized.image = explicitImage;
+  }
+
+  return normalized;
 }
 
 function buildMemorizationPlants({ memorizationEntries, speciesById, plantImagesById, difficultyLookups }) {
@@ -910,24 +919,79 @@ function buildMemorizationPlants({ memorizationEntries, speciesById, plantImages
 
   return Object.freeze(
     normalizedEntries
-      .map(({ id, imageId }) => {
+      .map(({ id, imageId, image: explicitImage }) => {
         const species = speciesById[id];
-        const imageEntry = plantImagesById[imageId];
-
-        if (!species || !species.names || !imageEntry) {
+        if (!species || !species.names) {
           return null;
         }
 
-        const overrideDifficulty = difficultyLookups.getImageDifficulty(imageEntry.id, questionTypes.PLANT);
+        const galleryMap = new Map();
+
+        const pushImage = (imageEntry, fallbackId = null) => {
+          if (!imageEntry || typeof imageEntry !== 'object') {
+            return;
+          }
+
+          const src = typeof imageEntry.src === 'string' ? imageEntry.src : null;
+          if (!src) {
+            return;
+          }
+
+          const normalizedId = typeof imageEntry.id === 'string' && imageEntry.id ? imageEntry.id : fallbackId;
+          const key = normalizedId || src;
+
+          if (!galleryMap.has(key)) {
+            galleryMap.set(key, { id: normalizedId || null, src });
+          }
+        };
+
+        if (Array.isArray(species.images)) {
+          species.images
+            .map(imageKey => plantImagesById[imageKey])
+            .forEach(imageEntry => pushImage(imageEntry));
+        }
+
+        if (imageId && plantImagesById[imageId]) {
+          pushImage(plantImagesById[imageId]);
+        }
+
+        if (explicitImage) {
+          pushImage({ id: imageId || null, src: explicitImage }, imageId || null);
+        }
+
+        const gallery = Array.from(galleryMap.values());
+
+        if (gallery.length === 0) {
+          return null;
+        }
+
+        const preferredImage = imageId ? gallery.find(imageEntry => imageEntry.id === imageId) : null;
+        const primaryImageEntry = preferredImage || gallery[0];
+
+        const overrideDifficulty = typeof primaryImageEntry.id === 'string'
+          ? difficultyLookups.getImageDifficulty(primaryImageEntry.id, questionTypes.PLANT)
+          : null;
         const difficulty = overrideDifficulty
           || difficultyLookups.getQuestionDifficulty(id, questionTypes.PLANT)
           || difficultyLookups.defaultDifficulty;
 
+        const frozenGallery = freezeArray(
+          gallery
+            .map(imageEntry => (imageEntry && typeof imageEntry.src === 'string'
+              ? Object.freeze({
+                id: typeof imageEntry.id === 'string' ? imageEntry.id : null,
+                src: imageEntry.src
+              })
+              : null))
+            .filter(Boolean)
+        );
+
         return Object.freeze({
           id,
           correctAnswerId: id,
-          imageId: imageEntry.id,
-          image: imageEntry.src,
+          imageId: typeof primaryImageEntry.id === 'string' ? primaryImageEntry.id : null,
+          image: primaryImageEntry.src,
+          images: frozenGallery,
           names: species.names,
           wrongAnswers: species.wrongAnswers,
           difficulty,

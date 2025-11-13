@@ -1573,7 +1573,6 @@
   "plants": [
     {
       "id": 3,
-      "imageId": "p3_0_1",
       "correctAnswerId": 3,
       "names": {
         "ru": "Агапантус",
@@ -1597,7 +1596,6 @@
     },
     {
       "id": 4,
-      "imageId": "p4_0_1",
       "correctAnswerId": 4,
       "names": {
         "ru": "Бугенвиллия",
@@ -1620,7 +1618,6 @@
     },
     {
       "id": 5,
-      "imageId": "p5_0_1",
       "correctAnswerId": 5,
       "names": {
         "ru": "Камелия японская",
@@ -1643,7 +1640,6 @@
     },
     {
       "id": 6,
-      "imageId": "p6_0_1",
       "correctAnswerId": 6,
       "names": {
         "ru": "Гербера Джеймсона",
@@ -1666,7 +1662,6 @@
     },
     {
       "id": 8,
-      "imageId": "p8_0_1",
       "correctAnswerId": 8,
       "names": {
         "ru": "Гацания",
@@ -1688,7 +1683,6 @@
     },
     {
       "id": 12,
-      "imageId": "p12_0_1",
       "correctAnswerId": 12,
       "names": {
         "ru": "Пастернак",
@@ -1709,7 +1703,6 @@
     },
     {
       "id": "13_2",
-      "imageId": "p13_2_1",
       "correctAnswerId": "13_2",
       "names": {
         "ru": "Лук клубневой",
@@ -1729,7 +1722,6 @@
     },
     {
       "id": "13_3",
-      "imageId": "p13_3_1",
       "correctAnswerId": "13_3",
       "names": {
         "ru": "Лук угловатый",
@@ -1745,7 +1737,6 @@
     },
     {
       "id": 14,
-      "imageId": "p14_0_1",
       "correctAnswerId": 14,
       "names": {
         "ru": "Камассия",
@@ -1767,7 +1758,6 @@
     },
     {
       "id": 15,
-      "imageId": "p15_0_1",
       "correctAnswerId": 15,
       "names": {
         "ru": "Глобулярия",
@@ -1787,7 +1777,6 @@
     },
     {
       "id": "17_1",
-      "imageId": "p17_1_1",
       "correctAnswerId": "17_1",
       "names": {
         "ru": "Ломонос горный",
@@ -1803,7 +1792,6 @@
     },
     {
       "id": "18_1",
-      "imageId": "p18_1_1",
       "correctAnswerId": "18_1",
       "names": {
         "ru": "Глициния китайская",
@@ -1819,7 +1807,6 @@
     },
     {
       "id": "18_2",
-      "imageId": "p18_2_1",
       "correctAnswerId": "18_2",
       "names": {
         "ru": "Глициния кустарниковая",
@@ -1835,7 +1822,6 @@
     },
     {
       "id": 19,
-      "imageId": "p19_0_2",
       "correctAnswerId": 19,
       "names": {
         "ru": "Олеандр",
@@ -1857,7 +1843,6 @@
     },
     {
       "id": 25,
-      "imageId": "p25_0_1",
       "correctAnswerId": 25,
       "names": {
         "ru": "Нивяник обыкновенный",
@@ -1878,7 +1863,6 @@
     },
     {
       "id": "27_1",
-      "imageId": "p27_1_1",
       "correctAnswerId": "27_1",
       "names": {
         "ru": "Эхинацея пурпурная",
@@ -1894,7 +1878,6 @@
     },
     {
       "id": 28,
-      "imageId": "p28_0_1",
       "correctAnswerId": 28,
       "names": {
         "ru": "Гомфрена",
@@ -1911,7 +1894,6 @@
     },
     {
       "id": 30,
-      "imageId": "p30_0_1",
       "correctAnswerId": 30,
       "names": {
         "ru": "Остеоспермум",
@@ -1936,7 +1918,6 @@
     },
     {
       "id": "31_1",
-      "imageId": "p31_1_1",
       "correctAnswerId": "31_1",
       "names": {
         "ru": "Шиповник",
@@ -1955,7 +1936,6 @@
     },
     {
       "id": "31_2",
-      "imageId": "p31_2_1",
       "correctAnswerId": "31_2",
       "names": {
         "ru": "Шиповник морщинистый",
@@ -1977,7 +1957,6 @@
     },
     {
       "id": 34,
-      "imageId": "p34_0_1",
       "correctAnswerId": 34,
       "names": {
         "ru": "Похутукава",
@@ -1998,7 +1977,6 @@
     },
     {
       "id": 35,
-      "imageId": "p35_0_1",
       "correctAnswerId": 35,
       "names": {
         "ru": "Лилия",
@@ -2019,7 +1997,6 @@
     },
     {
       "id": 36,
-      "imageId": "p36_0_1",
       "correctAnswerId": 36,
       "names": {
         "ru": "Лилейник / Красноднев",
@@ -2036,7 +2013,6 @@
     },
     {
       "id": "36_1",
-      "imageId": "p36_1_1",
       "correctAnswerId": "36_1",
       "names": {
         "ru": "Лилейник (красоднев) лимонно-жёлтый",
@@ -2052,7 +2028,6 @@
     },
     {
       "id": "36_2",
-      "imageId": "p36_2_1",
       "correctAnswerId": "36_2",
       "names": {
         "ru": "Лилейник оранжевый",
@@ -2068,7 +2043,6 @@
     },
     {
       "id": 37,
-      "imageId": "p37_0_1",
       "correctAnswerId": 37,
       "names": {
         "ru": "Лилия-паук / Гименокаллис",
@@ -2084,7 +2058,6 @@
     },
     {
       "id": 39,
-      "imageId": "p39_0_1",
       "correctAnswerId": 39,
       "names": {
         "ru": "Гелиопсис",
@@ -2106,7 +2079,6 @@
     },
     {
       "id": 40,
-      "imageId": "p40_0_1",
       "correctAnswerId": 40,
       "names": {
         "ru": "Кореопсис",
@@ -2123,7 +2095,6 @@
     },
     {
       "id": 41,
-      "imageId": "p41_0_1",
       "correctAnswerId": 41,
       "names": {
         "ru": "Гвоздика",
@@ -2145,7 +2116,6 @@
     },
     {
       "id": "41_1",
-      "imageId": "p41_1_1",
       "correctAnswerId": "41_1",
       "names": {
         "ru": "Гвоздика бородатая (турецкая)",
@@ -2166,7 +2136,6 @@
     },
     {
       "id": 53,
-      "imageId": "p53_0_1",
       "correctAnswerId": 53,
       "names": {
         "ru": "Скабиоза",
@@ -2188,7 +2157,6 @@
     },
     {
       "id": "82_2",
-      "imageId": "p82_2_1",
       "correctAnswerId": "82_2",
       "names": {
         "ru": "Фиалка сестринская",
@@ -2204,7 +2172,6 @@
     },
     {
       "id": "83_1",
-      "imageId": "p83_1_1",
       "correctAnswerId": "83_1",
       "names": {
         "ru": "Колокольчик круглолистный",
@@ -2224,7 +2191,6 @@
     },
     {
       "id": "83_2",
-      "imageId": "p83_2_1",
       "correctAnswerId": "83_2",
       "names": {
         "ru": "Колокольчик Портеншлага",
@@ -2243,7 +2209,6 @@
     },
     {
       "id": "83_3",
-      "imageId": "p83_3_1",
       "correctAnswerId": "83_3",
       "names": {
         "ru": "Колокольчик Пожарского",
@@ -2262,7 +2227,6 @@
     },
     {
       "id": 85,
-      "imageId": "p85_0_1",
       "correctAnswerId": 85,
       "names": {
         "ru": "Будлея",
@@ -2282,7 +2246,6 @@
     },
     {
       "id": 89,
-      "imageId": "p89_0_1",
       "correctAnswerId": 89,
       "names": {
         "ru": "Сантолина",
@@ -2302,7 +2265,6 @@
     },
     {
       "id": 90,
-      "imageId": "p90_0_1",
       "correctAnswerId": 90,
       "names": {
         "ru": "Бук",
@@ -2322,7 +2284,6 @@
     },
     {
       "id": 92,
-      "imageId": "p92_0_1",
       "correctAnswerId": 92,
       "names": {
         "ru": "Ранункулюс",
@@ -2342,7 +2303,6 @@
     },
     {
       "id": "100_2",
-      "imageId": "p100_2_1",
       "correctAnswerId": "100_2",
       "names": {
         "ru": "Топинамбур",
@@ -2363,7 +2323,6 @@
     },
     {
       "id": 101,
-      "imageId": "p101_0_1",
       "correctAnswerId": 101,
       "names": {
         "ru": "Космея",
@@ -2384,7 +2343,6 @@
     },
     {
       "id": "106_1",
-      "imageId": "p106_1_1",
       "correctAnswerId": "106_1",
       "names": {
         "ru": "Люпин многолистный",
@@ -2400,7 +2358,6 @@
     },
     {
       "id": "106_2",
-      "imageId": "p106_2_1",
       "correctAnswerId": "106_2",
       "names": {
         "ru": "Люпин широколистный",
@@ -2417,7 +2374,6 @@
     },
     {
       "id": "106_3",
-      "imageId": "p106_3_1",
       "correctAnswerId": "106_3",
       "names": {
         "ru": "Люпин Rivularis",
@@ -2433,7 +2389,6 @@
     },
     {
       "id": "106_4",
-      "imageId": "p106_4_1",
       "correctAnswerId": "106_4",
       "names": {
         "ru": "Люпин волосистый",
@@ -2449,7 +2404,6 @@
     },
     {
       "id": 107,
-      "imageId": "p107_0_1",
       "correctAnswerId": 107,
       "names": {
         "ru": "Мускари",
@@ -2466,7 +2420,6 @@
     },
     {
       "id": 108,
-      "imageId": "p108_0_1",
       "correctAnswerId": 108,
       "names": {
         "ru": "Пеларгония (Герань)",
@@ -2483,7 +2436,6 @@
     },
     {
       "id": 109,
-      "imageId": "p109_0_1",
       "correctAnswerId": 109,
       "names": {
         "ru": "Калибрахоа",
@@ -2500,7 +2452,6 @@
     },
     {
       "id": 125,
-      "imageId": "p125_0_1",
       "correctAnswerId": 125,
       "names": {
         "ru": "Ширококолокольчик",
@@ -2517,7 +2468,6 @@
     },
     {
       "id": 127,
-      "imageId": "p127_0_1",
       "correctAnswerId": 127,
       "names": {
         "ru": "Цинния",
@@ -2534,7 +2484,6 @@
     },
     {
       "id": "131_1",
-      "imageId": "p131_1_1",
       "correctAnswerId": "131_1",
       "names": {
         "ru": "Вероника австрийская",
@@ -2555,7 +2504,6 @@
     },
     {
       "id": "131_2",
-      "imageId": "p131_2_1",
       "correctAnswerId": "131_2",
       "names": {
         "ru": "Вероника колосистая",
@@ -2572,7 +2520,6 @@
     },
     {
       "id": "150_1",
-      "imageId": "p150_1_1",
       "correctAnswerId": "150_1",
       "names": {
         "ru": "Шалфей лекарственный",
@@ -2588,7 +2535,6 @@
     },
     {
       "id": "150_2",
-      "imageId": "p150_2_1",
       "correctAnswerId": "150_2",
       "names": {
         "ru": "Шалфей луговой",
@@ -2605,7 +2551,6 @@
     },
     {
       "id": "150_3",
-      "imageId": "p150_3_1",
       "correctAnswerId": "150_3",
       "names": {
         "ru": "Шалфей мучнистый",
@@ -2621,7 +2566,6 @@
     },
     {
       "id": "150_4",
-      "imageId": "p150_4_1",
       "correctAnswerId": "150_4",
       "names": {
         "ru": "Розмарин лекарственный",
@@ -2637,7 +2581,6 @@
     },
     {
       "id": 156,
-      "imageId": "p156_0_1",
       "correctAnswerId": 156,
       "names": {
         "ru": "Артишок",
@@ -2654,7 +2597,6 @@
     },
     {
       "id": 160,
-      "imageId": "p160_0_1",
       "correctAnswerId": 160,
       "names": {
         "ru": "Аквилегия",
@@ -2671,7 +2613,6 @@
     },
     {
       "id": "169_1",
-      "imageId": "p169_1_1",
       "correctAnswerId": "169_1",
       "names": {
         "ru": "Амарант багряный",
@@ -2687,7 +2628,6 @@
     },
     {
       "id": "169_2",
-      "imageId": "p169_2_1",
       "correctAnswerId": "169_2",
       "names": {
         "ru": "Амарант тёмный (печальный)",
@@ -2704,7 +2644,6 @@
     },
     {
       "id": 171,
-      "imageId": "p171_0_1",
       "correctAnswerId": 171,
       "names": {
         "ru": "Цеанотус (краснокоренник) вдавленный",
@@ -2721,7 +2660,6 @@
     },
     {
       "id": "173_1",
-      "imageId": "p173_1_1",
       "correctAnswerId": "173_1",
       "names": {
         "ru": "Хебе красивая",
@@ -2740,7 +2678,6 @@
     },
     {
       "id": "173_2",
-      "imageId": "p173_2_1",
       "correctAnswerId": "173_2",
       "names": {
         "ru": "Хебе Андерсона",
@@ -2759,7 +2696,6 @@
     },
     {
       "id": 176,
-      "imageId": "p176_0_1",
       "correctAnswerId": 176,
       "names": {
         "ru": "Павловния",
@@ -2776,7 +2712,6 @@
     },
     {
       "id": 184,
-      "imageId": "p184_0_1",
       "correctAnswerId": 184,
       "names": {
         "ru": "Вереск",
@@ -2793,7 +2728,6 @@
     },
     {
       "id": 186,
-      "imageId": "p186_0_1",
       "correctAnswerId": 186,
       "names": {
         "ru": "Гелениум осенний",
