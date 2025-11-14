@@ -23,6 +23,21 @@
         "en": "Groundcover",
         "nl": "Bodembedekker"
       }
+    },
+    {
+      "id": "ephemeroid",
+      "label": {
+        "ru": "Эфемероид",
+        "en": "Ephemeroid",
+        "nl": "Efemeroïde" }
+    },
+    {
+      "id": "local",
+      "label": {
+        "ru": "Местное",
+        "en": "Local",
+        "nl": "Inheems"
+      }
     }
   ]
 }
