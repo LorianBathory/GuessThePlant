@@ -124,11 +124,6 @@ function DogToxicityIcon() {
   ]);
 }
 
-const arrowIconPaths = [
-  { tag: 'path', attrs: { d: 'M5 12h14' } },
-  { tag: 'path', attrs: { d: 'M13 6l6 6-6 6' } }
-];
-
 const toxicityLevelColors = Object.freeze({
   1: colors.blue,
   2: colors.yellow,
@@ -171,8 +166,23 @@ const toxicityNoticeTypeMeta = Object.freeze({
   dog: Object.freeze({ icon: DogToxicityIcon, label: toxicityNoticeLabels.dog })
 });
 
-function ArrowIcon() {
-  return createIcon(arrowIconPaths);
+function ArrowIcon({ isMobile = false, disabled = false }) {
+  const { createElement } = ensureReact();
+  const triangleHeight = isMobile ? 24 : 32;
+  const triangleWidth = isMobile ? 48 : 60;
+  const triangleColor = disabled ? 'rgba(194, 156, 39, 0.35)' : ACCENT_COLOR;
+
+  return createElement('div', {
+    'aria-hidden': 'true',
+    style: {
+      width: 0,
+      height: 0,
+      borderTop: `${triangleHeight}px solid transparent`,
+      borderBottom: `${triangleHeight}px solid transparent`,
+      borderLeft: `${triangleWidth}px solid ${triangleColor}`,
+      transition: 'border-left-color 0.2s ease'
+    }
+  });
 }
 
 function getSunlightIcon(lightTag) {
@@ -1390,7 +1400,7 @@ export default function MemorizationScreen({
     flexDirection: isMobile ? 'column' : 'row',
     alignItems: 'stretch',
     justifyContent: 'center',
-    gap: isMobile ? '16px' : '24px',
+    gap: '16px',
     width: '100%',
     maxWidth: isMobile ? '560px' : '1040px',
     margin: '0 auto'
@@ -1400,15 +1410,16 @@ export default function MemorizationScreen({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: isMobile ? '12px' : '16px',
-    minWidth: isMobile ? '64px' : '72px',
+    padding: 0,
+    width: isMobile ? '64px' : '72px',
     height: isMobile ? '64px' : '88px',
-    background: 'rgba(8, 38, 36, 0.65)',
-    border: `3px solid ${ACCENT_COLOR}`,
-    borderRadius: isMobile ? '999px' : '16px',
+    background: 'transparent',
+    border: 'none',
     cursor: plant ? 'pointer' : 'not-allowed',
-    color: ACCENT_COLOR,
-    opacity: plant ? 1 : 0.45
+    opacity: plant ? 1 : 0.45,
+    flexShrink: 0,
+    outlineOffset: '4px',
+    transition: 'transform 0.2s ease, opacity 0.2s ease'
   }), [isMobile, plant]);
 
   const parameterElements = useMemo(() => {
@@ -1828,7 +1839,7 @@ export default function MemorizationScreen({
     style: arrowButtonStyle,
     'aria-label': nextButtonLabel,
     disabled: !plant
-  }, createElement(ArrowIcon));
+  }, createElement(ArrowIcon, { isMobile, disabled: !plant }));
 
   const collectionButtonWrapper = createElement('div', {
     key: 'collection-button-wrapper',
@@ -1883,7 +1894,8 @@ export default function MemorizationScreen({
         flex: '1 1 auto',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start',
+        paddingLeft: '4px'
       }
     }, [arrowButton]));
 
