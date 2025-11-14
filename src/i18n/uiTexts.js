@@ -53,6 +53,7 @@ export const uiTexts = {
     memorizationFilterCollection: "Только коллекция",
     memorizationPrevImage: "Предыдущее изображение",
     memorizationNextImage: "Следующее изображение",
+    memorizationImageLabel: "Фото",
     memorizationTagGalleryClose: "Закрыть галерею",
     memorizationTagGalleryEmpty: "Нет карточек с этим тегом."
   },
@@ -110,6 +111,7 @@ export const uiTexts = {
     memorizationFilterCollection: "Collection only",
     memorizationPrevImage: "Previous photo",
     memorizationNextImage: "Next photo",
+    memorizationImageLabel: "Photo",
     memorizationTagGalleryClose: "Close gallery",
     memorizationTagGalleryEmpty: "No cards with this tag."
   },
@@ -167,6 +169,7 @@ export const uiTexts = {
     memorizationFilterCollection: "Alleen collectie",
     memorizationPrevImage: "Vorige foto",
     memorizationNextImage: "Volgende foto",
+    memorizationImageLabel: "Foto",
     memorizationTagGalleryClose: "Galerij sluiten",
     memorizationTagGalleryEmpty: "Geen kaarten met dit label."
   }

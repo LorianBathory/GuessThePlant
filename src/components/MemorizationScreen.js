@@ -521,18 +521,13 @@ function PlantImage({ plant, texts }) {
     }
   }, [currentIndex, imageEntries.length]);
 
-  const showPrevious = useCallback(() => {
-    if (!hasMultipleImages) {
+  const selectImageAtIndex = useCallback(index => {
+    if (!hasMultipleImages || typeof index !== 'number') {
       return;
     }
-    setCurrentIndex(previous => (previous - 1 + imageEntries.length) % imageEntries.length);
-  }, [hasMultipleImages, imageEntries.length]);
 
-  const showNext = useCallback(() => {
-    if (!hasMultipleImages) {
-      return;
-    }
-    setCurrentIndex(previous => (previous + 1) % imageEntries.length);
+    const safeIndex = Math.max(0, Math.min(index, imageEntries.length - 1));
+    setCurrentIndex(safeIndex);
   }, [hasMultipleImages, imageEntries.length]);
 
   const imageSrc = currentImage && typeof currentImage.src === 'string' ? currentImage.src : null;
@@ -570,90 +565,95 @@ function PlantImage({ plant, texts }) {
     }, createElement('span', { className: 'sr-only' }, 'Загрузка изображения'));
   }
 
-  const navButtonStyle = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '42px',
-    height: '42px',
-    borderRadius: '9999px',
-    border: `1px solid ${ACCENT_COLOR}`,
-    background: 'rgba(194, 156, 39, 0.18)',
-    color: ACCENT_COLOR,
-    cursor: 'pointer'
-  };
-
   return createElement(
     'div',
-    { className: 'w-full flex flex-col items-center' },
+    {
+      className: 'w-full flex flex-col items-center',
+      style: { position: 'relative' }
+    },
     [
       createElement('div', {
         key: 'image-wrapper',
-        className: 'relative w-full h-0',
-        style: containerStyle
+        className: 'w-full flex items-stretch',
+        style: { position: 'relative' }
       }, [
-        createElement('div', {
-          key: 'glow',
-          className: 'absolute inset-0',
-          style: {
-            background: 'radial-gradient(circle at 20% 25%, rgba(194, 156, 39, 0.22), transparent 55%)'
-          }
-        }),
-        createElement('img', {
-          key: `image-${currentImage?.id || currentIndex}`,
-          src: secureSrc,
-          alt: plant.names?.[defaultLang] || `Plant ${plant.id}`,
-          style: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover'
-          },
-          draggable: false,
-          onContextMenu: event => {
-            if (event && typeof event.preventDefault === 'function') {
-              event.preventDefault();
+        hasMultipleImages
+          ? createElement('div', {
+            key: 'gallery-indicators',
+            className: 'flex flex-col items-center',
+            style: {
+              position: 'absolute',
+              top: '50%',
+              left: '-24px',
+              transform: 'translateY(-50%)',
+              gap: '10px',
+              padding: '6px 0',
+              zIndex: 2
             }
-          }
-        }),
+          }, imageEntries.map((entry, index) => {
+            const isActive = index === currentIndex;
+            const imageLabelText = texts?.memorizationImageLabel || 'Фото';
+
+            return createElement('button', {
+              key: `indicator-${entry?.id || index}`,
+              type: 'button',
+              onClick: () => selectImageAtIndex(index),
+              'aria-current': isActive ? 'true' : undefined,
+              'aria-label': `${imageLabelText} ${index + 1}`,
+              style: {
+                width: '14px',
+                height: '14px',
+                borderRadius: '9999px',
+                border: `2px solid ${isActive ? ACCENT_COLOR : FALLBACK_ACCENT}`,
+                backgroundColor: isActive ? ACCENT_COLOR : 'transparent',
+                opacity: isActive ? 1 : 0.7,
+                cursor: 'pointer',
+                padding: 0,
+                transition: 'transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease'
+              }
+            }, createElement('span', { className: 'sr-only' }, `${imageLabelText} ${index + 1}`));
+          }))
+          : null,
         createElement('div', {
-          key: 'shade',
-          className: 'absolute inset-0 pointer-events-none',
-          style: {
-            background: 'linear-gradient(180deg, rgba(8, 27, 26, 0) 40%, rgba(8, 27, 26, 0.75) 100%)'
-          }
-        })
-      ]),
-      hasMultipleImages
-        ? createElement('div', {
-          key: 'gallery-nav',
-          className: 'flex items-center justify-center gap-4 mt-4'
+          key: 'image-container',
+          className: 'relative w-full h-0',
+          style: { ...containerStyle, flex: '1 1 0%' }
         }, [
-          createElement('button', {
-            key: 'prev',
-            type: 'button',
-            onClick: showPrevious,
-            'aria-label': texts?.memorizationPrevImage || 'Предыдущее изображение',
-            style: navButtonStyle
-          }, createElement('span', {
-            style: { display: 'inline-flex', transform: 'scaleX(-1)' }
-          }, createElement(ArrowIcon))),
-          createElement('span', {
-            key: 'counter',
-            className: 'text-sm tracking-wide uppercase font-semibold',
-            style: { color: colors.accent }
-          }, `${currentIndex + 1} / ${imageEntries.length}`),
-          createElement('button', {
-            key: 'next',
-            type: 'button',
-            onClick: showNext,
-            'aria-label': texts?.memorizationNextImage || 'Следующее изображение',
-            style: navButtonStyle
-          }, createElement(ArrowIcon))
+          createElement('div', {
+            key: 'glow',
+            className: 'absolute inset-0',
+            style: {
+              background: 'radial-gradient(circle at 20% 25%, rgba(194, 156, 39, 0.22), transparent 55%)'
+            }
+          }),
+          createElement('img', {
+            key: `image-${currentImage?.id || currentIndex}`,
+            src: secureSrc,
+            alt: plant.names?.[defaultLang] || `Plant ${plant.id}`,
+            style: {
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            },
+            draggable: false,
+            onContextMenu: event => {
+              if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
+              }
+            }
+          }),
+          createElement('div', {
+            key: 'shade',
+            className: 'absolute inset-0 pointer-events-none',
+            style: {
+              background: 'linear-gradient(180deg, rgba(8, 27, 26, 0) 40%, rgba(8, 27, 26, 0.75) 100%)'
+            }
+          })
         ])
-        : null
+      ])
     ]
   );
 }
@@ -1355,7 +1355,7 @@ export default function MemorizationScreen({
   }, [plant, interfaceLanguage, unknownLabel]);
 
   const outerStyle = useMemo(() => {
-    const sidePadding = isMobile ? 16 : 48;
+    const sidePadding = isMobile ? 32 : 48;
     const bottomPadding = isMobile ? 32 : 56;
 
     return {
@@ -1381,7 +1381,7 @@ export default function MemorizationScreen({
     background: CARD_BACKGROUND,
     borderRadius: 0,
     border: `4px solid ${ACCENT_COLOR}`,
-    overflow: 'hidden',
+    overflow: 'visible',
     flex: '1 1 auto'
   }), [isMobile]);
 
