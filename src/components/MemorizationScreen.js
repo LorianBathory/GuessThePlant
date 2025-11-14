@@ -644,13 +644,6 @@ function PlantImage({ plant, texts }) {
                 event.preventDefault();
               }
             }
-          }),
-          createElement('div', {
-            key: 'shade',
-            className: 'absolute inset-0 pointer-events-none',
-            style: {
-              background: 'linear-gradient(180deg, rgba(8, 27, 26, 0) 40%, rgba(8, 27, 26, 0.75) 100%)'
-            }
           })
         ])
       ])
