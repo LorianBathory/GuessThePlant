@@ -47,6 +47,7 @@ export default function PlantQuizGame() {
       interfaceLanguage: game.interfaceLanguage,
       onPlantLanguageChange: game.changePlantLanguage,
       onNextPlant: game.showNextMemorizationPlant,
+      onSelectPlant: game.showMemorizationPlantById,
       onReturnToMenu: game.returnToMenu,
       plant: game.memorizationPlant,
       isMobile: game.isMobile,
