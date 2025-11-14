@@ -1236,7 +1236,8 @@ export default function MemorizationScreen({
         icon: lifespanMeta.icon,
         circleContent: lifespanMeta.content,
         circleColor: colors.purple,
-        isUnknown: false
+        isUnknown: false,
+        tagId: lifeCycleTag
       });
     }
 
