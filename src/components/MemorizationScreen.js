@@ -1,5 +1,5 @@
 import { getParameterTagLabel } from '../data/parameterTags.js';
-import { getPlantParameters, getPlantTagDefinition } from '../game/dataLoader.js';
+import { getPlantParameters, getPlantTagDefinition, memorizationPlants } from '../game/dataLoader.js';
 import { defaultLang } from '../i18n/uiTexts.js';
 import useSecureImageSource from '../hooks/useSecureImageSource.js';
 
@@ -355,6 +355,34 @@ function getTagIconComponent(iconUrl) {
   return TagIcon;
 }
 
+function normalizeTagId(entry) {
+  if (typeof entry === 'string') {
+    const trimmed = entry.trim();
+    return trimmed || null;
+  }
+
+  if (entry && typeof entry === 'object') {
+    const rawId = typeof entry.id === 'string' ? entry.id : typeof entry.tag === 'string' ? entry.tag : null;
+    if (typeof rawId === 'string') {
+      const trimmed = rawId.trim();
+      return trimmed || null;
+    }
+  }
+
+  return null;
+}
+
+function extractTagIds(rawTags) {
+  if (!rawTags) {
+    return [];
+  }
+
+  const entries = Array.isArray(rawTags) ? rawTags : [rawTags];
+  return entries
+    .map(normalizeTagId)
+    .filter(tagId => typeof tagId === 'string' && tagId.length > 0);
+}
+
 function buildCustomTagParameterItems(rawTags, language, unknownLabel) {
   if (!rawTags) {
     return [];
@@ -368,17 +396,12 @@ function buildCustomTagParameterItems(rawTags, language, unknownLabel) {
         return null;
       }
 
-      let tagId = null;
+      let tagId = normalizeTagId(entry);
       let fallbackLabel = null;
       let circleColor = colors.hotPink;
       let circleContent = undefined;
 
-      if (typeof entry === 'string') {
-        tagId = entry.trim();
-      } else if (entry && typeof entry === 'object') {
-        const rawId = typeof entry.id === 'string' ? entry.id : typeof entry.tag === 'string' ? entry.tag : null;
-        tagId = rawId && typeof rawId === 'string' ? rawId.trim() : null;
-
+      if (entry && typeof entry === 'object') {
         const labelSource = entry.label ?? entry.text ?? entry.name;
         fallbackLabel = getLocalizedValue(labelSource, language);
 
@@ -425,7 +448,8 @@ function buildCustomTagParameterItems(rawTags, language, unknownLabel) {
         icon,
         circleContent: circleContent === undefined ? null : circleContent,
         circleColor,
-        isUnknown: labelText === unknownLabel
+        isUnknown: labelText === unknownLabel,
+        tagId: tagId || null
       };
     })
     .filter(Boolean);
@@ -634,11 +658,268 @@ function PlantImage({ plant, texts }) {
   );
 }
 
+function TagGalleryPreviewCard({ entry, onSelect, isActive }) {
+  const { createElement, useMemo, useCallback } = ensureReact();
+  const { secureSrc, status } = useSecureImageSource(entry.imageSrc);
+
+  const handleSelect = useCallback(() => {
+    if (typeof onSelect === 'function') {
+      onSelect(entry.id);
+    }
+  }, [entry.id, onSelect]);
+
+  const buttonStyle = useMemo(() => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: '8px',
+    width: '100%',
+    borderRadius: '12px',
+    border: `2px solid ${isActive ? ACCENT_COLOR : 'rgba(194, 156, 39, 0.35)'}`,
+    background: isActive ? 'rgba(194, 156, 39, 0.18)' : 'rgba(8, 38, 36, 0.6)',
+    color: '#FDF6D8',
+    padding: '10px',
+    cursor: 'pointer',
+    textAlign: 'left',
+    transition: 'transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease',
+    boxShadow: isActive ? '0 8px 20px rgba(194, 156, 39, 0.2)' : 'none'
+  }), [isActive]);
+
+  const imageWrapperStyle = useMemo(() => ({
+    position: 'relative',
+    width: '100%',
+    paddingBottom: '66.67%',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    background: 'linear-gradient(160deg, rgba(12, 52, 50, 0.9), rgba(18, 82, 78, 0.7))'
+  }), []);
+
+  const renderImageContent = () => {
+    if (status === 'error') {
+      return createElement('div', {
+        key: 'error',
+        className: 'absolute inset-0 flex items-center justify-center text-center text-xs',
+        style: { color: ACCENT_COLOR, padding: '8px' }
+      }, 'Изображение недоступно');
+    }
+
+    if (status !== 'ready' || !secureSrc) {
+      return createElement('div', {
+        key: 'loading',
+        className: 'absolute inset-0 flex items-center justify-center'
+      }, createElement('span', { className: 'sr-only' }, 'Загрузка изображения'));
+    }
+
+    return createElement('img', {
+      key: 'image',
+      src: secureSrc,
+      alt: entry.displayName || 'Предпросмотр растения',
+      style: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover'
+      },
+      draggable: false,
+      onContextMenu: event => {
+        if (event && typeof event.preventDefault === 'function') {
+          event.preventDefault();
+        }
+      }
+    });
+  };
+
+  return createElement('button', {
+    type: 'button',
+    onClick: handleSelect,
+    style: buttonStyle
+  }, [
+    createElement('div', {
+      key: 'image-wrapper',
+      style: imageWrapperStyle
+    }, [
+      createElement('div', {
+        key: 'glow',
+        className: 'absolute inset-0 pointer-events-none',
+        style: {
+          background: 'radial-gradient(circle at 20% 25%, rgba(194, 156, 39, 0.18), transparent 55%)'
+        }
+      }),
+      renderImageContent()
+    ]),
+    createElement('div', {
+      key: 'text',
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px'
+      }
+    }, [
+      createElement('span', {
+        key: 'name',
+        style: {
+          fontWeight: 700,
+          fontSize: '0.95rem',
+          color: '#FDF6D8',
+          lineHeight: 1.25
+        }
+      }, entry.displayName || '—'),
+      entry.scientificName
+        ? createElement('span', {
+          key: 'sci',
+          style: {
+            fontStyle: 'italic',
+            fontSize: '0.85rem',
+            color: 'rgba(194, 156, 39, 0.9)'
+          }
+        }, entry.scientificName)
+        : null
+    ].filter(Boolean))
+  ]);
+}
+
+function TagGalleryOverlay({
+  tagLabel,
+  entries,
+  onClose,
+  onSelectPlant,
+  activePlantId,
+  closeLabel,
+  emptyLabel,
+  isMobile
+}) {
+  const { createElement, useMemo, useCallback } = ensureReact();
+
+  const overlayStyle = useMemo(() => ({
+    position: 'fixed',
+    inset: 0,
+    backgroundColor: 'rgba(7, 20, 19, 0.82)',
+    zIndex: 999,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: isMobile ? '16px' : '32px'
+  }), [isMobile]);
+
+  const containerStyle = useMemo(() => ({
+    width: 'min(1120px, 100%)',
+    maxHeight: 'min(85vh, 760px)',
+    background: 'linear-gradient(160deg, rgba(8, 38, 36, 0.95), rgba(16, 72, 69, 0.92))',
+    borderRadius: '18px',
+    border: `3px solid ${ACCENT_COLOR}`,
+    boxShadow: '0 28px 60px rgba(0, 0, 0, 0.55)',
+    padding: isMobile ? '18px' : '26px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '18px'
+  }), [isMobile]);
+
+  const gridWrapperStyle = useMemo(() => ({
+    flex: '1 1 auto',
+    overflowY: 'auto',
+    paddingRight: '4px'
+  }), []);
+
+  const gridStyle = useMemo(() => ({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(5, minmax(0, 1fr))',
+    gap: isMobile ? '12px' : '16px',
+    width: '100%'
+  }), [isMobile]);
+
+  const handleBackdropClick = useCallback(event => {
+    if (event && event.target === event.currentTarget) {
+      onClose();
+    }
+  }, [onClose]);
+
+  const highlightId = activePlantId != null ? String(activePlantId) : null;
+
+  return createElement('div', {
+    key: 'tag-gallery-overlay',
+    style: overlayStyle,
+    onClick: handleBackdropClick
+  }, [
+    createElement('div', {
+      key: 'tag-gallery-container',
+      style: containerStyle,
+      role: 'dialog',
+      'aria-modal': 'true',
+      'aria-label': tagLabel
+    }, [
+      createElement('div', {
+        key: 'header',
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px'
+        }
+      }, [
+        createElement('h2', {
+          key: 'title',
+          style: {
+            margin: 0,
+            fontSize: isMobile ? '1.35rem' : '1.6rem',
+            color: ACCENT_COLOR,
+            fontWeight: 700
+          }
+        }, tagLabel),
+        createElement('button', {
+          key: 'close-button',
+          type: 'button',
+          onClick: onClose,
+          style: {
+            borderRadius: '999px',
+            border: `2px solid ${ACCENT_COLOR}`,
+            background: 'transparent',
+            color: ACCENT_COLOR,
+            padding: '6px 18px',
+            cursor: 'pointer',
+            fontWeight: 600,
+            letterSpacing: '0.02em'
+          }
+        }, closeLabel)
+      ]),
+      entries.length > 0
+        ? createElement('div', {
+          key: 'grid-wrapper',
+          style: gridWrapperStyle
+        }, [
+          createElement('div', {
+            key: 'grid',
+            style: gridStyle
+          }, entries.map(entry => createElement(TagGalleryPreviewCard, {
+            key: `tag-gallery-entry-${entry.id}`,
+            entry,
+            onSelect: onSelectPlant,
+            isActive: highlightId != null && String(entry.id) === highlightId
+          })))
+        ])
+        : createElement('div', {
+          key: 'empty',
+          style: {
+            flex: '1 1 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#FDF6D8',
+            textAlign: 'center',
+            fontSize: isMobile ? '1rem' : '1.1rem'
+          }
+        }, emptyLabel)
+    ])
+  ]);
+}
+
 export default function MemorizationScreen({
   texts,
   plantLanguage,
   interfaceLanguage,
   onNextPlant = () => {},
+  onSelectPlant = () => {},
   plant = null,
   isMobile = false,
   onAddToCollection = () => {},
@@ -648,7 +929,7 @@ export default function MemorizationScreen({
   onCollectionFilterChange = () => {},
   collectionSize = 0
 }) {
-  const { createElement, useMemo } = ensureReact();
+  const { createElement, useMemo, useState, useCallback, useEffect } = ensureReact();
 
   const unknownLabel = texts.memorizationUnknown || '—';
   const nextButtonLabel = texts.memorizationNextButton || 'Next plant';
@@ -666,6 +947,173 @@ export default function MemorizationScreen({
     : filterCollectionLabel;
   const isCollectionFilterDisabled = collectionSize === 0;
 
+  const tagGalleryCloseLabel = texts.memorizationTagGalleryClose || 'Закрыть';
+  const tagGalleryEmptyLabel = texts.memorizationTagGalleryEmpty || 'Нет карточек с этим тегом.';
+  const [activeTagState, setActiveTagState] = useState(null);
+
+  const activeTag = useMemo(() => {
+    if (!activeTagState || typeof activeTagState.id !== 'string') {
+      return null;
+    }
+
+    const normalizedId = activeTagState.id.trim();
+    if (!normalizedId) {
+      return null;
+    }
+
+    const definition = getPlantTagDefinition(normalizedId);
+    const localizedLabel = definition ? getLocalizedValue(definition.label, interfaceLanguage) : null;
+    const fallbackLabel = typeof activeTagState.fallbackLabel === 'string' && activeTagState.fallbackLabel.trim()
+      ? activeTagState.fallbackLabel.trim()
+      : normalizedId;
+    const resolvedLabel = typeof localizedLabel === 'string' && localizedLabel.trim()
+      ? localizedLabel.trim()
+      : fallbackLabel;
+
+    return {
+      id: normalizedId,
+      label: resolvedLabel
+    };
+  }, [activeTagState, interfaceLanguage]);
+
+  const openTagGallery = useCallback(tagItem => {
+    if (!tagItem || typeof tagItem.tagId !== 'string') {
+      return;
+    }
+
+    const normalizedId = tagItem.tagId.trim();
+    if (!normalizedId) {
+      return;
+    }
+
+    const fallbackLabel = typeof tagItem.label === 'string' && tagItem.label.trim()
+      ? tagItem.label.trim()
+      : normalizedId;
+
+    setActiveTagState({
+      id: normalizedId,
+      fallbackLabel
+    });
+  }, []);
+
+  const closeTagGallery = useCallback(() => {
+    setActiveTagState(null);
+  }, []);
+
+  useEffect(() => {
+    if (!activeTag) {
+      return undefined;
+    }
+
+    if (typeof document === 'undefined') {
+      return undefined;
+    }
+
+    const handleKeyDown = event => {
+      if (event && (event.key === 'Escape' || event.key === 'Esc')) {
+        event.preventDefault();
+        closeTagGallery();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeTag, closeTagGallery]);
+
+  const handleGalleryPlantSelect = useCallback(plantId => {
+    if (plantId == null) {
+      return;
+    }
+
+    onSelectPlant(plantId);
+    closeTagGallery();
+  }, [onSelectPlant, closeTagGallery]);
+
+  const tagGalleryEntries = useMemo(() => {
+    if (!activeTag || !activeTag.id) {
+      return [];
+    }
+
+    const normalizedId = activeTag.id;
+
+    if (!Array.isArray(memorizationPlants) || memorizationPlants.length === 0) {
+      return [];
+    }
+
+    const results = [];
+    const seenIds = new Set();
+    const collator = typeof Intl !== 'undefined'
+      ? new Intl.Collator(interfaceLanguage || defaultLang, { sensitivity: 'base' })
+      : null;
+
+    memorizationPlants.forEach(plantEntry => {
+      if (!plantEntry || plantEntry.id == null) {
+        return;
+      }
+
+      const stringId = String(plantEntry.id);
+      if (!stringId || seenIds.has(stringId)) {
+        return;
+      }
+
+      const parametersForPlant = getPlantParameters(plantEntry.id);
+      const tagCandidates = new Set([
+        ...extractTagIds(parametersForPlant?.tags),
+        ...extractTagIds(parametersForPlant?.tagIds),
+        ...extractTagIds(parametersForPlant?.newTags)
+      ]);
+
+      if (!tagCandidates.has(normalizedId)) {
+        return;
+      }
+
+      seenIds.add(stringId);
+
+      const localizedName = plantEntry.names
+        ? (plantEntry.names[interfaceLanguage]
+          || plantEntry.names[defaultLang]
+          || plantEntry.names.ru
+          || Object.values(plantEntry.names)[0]
+          || '')
+        : '';
+
+      const scientificName = plantEntry.names?.sci
+        || getLocalizedValue(parametersForPlant?.scientificName, interfaceLanguage)
+        || getLocalizedValue(parametersForPlant?.scientificName, defaultLang)
+        || '';
+
+      let imageSrc = null;
+      if (Array.isArray(plantEntry.images) && plantEntry.images.length > 0) {
+        const primaryImage = plantEntry.images[0];
+        if (primaryImage && typeof primaryImage.src === 'string') {
+          imageSrc = primaryImage.src;
+        }
+      }
+
+      if (!imageSrc && typeof plantEntry.image === 'string') {
+        imageSrc = plantEntry.image;
+      }
+
+      results.push({
+        id: plantEntry.id,
+        displayName: localizedName,
+        scientificName,
+        imageSrc: imageSrc || null
+      });
+    });
+
+    if (results.length > 1) {
+      if (collator) {
+        results.sort((a, b) => collator.compare(a.displayName || '', b.displayName || ''));
+      } else {
+        results.sort((a, b) => (a.displayName || '').localeCompare(b.displayName || '', interfaceLanguage || defaultLang));
+      }
+    }
+
+    return results;
+  }, [activeTag, interfaceLanguage]);
   const handleCollectionButtonClick = () => {
     if (collectionButtonDisabled) {
       return;
@@ -788,7 +1236,8 @@ export default function MemorizationScreen({
         icon: lifespanMeta.icon,
         circleContent: lifespanMeta.content,
         circleColor: colors.purple,
-        isUnknown: false
+        isUnknown: false,
+        tagId: lifeCycleTag
       });
     }
 
@@ -882,6 +1331,8 @@ export default function MemorizationScreen({
       const IconComponent = item.icon;
       const label = item.label || unknownLabel;
       const isUnknownValue = item.isUnknown || label === unknownLabel;
+      const normalizedTagId = typeof item.tagId === 'string' ? item.tagId.trim() : '';
+      const isTagItem = Boolean(normalizedTagId);
 
       const circleContentStyle = {
         display: 'inline-flex',
@@ -897,14 +1348,43 @@ export default function MemorizationScreen({
             ? null
             : createElement('span', { style: circleContentStyle }, item.circleContent)));
 
+      const containerStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: '8px',
+        padding: isTagItem ? '4px 10px' : 0,
+        borderRadius: isTagItem ? '999px' : 0,
+        border: isTagItem ? `1px solid ${ACCENT_COLOR}` : 'none',
+        backgroundColor: isTagItem ? 'rgba(194, 156, 39, 0.14)' : 'transparent',
+        cursor: isTagItem ? 'pointer' : 'default',
+        transition: isTagItem ? 'background-color 0.2s ease, transform 0.2s ease' : undefined
+      };
+
+      const handleItemClick = () => {
+        if (isTagItem) {
+          openTagGallery({ tagId: normalizedTagId, label });
+        }
+      };
+
+      const handleKeyDown = event => {
+        if (!isTagItem || !event) {
+          return;
+        }
+
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openTagGallery({ tagId: normalizedTagId, label });
+        }
+      };
+
       return createElement('div', {
         key: item.key,
-        style: {
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: '8px'
-        }
+        role: isTagItem ? 'button' : undefined,
+        tabIndex: isTagItem ? 0 : undefined,
+        onClick: isTagItem ? handleItemClick : undefined,
+        onKeyDown: isTagItem ? handleKeyDown : undefined,
+        style: containerStyle
       }, [
         createElement('div', {
           key: `${item.key}-icon`,
@@ -917,11 +1397,10 @@ export default function MemorizationScreen({
             alignItems: 'center',
             justifyContent: 'center',
             color: isUnknownValue ? 'rgba(15, 45, 43, 0.6)' : '#052625',
-          fontWeight: 700,
-          fontSize: '0.85rem'
-        }
-      }, circleChild
-      ),
+            fontWeight: 700,
+            fontSize: '0.85rem'
+          }
+        }, circleChild),
         createElement('span', {
           key: `${item.key}-label`,
           style: {
@@ -934,7 +1413,7 @@ export default function MemorizationScreen({
         }, label)
       ]);
     });
-  }, [createElement, isMobile, parameters.parameterItems, unknownLabel]);
+  }, [createElement, isMobile, openTagGallery, parameters.parameterItems, unknownLabel]);
 
   const collectionButtonElement = createElement('button', {
     key: 'collection-button',
@@ -1324,8 +1803,27 @@ export default function MemorizationScreen({
     style: layoutStyle
   }, layoutChildren);
 
+  const overlayElement = activeTag
+    ? createElement(TagGalleryOverlay, {
+      key: 'tag-gallery',
+      tagLabel: activeTag.label,
+      entries: tagGalleryEntries,
+      onClose: closeTagGallery,
+      onSelectPlant: handleGalleryPlantSelect,
+      activePlantId: plant ? plant.id : null,
+      closeLabel: tagGalleryCloseLabel,
+      emptyLabel: tagGalleryEmptyLabel,
+      isMobile
+    })
+    : null;
+
+  const children = [layoutElement, ...trailingChildren];
+  if (overlayElement) {
+    children.push(overlayElement);
+  }
+
   return createElement('div', {
     className: 'w-full',
     style: outerStyle
-  }, [layoutElement, ...trailingChildren]);
+  }, children);
 }

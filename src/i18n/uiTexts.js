@@ -51,7 +51,9 @@ export const uiTexts = {
     memorizationFilterAll: "Все карточки",
     memorizationFilterCollection: "Только коллекция",
     memorizationPrevImage: "Предыдущее изображение",
-    memorizationNextImage: "Следующее изображение"
+    memorizationNextImage: "Следующее изображение",
+    memorizationTagGalleryClose: "Закрыть галерею",
+    memorizationTagGalleryEmpty: "Нет карточек с этим тегом."
   },
   en: {
     question: "What plant is this?",
@@ -105,7 +107,9 @@ export const uiTexts = {
     memorizationFilterAll: "All cards",
     memorizationFilterCollection: "Collection only",
     memorizationPrevImage: "Previous photo",
-    memorizationNextImage: "Next photo"
+    memorizationNextImage: "Next photo",
+    memorizationTagGalleryClose: "Close gallery",
+    memorizationTagGalleryEmpty: "No cards with this tag."
   },
   nl: {
     question: "Wat is deze plant?",
@@ -159,7 +163,9 @@ export const uiTexts = {
     memorizationFilterAll: "Alle kaarten",
     memorizationFilterCollection: "Alleen collectie",
     memorizationPrevImage: "Vorige foto",
-    memorizationNextImage: "Volgende foto"
+    memorizationNextImage: "Volgende foto",
+    memorizationTagGalleryClose: "Galerij sluiten",
+    memorizationTagGalleryEmpty: "Geen kaarten met dit label."
   }
 };
 

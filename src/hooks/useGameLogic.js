@@ -164,6 +164,7 @@ export default function useGameLogic() {
   const { useState, useEffect, useCallback, useMemo, useRef } = ReactGlobal;
   const timeoutRef = useRef(null);
   const preloadedImagesRef = useRef(new Set());
+  const manualMemorizationSelectionRef = useRef(false);
 
   const preloadPlantImages = useCallback(plantsToPreload => {
     if (typeof Image === 'undefined' || !Array.isArray(plantsToPreload)) {
@@ -327,6 +328,7 @@ export default function useGameLogic() {
     }
 
     const nextPlant = pickRandomMemorizationPlant();
+    manualMemorizationSelectionRef.current = false;
 
     setGameMode(GAME_MODES.MEMORIZATION);
     setRoundPhase('memorization');
@@ -347,12 +349,49 @@ export default function useGameLogic() {
 
   const showNextMemorizationPlant = useCallback(() => {
     const nextPlant = pickRandomMemorizationPlant();
+    manualMemorizationSelectionRef.current = false;
     setMemorizationPlant(nextPlant || null);
 
     if (nextPlant) {
       preloadPlantImages([nextPlant]);
     }
   }, [pickRandomMemorizationPlant, preloadPlantImages]);
+
+  const showMemorizationPlantById = useCallback(plantId => {
+    if (plantId == null) {
+      return;
+    }
+
+    const normalizedId = String(plantId);
+    if (!normalizedId) {
+      return;
+    }
+
+    if (!Array.isArray(memorizationPlants) || memorizationPlants.length === 0) {
+      return;
+    }
+
+    const nextPlant = memorizationPlants.find(candidate => {
+      if (!candidate || candidate.id == null) {
+        return false;
+      }
+
+      return String(candidate.id) === normalizedId;
+    });
+
+    if (!nextPlant) {
+      return;
+    }
+
+    manualMemorizationSelectionRef.current = true;
+
+    if (memorizationPlant && memorizationPlant.id != null && String(memorizationPlant.id) === normalizedId) {
+      return;
+    }
+
+    setMemorizationPlant(nextPlant);
+    preloadPlantImages([nextPlant]);
+  }, [memorizationPlant, preloadPlantImages]);
 
   const addPlantToMemorizationCollection = useCallback(plantId => {
     if (plantId == null) {
@@ -552,6 +591,7 @@ export default function useGameLogic() {
         if (memorizationPlant) {
           setMemorizationPlant(null);
         }
+        manualMemorizationSelectionRef.current = false;
         return;
       }
 
@@ -560,11 +600,19 @@ export default function useGameLogic() {
         : null;
 
       if (!currentId || !memorizationCollectionIds.includes(currentId)) {
+        if (manualMemorizationSelectionRef.current) {
+          manualMemorizationSelectionRef.current = false;
+          return;
+        }
+
         const nextPlant = pickRandomMemorizationPlant();
+        manualMemorizationSelectionRef.current = false;
         setMemorizationPlant(nextPlant || null);
         if (nextPlant) {
           preloadPlantImages([nextPlant]);
         }
+      } else {
+        manualMemorizationSelectionRef.current = false;
       }
       return;
     }
@@ -572,9 +620,12 @@ export default function useGameLogic() {
     if (!memorizationPlant) {
       const nextPlant = pickRandomMemorizationPlant();
       if (nextPlant) {
+        manualMemorizationSelectionRef.current = false;
         setMemorizationPlant(nextPlant);
         preloadPlantImages([nextPlant]);
       }
+    } else {
+      manualMemorizationSelectionRef.current = false;
     }
   }, [
     roundPhase,
@@ -706,6 +757,7 @@ export default function useGameLogic() {
     roundMistakes,
     memorizationPlant,
     showNextMemorizationPlant,
+    showMemorizationPlantById,
     addPlantToMemorizationCollection,
     removePlantFromMemorizationCollection,
     isPlantInMemorizationCollection,
