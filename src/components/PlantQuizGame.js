@@ -56,7 +56,8 @@ export default function PlantQuizGame() {
       isInCollection,
       collectionFilter: game.memorizationCollectionFilter,
       onCollectionFilterChange: game.changeMemorizationCollectionFilter,
-      collectionSize: game.memorizationCollectionSize
+      collectionSize: game.memorizationCollectionSize,
+      filterOptions: game.memorizationFilterOptions
     });
   }
 

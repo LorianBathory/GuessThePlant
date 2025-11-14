@@ -927,7 +927,8 @@ export default function MemorizationScreen({
   isInCollection = false,
   collectionFilter = 'all',
   onCollectionFilterChange = () => {},
-  collectionSize = 0
+  collectionSize = 0,
+  filterOptions = null
 }) {
   const { createElement, useMemo, useState, useCallback, useEffect } = ensureReact();
 
@@ -939,13 +940,76 @@ export default function MemorizationScreen({
   const filterAllLabel = texts.memorizationFilterAll || 'All cards';
   const filterCollectionLabel = texts.memorizationFilterCollection || 'Collection only';
 
-  const activeFilter = collectionFilter === 'collection' ? 'collection' : 'all';
   const collectionButtonDisabled = !plant || plant.id == null;
   const collectionButtonLabel = isInCollection ? removeFromCollectionLabel : addToCollectionLabel;
   const filterCollectionLabelWithCount = collectionSize > 0
     ? `${filterCollectionLabel} (${collectionSize})`
     : filterCollectionLabel;
   const isCollectionFilterDisabled = collectionSize === 0;
+
+  const resolvedFilterOptions = useMemo(() => {
+    if (Array.isArray(filterOptions) && filterOptions.length > 0) {
+      return filterOptions
+        .map(option => {
+          if (!option || typeof option !== 'object') {
+            return null;
+          }
+
+          const id = typeof option.id === 'string' && option.id.trim() ? option.id.trim() : null;
+          if (!id) {
+            return null;
+          }
+
+          const labelValue = typeof option.label === 'string' && option.label.trim()
+            ? option.label.trim()
+            : id;
+          const disabled = option.disabled === true;
+
+          return { id, label: labelValue, disabled };
+        })
+        .filter(Boolean);
+    }
+
+    return [
+      { id: 'all', label: filterAllLabel, disabled: false },
+      { id: 'collection', label: filterCollectionLabelWithCount, disabled: isCollectionFilterDisabled }
+    ];
+  }, [filterOptions, filterAllLabel, filterCollectionLabelWithCount, isCollectionFilterDisabled]);
+
+  const filterOptionMap = useMemo(() => {
+    const map = new Map();
+    resolvedFilterOptions.forEach(option => {
+      if (option && typeof option.id === 'string') {
+        map.set(option.id, option);
+      }
+    });
+    return map;
+  }, [resolvedFilterOptions]);
+
+  const fallbackFilterId = useMemo(() => {
+    const firstEnabled = resolvedFilterOptions.find(option => option && !option.disabled && typeof option.id === 'string');
+    if (firstEnabled && firstEnabled.id) {
+      return firstEnabled.id;
+    }
+
+    const firstOption = resolvedFilterOptions[0];
+    if (firstOption && typeof firstOption.id === 'string' && firstOption.id) {
+      return firstOption.id;
+    }
+
+    return 'all';
+  }, [resolvedFilterOptions]);
+
+  const normalizedCollectionFilter = typeof collectionFilter === 'string' && collectionFilter
+    ? collectionFilter
+    : '';
+  const activeFilter = (() => {
+    const option = filterOptionMap.get(normalizedCollectionFilter);
+    if (option && !option.disabled) {
+      return normalizedCollectionFilter;
+    }
+    return fallbackFilterId;
+  })();
 
   const tagGalleryCloseLabel = texts.memorizationTagGalleryClose || 'Закрыть';
   const tagGalleryEmptyLabel = texts.memorizationTagGalleryEmpty || 'Нет карточек с этим тегом.';
@@ -1146,15 +1210,25 @@ export default function MemorizationScreen({
   };
 
   const handleFilterSelect = value => {
-    if (value === activeFilter) {
+    const normalizedValue = typeof value === 'string' ? value.trim() : String(value || '').trim();
+    const option = normalizedValue ? filterOptionMap.get(normalizedValue) : null;
+
+    if (option && option.disabled) {
       return;
     }
 
-    if (value === 'collection' && isCollectionFilterDisabled) {
+    const nextFilter = option ? normalizedValue : fallbackFilterId;
+
+    if (!nextFilter || nextFilter === activeFilter) {
       return;
     }
 
-    onCollectionFilterChange(value);
+    const fallbackOption = filterOptionMap.get(nextFilter);
+    if (fallbackOption && fallbackOption.disabled) {
+      return;
+    }
+
+    onCollectionFilterChange(nextFilter);
   };
 
   const collectionButtonStyle = useMemo(() => ({
@@ -1452,37 +1526,44 @@ export default function MemorizationScreen({
     disabled: collectionButtonDisabled
   }, collectionButtonLabel);
 
-  const renderFilterButtons = () => ['all', 'collection'].map(value => {
-    const isActive = activeFilter === value;
-    const disabled = value === 'collection' ? isCollectionFilterDisabled : false;
-    const label = value === 'collection' ? filterCollectionLabelWithCount : filterAllLabel;
-
-    return createElement('button', {
-      key: `filter-option-${value}`,
-      type: 'button',
-      onClick: () => {
-        if (!disabled) {
-          handleFilterSelect(value);
-        }
-      },
-      disabled,
-      'aria-pressed': isActive ? 'true' : 'false',
-      style: {
-        padding: isMobile ? '10px 14px' : '10px 18px',
-        borderRadius: 0,
-        border: `2px solid ${ACCENT_COLOR}`,
-        backgroundColor: isActive ? ACCENT_COLOR : 'transparent',
-        color: isActive ? '#052625' : ACCENT_COLOR,
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
-        fontWeight: 600,
-        fontSize: isMobile ? '0.88rem' : '0.95rem',
-        letterSpacing: '0.01em',
-        textTransform: 'none',
-        transition: 'background-color 0.2s ease, color 0.2s ease'
+  const renderFilterButtons = () => resolvedFilterOptions
+    .map(option => {
+      if (!option || typeof option.id !== 'string') {
+        return null;
       }
-    }, label);
-  });
+
+      const value = option.id;
+      const isActive = activeFilter === value;
+      const disabled = option.disabled === true;
+      const label = typeof option.label === 'string' && option.label ? option.label : value;
+
+      return createElement('button', {
+        key: `filter-option-${value}`,
+        type: 'button',
+        onClick: () => {
+          if (!disabled) {
+            handleFilterSelect(value);
+          }
+        },
+        disabled,
+        'aria-pressed': isActive ? 'true' : 'false',
+        style: {
+          padding: isMobile ? '10px 14px' : '10px 18px',
+          borderRadius: 0,
+          border: `2px solid ${ACCENT_COLOR}`,
+          backgroundColor: isActive ? ACCENT_COLOR : 'transparent',
+          color: isActive ? '#052625' : ACCENT_COLOR,
+          cursor: disabled ? 'not-allowed' : 'pointer',
+          opacity: disabled ? 0.5 : 1,
+          fontWeight: 600,
+          fontSize: isMobile ? '0.88rem' : '0.95rem',
+          letterSpacing: '0.01em',
+          textTransform: 'none',
+          transition: 'background-color 0.2s ease, color 0.2s ease'
+        }
+      }, label);
+    })
+    .filter(Boolean);
 
   const buildFilterControl = (key, styleOverrides = {}) => createElement('div', {
     key,
