@@ -6,7 +6,6 @@ import useSecureImageSource from '../hooks/useSecureImageSource.js';
 const ACCENT_COLOR = '#C29C27';
 const FALLBACK_ACCENT = 'rgba(194, 156, 39, 0.35)';
 const CARD_BACKGROUND = 'linear-gradient(155deg, rgba(8, 38, 36, 0.95) 0%, rgba(16, 72, 69, 0.92) 45%, rgba(24, 100, 95, 0.88) 100%)';
-
 function ensureReact() {
   const ReactGlobal = globalThis.React;
   if (!ReactGlobal) {
@@ -553,7 +552,9 @@ function PlantImage({ plant, texts }) {
 
   const containerStyle = useMemo(() => ({
     position: 'relative',
-    width: '100%',
+    width: '107%',
+    marginLeft: '-3.5%',
+    marginRight: '-3.5%',
     paddingBottom: '66.67%',
     background: 'linear-gradient(140deg, #082726 0%, #0E3A38 45%, #12504D 100%)',
     borderBottom: `4px solid ${ACCENT_COLOR}`,
@@ -1375,6 +1376,18 @@ export default function MemorizationScreen({
     };
   }, [plant, interfaceLanguage, unknownLabel]);
 
+  const layoutMetrics = useMemo(() => {
+    const cardMaxWidth = isMobile ? 556 : 770;
+    const layoutMaxWidth = isMobile ? 596 : 1322;
+
+    return {
+      cardMaxWidthPx: `${cardMaxWidth}px`,
+      layoutMaxWidthPx: `${layoutMaxWidth}px`
+    };
+  }, [isMobile]);
+
+  const { cardMaxWidthPx, layoutMaxWidthPx } = layoutMetrics;
+
   const outerStyle = useMemo(() => {
     const sidePadding = isMobile ? 32 : 48;
     const bottomPadding = isMobile ? 32 : 56;
@@ -1388,7 +1401,7 @@ export default function MemorizationScreen({
       alignItems: 'center',
       justifyContent: 'flex-start',
       gap: isMobile ? '16px' : '24px',
-      paddingTop: '24px',
+      paddingTop: '10px',
       paddingRight: `${sidePadding}px`,
       paddingLeft: `${sidePadding}px`,
       paddingBottom: `${bottomPadding}px`,
@@ -1398,31 +1411,50 @@ export default function MemorizationScreen({
 
   const cardStyle = useMemo(() => ({
     width: '100%',
-    maxWidth: isMobile ? '520px' : '720px',
+    maxWidth: cardMaxWidthPx,
     background: CARD_BACKGROUND,
     borderRadius: 0,
-    border: `4px solid ${ACCENT_COLOR}`,
+    border: `3px solid ${ACCENT_COLOR}`,
     overflow: 'visible',
-    flex: '1 1 auto'
-  }), [isMobile]);
+    flex: '1 1 auto',
+    gridColumn: isMobile ? 'auto' : '2'
+  }), [cardMaxWidthPx, isMobile]);
 
   const infoSectionStyle = useMemo(() => ({
     display: 'flex',
     flexDirection: 'column',
-    padding: isMobile ? '20px' : '28px',
+    paddingTop: isMobile ? '10px' : '18px',
+    paddingRight: isMobile ? '20px' : '28px',
+    paddingBottom: isMobile ? '20px' : '28px',
+    paddingLeft: isMobile ? '20px' : '28px',
     color: '#F8F2D0'
   }), [isMobile]);
 
-  const layoutStyle = useMemo(() => ({
-    display: 'flex',
-    flexDirection: isMobile ? 'column' : 'row',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    gap: '16px',
-    width: '100%',
-    maxWidth: isMobile ? '560px' : '1040px',
-    margin: '0 auto'
-  }), [isMobile]);
+  const layoutStyle = useMemo(() => {
+    if (isMobile) {
+      return {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'center',
+        gap: '16px',
+        width: '100%',
+        maxWidth: layoutMaxWidthPx,
+        margin: '0 auto'
+      };
+    }
+
+    return {
+      display: 'grid',
+      gridTemplateColumns: `260px minmax(0, ${cardMaxWidthPx}) 260px`,
+      columnGap: '16px',
+      alignItems: 'stretch',
+      justifyContent: 'center',
+      width: '100%',
+      maxWidth: layoutMaxWidthPx,
+      margin: '0 auto'
+    };
+  }, [cardMaxWidthPx, isMobile, layoutMaxWidthPx]);
 
   const arrowButtonStyle = useMemo(() => ({
     display: 'flex',
@@ -1702,10 +1734,10 @@ export default function MemorizationScreen({
     key: 'additional-info',
     style: {
       padding: '12px',
-      backgroundColor: `${colors.primaryLight}4D`,
-      border: `1px solid ${ACCENT_COLOR}`,
+      backgroundColor: 'transparent',
+      border: 'none',
       color: colors.accentLight,
-      fontSize: '14px',
+      fontSize: '16px',
       lineHeight: 1.5,
       whiteSpace: 'pre-wrap',
       marginTop: '16px'
@@ -1924,7 +1956,8 @@ export default function MemorizationScreen({
         flexDirection: 'column',
         alignItems: 'stretch',
         gap: '20px',
-        flex: '0 0 auto'
+        flex: '0 0 auto',
+        gridColumn: '3'
       }
     }, sideColumnChildren);
 
