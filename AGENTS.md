@@ -20,6 +20,9 @@ Welcome to *Guess The Plant*! This project is a static React (UMD) application l
 - For significant UI changes that affect layout or styles, capture a screenshot via the provided browser tooling and attach it to your final report.
 - Update documentation (`README.md`, `PROJECT_STRUCTURE`) when structural project changes occur.
 
+## UI
+- Avoid rounded corners on interface elements unless the requirements explicitly call for them.
+
 ## Data maintenance utilities
 - `scripts/links/sync_links.py` keeps the Latin plant names in `scripts/links/links.ods` aligned with column **E** of `PlantData.csv`. The script inserts missing rows, rewrites the ODS in place, and runs every other Python script in `scripts/links/` whenever new names are added.
 
