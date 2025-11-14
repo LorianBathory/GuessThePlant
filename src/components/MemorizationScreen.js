@@ -1065,6 +1065,15 @@ export default function MemorizationScreen({
         ...extractTagIds(parametersForPlant?.newTags)
       ]);
 
+      const lifeCycleTagId = normalizeTagId(
+        parametersForPlant?.lifeCycle
+          ?? parametersForPlant?.lifeCycleTag
+          ?? parametersForPlant?.lifeCycleId
+      );
+      if (lifeCycleTagId) {
+        tagCandidates.add(lifeCycleTagId);
+      }
+
       if (!tagCandidates.has(normalizedId)) {
         return;
       }
