@@ -15,7 +15,8 @@
         "en": "Medicinal",
         "nl": "Geneeskrachtige"
       }
-      {
+    },
+    {
       "id": "groundcover",
       "label": {
         "ru": "Почвопокровное",
