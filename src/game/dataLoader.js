@@ -7,6 +7,33 @@ function parseCatalogId(rawId) {
   return NUMERIC_ID_PATTERN.test(stringId) ? Number(stringId) : stringId;
 }
 
+function normalizeCatalogIdList(values) {
+  if (!Array.isArray(values)) {
+    return [];
+  }
+
+  const seen = new Set();
+  const result = [];
+
+  values.forEach(value => {
+    if (value == null) {
+      return;
+    }
+
+    const parsed = parseCatalogId(value);
+    const key = typeof parsed === 'number' ? String(parsed) : String(parsed || '');
+
+    if (!key || seen.has(key)) {
+      return;
+    }
+
+    seen.add(key);
+    result.push(parsed);
+  });
+
+  return result;
+}
+
 function cloneDifficultyBuckets(buckets = {}) {
   return Object.fromEntries(
     Object.entries(buckets).map(([difficulty, ids]) => [
@@ -382,6 +409,17 @@ const bouquetQuestionDefinitions = Object.freeze(await loadJsonModule('../data/j
   fallbackKey: 'bouquetQuestions'
 }));
 
+const netherlandsMemorizationCollection = Object.freeze(
+  await loadJsonModule('../data/json/memorizationCollections/netherlands.json', {
+    fallbackValue: [],
+    fileSystemHint: (
+      'Не удалось загрузить коллекцию memorizationCollections/netherlands.json напрямую из файловой системы. '
+      + 'Современные браузеры блокируют JSON-модули при открытии index.html через file://. '
+      + 'Запустите локальный статический сервер (npm run serve) и откройте игру по адресу http://localhost:4173.'
+    )
+  })
+);
+
 const plantParameterSource = (
   memorizationJson && typeof memorizationJson.plantParameters === 'object'
     ? memorizationJson.plantParameters
@@ -401,6 +439,10 @@ const plantFamilySource = (
 const memorizationPlantEntries = deriveMemorizationPlantEntries({
   memorizationJson,
   plantParameters: plantParameterSource
+});
+
+const memorizationCollectionDefinitions = Object.freeze({
+  netherlands: Object.freeze(normalizeCatalogIdList(netherlandsMemorizationCollection))
 });
 
 const plantTagDefinitionsData = buildPlantTagDefinitions(plantParameterConfigJson);
@@ -431,6 +473,7 @@ export const dataBundle = Object.freeze({
       ? { plants: Object.freeze(memorizationPlantEntries.slice()) }
       : {}
   ),
+  memorizationCollections: memorizationCollectionDefinitions,
   difficulties: normalizedPlantData.difficulties,
   questionDefinitionsByType: Object.freeze({
     [questionTypes.BOUQUET]: freezeQuestionDefinitions(bouquetQuestionDefinitions)
@@ -1026,6 +1069,55 @@ function buildMemorizationPlants({ memorizationEntries, speciesById, plantImages
   );
 }
 
+function buildMemorizationCollections({ collections, memorizationPlants }) {
+  if (!collections || typeof collections !== 'object') {
+    return Object.freeze({});
+  }
+
+  const availablePlantIds = new Set();
+
+  if (Array.isArray(memorizationPlants)) {
+    memorizationPlants.forEach(plant => {
+      if (!plant || plant.id == null) {
+        return;
+      }
+
+      const key = String(plant.id);
+      if (key) {
+        availablePlantIds.add(key);
+      }
+    });
+  }
+
+  const normalizedCollections = {};
+
+  Object.entries(collections).forEach(([collectionId, ids]) => {
+    const normalizedId = typeof collectionId === 'string' && collectionId.trim()
+      ? collectionId.trim()
+      : null;
+
+    if (!normalizedId) {
+      return;
+    }
+
+    const normalizedIds = normalizeCatalogIdList(ids);
+
+    if (normalizedIds.length === 0) {
+      return;
+    }
+
+    const filtered = normalizedIds.filter(id => availablePlantIds.has(String(id)));
+
+    if (filtered.length === 0) {
+      return;
+    }
+
+    normalizedCollections[normalizedId] = Object.freeze(filtered.slice());
+  });
+
+  return Object.freeze(normalizedCollections);
+}
+
 function buildBouquetQuestions({ bouquetDefinitions, plantNamesById, difficultyLookups }) {
   return Object.freeze(
     bouquetDefinitions.map(entry => {
@@ -1101,7 +1193,8 @@ function buildGameData({
   plantImages = dataBundle.plantImages,
   difficulties = dataBundle.difficulties,
   speciesEntries = dataBundle.species,
-  questionDefinitionsByType = dataBundle.questionDefinitionsByType
+  questionDefinitionsByType = dataBundle.questionDefinitionsByType,
+  memorizationCollections: memorizationCollectionOverrides = dataBundle.memorizationCollections
 } = {}) {
   const plantNamesById = buildPlantNames(plantNames);
   const genusData = buildGenusData(genusEntries);
@@ -1123,6 +1216,10 @@ function buildGameData({
     speciesById: speciesData.speciesById,
     plantImagesById: imagesData.plantImagesById,
     difficultyLookups: difficultyData
+  });
+  const normalizedMemorizationCollections = buildMemorizationCollections({
+    collections: memorizationCollectionOverrides,
+    memorizationPlants
   });
   const normalizedQuestionDefinitions = (
     questionDefinitionsByType && typeof questionDefinitionsByType === 'object'
@@ -1147,6 +1244,7 @@ function buildGameData({
     ...speciesData,
     plants,
     memorizationPlants,
+    memorizationCollections: normalizedMemorizationCollections,
     bouquetQuestions: bouquetSet,
     questionSetsByType,
     questionDefinitionsByType: Object.freeze({ ...normalizedQuestionDefinitions }),
@@ -1190,6 +1288,7 @@ export const {
 } = gameData;
 
 export const memorizationPlants = gameData.memorizationPlants;
+export const memorizationCollections = gameData.memorizationCollections;
 
 export const ALL_CHOICE_IDS = allChoiceIds;
 export const imageDifficultyOverrides = imageDifficultyLookup;
@@ -1225,6 +1324,7 @@ export function buildGameDataForTesting(overrides = {}) {
     difficulties: dataBundle.difficulties,
     speciesEntries: dataBundle.species,
     questionDefinitionsByType: questionDefinitionsByTypeOverride,
+    memorizationCollections: dataBundle.memorizationCollections,
     ...remainingOverrides
   });
 }

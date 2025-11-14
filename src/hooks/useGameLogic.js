@@ -1,4 +1,10 @@
-import { choicesById, ALL_CHOICE_IDS, memorizationPlants, speciesById } from '../game/dataLoader.js';
+import {
+  choicesById,
+  ALL_CHOICE_IDS,
+  memorizationPlants,
+  memorizationCollections,
+  speciesById
+} from '../game/dataLoader.js';
 import { uiTexts, defaultLang } from '../i18n/uiTexts.js';
 import { shuffleArray } from '../utils/random.js';
 import {
@@ -23,8 +29,50 @@ const MEMORIZATION_FILTER_STORAGE_KEY = 'gtp/memorizationFilter';
 
 const MEMORIZATION_FILTERS = Object.freeze({
   ALL: 'all',
-  COLLECTION: 'collection'
+  COLLECTION: 'collection',
+  NETHERLANDS: 'netherlands'
 });
+
+const DEFAULT_MEMORIZATION_FILTER = MEMORIZATION_FILTERS.NETHERLANDS;
+const MEMORIZATION_FILTER_SET = new Set(Object.values(MEMORIZATION_FILTERS));
+
+function buildPresetCollectionSets(collections) {
+  const map = new Map();
+
+  if (collections && typeof collections === 'object') {
+    Object.entries(collections).forEach(([collectionId, ids]) => {
+      if (!collectionId || !Array.isArray(ids)) {
+        return;
+      }
+
+      const normalizedId = String(collectionId).trim();
+      if (!normalizedId) {
+        return;
+      }
+
+      const normalizedIds = ids
+        .map(id => {
+          if (id == null) {
+            return null;
+          }
+
+          const stringId = String(id);
+          return stringId ? stringId : null;
+        })
+        .filter(Boolean);
+
+      if (normalizedIds.length === 0) {
+        return;
+      }
+
+      map.set(normalizedId, new Set(normalizedIds));
+    });
+  }
+
+  return map;
+}
+
+const PRESET_MEMORIZATION_COLLECTION_SETS = buildPresetCollectionSets(memorizationCollections);
 
 function normalizeCollectionIds(value) {
   if (!Array.isArray(value)) {
@@ -51,6 +99,22 @@ function normalizeCollectionIds(value) {
   });
 
   return result;
+}
+
+function normalizeMemorizationFilter(value) {
+  if (value == null) {
+    return DEFAULT_MEMORIZATION_FILTER;
+  }
+
+  const normalized = String(value).trim();
+
+  if (!normalized) {
+    return DEFAULT_MEMORIZATION_FILTER;
+  }
+
+  return MEMORIZATION_FILTER_SET.has(normalized)
+    ? normalized
+    : DEFAULT_MEMORIZATION_FILTER;
 }
 
 function getStoredMemorizationCollection() {
@@ -90,14 +154,18 @@ function storeMemorizationCollection(ids) {
 
 function getStoredMemorizationFilter() {
   if (typeof window === 'undefined' || !window.localStorage) {
-    return MEMORIZATION_FILTERS.ALL;
+    return DEFAULT_MEMORIZATION_FILTER;
   }
 
   try {
     const stored = window.localStorage.getItem(MEMORIZATION_FILTER_STORAGE_KEY);
-    return stored === MEMORIZATION_FILTERS.COLLECTION ? MEMORIZATION_FILTERS.COLLECTION : MEMORIZATION_FILTERS.ALL;
+    if (stored && MEMORIZATION_FILTER_SET.has(stored)) {
+      return stored;
+    }
+
+    return DEFAULT_MEMORIZATION_FILTER;
   } catch {
-    return MEMORIZATION_FILTERS.ALL;
+    return DEFAULT_MEMORIZATION_FILTER;
   }
 }
 
@@ -107,10 +175,12 @@ function storeMemorizationFilter(filter) {
   }
 
   try {
-    if (filter === MEMORIZATION_FILTERS.COLLECTION) {
-      window.localStorage.setItem(MEMORIZATION_FILTER_STORAGE_KEY, MEMORIZATION_FILTERS.COLLECTION);
-    } else {
+    const normalized = normalizeMemorizationFilter(filter);
+
+    if (normalized === DEFAULT_MEMORIZATION_FILTER) {
       window.localStorage.removeItem(MEMORIZATION_FILTER_STORAGE_KEY);
+    } else {
+      window.localStorage.setItem(MEMORIZATION_FILTER_STORAGE_KEY, normalized);
     }
   } catch {
     // Ignore storage write errors — the mode remains functional without persistence.
@@ -165,6 +235,7 @@ export default function useGameLogic() {
   const timeoutRef = useRef(null);
   const preloadedImagesRef = useRef(new Set());
   const manualMemorizationSelectionRef = useRef(false);
+  const presetCollectionSets = PRESET_MEMORIZATION_COLLECTION_SETS;
 
   const preloadPlantImages = useCallback(plantsToPreload => {
     if (typeof Image === 'undefined' || !Array.isArray(plantsToPreload)) {
@@ -219,9 +290,65 @@ export default function useGameLogic() {
   const [isClassicModeUnavailable, setClassicModeUnavailable] = useState(() => isClassicModeDisabled());
   const [roundMistakes, setRoundMistakes] = useState([]);
   const [memorizationCollectionIds, setMemorizationCollectionIds] = useState(() => getStoredMemorizationCollection());
-  const [memorizationCollectionFilter, setMemorizationCollectionFilter] = useState(() => getStoredMemorizationFilter());
+  const [memorizationCollectionFilter, setMemorizationCollectionFilter] = useState(
+    () => normalizeMemorizationFilter(getStoredMemorizationFilter())
+  );
 
   const texts = uiTexts[interfaceLanguage] || uiTexts[defaultLang];
+
+  const memorizationFilterOptions = useMemo(() => {
+    const options = [];
+    const netherlandsLabel = texts.memorizationFilterNetherlands || 'Netherlands';
+    const allLabel = texts.memorizationFilterAll || 'All cards';
+    const collectionLabel = texts.memorizationFilterCollection || 'Collection only';
+
+    const netherlandsSet = presetCollectionSets.get(MEMORIZATION_FILTERS.NETHERLANDS);
+    if (netherlandsSet) {
+      options.push({
+        id: MEMORIZATION_FILTERS.NETHERLANDS,
+        label: netherlandsSet.size > 0
+          ? `${netherlandsLabel} (${netherlandsSet.size})`
+          : netherlandsLabel,
+        disabled: netherlandsSet.size === 0
+      });
+    } else {
+      options.push({
+        id: MEMORIZATION_FILTERS.NETHERLANDS,
+        label: netherlandsLabel,
+        disabled: true
+      });
+    }
+
+    presetCollectionSets.forEach((set, key) => {
+      if (key === MEMORIZATION_FILTERS.NETHERLANDS) {
+        return;
+      }
+
+      const labelBase = typeof key === 'string' && key.trim() ? key : 'preset';
+      options.push({
+        id: key,
+        label: set.size > 0 ? `${labelBase} (${set.size})` : labelBase,
+        disabled: set.size === 0
+      });
+    });
+
+    options.push({
+      id: MEMORIZATION_FILTERS.ALL,
+      label: allLabel,
+      disabled: false
+    });
+
+    const collectionCount = memorizationCollectionIds.length;
+    options.push({
+      id: MEMORIZATION_FILTERS.COLLECTION,
+      label: collectionCount > 0
+        ? `${collectionLabel} (${collectionCount})`
+        : collectionLabel,
+      disabled: collectionCount === 0
+    });
+
+    return options;
+  }, [texts, memorizationCollectionIds, presetCollectionSets]);
 
   const {
     startClassicGame,
@@ -270,9 +397,14 @@ export default function useGameLogic() {
   }, [startClassicGame]);
 
   const pickRandomMemorizationPlant = useCallback(() => {
-    const restrictToCollection = memorizationCollectionFilter === MEMORIZATION_FILTERS.COLLECTION
-      ? new Set(memorizationCollectionIds)
-      : null;
+    let restrictToCollection = null;
+
+    if (memorizationCollectionFilter === MEMORIZATION_FILTERS.COLLECTION) {
+      restrictToCollection = new Set(memorizationCollectionIds);
+    } else if (memorizationCollectionFilter !== MEMORIZATION_FILTERS.ALL) {
+      const presetSet = presetCollectionSets.get(memorizationCollectionFilter);
+      restrictToCollection = presetSet && presetSet.size > 0 ? presetSet : new Set();
+    }
 
     const candidates = Array.isArray(memorizationPlants)
       ? memorizationPlants.filter(plant => {
@@ -320,7 +452,12 @@ export default function useGameLogic() {
     });
 
     return nextCandidate || shuffled[0];
-  }, [memorizationPlant, memorizationCollectionIds, memorizationCollectionFilter]);
+  }, [
+    memorizationPlant,
+    memorizationCollectionIds,
+    memorizationCollectionFilter,
+    presetCollectionSets
+  ]);
 
   const startMemorizationMode = useCallback(() => {
     if (timeoutRef.current) {
@@ -430,12 +567,23 @@ export default function useGameLogic() {
   }, []);
 
   const changeMemorizationCollectionFilter = useCallback(nextFilter => {
-    setMemorizationCollectionFilter(
-      nextFilter === MEMORIZATION_FILTERS.COLLECTION
-        ? MEMORIZATION_FILTERS.COLLECTION
-        : MEMORIZATION_FILTERS.ALL
-    );
-  }, []);
+    let normalized = normalizeMemorizationFilter(nextFilter);
+
+    if (
+      normalized !== MEMORIZATION_FILTERS.ALL
+      && normalized !== MEMORIZATION_FILTERS.COLLECTION
+    ) {
+      const presetSet = presetCollectionSets.get(normalized);
+      if (!presetSet || presetSet.size === 0) {
+        const defaultPreset = presetCollectionSets.get(DEFAULT_MEMORIZATION_FILTER);
+        normalized = defaultPreset && defaultPreset.size > 0
+          ? DEFAULT_MEMORIZATION_FILTER
+          : MEMORIZATION_FILTERS.ALL;
+      }
+    }
+
+    setMemorizationCollectionFilter(normalized);
+  }, [presetCollectionSets]);
 
   const isPlantInMemorizationCollection = useCallback(plantId => {
     if (plantId == null) {
@@ -563,6 +711,27 @@ export default function useGameLogic() {
   }, [memorizationCollectionFilter]);
 
   useEffect(() => {
+    if (
+      memorizationCollectionFilter === MEMORIZATION_FILTERS.ALL
+      || memorizationCollectionFilter === MEMORIZATION_FILTERS.COLLECTION
+    ) {
+      return;
+    }
+
+    const presetSet = presetCollectionSets.get(memorizationCollectionFilter);
+    if (presetSet && presetSet.size > 0) {
+      return;
+    }
+
+    const defaultPreset = presetCollectionSets.get(DEFAULT_MEMORIZATION_FILTER);
+    if (defaultPreset && defaultPreset.size > 0) {
+      setMemorizationCollectionFilter(DEFAULT_MEMORIZATION_FILTER);
+    } else {
+      setMemorizationCollectionFilter(MEMORIZATION_FILTERS.ALL);
+    }
+  }, [memorizationCollectionFilter, presetCollectionSets]);
+
+  useEffect(() => {
     const allowedLanguages = getAllowedPlantLanguageSet(interfaceLanguage);
     if (!allowedLanguages.has(plantLanguage)) {
       setPlantLanguage(interfaceLanguage);
@@ -617,6 +786,38 @@ export default function useGameLogic() {
       return;
     }
 
+    if (memorizationCollectionFilter !== MEMORIZATION_FILTERS.ALL) {
+      const presetSet = presetCollectionSets.get(memorizationCollectionFilter);
+      if (!presetSet || presetSet.size === 0) {
+        if (memorizationPlant) {
+          setMemorizationPlant(null);
+        }
+        manualMemorizationSelectionRef.current = false;
+        return;
+      }
+
+      const currentId = memorizationPlant && memorizationPlant.id != null
+        ? String(memorizationPlant.id)
+        : null;
+
+      if (!currentId || !presetSet.has(currentId)) {
+        if (manualMemorizationSelectionRef.current) {
+          manualMemorizationSelectionRef.current = false;
+          return;
+        }
+
+        const nextPlant = pickRandomMemorizationPlant();
+        manualMemorizationSelectionRef.current = false;
+        setMemorizationPlant(nextPlant || null);
+        if (nextPlant) {
+          preloadPlantImages([nextPlant]);
+        }
+      } else {
+        manualMemorizationSelectionRef.current = false;
+      }
+      return;
+    }
+
     if (!memorizationPlant) {
       const nextPlant = pickRandomMemorizationPlant();
       if (nextPlant) {
@@ -633,7 +834,8 @@ export default function useGameLogic() {
     memorizationCollectionIds,
     memorizationPlant,
     pickRandomMemorizationPlant,
-    preloadPlantImages
+    preloadPlantImages,
+    presetCollectionSets
   ]);
 
   const logAnswerSelectedEvent = useCallback((selectedId, correctId) => {
@@ -763,6 +965,7 @@ export default function useGameLogic() {
     isPlantInMemorizationCollection,
     memorizationCollectionSize,
     memorizationCollectionFilter,
+    memorizationFilterOptions,
     changeMemorizationCollectionFilter
   };
 }
