@@ -1074,6 +1074,16 @@ export default function MemorizationScreen({
         tagCandidates.add(lifeCycleTagId);
       }
 
+      const lightTagId = normalizeTagId(
+        parametersForPlant?.light
+          ?? parametersForPlant?.lightTag
+          ?? parametersForPlant?.lightId
+          ?? parametersForPlant?.sunlight
+      );
+      if (lightTagId) {
+        tagCandidates.add(lightTagId);
+      }
+
       if (!tagCandidates.has(normalizedId)) {
         return;
       }
@@ -1182,8 +1192,17 @@ export default function MemorizationScreen({
 
     const data = getPlantParameters(plant.id);
     const familyValue = getLocalizedValue(data?.family, interfaceLanguage) || unknownLabel;
-    const lifeCycleTag = typeof data?.lifeCycle === 'string' ? data.lifeCycle : null;
-    const lightTag = typeof data?.light === 'string' ? data.light : null;
+    const lifeCycleTag = normalizeTagId(
+      data?.lifeCycle
+        ?? data?.lifeCycleTag
+        ?? data?.lifeCycleId
+    );
+    const lightTag = normalizeTagId(
+      data?.light
+        ?? data?.lightTag
+        ?? data?.lightId
+        ?? data?.sunlight
+    );
 
     const lifeCycleValue = lifeCycleTag
       ? getParameterTagLabel('lifeCycle', lifeCycleTag, interfaceLanguage)
@@ -1220,7 +1239,8 @@ export default function MemorizationScreen({
         icon: sunlightMeta.icon,
         circleContent: null,
         circleColor: resolvedLightValue === unknownLabel ? FALLBACK_ACCENT : sunlightMeta.color,
-        isUnknown: resolvedLightValue === unknownLabel
+        isUnknown: resolvedLightValue === unknownLabel,
+        tagId: lightTag && resolvedLightValue !== unknownLabel ? lightTag : null
       });
     }
 
