@@ -272,6 +272,14 @@ function getLocalizedValue(value, language) {
   return null;
 }
 
+function hasExplicitNullValue(object, keys) {
+  if (!object || typeof object !== 'object' || !Array.isArray(keys)) {
+    return false;
+  }
+
+  return keys.some(key => Object.prototype.hasOwnProperty.call(object, key) && object[key] === null);
+}
+
 function buildToxicityParameterItems(toxicityData, language, unknownLabel) {
   if (!toxicityData) {
     return [];
@@ -1264,27 +1272,25 @@ export default function MemorizationScreen({
         ?? data?.lifeCycleTag
         ?? data?.lifeCycleId
     );
-    const lightTag = normalizeTagId(
-      data?.light
-        ?? data?.lightTag
-        ?? data?.lightId
-        ?? data?.sunlight
-    );
+    const hasLightNullOverride = hasExplicitNullValue(data, ['light', 'lightTag', 'lightId', 'sunlight']);
+    const lightTag = hasLightNullOverride
+      ? null
+      : normalizeTagId(
+        data?.light
+          ?? data?.lightTag
+          ?? data?.lightId
+          ?? data?.sunlight
+      );
 
     const lifeCycleValue = lifeCycleTag
       ? getParameterTagLabel('lifeCycle', lifeCycleTag, interfaceLanguage)
       : null;
-    const lightValue = lightTag
-      ? getParameterTagLabel('light', lightTag, interfaceLanguage)
-      : null;
 
     const resolvedLifeCycleValue = lifeCycleValue || null;
-    const resolvedLightValue = lightValue || unknownLabel;
-    const phRawValue = getLocalizedValue(data?.ph, interfaceLanguage) || getLocalizedValue(data?.soilPh, interfaceLanguage) || unknownLabel;
 
-    const sunlightMeta = getSunlightIcon(lightTag);
+    const hasPhNullOverride = hasExplicitNullValue(data, ['ph', 'soilPh']);
+
     const lifespanMeta = getLifespanIcon(lifeCycleTag);
-    const phColor = phRawValue === unknownLabel ? FALLBACK_ACCENT : getPhColor(phRawValue);
 
     const toxicityParameterItems = buildToxicityParameterItems(data?.toxicity, interfaceLanguage, unknownLabel);
 
@@ -1293,13 +1299,15 @@ export default function MemorizationScreen({
       getLocalizedValue(data?.hardinessZone, interfaceLanguage)
     );
 
-    const phDisplayValue = phRawValue === unknownLabel
-      ? unknownLabel
-      : phRawValue.replace(/pH\s*/gi, '').trim() || unknownLabel;
-
     const parameterItems = [];
 
-    if (resolvedLightValue) {
+    if (!hasLightNullOverride) {
+      const sunlightMeta = getSunlightIcon(lightTag);
+      const lightValue = lightTag
+        ? getParameterTagLabel('light', lightTag, interfaceLanguage)
+        : null;
+      const resolvedLightValue = lightValue || unknownLabel;
+
       parameterItems.push({
         key: 'light',
         label: resolvedLightValue,
@@ -1311,14 +1319,24 @@ export default function MemorizationScreen({
       });
     }
 
-    parameterItems.push({
-      key: 'ph',
-      label: phDisplayValue,
-      icon: null,
-      circleContent: 'pH',
-      circleColor: phRawValue === unknownLabel ? FALLBACK_ACCENT : phColor,
-      isUnknown: phDisplayValue === unknownLabel
-    });
+    if (!hasPhNullOverride) {
+      const phRawValue = getLocalizedValue(data?.ph, interfaceLanguage)
+        || getLocalizedValue(data?.soilPh, interfaceLanguage)
+        || unknownLabel;
+      const phColor = phRawValue === unknownLabel ? FALLBACK_ACCENT : getPhColor(phRawValue);
+      const phDisplayValue = phRawValue === unknownLabel
+        ? unknownLabel
+        : phRawValue.replace(/pH\s*/gi, '').trim() || unknownLabel;
+
+      parameterItems.push({
+        key: 'ph',
+        label: phDisplayValue,
+        icon: null,
+        circleContent: 'pH',
+        circleColor: phRawValue === unknownLabel ? FALLBACK_ACCENT : phColor,
+        isUnknown: phDisplayValue === unknownLabel
+      });
+    }
 
     parameterItems.push(...toxicityParameterItems);
 
