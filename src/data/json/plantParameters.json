@@ -11,9 +11,17 @@
     {
       "id": "medicinal",
       "label": {
-        "ru": "Лекарственное растение",
-        "en": "Medicinal plant",
-        "nl": "Geneeskrachtige plant"
+        "ru": "Лекарственное",
+        "en": "Medicinal",
+        "nl": "Geneeskrachtige"
+      }
+    },
+    {
+      "id": "groundcover",
+      "label": {
+        "ru": "Почвопокровное",
+        "en": "Groundcover",
+        "nl": "Bodembedekker"
       }
     }
   ]

@@ -1469,7 +1469,7 @@ export default function MemorizationScreen({
       'aria-pressed': isActive ? 'true' : 'false',
       style: {
         padding: isMobile ? '10px 14px' : '10px 18px',
-        borderRadius: '999px',
+        borderRadius: 0,
         border: `2px solid ${ACCENT_COLOR}`,
         backgroundColor: isActive ? ACCENT_COLOR : 'transparent',
         color: isActive ? '#052625' : ACCENT_COLOR,
@@ -1491,9 +1491,9 @@ export default function MemorizationScreen({
       flexDirection: 'column',
       gap: '8px',
       padding: isMobile ? '12px' : '14px 18px',
-      borderRadius: '12px',
-      border: `1px solid ${ACCENT_COLOR}`,
-      backgroundColor: 'rgba(8, 38, 36, 0.55)',
+      borderRadius: 0,
+      border: 'none',
+      backgroundColor: 'transparent',
       ...styleOverrides
     }
   }, [
