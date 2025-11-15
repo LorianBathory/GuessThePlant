@@ -552,9 +552,9 @@ function PlantImage({ plant, texts }) {
 
   const containerStyle = useMemo(() => ({
     position: 'relative',
-    width: '107%',
-    marginLeft: '-3.5%',
-    marginRight: '-3.5%',
+    width: '100%',
+    marginLeft: '0',
+    marginRight: '0',
     paddingBottom: '66.67%',
     background: 'linear-gradient(140deg, #082726 0%, #0E3A38 45%, #12504D 100%)',
     borderBottom: `4px solid ${ACCENT_COLOR}`,
@@ -1377,8 +1377,8 @@ export default function MemorizationScreen({
   }, [plant, interfaceLanguage, unknownLabel]);
 
   const layoutMetrics = useMemo(() => {
-    const cardMaxWidth = isMobile ? 556 : 770;
-    const layoutMaxWidth = isMobile ? 596 : 1322;
+    const cardMaxWidth = isMobile ? 596 : 824;
+    const layoutMaxWidth = isMobile ? 636 : 1376;
 
     return {
       cardMaxWidthPx: `${cardMaxWidth}px`,
