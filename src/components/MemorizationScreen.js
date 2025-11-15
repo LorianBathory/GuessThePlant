@@ -1686,21 +1686,33 @@ export default function MemorizationScreen({
         margin: 0
       }
     }, plantName || unknownLabel),
-    scientificName && createElement('span', {
-      key: 'plant-scientific-name',
+    (scientificName || parameters.family) && createElement('div', {
+      key: 'plant-scientific-and-family',
       style: {
-        fontStyle: 'italic',
-        fontSize: isMobile ? '18px' : '20px',
-        color: 'rgba(194, 156, 39, 0.85)'
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'baseline',
+        gap: '12px'
       }
-    }, scientificName),
-    parameters.family && createElement('span', {
-      key: 'plant-family-name',
-      style: {
-        fontSize: '14px',
-        color: 'rgba(194, 156, 39, 0.8)'
-      }
-    }, parameters.family)
+    }, [
+      scientificName && createElement('span', {
+        key: 'plant-scientific-name',
+        style: {
+          fontStyle: 'italic',
+          fontSize: isMobile ? '18px' : '20px',
+          color: 'rgba(194, 156, 39, 0.85)'
+        }
+      }, scientificName),
+      parameters.family && createElement('span', {
+        key: 'plant-family-name',
+        style: {
+          fontSize: isMobile ? '18px' : '20px',
+          color: 'rgba(194, 156, 39, 0.85)',
+          fontWeight: 600
+        }
+      }, `Family: ${parameters.family}`)
+    ].filter(Boolean))
   ].filter(Boolean));
 
   const additionalInfoText = parameters.additionalInfo || texts.memorizationAdditionalInfoEmpty || 'не заполнено';
